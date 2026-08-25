@@ -1,0 +1,19 @@
+# Este repo solo versiona el material ya convertido a texto/markdown y archivos de datos
+# livianos (ver README) -- todo lo pesado o binario (PDFs, Office originales, imágenes,
+# videos, comprimidos) queda afuera por defecto.
+*
+!*/
+!*.md
+!*.txt
+!*.xlsx
+!*.csv
+!*.json
+!.gitignore
+!README.md
+
+# Redundante con el whitelist de arriba, pero explícito para los tipos más pesados:
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.zip
