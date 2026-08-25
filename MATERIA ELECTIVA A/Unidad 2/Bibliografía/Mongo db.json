@@ -1,0 +1,396 @@
+[
+    {
+        "id": "0719fb33b9ba21b4",
+        "type": "tab",
+        "label": "Mongo DB UGR",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "403ddb8e4f18f13c",
+        "type": "function",
+        "z": "0719fb33b9ba21b4",
+        "name": "function 72",
+        "func": "msg.payload = [{name:\"joel\", age:\"31\"}];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "1387e10c3c18178b"
+            ]
+        ]
+    },
+    {
+        "id": "160709d904950953",
+        "type": "inject",
+        "z": "0719fb33b9ba21b4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 160,
+        "wires": [
+            [
+                "403ddb8e4f18f13c"
+            ]
+        ]
+    },
+    {
+        "id": "852778b5065da29f",
+        "type": "debug",
+        "z": "0719fb33b9ba21b4",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "1387e10c3c18178b",
+        "type": "mongodb4",
+        "z": "0719fb33b9ba21b4",
+        "clientNode": "e9c5a6d497a9b057",
+        "mode": "collection",
+        "collection": "UGR ejemplos",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 680,
+        "y": 200,
+        "wires": [
+            [
+                "852778b5065da29f"
+            ]
+        ]
+    },
+    {
+        "id": "c5cda86418fcab3d",
+        "type": "inject",
+        "z": "0719fb33b9ba21b4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "c0b19b2bf7a82f48"
+            ]
+        ]
+    },
+    {
+        "id": "c0b19b2bf7a82f48",
+        "type": "function",
+        "z": "0719fb33b9ba21b4",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 10)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_028_PV\", aleatorio)\n\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_030_PV\", aleatorio)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 340,
+        "wires": [
+            [
+                "0325c65eb32bdcb4"
+            ]
+        ]
+    },
+    {
+        "id": "0325c65eb32bdcb4",
+        "type": "function",
+        "z": "0719fb33b9ba21b4",
+        "name": "Payload y timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\n\nmsg.payload = [{name:\"VaporLOOS\", valor:global.get(\"ns=1;s=t|PLC_02_LECTURA_028_PV\"),timestamp:formatDate(fecha)}]\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 340,
+        "wires": [
+            [
+                "1387e10c3c18178b"
+            ]
+        ]
+    },
+    {
+        "id": "1b35a09218e9e5b6",
+        "type": "file in",
+        "z": "0719fb33b9ba21b4",
+        "name": "Lee documento",
+        "filename": "\\Users\\joela\\Downloads\\Mongodb\\Molino2.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 280,
+        "y": 440,
+        "wires": [
+            [
+                "cc217e560c6f1280"
+            ]
+        ]
+    },
+    {
+        "id": "a7a1bcebea0b7c4f",
+        "type": "inject",
+        "z": "0719fb33b9ba21b4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 500,
+        "wires": [
+            [
+                "1b35a09218e9e5b6"
+            ]
+        ]
+    },
+    {
+        "id": "cc217e560c6f1280",
+        "type": "json",
+        "z": "0719fb33b9ba21b4",
+        "name": "Convierte el timeseries a un json",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 530,
+        "y": 440,
+        "wires": [
+            [
+                "60398be98d805a51"
+            ]
+        ]
+    },
+    {
+        "id": "71ce682e01b25bc0",
+        "type": "mongodb4",
+        "z": "0719fb33b9ba21b4",
+        "clientNode": "e9c5a6d497a9b057",
+        "mode": "collection",
+        "collection": "Molino",
+        "operation": "insertMany",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "Insert muchos",
+        "x": 1000,
+        "y": 620,
+        "wires": [
+            [
+                "d8228b0bbc2d09bd"
+            ]
+        ]
+    },
+    {
+        "id": "d8228b0bbc2d09bd",
+        "type": "debug",
+        "z": "0719fb33b9ba21b4",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1240,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "e05ce890552873d4",
+        "type": "change",
+        "z": "0719fb33b9ba21b4",
+        "name": "Crea temporal",
+        "rules": [
+            {
+                "t": "set",
+                "p": "temp[0]",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "payload",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 460,
+        "y": 620,
+        "wires": [
+            [
+                "5d68f9e211a44416"
+            ]
+        ]
+    },
+    {
+        "id": "5d68f9e211a44416",
+        "type": "change",
+        "z": "0719fb33b9ba21b4",
+        "name": "Usa temporal y lo borra",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "temp",
+                "tot": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "temp",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 620,
+        "wires": [
+            [
+                "71ce682e01b25bc0"
+            ]
+        ]
+    },
+    {
+        "id": "f9b1c54146cf9da7",
+        "type": "debug",
+        "z": "0719fb33b9ba21b4",
+        "name": "debug 21",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "60398be98d805a51",
+        "type": "function",
+        "z": "0719fb33b9ba21b4",
+        "name": "Convertir _time a BSON",
+        "func": "let i = 0;\n\nwhile (i < msg.payload.length) {\n    msg.payload[i]._time=new Date(msg.payload[i]._time);\n    i++;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 620,
+        "wires": [
+            [
+                "f9b1c54146cf9da7",
+                "e05ce890552873d4"
+            ]
+        ]
+    },
+    {
+        "id": "7eedc19aa5612c11",
+        "type": "comment",
+        "z": "0719fb33b9ba21b4",
+        "name": "Explicacion",
+        "info": "Necesita hacerse el temporal debido a que InsertMany lee payload[0].\nEs decir, todas las entradas de payload[0] (payload[0][0], payload[0][1], etc)",
+        "x": 890,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "e9c5a6d497a9b057",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "CLusterUGR",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb+srv://Jojoa:<Kiyotaka1992>@clusterugr.8xmfe.mongodb.net/?retryWrites=true&w=majority&appName=ClusterUGR",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    }
+]

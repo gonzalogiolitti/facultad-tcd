@@ -1,0 +1,150 @@
+[
+    {
+        "id": "4f021343791b011f",
+        "type": "tab",
+        "label": "Influxdb",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d43be0e170a4f58b",
+        "type": "inject",
+        "z": "4f021343791b011f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "b1b6cb403d74e914"
+            ]
+        ]
+    },
+    {
+        "id": "b1186a9ab80883b0",
+        "type": "debug",
+        "z": "4f021343791b011f",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "b1b6cb403d74e914",
+        "type": "function",
+        "z": "4f021343791b011f",
+        "name": "Obtención de variables",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 10)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_028_PV\", aleatorio)\n\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_030_PV\", aleatorio)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 160,
+        "wires": [
+            [
+                "e708fe1659612dd7"
+            ]
+        ]
+    },
+    {
+        "id": "e708fe1659612dd7",
+        "type": "function",
+        "z": "4f021343791b011f",
+        "name": "Envio de variables",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\nvar vapor=global.get(\"ns=1;s=t|PLC_02_LECTURA_028_PV\")\n\nmsg.payload = {\n  \"Timestamp\" : formatDate(fecha),\n  \"Vapor\" : vapor\n\n\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 160,
+        "wires": [
+            [
+                "b1186a9ab80883b0",
+                "500c51d469216a77"
+            ]
+        ]
+    },
+    {
+        "id": "500c51d469216a77",
+        "type": "influxdb out",
+        "z": "4f021343791b011f",
+        "influxdb": "6724afc058b88afc",
+        "name": "Curso UGR",
+        "measurement": "Medida 1",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "Curso UGR",
+        "bucket": "Curso UGR",
+        "x": 710,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "07f4d1760577d012",
+        "type": "comment",
+        "z": "4f021343791b011f",
+        "name": "",
+        "info": "Envio datos en forma de campo valor\n",
+        "x": 500,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "64ce090df7647913",
+        "type": "comment",
+        "z": "4f021343791b011f",
+        "name": "",
+        "info": "Simulo que obtengo mis datos de un servidor de control",
+        "x": 320,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6724afc058b88afc",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "Curso UGR",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    }
+]

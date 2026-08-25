@@ -1,0 +1,3 @@
+https://nodered.org/
+https://www.mongodb.com/
+https://www.influxdata.com/influxdb-signup/

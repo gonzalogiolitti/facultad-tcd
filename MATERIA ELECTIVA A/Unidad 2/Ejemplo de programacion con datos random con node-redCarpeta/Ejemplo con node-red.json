@@ -1,0 +1,448 @@
+[
+    {
+        "id": "845c8165deedcc93",
+        "type": "tab",
+        "label": "Ejemplo de ejercicio",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4377d0dfd3154ebb",
+        "type": "debug",
+        "z": "845c8165deedcc93",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3fa94f81146d0a9d",
+        "type": "inject",
+        "z": "845c8165deedcc93",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 120,
+        "wires": [
+            [
+                "f0f0bb5e71bd29ea"
+            ]
+        ]
+    },
+    {
+        "id": "f0f0bb5e71bd29ea",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 10)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_028_PV\", aleatorio)\n\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_030_PV\", aleatorio)\n\nmsg.payload=global.get(\"ns=1;s=t|PLC_02_LECTURA_028_PV\")\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 160,
+        "wires": [
+            [
+                "b16bcbbf23c66daa"
+            ]
+        ]
+    },
+    {
+        "id": "b16bcbbf23c66daa",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Payload y timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n} \n\n//Aclaración en la subida de datos a su bd sobre la numeración del mes esta corrida -1 valor, es decir enero que es el primer mes figura como 0 con esta función, febrero que es el 2do figura como 1 y asi sucesivamente, en caso de que aparezca de manera convencional sumar un 1 a la función\n\n//Par de clave simple\nmsg.payload = [{L2_VaporLOOS:global.get(\"ns=1;s=t|PLC_02_LECTURA_028_PV\"),timestamp:formatDate(fecha)}]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 160,
+        "wires": [
+            [
+                "430b320eb9f283a7"
+            ]
+        ]
+    },
+    {
+        "id": "430b320eb9f283a7",
+        "type": "mongodb4",
+        "z": "845c8165deedcc93",
+        "clientNode": "4305dba43888fad8",
+        "mode": "collection",
+        "collection": "Caso demostrativo",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 720,
+        "y": 160,
+        "wires": [
+            [
+                "4377d0dfd3154ebb"
+            ]
+        ]
+    },
+    {
+        "id": "23f875c183ebf986",
+        "type": "inject",
+        "z": "845c8165deedcc93",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 340,
+        "wires": [
+            [
+                "39ef813bccd072e6",
+                "b7dba2fab99cc753",
+                "b9df7d9e1b620cd3",
+                "5b6c615efbdaabe8",
+                "43f60b3d5dc468d3"
+            ]
+        ]
+    },
+    {
+        "id": "39ef813bccd072e6",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 150)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_031_PV\", aleatorio)\n\n\n\nmsg.payload=global.get(\"ns=1;s=t|PLC_02_LECTURA_031_PV\")\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 280,
+        "wires": [
+            [
+                "f82992a091de3a42"
+            ]
+        ]
+    },
+    {
+        "id": "f82992a091de3a42",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Temp. Salida Payload y timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\n\n//Aclaración en la subida de datos a su bd sobre la numeración del mes esta corrida -1 valor, es decir enero que es el primer mes figura como 0 con esta función, febrero que es el 2do figura como 1 y asi sucesivamente, en caso de que aparezca de manera convencional sumar un 1 a la función\n\n//Par de clave simple\nmsg.payload = [{L2_Temp_Salida:global.get(\"ns=1;s=t|PLC_02_LECTURA_031_PV\"),timestamp:formatDate(fecha)}]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 280,
+        "wires": [
+            [
+                "d8ad88402ccbef3f",
+                "0dcfa52ca74011e5"
+            ]
+        ]
+    },
+    {
+        "id": "d8ad88402ccbef3f",
+        "type": "mongodb4",
+        "z": "845c8165deedcc93",
+        "clientNode": "7f9cb6b604418e1b",
+        "mode": "collection",
+        "collection": "Demostracion2",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 780,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a4e75499f97a4698",
+        "type": "debug",
+        "z": "845c8165deedcc93",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "b7dba2fab99cc753",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 110)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_032_PV\", aleatorio)\n\n\n\nmsg.payload=global.get(\"ns=1;s=t|PLC_02_LECTURA_032_PV\")\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 420,
+        "wires": [
+            [
+                "94bdb9caedf859ac"
+            ]
+        ]
+    },
+    {
+        "id": "94bdb9caedf859ac",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Temp. Ent y timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\n\n//Aclaración en la subida de datos a su bd sobre la numeración del mes esta corrida -1 valor, es decir enero que es el primer mes figura como 0 con esta función, febrero que es el 2do figura como 1 y asi sucesivamente, en caso de que aparezca de manera convencional sumar un 1 a la función\n\n//Par de clave simple\nmsg.payload = [{L2_Temp_Entrada:global.get(\"ns=1;s=t|PLC_02_LECTURA_032_PV\"),timestamp:formatDate(fecha)}]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 420,
+        "wires": [
+            [
+                "d8ad88402ccbef3f"
+            ]
+        ]
+    },
+    {
+        "id": "b9df7d9e1b620cd3",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 100)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_033_PV\", aleatorio)\n\n\n\nmsg.payload=global.get(\"ns=1;s=t|PLC_02_LECTURA_033_PV\")\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 500,
+        "wires": [
+            [
+                "0444b959642ff5a5"
+            ]
+        ]
+    },
+    {
+        "id": "0444b959642ff5a5",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Consumo motor y timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\n\n//Aclaración en la subida de datos a su bd sobre la numeración del mes esta corrida -1 valor, es decir enero que es el primer mes figura como 0 con esta función, febrero que es el 2do figura como 1 y asi sucesivamente, en caso de que aparezca de manera convencional sumar un 1 a la función\n\n//Par de clave simple\nmsg.payload = [{L2_Consumo_Motor:global.get(\"ns=1;s=t|PLC_02_LECTURA_033_PV\"),timestamp:formatDate(fecha)}]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 500,
+        "wires": [
+            [
+                "d8ad88402ccbef3f"
+            ]
+        ]
+    },
+    {
+        "id": "5b6c615efbdaabe8",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 100)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_034_PV\", aleatorio)\n\n\n\nmsg.payload=global.get(\"ns=1;s=t|PLC_02_LECTURA_034_PV\")\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 580,
+        "wires": [
+            [
+                "1a0a97c6d6fb5540"
+            ]
+        ]
+    },
+    {
+        "id": "1a0a97c6d6fb5540",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Vapor Valv. y timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\n\n//Aclaración en la subida de datos a su bd sobre la numeración del mes esta corrida -1 valor, es decir enero que es el primer mes figura como 0 con esta función, febrero que es el 2do figura como 1 y asi sucesivamente, en caso de que aparezca de manera convencional sumar un 1 a la función\n\n//Par de clave simple\nmsg.payload = [{L2_Vapor_Valv:global.get(\"ns=1;s=t|PLC_02_LECTURA_034_PV\"),timestamp:formatDate(fecha)}]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 580,
+        "wires": [
+            [
+                "d8ad88402ccbef3f"
+            ]
+        ]
+    },
+    {
+        "id": "43f60b3d5dc468d3",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Generar valor aleatorio",
+        "func": "var fecha = new Date();\n\nvar aleatorio = Math.round(Math.random() * 17.8)\nfunction getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\nglobal.set(\"ns=1;s=t|PLC_02_LECTURA_035_PV\", aleatorio)\n\n\n\nmsg.payload=global.get(\"ns=1;s=t|PLC_02_LECTURA_035_PV\")\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 660,
+        "wires": [
+            [
+                "5c5d6ac3bd93aab2"
+            ]
+        ]
+    },
+    {
+        "id": "5c5d6ac3bd93aab2",
+        "type": "function",
+        "z": "845c8165deedcc93",
+        "name": "Sinfiny timestamp",
+        "func": "var fecha = new Date();\nfunction formatDate(date) {\n  return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();\n}\n\n//Aclaración en la subida de datos a su bd sobre la numeración del mes esta corrida -1 valor, es decir enero que es el primer mes figura como 0 con esta función, febrero que es el 2do figura como 1 y asi sucesivamente, en caso de que aparezca de manera convencional sumar un 1 a la función\n\n//Par de clave simple\nmsg.payload = [{L2_Sinfin:global.get(\"ns=1;s=t|PLC_02_LECTURA_035_PV\"),timestamp:formatDate(fecha)}]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 660,
+        "wires": [
+            [
+                "d8ad88402ccbef3f"
+            ]
+        ]
+    },
+    {
+        "id": "0dcfa52ca74011e5",
+        "type": "debug",
+        "z": "845c8165deedcc93",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "4305dba43888fad8",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "CLusterUGR3",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb+srv://joelacosta92:<Hola123>@clusterugr3.9mc9hgg.mongodb.net/?retryWrites=true&w=majority&appName=CLusterUGR3",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
+        "id": "7f9cb6b604418e1b",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "",
+        "port": "",
+        "dbName": "Prueba2",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "mongodb+srv://joelacosta92:<Hola123>@clusterugr3.9mc9hgg.mongodb.net/?retryWrites=true&w=majority&appName=CLusterUGR3",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-advanced"
+    },
+    {
+        "id": "177803a03cade3e5",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-mongodb4": "3.1.1"
+        }
+    }
+]
