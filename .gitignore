@@ -8,6 +8,7 @@
 !*.xlsx
 !*.csv
 !*.json
+!*.drawio
 !.gitignore
 !README.md
 
