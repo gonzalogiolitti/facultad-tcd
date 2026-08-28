@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 25/08/26_
+_Última actualización: 28/08/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -28,6 +28,12 @@ _Última actualización: 25/08/26_
 **Fecha:** No identificada
 **Temas:** Cronograma 2026, Algoritmos, Representación (pseudocódigo/diagramas), Estructuras de repetición, Arreglos y búsquedas, Procedimientos y funciones
 **Resumen:** Documento de planificación del primer cuatrimestre 2026 de la materia Datos y Algoritmos (TCD 2.14.2), con inicio el 16/03/26 y fin el 20/06/26. El cronograma organiza 14 semanas en cinco unidades: definición y tipos de algoritmos, representación mediante pseudocódigo y diagramas lógicos, estructuras de repetición (for y while), arreglos con búsqueda lineal y binaria, y procedimientos y funciones con modularidad y ámbito de variables. Incluye un trabajo práctico en la semana 8 y una evaluación parcial en la semana 11.
+
+## Grabaciones 2026
+**Archivo:** Grabaciones 2026/Clase 1.txt
+**Fecha:** No identificada
+**Temas:** Presentación de la materia, datos vs. información, ciclo de vida del software, algoritmos, requerimientos funcionales y no funcionales, diagramación lógica, pseudocódigo, herramienta draw.io
+**Resumen:** Primera clase de la materia Datos y Algoritmos, de carácter introductorio y mayormente teórico. Se presentaron las docentes, la metodología de cursado (uso de pseudocódigo, parciales con cámara, sin IA en evaluaciones) y los objetivos de la materia: desarrollar razonamiento lógico para construir algoritmos. Se definieron conceptos clave como dato, información, algoritmo (finito, ordenado y no ambiguo), requerimientos funcionales y no funcionales, y las etapas del ciclo de vida del software. Se introdujeron las herramientas de trabajo: diagramación lógica con draw.io y pseudocódigo en PSeInt, y se realizaron los primeros ejercicios prácticos de construcción de algoritmos simples (suma, promedio, distancia recorrida).
 
 <!-- ESTADO_RESUMEN
 {
@@ -81,6 +87,19 @@ _Última actualización: 25/08/26_
           "fecha": "No identificada",
           "temas": "Cronograma 2026, Algoritmos, Representación (pseudocódigo/diagramas), Estructuras de repetición, Arreglos y búsquedas, Procedimientos y funciones",
           "resumen": "Documento de planificación del primer cuatrimestre 2026 de la materia Datos y Algoritmos (TCD 2.14.2), con inicio el 16/03/26 y fin el 20/06/26. El cronograma organiza 14 semanas en cinco unidades: definición y tipos de algoritmos, representación mediante pseudocódigo y diagramas lógicos, estructuras de repetición (for y while), arreglos con búsqueda lineal y binaria, y procedimientos y funciones con modularidad y ámbito de variables. Incluye un trabajo práctico en la semana 8 y una evaluación parcial en la semana 11."
+        }
+      ]
+    ],
+    [
+      [
+        "Grabaciones 2026"
+      ],
+      [
+        {
+          "rel_path": "Grabaciones 2026/Clase 1.txt",
+          "fecha": "No identificada",
+          "temas": "Presentación de la materia, datos vs. información, ciclo de vida del software, algoritmos, requerimientos funcionales y no funcionales, diagramación lógica, pseudocódigo, herramienta draw.io",
+          "resumen": "Primera clase de la materia Datos y Algoritmos, de carácter introductorio y mayormente teórico. Se presentaron las docentes, la metodología de cursado (uso de pseudocódigo, parciales con cámara, sin IA en evaluaciones) y los objetivos de la materia: desarrollar razonamiento lógico para construir algoritmos. Se definieron conceptos clave como dato, información, algoritmo (finito, ordenado y no ambiguo), requerimientos funcionales y no funcionales, y las etapas del ciclo de vida del software. Se introdujeron las herramientas de trabajo: diagramación lógica con draw.io y pseudocódigo en PSeInt, y se realizaron los primeros ejercicios prácticos de construcción de algoritmos simples (suma, promedio, distancia recorrida)."
         }
       ]
     ]
