@@ -54,6 +54,12 @@ _Última actualización: 28/08/26_
 **Temas:** Industria 4.0 y 5.0, revoluciones industriales, digitalización industrial, vectores tecnológicos, IoT/IIoT, gemelos digitales, mantenimiento predictivo, nuevos modelos de negocio, sustentabilidad
 **Resumen:** La clase introduce el paradigma de la Industria 4.0 y su evolución hacia la 5.0, contextualizando los desafíos actuales de la producción (volatilidad de mercados, eficiencia energética, innovación disruptiva) y las oportunidades que genera la digitalización. Se repasa la evolución histórica de los modelos industriales desde la primera revolución hasta el presente, destacando los vectores tecnológicos clave (IoT, IA, big data, robótica colaborativa, cloud computing, blockchain, gemelos digitales, entre otros). Se enfatiza que la transformación digital no es solo tecnológica, sino que requiere gestión del cambio, cultura organizacional e innovación abierta. Finalmente, se presentan casos concretos como el monitoreo en tiempo real, el mantenimiento predictivo, los gemelos digitales y el modelo "producto como servicio" para ilustrar el impacto práctico de estos conceptos.
 
+### Actividades
+**Archivo:** Unidad 1/Actividades/Reinventarse con Inteligencia_ cómo construir la Fábrica 2030.txt
+**Fecha:** No identificada
+**Temas:** Inteligencia artificial en la industria argentina, Fábrica 2030, adopción de IA en empresas, productividad industrial, Centro de Industria X, estudio nacional sobre IA, barreras de implementación, PyMEs y grandes empresas
+**Resumen:** Transcripción de un evento híbrido organizado por Accenture y la Unión Industrial Argentina (UIA) en el Centro de Industria X, donde se presentó el primer informe nacional sobre el uso de inteligencia artificial en la industria argentina. Se expusieron datos del estudio: solo 1 de cada 3 empresas invierte actualmente en IA, con barreras como el desconocimiento, la falta de madurez en infraestructura digital y la escasez de talento especializado. Se analizó el impacto potencial de la IA en la productividad del país (estimado en +1,2 puntos porcentuales sobre la tendencia), y se presentó el concepto de "Fábrica 2030" como modelo de industria más conectada, inteligente y sostenible. El evento también sirvió para presentar la "Ruta X", un programa de acompañamiento a empresas, especialmente PyMEs, en su proceso de transformación digital.
+
 ### Bibliografía
 **Archivo:** Unidad 1/Bibliografía/Big Data en la industria del acero.md
 **Fecha:** No identificada
@@ -211,6 +217,20 @@ _Última actualización: 28/08/26_
           "fecha": "No identificada",
           "temas": "Industria 4.0 y 5.0, revoluciones industriales, digitalización industrial, vectores tecnológicos, IoT/IIoT, gemelos digitales, mantenimiento predictivo, nuevos modelos de negocio, sustentabilidad",
           "resumen": "La clase introduce el paradigma de la Industria 4.0 y su evolución hacia la 5.0, contextualizando los desafíos actuales de la producción (volatilidad de mercados, eficiencia energética, innovación disruptiva) y las oportunidades que genera la digitalización. Se repasa la evolución histórica de los modelos industriales desde la primera revolución hasta el presente, destacando los vectores tecnológicos clave (IoT, IA, big data, robótica colaborativa, cloud computing, blockchain, gemelos digitales, entre otros). Se enfatiza que la transformación digital no es solo tecnológica, sino que requiere gestión del cambio, cultura organizacional e innovación abierta. Finalmente, se presentan casos concretos como el monitoreo en tiempo real, el mantenimiento predictivo, los gemelos digitales y el modelo \"producto como servicio\" para ilustrar el impacto práctico de estos conceptos."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 1",
+        "Actividades"
+      ],
+      [
+        {
+          "rel_path": "Unidad 1/Actividades/Reinventarse con Inteligencia_ cómo construir la Fábrica 2030.txt",
+          "fecha": "No identificada",
+          "temas": "Inteligencia artificial en la industria argentina, Fábrica 2030, adopción de IA en empresas, productividad industrial, Centro de Industria X, estudio nacional sobre IA, barreras de implementación, PyMEs y grandes empresas",
+          "resumen": "Transcripción de un evento híbrido organizado por Accenture y la Unión Industrial Argentina (UIA) en el Centro de Industria X, donde se presentó el primer informe nacional sobre el uso de inteligencia artificial en la industria argentina. Se expusieron datos del estudio: solo 1 de cada 3 empresas invierte actualmente en IA, con barreras como el desconocimiento, la falta de madurez en infraestructura digital y la escasez de talento especializado. Se analizó el impacto potencial de la IA en la productividad del país (estimado en +1,2 puntos porcentuales sobre la tendencia), y se presentó el concepto de \"Fábrica 2030\" como modelo de industria más conectada, inteligente y sostenible. El evento también sirvió para presentar la \"Ruta X\", un programa de acompañamiento a empresas, especialmente PyMEs, en su proceso de transformación digital."
         }
       ]
     ],
