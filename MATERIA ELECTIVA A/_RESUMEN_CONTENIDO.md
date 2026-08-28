@@ -1,5 +1,5 @@
 # MATERIA ELECTIVA A - Resumen de contenido
-_Última actualización: 26/08/26_
+_Última actualización: 28/08/26_
 
 ## Grabaciones sincrónicos
 **Archivo:** Grabaciones sincrónicos/Clase 7-5 automatización 4.0.txt
@@ -48,6 +48,11 @@ _Última actualización: 26/08/26_
 **Fecha:** No identificada
 **Temas:** Sensores y actuadores, PLC, HMI, OPC-UA, SCADA, Redes OT/IT, IoT, IIoT, Gateway IoT, Node-Red
 **Resumen:** La presentación introduce los componentes fundamentales de un entorno IIoT industrial, comenzando por sensores, transductores y actuadores, y su acondicionamiento de señal. Se explican los PLC como dispositivos de control automatizado y su integración con interfaces HMI, ilustrado con un ejemplo de control de temperatura en caldera. Se describe el protocolo OPC-UA para comunicación industrial y el software SCADA para supervisión y adquisición de datos en tiempo real. Finalmente, se distingue entre redes IT y OT, sentando las bases para los temas de IoT, IIoT, Gateway y Node-Red que se desarrollan en el resto de la unidad.
+
+**Archivo:** Unidad 1/video Sobre introducción a la industria 4.0_5.0.txt
+**Fecha:** No identificada
+**Temas:** Industria 4.0 y 5.0, revoluciones industriales, digitalización industrial, vectores tecnológicos, IoT/IIoT, gemelos digitales, mantenimiento predictivo, nuevos modelos de negocio, sustentabilidad
+**Resumen:** La clase introduce el paradigma de la Industria 4.0 y su evolución hacia la 5.0, contextualizando los desafíos actuales de la producción (volatilidad de mercados, eficiencia energética, innovación disruptiva) y las oportunidades que genera la digitalización. Se repasa la evolución histórica de los modelos industriales desde la primera revolución hasta el presente, destacando los vectores tecnológicos clave (IoT, IA, big data, robótica colaborativa, cloud computing, blockchain, gemelos digitales, entre otros). Se enfatiza que la transformación digital no es solo tecnológica, sino que requiere gestión del cambio, cultura organizacional e innovación abierta. Finalmente, se presentan casos concretos como el monitoreo en tiempo real, el mantenimiento predictivo, los gemelos digitales y el modelo "producto como servicio" para ilustrar el impacto práctico de estos conceptos.
 
 ### Bibliografía
 **Archivo:** Unidad 1/Bibliografía/Big Data en la industria del acero.md
@@ -200,6 +205,12 @@ _Última actualización: 26/08/26_
           "fecha": "No identificada",
           "temas": "Sensores y actuadores, PLC, HMI, OPC-UA, SCADA, Redes OT/IT, IoT, IIoT, Gateway IoT, Node-Red",
           "resumen": "La presentación introduce los componentes fundamentales de un entorno IIoT industrial, comenzando por sensores, transductores y actuadores, y su acondicionamiento de señal. Se explican los PLC como dispositivos de control automatizado y su integración con interfaces HMI, ilustrado con un ejemplo de control de temperatura en caldera. Se describe el protocolo OPC-UA para comunicación industrial y el software SCADA para supervisión y adquisición de datos en tiempo real. Finalmente, se distingue entre redes IT y OT, sentando las bases para los temas de IoT, IIoT, Gateway y Node-Red que se desarrollan en el resto de la unidad."
+        },
+        {
+          "rel_path": "Unidad 1/video Sobre introducción a la industria 4.0_5.0.txt",
+          "fecha": "No identificada",
+          "temas": "Industria 4.0 y 5.0, revoluciones industriales, digitalización industrial, vectores tecnológicos, IoT/IIoT, gemelos digitales, mantenimiento predictivo, nuevos modelos de negocio, sustentabilidad",
+          "resumen": "La clase introduce el paradigma de la Industria 4.0 y su evolución hacia la 5.0, contextualizando los desafíos actuales de la producción (volatilidad de mercados, eficiencia energética, innovación disruptiva) y las oportunidades que genera la digitalización. Se repasa la evolución histórica de los modelos industriales desde la primera revolución hasta el presente, destacando los vectores tecnológicos clave (IoT, IA, big data, robótica colaborativa, cloud computing, blockchain, gemelos digitales, entre otros). Se enfatiza que la transformación digital no es solo tecnológica, sino que requiere gestión del cambio, cultura organizacional e innovación abierta. Finalmente, se presentan casos concretos como el monitoreo en tiempo real, el mantenimiento predictivo, los gemelos digitales y el modelo \"producto como servicio\" para ilustrar el impacto práctico de estos conceptos."
         }
       ]
     ],

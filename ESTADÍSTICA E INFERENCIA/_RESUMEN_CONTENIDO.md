@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 26/08/26_
+_Última actualización: 28/08/26_
 
 ## Grabaciones clases de consulta
 **Archivo:** Grabaciones clases de consulta/Clase Consulta (14-4-26).txt
@@ -44,6 +44,12 @@ _Última actualización: 26/08/26_
 **Fecha:** No identificada
 **Temas:** Comando unite, Comando separate, manipulación de columnas en R, parámetro remove, separadores en columnas
 **Resumen:** La clase muestra el uso de los comandos `unite` y `separate` en R para manipular columnas de un dataframe. Se explica cómo `unite` combina dos o más columnas en una nueva usando un separador definido (espacio, guión, etc.), y cómo el parámetro `remove` controla si se conservan o eliminan las columnas originales. Se advierte sobre el cuidado al usar `remove = TRUE` para no perder datos. Finalmente, se introduce `separate` como operación inversa a `unite`, permitiendo dividir una columna combinada en sus columnas originales a partir del separador utilizado.
+
+## Unidad 2
+**Archivo:** Unidad 2/Barón Lopez, J. Bioestadística Métodos y Aplicaciones (2004).md
+**Fecha:** No identificada
+**Temas:** Estadística descriptiva, tablas de frecuencia, representaciones gráficas, medidas de tendencia central y dispersión, variables bidimensionales, correlación y regresión, probabilidad, variables aleatorias, distribuciones de probabilidad, inferencia estadística, intervalos de confianza, contrastes de hipótesis, chi-cuadrado, ANOVA, tests no paramétricos
+**Resumen:** Este archivo corresponde al libro completo "Bioestadística: Métodos y Aplicaciones" de Barón López (2004), utilizado como material de referencia para la materia. Cubre desde conceptos básicos de estadística descriptiva (tipos de variables, tablas de frecuencia, gráficos, medidas de centralización, dispersión y forma) hasta estadística inferencial avanzada, incluyendo cálculo de probabilidades, distribuciones teóricas discretas y continuas (Binomial, Poisson, Normal, t-Student, chi-cuadrado, F de Snedecor), estimación puntual y por intervalos de confianza, contrastes de hipótesis paramétricos para medias, varianzas y proporciones, análisis de la varianza (ANOVA) y alternativas no paramétricas. Cada capítulo incorpora ejemplos aplicados al ámbito de las ciencias de la salud y una sección de problemas para práctica.
 
 <!-- ESTADO_RESUMEN
 {
@@ -116,6 +122,19 @@ _Última actualización: 26/08/26_
           "fecha": "No identificada",
           "temas": "Comando unite, Comando separate, manipulación de columnas en R, parámetro remove, separadores en columnas",
           "resumen": "La clase muestra el uso de los comandos `unite` y `separate` en R para manipular columnas de un dataframe. Se explica cómo `unite` combina dos o más columnas en una nueva usando un separador definido (espacio, guión, etc.), y cómo el parámetro `remove` controla si se conservan o eliminan las columnas originales. Se advierte sobre el cuidado al usar `remove = TRUE` para no perder datos. Finalmente, se introduce `separate` como operación inversa a `unite`, permitiendo dividir una columna combinada en sus columnas originales a partir del separador utilizado."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/Barón Lopez, J. Bioestadística Métodos y Aplicaciones (2004).md",
+          "fecha": "No identificada",
+          "temas": "Estadística descriptiva, tablas de frecuencia, representaciones gráficas, medidas de tendencia central y dispersión, variables bidimensionales, correlación y regresión, probabilidad, variables aleatorias, distribuciones de probabilidad, inferencia estadística, intervalos de confianza, contrastes de hipótesis, chi-cuadrado, ANOVA, tests no paramétricos",
+          "resumen": "Este archivo corresponde al libro completo \"Bioestadística: Métodos y Aplicaciones\" de Barón López (2004), utilizado como material de referencia para la materia. Cubre desde conceptos básicos de estadística descriptiva (tipos de variables, tablas de frecuencia, gráficos, medidas de centralización, dispersión y forma) hasta estadística inferencial avanzada, incluyendo cálculo de probabilidades, distribuciones teóricas discretas y continuas (Binomial, Poisson, Normal, t-Student, chi-cuadrado, F de Snedecor), estimación puntual y por intervalos de confianza, contrastes de hipótesis paramétricos para medias, varianzas y proporciones, análisis de la varianza (ANOVA) y alternativas no paramétricas. Cada capítulo incorpora ejemplos aplicados al ámbito de las ciencias de la salud y una sección de problemas para práctica."
         }
       ]
     ]

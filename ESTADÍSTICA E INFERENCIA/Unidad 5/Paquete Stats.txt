@@ -1,0 +1,5 @@
+Paquete Stats
+
+https://www.rdocumentation.org/packages/stats/versions/3.6.2
+
+(link externo (no es un archivo descargable))
