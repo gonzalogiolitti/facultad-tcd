@@ -1,0 +1,29 @@
+# --- Entorno / credenciales ---
+.env
+*.env
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Salidas generadas ---
+analisis/outputs/*.csv
+analisis/outputs/*.png
+*.log
+
+# --- Editores / SO ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Node-RED (datos locales de runtime) ---
+nodered/.node-red-data/

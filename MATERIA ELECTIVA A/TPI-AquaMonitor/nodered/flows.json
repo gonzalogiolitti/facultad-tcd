@@ -1,0 +1,599 @@
+[
+  {
+    "id": "f1a11111-0001-4000-8000-000000000001",
+    "type": "tab",
+    "label": "01 - Ingesta MQTT -> QuestDB",
+    "disabled": false,
+    "info": "Suscribe a AQM/PTEF/# , enriquece el payload con la jerarquia ISA-95,\nlo convierte a InfluxDB Line Protocol (ILP) e inserta en la tabla\nraw_variables de QuestDB via HTTP /write?precision=ms.",
+    "env": []
+  },
+  {
+    "id": "c1a11111-0002-4000-8000-000000000002",
+    "type": "mqtt-broker",
+    "name": "EMQX Cloud (TLS)",
+    "broker": "${MQTT_BROKER}",
+    "port": "${MQTT_PORT}",
+    "clientid": "nodered-aqm-ingesta",
+    "autoConnect": true,
+    "usetls": true,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "credentials": {},
+    "birthTopic": "",
+    "birthPayload": "",
+    "closeTopic": "",
+    "closePayload": "",
+    "willTopic": "",
+    "willPayload": ""
+  },
+  {
+    "id": "n1a11111-0003-4000-8000-000000000003",
+    "type": "mqtt in",
+    "z": "f1a11111-0001-4000-8000-000000000001",
+    "name": "AQM/PTEF/#",
+    "topic": "AQM/PTEF/#",
+    "qos": "1",
+    "datatype": "utf8",
+    "broker": "c1a11111-0002-4000-8000-000000000002",
+    "x": 130,
+    "y": 120,
+    "wires": [
+      [
+        "n1a11111-0004-4000-8000-000000000004"
+      ]
+    ]
+  },
+  {
+    "id": "n1a11111-0004-4000-8000-000000000004",
+    "type": "json",
+    "z": "f1a11111-0001-4000-8000-000000000001",
+    "name": "parse JSON",
+    "property": "payload",
+    "action": "obj",
+    "pretty": false,
+    "x": 330,
+    "y": 120,
+    "wires": [
+      [
+        "n1a11111-0005-4000-8000-000000000005"
+      ]
+    ]
+  },
+  {
+    "id": "n1a11111-0005-4000-8000-000000000005",
+    "type": "function",
+    "z": "f1a11111-0001-4000-8000-000000000001",
+    "name": "enriquecer ISA-95 + ILP",
+    "func": "// --- Mapa de areas ISA-95 por equipo -------------------------------------\nconst AREAS = { EQ01: 'CAPT', EQ02: 'FILT', EQ03: 'REAC' };\nconst EMPRESA = 'AQM';\nconst PLANTA = 'PTEF';\n\nconst d = msg.payload;\nif (!d || d.value === undefined || !d.equipo) {\n    node.warn('Payload invalido: ' + JSON.stringify(d));\n    return null;\n}\n\n// Variable: del topic (AQM/PTEF/EQ01/CAUDAL) o del propio payload.\nconst partesTopic = String(msg.topic || '').split('/');\nconst variable = partesTopic[3] || (d.tag ? String(d.tag).split('-').pop() : 'NA');\nconst equipo = d.equipo;\nconst area = AREAS[equipo] || 'NA';\nconst tag = d.tag || [EMPRESA, PLANTA, area, equipo, variable].join('-');\nconst unit = d.unit || '';\nconst quality = (d.quality === undefined) ? 2 : parseInt(d.quality, 10);\nconst tsMs = d.ts || Date.now();\n\n// --- Firma: hash corto (djb2) del payload original para trazabilidad -------\nfunction djb2(str) {\n    let h = 5381;\n    for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) >>> 0;\n    return h.toString(16).padStart(8, '0');\n}\nconst firma = djb2(JSON.stringify(d));\n\n// --- Escape de valores para tags ILP (coma, espacio, igual) ---------------\nfunction esc(v) {\n    return String(v).replace(/([,= ])/g, '\\\\$1');\n}\n\n// --- Construccion de la linea ILP ---------------------------------------\n// measurement,tag_set field_set timestamp\nconst tagSet = [\n    'planta=' + esc(PLANTA),\n    'area=' + esc(area),\n    'equipo=' + esc(equipo),\n    'tag=' + esc(tag),\n    'variable=' + esc(variable),\n    'unit=' + esc(unit || 'NA'),\n    'firma=' + esc(firma)\n].join(',');\n\nconst fieldSet = 'value=' + Number(d.value) + ',quality=' + quality + 'i';\nconst linea = 'raw_variables,' + tagSet + ' ' + fieldSet + ' ' + tsMs;\n\nmsg.payload = linea;\nmsg.headers = {\n    'Content-Type': 'text/plain; charset=utf-8'\n};\nconst token = env.get('QUESTDB_TOKEN');\nif (token) msg.headers['Authorization'] = 'Bearer ' + token;\n\nmsg.url = (env.get('QUESTDB_HTTP_URL') || 'http://localhost:9000') + '/write?precision=ms';\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 560,
+    "y": 120,
+    "wires": [
+      [
+        "n1a11111-0006-4000-8000-000000000006"
+      ]
+    ]
+  },
+  {
+    "id": "n1a11111-0006-4000-8000-000000000006",
+    "type": "http request",
+    "z": "f1a11111-0001-4000-8000-000000000001",
+    "name": "POST QuestDB /write",
+    "method": "POST",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": true,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 810,
+    "y": 120,
+    "wires": [
+      [
+        "n1a11111-0007-4000-8000-000000000007",
+        "n1a11111-0008-4000-8000-000000000008"
+      ]
+    ]
+  },
+  {
+    "id": "n1a11111-0007-4000-8000-000000000007",
+    "type": "function",
+    "z": "f1a11111-0001-4000-8000-000000000001",
+    "name": "chequear status",
+    "func": "// QuestDB responde 204 No Content cuando la insercion es correcta.\nif (msg.statusCode && (msg.statusCode < 200 || msg.statusCode >= 300)) {\n    node.error('QuestDB /write status ' + msg.statusCode + ': ' + msg.payload, msg);\n    return [null, msg];\n}\nreturn [msg, null];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1030,
+    "y": 120,
+    "wires": [
+      [],
+      [
+        "n1a11111-0008-4000-8000-000000000008"
+      ]
+    ]
+  },
+  {
+    "id": "n1a11111-0008-4000-8000-000000000008",
+    "type": "debug",
+    "z": "f1a11111-0001-4000-8000-000000000001",
+    "name": "errores ingesta",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "true",
+    "statusVal": "payload",
+    "statusType": "auto",
+    "x": 1050,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "f2b22222-0001-4000-8000-000000000001",
+    "type": "tab",
+    "label": "02 - Calculo de KPIs",
+    "disabled": false,
+    "info": "Cada 60 s consulta agregados de la ultima hora en QuestDB, calcula los 6\nKPIs (2 por equipo) y los inserta en la tabla kpi_values via ILP.",
+    "env": []
+  },
+  {
+    "id": "n2b22222-0002-4000-8000-000000000002",
+    "type": "inject",
+    "z": "f2b22222-0001-4000-8000-000000000001",
+    "name": "cada 60 s",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "60",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "5",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 130,
+    "y": 100,
+    "wires": [
+      [
+        "n2b22222-0003-4000-8000-000000000003"
+      ]
+    ]
+  },
+  {
+    "id": "n2b22222-0003-4000-8000-000000000003",
+    "type": "function",
+    "z": "f2b22222-0001-4000-8000-000000000001",
+    "name": "armar query agregados",
+    "func": "// Agregados de la ultima hora, una sola fila, formato largo -> condicional.\nconst sql = `SELECT\n  avg(CASE WHEN equipo='EQ01' AND variable='CAUDAL' THEN value END) AS caudal_eq01,\n  avg(CASE WHEN equipo='EQ01' AND variable='CORRIENTE' THEN value END) AS corriente_eq01,\n  avg(CASE WHEN equipo='EQ01' AND variable='ESTADO' THEN value END) AS estado_eq01,\n  avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' THEN value END) AS turbin_eq02,\n  avg(CASE WHEN equipo='EQ02' AND variable='TURB_OUT' THEN value END) AS turbout_eq02,\n  avg(CASE WHEN equipo='EQ02' AND variable='PRES_DIF' THEN value END) AS presdif_eq02,\n  stddev(CASE WHEN equipo='EQ03' AND variable='PH' THEN value END) AS ph_sd_eq03,\n  count(CASE WHEN equipo='EQ03' AND variable='PH' THEN 1 END) AS ph_n_eq03,\n  count(CASE WHEN equipo='EQ03' AND variable='PH' AND (value < 6.5 OR value > 8.0) THEN 1 END) AS ph_fuera_eq03\nFROM raw_variables\nWHERE ts >= dateadd('h', -1, now()) AND quality = 2`;\n\nmsg.method = 'GET';\nmsg.url = (env.get('QUESTDB_HTTP_URL') || 'http://localhost:9000') + '/exec?query=' + encodeURIComponent(sql);\nmsg.headers = {};\nconst token = env.get('QUESTDB_TOKEN');\nif (token) msg.headers['Authorization'] = 'Bearer ' + token;\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 340,
+    "y": 100,
+    "wires": [
+      [
+        "n2b22222-0004-4000-8000-000000000004"
+      ]
+    ]
+  },
+  {
+    "id": "n2b22222-0004-4000-8000-000000000004",
+    "type": "http request",
+    "z": "f2b22222-0001-4000-8000-000000000001",
+    "name": "GET QuestDB /exec",
+    "method": "use",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": true,
+    "proxy": "",
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 570,
+    "y": 100,
+    "wires": [
+      [
+        "n2b22222-0005-4000-8000-000000000005"
+      ]
+    ]
+  },
+  {
+    "id": "n2b22222-0005-4000-8000-000000000005",
+    "type": "function",
+    "z": "f2b22222-0001-4000-8000-000000000001",
+    "name": "calcular 6 KPIs -> ILP",
+    "func": "const r = msg.payload;\nif (!r || !r.dataset || !r.dataset.length) {\n    node.warn('Respuesta sin datos de QuestDB');\n    return null;\n}\nconst cols = r.columns.map(c => c.name);\nconst row = r.dataset[0];\nconst g = {};\ncols.forEach((c, i) => { g[c] = row[i]; });\n\nfunction num(v) { return (v === null || v === undefined) ? NaN : Number(v); }\n\nconst kpis = [];\nfunction push(equipo, kpi_name, value, unit) {\n    if (value === null || value === undefined || Number.isNaN(value)) return;\n    kpis.push({ equipo, kpi_name, value: Number(value), period: 'hour', unit });\n}\n\n// --- EQ01 ---------------------------------------------------------------\nconst caudal = num(g.caudal_eq01), corriente = num(g.corriente_eq01);\nif (corriente > 0) push('EQ01', 'eficiencia_energetica', +(caudal / corriente).toFixed(4), 'm3h_per_A');\npush('EQ01', 'disponibilidad_bomba', +(num(g.estado_eq01) * 100).toFixed(2), '%');\n\n// --- EQ02 ---------------------------------------------------------------\nconst tin = num(g.turbin_eq02), tout = num(g.turbout_eq02);\nif (tin > 0) push('EQ02', 'eficiencia_filtracion', +(((tin - tout) / tin) * 100).toFixed(3), '%');\npush('EQ02', 'presion_diferencial_media', +num(g.presdif_eq02).toFixed(2), 'mbar');\n\n// --- EQ03 ---------------------------------------------------------------\nconst phn = num(g.ph_n_eq03), phf = num(g.ph_fuera_eq03);\nif (phn > 0) push('EQ03', 'tiempo_fuera_rango_ph', +((60.0 * phf) / phn).toFixed(2), 'min');\npush('EQ03', 'desviacion_ph', +num(g.ph_sd_eq03).toFixed(4), 'pH');\n\nif (!kpis.length) { node.warn('No se pudo calcular ningun KPI'); return null; }\n\n// --- Formatear como lineas ILP para kpi_values ------------------------\nconst tsMs = Date.now();\nfunction esc(v) { return String(v).replace(/([,= ])/g, '\\\\$1'); }\nconst lineas = kpis.map(k =>\n    'kpi_values,equipo=' + esc(k.equipo) +\n    ',kpi_name=' + esc(k.kpi_name) +\n    ',period=' + esc(k.period) +\n    ',unit=' + esc(k.unit) +\n    ' value=' + k.value + ' ' + tsMs\n);\n\nmsg.payload = lineas.join('\\n');\nmsg.method = 'POST';\nmsg.headers = { 'Content-Type': 'text/plain; charset=utf-8' };\nconst token = env.get('QUESTDB_TOKEN');\nif (token) msg.headers['Authorization'] = 'Bearer ' + token;\nmsg.url = (env.get('QUESTDB_HTTP_URL') || 'http://localhost:9000') + '/write?precision=ms';\nnode.status({ text: kpis.length + ' KPIs @ ' + new Date(tsMs).toISOString() });\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 800,
+    "y": 100,
+    "wires": [
+      [
+        "n2b22222-0006-4000-8000-000000000006"
+      ]
+    ]
+  },
+  {
+    "id": "n2b22222-0006-4000-8000-000000000006",
+    "type": "http request",
+    "z": "f2b22222-0001-4000-8000-000000000001",
+    "name": "POST kpi_values",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": true,
+    "proxy": "",
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 1030,
+    "y": 100,
+    "wires": [
+      [
+        "n2b22222-0007-4000-8000-000000000007"
+      ]
+    ]
+  },
+  {
+    "id": "n2b22222-0007-4000-8000-000000000007",
+    "type": "debug",
+    "z": "f2b22222-0001-4000-8000-000000000001",
+    "name": "resultado insert KPIs",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "statusCode",
+    "statusVal": "statusCode",
+    "statusType": "msg",
+    "x": 1050,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "f3c33333-0001-4000-8000-000000000001",
+    "type": "tab",
+    "label": "03 - Alertas por umbral",
+    "disabled": false,
+    "info": "Evalua cada lectura MQTT contra los umbrales warning/critical por variable.\nLas criticas se envian por email y se registran en la tabla events.\nLas warning solo se registran en events.",
+    "env": []
+  },
+  {
+    "id": "c3c33333-0002-4000-8000-000000000002",
+    "type": "mqtt-broker",
+    "name": "EMQX Cloud (TLS) - alertas",
+    "broker": "${MQTT_BROKER}",
+    "port": "${MQTT_PORT}",
+    "clientid": "nodered-aqm-alertas",
+    "autoConnect": true,
+    "usetls": true,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "credentials": {}
+  },
+  {
+    "id": "n3c33333-0003-4000-8000-000000000003",
+    "type": "mqtt in",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "AQM/PTEF/#",
+    "topic": "AQM/PTEF/#",
+    "qos": "1",
+    "datatype": "utf8",
+    "broker": "c3c33333-0002-4000-8000-000000000002",
+    "x": 120,
+    "y": 120,
+    "wires": [
+      [
+        "n3c33333-0004-4000-8000-000000000004"
+      ]
+    ]
+  },
+  {
+    "id": "n3c33333-0004-4000-8000-000000000004",
+    "type": "json",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "parse JSON",
+    "property": "payload",
+    "action": "obj",
+    "pretty": false,
+    "x": 290,
+    "y": 120,
+    "wires": [
+      [
+        "n3c33333-0005-4000-8000-000000000005"
+      ]
+    ]
+  },
+  {
+    "id": "n3c33333-0005-4000-8000-000000000005",
+    "type": "function",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "evaluar umbrales",
+    "func": "// --- Umbrales por equipo/variable: [lo, hi] (null = ese lado no aplica) ---\nconst U = {\n  EQ01: {\n    CAUDAL:    { warning: [90, 155],  critical: [70, 175] },\n    PRESION:   { warning: [3.5, 5.5], critical: [2.5, 6.5] },\n    CORRIENTE: { warning: [null, 55], critical: [null, 65] },\n    VIBRACION: { warning: [null, 4.5], critical: [null, 7.1] },\n    ESTADO:    { critical: [0.5, null] }\n  },\n  EQ02: {\n    TURB_IN:     { warning: [null, 15],  critical: [null, 25] },\n    TURB_OUT:    { warning: [null, 1.5], critical: [null, 2.0] },\n    PRES_DIF:    { warning: [null, 600], critical: [null, 800] },\n    CAUDAL_FILT: { warning: [90, null],  critical: [70, null] },\n    EFICIENCIA:  { warning: [80, null],  critical: [70, null] }\n  },\n  EQ03: {\n    PH:      { warning: [6.5, 8.0], critical: [6.0, 8.5] },\n    OD:      { warning: [1.5, 4.0], critical: [1.0, 5.0] },\n    TEMP:    { warning: [15, 30],   critical: [10, 35] },\n    CONDUCT: { warning: [null, 1800], critical: [null, 2200] },\n    NIVEL:   { warning: [40, 90],   critical: [20, 95] }\n  }\n};\n\nconst d = msg.payload;\nif (!d || d.value === undefined || !d.equipo) return null;\n\nconst partesTopic = String(msg.topic || '').split('/');\nconst variable = partesTopic[3] || 'NA';\nconst equipo = d.equipo;\nconst v = Number(d.value);\nconst reglas = (U[equipo] || {})[variable];\nif (!reglas) return null;                 // variable sin umbrales definidos\n\nfunction violado(rango) {\n    if (!rango) return false;\n    const [lo, hi] = rango;\n    if (lo !== null && v < lo) return true;\n    if (hi !== null && v > hi) return true;\n    return false;\n}\n\nlet severidad = null;\nif (violado(reglas.critical)) severidad = 'critical';\nelse if (violado(reglas.warning)) severidad = 'warning';\nif (!severidad) return null;               // dentro de rango: nada que hacer\n\nconst descripcion = equipo + '/' + variable + ' = ' + v + ' ' + (d.unit || '') +\n    ' fuera de rango ' + severidad.toUpperCase() +\n    ' [' + JSON.stringify(reglas[severidad]) + ']';\n\nmsg.severity = severidad;\nmsg.topic = '[' + severidad.toUpperCase() + '] AquaMonitor ' + equipo + '/' + variable;\nmsg.evento = {\n    ts: d.ts || Date.now(),\n    equipo: equipo,\n    tag: d.tag || ['AQM','PTEF',equipo,variable].join('-'),\n    event_type: 'THRESHOLD',\n    description: descripcion,\n    severity: severidad,\n    value: v\n};\nmsg.payload = descripcion;\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 470,
+    "y": 120,
+    "wires": [
+      [
+        "n3c33333-0006-4000-8000-000000000006"
+      ]
+    ]
+  },
+  {
+    "id": "n3c33333-0006-4000-8000-000000000006",
+    "type": "switch",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "por severidad",
+    "property": "severity",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "critical",
+        "vt": "str"
+      },
+      {
+        "t": "eq",
+        "v": "warning",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 670,
+    "y": 120,
+    "wires": [
+      [
+        "n3c33333-0007-4000-8000-000000000007",
+        "n3c33333-0008-4000-8000-000000000008"
+      ],
+      [
+        "n3c33333-0008-4000-8000-000000000008"
+      ]
+    ]
+  },
+  {
+    "id": "n3c33333-0007-4000-8000-000000000007",
+    "type": "e-mail",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "server": "${SMTP_HOST}",
+    "port": "${SMTP_PORT}",
+    "secure": false,
+    "tls": true,
+    "name": "${ALERT_MAIL_TO}",
+    "dname": "email alerta critica",
+    "username": "${SMTP_USER}",
+    "password": "",
+    "subject": "",
+    "body": "",
+    "x": 900,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "n3c33333-0008-4000-8000-000000000008",
+    "type": "function",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "evento -> ILP events",
+    "func": "const e = msg.evento;\nif (!e) return null;\nfunction escTag(v) { return String(v).replace(/([,= ])/g, '\\\\$1'); }\nfunction escStr(v) { return String(v).replace(/\\\\/g, '\\\\\\\\').replace(/\"/g, '\\\\\"'); }\n\nconst linea = 'events,equipo=' + escTag(e.equipo) +\n    ',tag=' + escTag(e.tag) +\n    ',event_type=' + escTag(e.event_type) +\n    ',severity=' + escTag(e.severity) +\n    ' description=\"' + escStr(e.description) + '\",value=' + Number(e.value) +\n    ' ' + e.ts;\n\nmsg.payload = linea;\nmsg.method = 'POST';\nmsg.headers = { 'Content-Type': 'text/plain; charset=utf-8' };\nconst token = env.get('QUESTDB_TOKEN');\nif (token) msg.headers['Authorization'] = 'Bearer ' + token;\nmsg.url = (env.get('QUESTDB_HTTP_URL') || 'http://localhost:9000') + '/write?precision=ms';\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 900,
+    "y": 160,
+    "wires": [
+      [
+        "n3c33333-0009-4000-8000-000000000009"
+      ]
+    ]
+  },
+  {
+    "id": "n3c33333-0009-4000-8000-000000000009",
+    "type": "http request",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "POST events",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": true,
+    "proxy": "",
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 1110,
+    "y": 160,
+    "wires": [
+      [
+        "n3c33333-000a-4000-8000-00000000000a"
+      ]
+    ]
+  },
+  {
+    "id": "n3c33333-000a-4000-8000-00000000000a",
+    "type": "debug",
+    "z": "f3c33333-0001-4000-8000-000000000001",
+    "name": "log alertas",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "payload",
+    "statusVal": "payload",
+    "statusType": "auto",
+    "x": 1110,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "f4d44444-0001-4000-8000-000000000001",
+    "type": "tab",
+    "label": "04 - Reporte diario",
+    "disabled": false,
+    "info": "Todos los dias a las 06:00 consulta el resumen del dia anterior en QuestDB\n(KPIs diarios + conteo de alertas + anomalias) y envia un reporte HTML por email.",
+    "env": []
+  },
+  {
+    "id": "n4d44444-0002-4000-8000-000000000002",
+    "type": "inject",
+    "z": "f4d44444-0001-4000-8000-000000000001",
+    "name": "06:00 diario",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "00 06 * * *",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 130,
+    "y": 100,
+    "wires": [
+      [
+        "n4d44444-0003-4000-8000-000000000003"
+      ]
+    ]
+  },
+  {
+    "id": "n4d44444-0003-4000-8000-000000000003",
+    "type": "function",
+    "z": "f4d44444-0001-4000-8000-000000000001",
+    "name": "armar query resumen ayer",
+    "func": "// Resumen del dia anterior en formato largo (section, clave, valor).\nconst sql = `SELECT 'kpi' AS section, concat(kpi_name, '|', equipo) AS clave, avg(value) AS valor\nFROM kpi_values\nWHERE period = 'day'\n  AND ts >= dateadd('d', -1, date_trunc('day', now()))\n  AND ts <  date_trunc('day', now())\nGROUP BY kpi_name, equipo\nUNION ALL\nSELECT 'evento' AS section, severity AS clave, cast(count(*) AS double) AS valor\nFROM events\nWHERE ts >= dateadd('d', -1, date_trunc('day', now()))\n  AND ts <  date_trunc('day', now())\nGROUP BY severity\nUNION ALL\nSELECT 'anomalia' AS section, event_type AS clave, cast(count(*) AS double) AS valor\nFROM events\nWHERE event_type = 'ANOMALY_ZSCORE'\n  AND ts >= dateadd('d', -1, date_trunc('day', now()))\n  AND ts <  date_trunc('day', now())\nGROUP BY event_type`;\n\nmsg.method = 'GET';\nmsg.url = (env.get('QUESTDB_HTTP_URL') || 'http://localhost:9000') + '/exec?query=' + encodeURIComponent(sql);\nmsg.headers = {};\nconst token = env.get('QUESTDB_TOKEN');\nif (token) msg.headers['Authorization'] = 'Bearer ' + token;\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 350,
+    "y": 100,
+    "wires": [
+      [
+        "n4d44444-0004-4000-8000-000000000004"
+      ]
+    ]
+  },
+  {
+    "id": "n4d44444-0004-4000-8000-000000000004",
+    "type": "http request",
+    "z": "f4d44444-0001-4000-8000-000000000001",
+    "name": "GET QuestDB /exec",
+    "method": "use",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": true,
+    "proxy": "",
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 580,
+    "y": 100,
+    "wires": [
+      [
+        "n4d44444-0005-4000-8000-000000000005"
+      ]
+    ]
+  },
+  {
+    "id": "n4d44444-0005-4000-8000-000000000005",
+    "type": "function",
+    "z": "f4d44444-0001-4000-8000-000000000001",
+    "name": "preparar datos del reporte",
+    "func": "const r = msg.payload || {};\nconst cols = (r.columns || []).map(c => c.name);\nconst rows = (r.dataset || []).map(row => {\n    const o = {};\n    cols.forEach((c, i) => { o[c] = row[i]; });\n    return o;\n});\n\nconst kpis = [];\nconst eventos = { info: 0, warning: 0, critical: 0 };\nlet anomalias = 0;\n\nrows.forEach(o => {\n    if (o.section === 'kpi') {\n        const [kpi_name, equipo] = String(o.clave).split('|');\n        kpis.push({ equipo, kpi_name, valor: (o.valor === null ? 'N/D' : Number(o.valor).toFixed(3)) });\n    } else if (o.section === 'evento') {\n        eventos[o.clave] = Number(o.valor) || 0;\n    } else if (o.section === 'anomalia') {\n        anomalias = Number(o.valor) || 0;\n    }\n});\n\nkpis.sort((a, b) => (a.equipo + a.kpi_name).localeCompare(b.equipo + b.kpi_name));\n\nconst ayer = new Date(Date.now() - 86400000).toISOString().slice(0, 10);\nmsg.reporte = {\n    fecha: ayer,\n    kpis: kpis,\n    total_kpis: kpis.length,\n    ev_info: eventos.info || 0,\n    ev_warning: eventos.warning || 0,\n    ev_critical: eventos.critical || 0,\n    anomalias: anomalias,\n    generado: new Date().toISOString()\n};\nmsg.topic = 'Reporte diario AquaMonitor - ' + ayer;\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 800,
+    "y": 100,
+    "wires": [
+      [
+        "n4d44444-0006-4000-8000-000000000006"
+      ]
+    ]
+  },
+  {
+    "id": "n4d44444-0006-4000-8000-000000000006",
+    "type": "template",
+    "z": "f4d44444-0001-4000-8000-000000000001",
+    "name": "HTML reporte",
+    "field": "payload",
+    "fieldType": "msg",
+    "format": "handlebars",
+    "syntax": "mustache",
+    "template": "<html>\n<body style=\"font-family:Arial,Helvetica,sans-serif;color:#1f2933;\">\n  <h2 style=\"color:#0b6e99;\">AquaMonitor - Reporte diario</h2>\n  <p><b>Planta:</b> PTEF (Tratamiento de Aguas Industriales)<br/>\n     <b>Fecha del reporte:</b> {{reporte.fecha}}<br/>\n     <b>Generado:</b> {{reporte.generado}}</p>\n\n  <h3>Resumen de alertas</h3>\n  <table border=\"1\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n    <tr style=\"background:#e6f6fb;\"><th>Severidad</th><th>Cantidad</th></tr>\n    <tr><td>Critical</td><td style=\"text-align:right;color:#b00020;\"><b>{{reporte.ev_critical}}</b></td></tr>\n    <tr><td>Warning</td><td style=\"text-align:right;color:#b26a00;\">{{reporte.ev_warning}}</td></tr>\n    <tr><td>Info</td><td style=\"text-align:right;\">{{reporte.ev_info}}</td></tr>\n    <tr><td>Anomalias (Z-score)</td><td style=\"text-align:right;\">{{reporte.anomalias}}</td></tr>\n  </table>\n\n  <h3>KPIs diarios ({{reporte.total_kpis}})</h3>\n  <table border=\"1\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n    <tr style=\"background:#e6f6fb;\"><th>Equipo</th><th>KPI</th><th>Valor</th></tr>\n    {{#reporte.kpis}}\n    <tr><td>{{equipo}}</td><td>{{kpi_name}}</td><td style=\"text-align:right;\">{{valor}}</td></tr>\n    {{/reporte.kpis}}\n  </table>\n\n  <p style=\"font-size:12px;color:#6b7280;margin-top:24px;\">\n    Reporte automatico generado por Node-RED (flow 04_reporte_diario).\n  </p>\n</body>\n</html>\n",
+    "output": "str",
+    "x": 1010,
+    "y": 100,
+    "wires": [
+      [
+        "n4d44444-0007-4000-8000-000000000007"
+      ]
+    ]
+  },
+  {
+    "id": "n4d44444-0007-4000-8000-000000000007",
+    "type": "e-mail",
+    "z": "f4d44444-0001-4000-8000-000000000001",
+    "server": "${SMTP_HOST}",
+    "port": "${SMTP_PORT}",
+    "secure": false,
+    "tls": true,
+    "name": "${REPORTE_MAIL_TO}",
+    "dname": "email reporte",
+    "username": "${SMTP_USER}",
+    "password": "",
+    "subject": "",
+    "body": "",
+    "x": 1200,
+    "y": 100,
+    "wires": []
+  }
+]

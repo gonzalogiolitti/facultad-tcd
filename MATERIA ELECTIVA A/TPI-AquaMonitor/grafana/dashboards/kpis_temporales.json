@@ -1,0 +1,325 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "id": 1,
+      "type": "barchart",
+      "title": "Eficiencia energetica EQ01 [$period]",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT ts AS time, kpi_name AS metric, value FROM kpi_values WHERE equipo = 'EQ01' AND kpi_name = 'eficiencia_energetica' AND period = '${period}' AND $__timeFilter(ts) ORDER BY ts",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "barchart",
+      "title": "Eficiencia de filtracion EQ02 [$period]",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT ts AS time, kpi_name AS metric, value FROM kpi_values WHERE equipo = 'EQ02' AND kpi_name = 'eficiencia_filtracion' AND period = '${period}' AND $__timeFilter(ts) ORDER BY ts",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "barchart",
+      "title": "Tiempo fuera de rango pH EQ03 [$period]",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "m",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT ts AS time, kpi_name AS metric, value FROM kpi_values WHERE equipo = 'EQ03' AND kpi_name = 'tiempo_fuera_rango_ph' AND period = '${period}' AND $__timeFilter(ts) ORDER BY ts",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "barchart",
+      "title": "Todos los KPIs por equipo [$period]",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "showValue": "auto",
+        "stacking": "none",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT ts AS time, concat(equipo, '/', kpi_name) AS metric, value FROM kpi_values WHERE period = '${period}' AND $__timeFilter(ts) ORDER BY ts",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "heatmap",
+      "title": "Disponibilidad de bomba EQ01 (por hora)",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "scheme": "RdYlGn",
+          "mode": "scheme"
+        },
+        "yAxis": {
+          "unit": "percent"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "SELECT ts AS time, 'disponibilidad' AS metric, value FROM kpi_values WHERE equipo = 'EQ01' AND kpi_name = 'disponibilidad_bomba' AND $__timeFilter(ts) ORDER BY ts"
+        }
+      ]
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "aquamonitor",
+    "kpi"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "QuestDB",
+          "value": "questdb"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Datasource",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "postgres",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "day",
+          "value": "day"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Periodo",
+        "multi": false,
+        "name": "period",
+        "options": [
+          {
+            "selected": false,
+            "text": "hour",
+            "value": "hour"
+          },
+          {
+            "selected": false,
+            "text": "shift",
+            "value": "shift"
+          },
+          {
+            "selected": true,
+            "text": "day",
+            "value": "day"
+          },
+          {
+            "selected": false,
+            "text": "week",
+            "value": "week"
+          }
+        ],
+        "query": "hour,shift,day,week",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "AquaMonitor - KPIs Temporales",
+  "uid": "aqm-kpis-temporales",
+  "version": 1,
+  "weekStart": ""
+}

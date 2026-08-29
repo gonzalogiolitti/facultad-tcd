@@ -1,0 +1,280 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Bollinger - Vibracion EQ01 (ventana 20, 2 sigma)",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "rawSql": "WITH s AS (\n  SELECT ts, avg(value) AS y FROM raw_variables\n  WHERE tag = 'AQM-PTEF-CAPT-EQ01-VIBRACION' AND $__timeFilter(ts)\n  SAMPLE BY 5m ALIGN TO CALENDAR\n)\nSELECT ts AS time,\n  y AS \"vibracion\",\n  avg(y)  OVER (ORDER BY ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS \"media_movil\",\n  avg(y)  OVER (ORDER BY ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW)\n    + 2 * stddev(y) OVER (ORDER BY ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS \"banda_sup\",\n  avg(y)  OVER (ORDER BY ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW)\n    - 2 * stddev(y) OVER (ORDER BY ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS \"banda_inf\"\nFROM s ORDER BY ts",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "xychart",
+      "title": "Correlacion Caudal vs Corriente (EQ01)",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "options": {
+        "seriesMapping": "auto",
+        "dims": {
+          "frame": 0
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "pointSize": {
+              "fixed": 5
+            }
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "SELECT\n  avg(CASE WHEN variable='CAUDAL' THEN value END) AS caudal,\n  avg(CASE WHEN variable='CORRIENTE' THEN value END) AS corriente\nFROM raw_variables\nWHERE equipo='EQ01' AND variable IN ('CAUDAL','CORRIENTE') AND $__timeFilter(ts)\nSAMPLE BY 5m ALIGN TO CALENDAR"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "xychart",
+      "title": "Correlacion pH vs OD (EQ03)",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "options": {
+        "seriesMapping": "auto",
+        "dims": {
+          "frame": 0
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "pointSize": {
+              "fixed": 5
+            }
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "SELECT\n  avg(CASE WHEN variable='PH' THEN value END) AS ph,\n  avg(CASE WHEN variable='OD' THEN value END) AS od\nFROM raw_variables\nWHERE equipo='EQ03' AND variable IN ('PH','OD') AND $__timeFilter(ts)\nSAMPLE BY 5m ALIGN TO CALENDAR"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "table",
+      "title": "Anomalias detectadas (Z-score)",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "critical": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "warning": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "info": {
+                        "color": "green",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "ts",
+            "desc": true
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${datasource}"
+          },
+          "rawQuery": true,
+          "rawSql": "SELECT ts, equipo, tag, event_type, severity, description, value FROM events WHERE event_type = 'ANOMALY_ZSCORE' AND $__timeFilter(ts) ORDER BY ts DESC LIMIT 100",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "aquamonitor",
+    "analisis",
+    "anomalias"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "QuestDB",
+          "value": "questdb"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Datasource",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "postgres",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "AquaMonitor - Analisis Avanzado",
+  "uid": "aqm-analisis-avanzado",
+  "version": 1,
+  "weekStart": ""
+}
