@@ -17,6 +17,11 @@ _Última actualización: 28/08/26_
 **Temas:** Node-RED, MongoDB Atlas, colaboración en grupos, configuración de entorno, trabajo práctico final, InfluxDB
 **Resumen:** La clase sincrónica gira en torno a la resolución de dudas y dificultades técnicas que los estudiantes tuvieron para instalar y configurar Node-RED y MongoDB Atlas de forma colaborativa en el trabajo práctico. Se explica paso a paso cómo crear una organización, proyecto y clúster en MongoDB, cómo obtener el token de conexión y vincularlo con Node-RED, y las limitaciones del entorno local frente al trabajo en equipo. También se abordan problemas de acceso al campus virtual, conformación de grupos de trabajo y diferencias entre MongoDB Atlas e InfluxDB para almacenamiento de datos.
 
+**Archivo:** Grabaciones sincrónicos/GMT20260820-230510_Recording_1920x1080.txt
+**Fecha:** 20/08/26
+**Temas:** Presentación de la materia, Industria 4.0 y 5.0, Digitalización industrial, Datos en la industria, Competitividad, Tecnologías habilitadoras, Mantenimiento predictivo, Gemelos digitales
+**Resumen:** Clase inaugural de "Ciencia de Datos en Sistemas Industriales" en la que los docentes presentan la materia, su metodología y programa. Se introducen los conceptos de Industria 4.0 y 5.0, explicando la evolución histórica de las revoluciones industriales y el rol central de los datos para la competitividad. Se describen tecnologías clave como IoT industrial, IA, mantenimiento predictivo, gemelos digitales y la herramienta Node-RED. Se detallan las condiciones de aprobación (trabajo práctico integrador grupal y evaluación individual) y se asigna como primera tarea la grabación de un video de presentación personal.
+
 ## Trabajo practico integrador
 **Archivo:** Trabajo practico integrador/Clase 5_dictado de TP_I4.0_2025.md
 **Fecha:** No identificada
@@ -75,6 +80,12 @@ _Última actualización: 28/08/26_
 **Fecha:** No identificada
 **Temas:** IIoT, convergencia OT-IT, SCADA, protocolo MQTT, plataforma industrial, Industria 4.0
 **Resumen:** El documento es un white paper de Inductive Automation que explora el concepto del Internet Industrial de las Cosas (IIoT) y la necesidad de integrar la Tecnología Operacional (OT) con la Tecnología de la Información (IT). Se analizan las diferencias históricas entre ambos dominios, los beneficios de su alineación (mejor toma de decisiones, reducción de costos, optimización de procesos) y los desafíos que implica, especialmente en materia de seguridad e interoperabilidad. Se argumenta que la implementación del IIoT debe abordarse desde una perspectiva bottom-up (desde el nivel OT hacia arriba), y se presentan el protocolo MQTT y la plataforma Ignition como soluciones tecnológicas clave para lograr esta convergencia.
+
+### Recursos Didácticos
+**Archivo:** Unidad 1/Recursos Didácticos/Video charla sobre ISA 95 - Gustavo  Guitera.txt
+**Fecha:** No identificada
+**Temas:** ISA-95, pirámide de Purdue, MES/MOM, integración IT/OT, modelos de manufactura, lotes y trazabilidad, dominios de producción/mantenimiento/calidad/inventario
+**Resumen:** Charla introductoria de Gustavo Vitera (tesorero de ISA Sección Argentina) sobre el estándar ISA-95, que define la integración vertical entre sistemas de control de piso de planta y sistemas ERP. Se explica la pirámide de Purdue, los niveles de automatización (0 al 4), y los cuatro pilares del modelo MOM/MES: producción, mantenimiento, calidad e inventario. Se describe cómo la norma modela recursos (equipos, materiales, personas), órdenes de trabajo, rutas de fabricación, ciclos de vida de lotes y trazabilidad. También se mencionan diferencias con ISA-88 (procesos Batch) e ISA-106 (procesos continuos), y la relación futura con RAMI 4.0 e inteligencia artificial aplicada a manufactura.
 
 ## Unidad 2
 **Archivo:** Unidad 2/clase 21.05.2026. Lean_starrtup.md
@@ -136,6 +147,12 @@ _Última actualización: 28/08/26_
 **Temas:** IoT, IIoT, Node-RED, MongoDB, InfluxDB, Siemens Xcelerator, bases de datos NoSQL, plataformas industriales
 **Resumen:** La presentación introduce los conceptos de IoT e IIoT, sus principios y las ventajas de utilizar plataformas industriales para el monitoreo y control remoto. Se describe Node-RED como herramienta de integración visual, mostrando ejemplos de conexión con OPC-UA, Telegram y Oracle. Se detalla la configuración y uso de MongoDB e InfluxDB como bases de datos NoSQL para almacenamiento de series temporales en proyectos IIoT. Finalmente, se presenta Siemens Xcelerator (Insight Hub) como plataforma industrial avanzada para visualización, análisis de activos y generación de reportes mediante dashboards y KPIs.
 
+### Recursos Didácticos
+**Archivo:** Unidad 2/Recursos Didácticos/Video charla ISA 95- Gustavo Guitera.txt
+**Fecha:** No identificada
+**Temas:** ISA-95, integración IT/OT, pirámide de Purdue, MES/MOM, modelos de manufactura, trazabilidad de lotes, dominios de producción/calidad/mantenimiento/inventario
+**Resumen:** La charla, presentada por Gustavo Vitera (tesorero de ISA Sección Argentina), introduce el estándar ISA-95 como marco para la integración vertical entre sistemas de control de piso de planta y sistemas ERP. Se explica la pirámide de Purdue con sus niveles 0 al 4, diferenciando procesos discretos, batch y continuos (ISA-88 e ISA-106), y se presentan los cuatro pilares del MOM/MES: producción, calidad, mantenimiento e inventario. Se abordan conceptos como la modelización de equipos, materiales, lotes, rutas de fabricación y ciclos de vida de objetos, con ejemplos prácticos de definición de segmentos productivos y trazabilidad de lotes. Se destacan los beneficios del estándar para la transformación digital: flexibilidad operativa, control estadístico de procesos, reducción de errores manuales y preparación de datos para modelos de inteligencia artificial.
+
 <!-- ESTADO_RESUMEN
 {
   "secciones": [
@@ -161,6 +178,12 @@ _Última actualización: 28/08/26_
           "fecha": "No identificada",
           "temas": "Node-RED, MongoDB Atlas, colaboración en grupos, configuración de entorno, trabajo práctico final, InfluxDB",
           "resumen": "La clase sincrónica gira en torno a la resolución de dudas y dificultades técnicas que los estudiantes tuvieron para instalar y configurar Node-RED y MongoDB Atlas de forma colaborativa en el trabajo práctico. Se explica paso a paso cómo crear una organización, proyecto y clúster en MongoDB, cómo obtener el token de conexión y vincularlo con Node-RED, y las limitaciones del entorno local frente al trabajo en equipo. También se abordan problemas de acceso al campus virtual, conformación de grupos de trabajo y diferencias entre MongoDB Atlas e InfluxDB para almacenamiento de datos."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/GMT20260820-230510_Recording_1920x1080.txt",
+          "fecha": "20/08/26",
+          "temas": "Presentación de la materia, Industria 4.0 y 5.0, Digitalización industrial, Datos en la industria, Competitividad, Tecnologías habilitadoras, Mantenimiento predictivo, Gemelos digitales",
+          "resumen": "Clase inaugural de \"Ciencia de Datos en Sistemas Industriales\" en la que los docentes presentan la materia, su metodología y programa. Se introducen los conceptos de Industria 4.0 y 5.0, explicando la evolución histórica de las revoluciones industriales y el rol central de los datos para la competitividad. Se describen tecnologías clave como IoT industrial, IA, mantenimiento predictivo, gemelos digitales y la herramienta Node-RED. Se detallan las condiciones de aprobación (trabajo práctico integrador grupal y evaluación individual) y se asigna como primera tarea la grabación de un video de presentación personal."
         }
       ]
     ],
@@ -257,6 +280,20 @@ _Última actualización: 28/08/26_
           "fecha": "No identificada",
           "temas": "IIoT, convergencia OT-IT, SCADA, protocolo MQTT, plataforma industrial, Industria 4.0",
           "resumen": "El documento es un white paper de Inductive Automation que explora el concepto del Internet Industrial de las Cosas (IIoT) y la necesidad de integrar la Tecnología Operacional (OT) con la Tecnología de la Información (IT). Se analizan las diferencias históricas entre ambos dominios, los beneficios de su alineación (mejor toma de decisiones, reducción de costos, optimización de procesos) y los desafíos que implica, especialmente en materia de seguridad e interoperabilidad. Se argumenta que la implementación del IIoT debe abordarse desde una perspectiva bottom-up (desde el nivel OT hacia arriba), y se presentan el protocolo MQTT y la plataforma Ignition como soluciones tecnológicas clave para lograr esta convergencia."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 1",
+        "Recursos Didácticos"
+      ],
+      [
+        {
+          "rel_path": "Unidad 1/Recursos Didácticos/Video charla sobre ISA 95 - Gustavo  Guitera.txt",
+          "fecha": "No identificada",
+          "temas": "ISA-95, pirámide de Purdue, MES/MOM, integración IT/OT, modelos de manufactura, lotes y trazabilidad, dominios de producción/mantenimiento/calidad/inventario",
+          "resumen": "Charla introductoria de Gustavo Vitera (tesorero de ISA Sección Argentina) sobre el estándar ISA-95, que define la integración vertical entre sistemas de control de piso de planta y sistemas ERP. Se explica la pirámide de Purdue, los niveles de automatización (0 al 4), y los cuatro pilares del modelo MOM/MES: producción, mantenimiento, calidad e inventario. Se describe cómo la norma modela recursos (equipos, materiales, personas), órdenes de trabajo, rutas de fabricación, ciclos de vida de lotes y trazabilidad. También se mencionan diferencias con ISA-88 (procesos Batch) e ISA-106 (procesos continuos), y la relación futura con RAMI 4.0 e inteligencia artificial aplicada a manufactura."
         }
       ]
     ],
@@ -363,6 +400,20 @@ _Última actualización: 28/08/26_
           "fecha": "No identificada",
           "temas": "IoT, IIoT, Node-RED, MongoDB, InfluxDB, Siemens Xcelerator, bases de datos NoSQL, plataformas industriales",
           "resumen": "La presentación introduce los conceptos de IoT e IIoT, sus principios y las ventajas de utilizar plataformas industriales para el monitoreo y control remoto. Se describe Node-RED como herramienta de integración visual, mostrando ejemplos de conexión con OPC-UA, Telegram y Oracle. Se detalla la configuración y uso de MongoDB e InfluxDB como bases de datos NoSQL para almacenamiento de series temporales en proyectos IIoT. Finalmente, se presenta Siemens Xcelerator (Insight Hub) como plataforma industrial avanzada para visualización, análisis de activos y generación de reportes mediante dashboards y KPIs."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2",
+        "Recursos Didácticos"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/Recursos Didácticos/Video charla ISA 95- Gustavo Guitera.txt",
+          "fecha": "No identificada",
+          "temas": "ISA-95, integración IT/OT, pirámide de Purdue, MES/MOM, modelos de manufactura, trazabilidad de lotes, dominios de producción/calidad/mantenimiento/inventario",
+          "resumen": "La charla, presentada por Gustavo Vitera (tesorero de ISA Sección Argentina), introduce el estándar ISA-95 como marco para la integración vertical entre sistemas de control de piso de planta y sistemas ERP. Se explica la pirámide de Purdue con sus niveles 0 al 4, diferenciando procesos discretos, batch y continuos (ISA-88 e ISA-106), y se presentan los cuatro pilares del MOM/MES: producción, calidad, mantenimiento e inventario. Se abordan conceptos como la modelización de equipos, materiales, lotes, rutas de fabricación y ciclos de vida de objetos, con ejemplos prácticos de definición de segmentos productivos y trazabilidad de lotes. Se destacan los beneficios del estándar para la transformación digital: flexibilidad operativa, control estadístico de procesos, reducción de errores manuales y preparación de datos para modelos de inteligencia artificial."
         }
       ]
     ]

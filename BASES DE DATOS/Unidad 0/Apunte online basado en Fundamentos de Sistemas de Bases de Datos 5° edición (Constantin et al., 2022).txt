@@ -1,0 +1,5 @@
+Apunte online basado en Fundamentos de Sistemas de Bases de Datos 5° edición (Constantin et al., 2022)
+
+https://bd.readthedocs.io/en/latest/index.html
+
+(link externo (no es un archivo descargable))

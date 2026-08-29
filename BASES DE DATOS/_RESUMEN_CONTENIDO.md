@@ -1,5 +1,5 @@
 # BASES DE DATOS - Resumen de contenido
-_Última actualización: 25/08/26_
+_Última actualización: 28/08/26_
 
 ## General
 **Archivo:** General/ProgramaBBDD-TUCD_v00.md
@@ -33,6 +33,11 @@ _Última actualización: 25/08/26_
 **Fecha:** No identificada
 **Temas:** Modelo Entidad-Relación, Modelo Relacional, diseño de base de datos, estudio de caso
 **Resumen:** Trabajo Práctico 4 de la Unidad I, basado en un estudio de caso de una aplicación de música en línea. Se presenta un enunciado detallado con los requerimientos de información sobre usuarios, canciones, álbumes, artistas y listas de reproducción, incluyendo restricciones y cardinalidades específicas para cada entidad. Se solicita al alumno construir el Diagrama Entidad-Relación (DER) y el Modelo Relacional correspondiente, junto con una justificación textual de las decisiones de diseño tomadas para completar la información faltante o ambigua del enunciado.
+
+**Archivo:** Unidad 1/Construcción de DER - Ejemplos Prácticos (sencillos).txt
+**Fecha:** No identificada
+**Temas:** Diagrama Entidad-Relación (DER), entidades y atributos, cardinalidades, claves primarias y candidatas, relaciones entre entidades
+**Resumen:** La clase presenta la resolución práctica de dos ejercicios de construcción de Diagramas de Entidad-Relación (DER). El primer caso modela una empresa de ventas con entidades Cliente, Producto y Proveedor, identificando atributos, claves primarias (DNI, código de producto, NIF) y cardinalidades (M:N entre cliente y producto; 1:N entre proveedor y producto). El segundo caso modela una empresa de transportes con entidades Camionero, Paquete, Ciudad y Camión, estableciendo sus respectivas cardinalidades (1:N entre ciudad y paquete, 1:N entre camionero y paquete, M:N entre camionero y camión). Se hace énfasis en cómo identificar entidades a partir de sustantivos, relaciones a partir de verbos, y en la correcta selección de claves primarias según unicidad y estabilidad del atributo.
 
 <!-- ESTADO_RESUMEN
 {
@@ -91,6 +96,12 @@ _Última actualización: 25/08/26_
           "fecha": "No identificada",
           "temas": "Modelo Entidad-Relación, Modelo Relacional, diseño de base de datos, estudio de caso",
           "resumen": "Trabajo Práctico 4 de la Unidad I, basado en un estudio de caso de una aplicación de música en línea. Se presenta un enunciado detallado con los requerimientos de información sobre usuarios, canciones, álbumes, artistas y listas de reproducción, incluyendo restricciones y cardinalidades específicas para cada entidad. Se solicita al alumno construir el Diagrama Entidad-Relación (DER) y el Modelo Relacional correspondiente, junto con una justificación textual de las decisiones de diseño tomadas para completar la información faltante o ambigua del enunciado."
+        },
+        {
+          "rel_path": "Unidad 1/Construcción de DER - Ejemplos Prácticos (sencillos).txt",
+          "fecha": "No identificada",
+          "temas": "Diagrama Entidad-Relación (DER), entidades y atributos, cardinalidades, claves primarias y candidatas, relaciones entre entidades",
+          "resumen": "La clase presenta la resolución práctica de dos ejercicios de construcción de Diagramas de Entidad-Relación (DER). El primer caso modela una empresa de ventas con entidades Cliente, Producto y Proveedor, identificando atributos, claves primarias (DNI, código de producto, NIF) y cardinalidades (M:N entre cliente y producto; 1:N entre proveedor y producto). El segundo caso modela una empresa de transportes con entidades Camionero, Paquete, Ciudad y Camión, estableciendo sus respectivas cardinalidades (1:N entre ciudad y paquete, 1:N entre camionero y paquete, M:N entre camionero y camión). Se hace énfasis en cómo identificar entidades a partir de sustantivos, relaciones a partir de verbos, y en la correcta selección de claves primarias según unicidad y estabilidad del atributo."
         }
       ]
     ]

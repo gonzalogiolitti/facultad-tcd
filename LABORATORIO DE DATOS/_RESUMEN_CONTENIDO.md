@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 26/08/26_
+_Última actualización: 28/08/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -160,6 +160,11 @@ _Última actualización: 26/08/26_
 **Fecha:** No identificada
 **Temas:** Data storytelling visual, visualización de datos narrativa, unidades de información, canales visuales, entorno de historia, prototipo interactivo, cognición y memoria
 **Resumen:** El artículo propone un framework modular para la creación de contenido de data storytelling visual orientado a audiencias generales no profesionales, integrando paradigmas de visualización de datos, narrativa digital y serious games. Se distingue entre el proceso analítico tradicional y el proceso narrativo, introduciendo tres fases de diseño: estructuración, composición y traducción de unidades de información. El framework define conceptos clave como unidades de información (data message, story component, expression attachment), canales visuales y entorno de historia, apoyándose en teorías cognitivas y de comunicación para mejorar memorabilidad y comprensión. Se presenta un prototipo desarrollado en Unity con datos de consumo energético australiano, donde los datos se codifican en personajes, animaciones y elementos escénicos generados con machine learning. El trabajo busca cerrar la brecha entre el análisis de datos y su presentación entretenida y accesible para el público general.
+
+**Archivo:** Unidad 4/ISC Formación Política del Gobierno de la Ciudad de Buenos Aires. (2024, 10 de diciembre). Tableros interactivos para la gestión pública - Primer encu.txt
+**Fecha:** 10/12/24
+**Temas:** Visualización y comunicación de datos en gestión pública, definición y características de tableros interactivos, tipos de tableros, componentes de tableros, herramientas para construcción de tableros (Looker Studio, Power BI, Tableau, Qlik)
+**Resumen:** El primer encuentro del seminario introduce los tableros interactivos como herramienta de gestión de la información en el sector público. Se distinguen los tableros de otros formatos de reporte (informes, presentaciones, infografías), destacando su interactividad, componente visual y capacidad de síntesis. Se propone una tipología de tableros según su función: ejecutivos/gerenciales, operativos, de monitoreo de programas, de transparencia y rendición de cuentas, de análisis estadístico y de gestión de crisis. Se describen los elementos constitutivos de un tablero (tarjetas, gráficos, mapas, filtros, títulos) y se comparan las principales herramientas disponibles (Looker Studio, Power BI, Tableau, Qlik Sense), con criterios para elegir entre ellas según capacidad técnica, ecosistema organizacional, integración de fuentes, colaboración y costos.
 
 ## Unidad 5
 **Archivo:** Unidad 5/Ord IA Promulgada.md
@@ -403,6 +408,12 @@ _Última actualización: 26/08/26_
           "fecha": "No identificada",
           "temas": "Data storytelling visual, visualización de datos narrativa, unidades de información, canales visuales, entorno de historia, prototipo interactivo, cognición y memoria",
           "resumen": "El artículo propone un framework modular para la creación de contenido de data storytelling visual orientado a audiencias generales no profesionales, integrando paradigmas de visualización de datos, narrativa digital y serious games. Se distingue entre el proceso analítico tradicional y el proceso narrativo, introduciendo tres fases de diseño: estructuración, composición y traducción de unidades de información. El framework define conceptos clave como unidades de información (data message, story component, expression attachment), canales visuales y entorno de historia, apoyándose en teorías cognitivas y de comunicación para mejorar memorabilidad y comprensión. Se presenta un prototipo desarrollado en Unity con datos de consumo energético australiano, donde los datos se codifican en personajes, animaciones y elementos escénicos generados con machine learning. El trabajo busca cerrar la brecha entre el análisis de datos y su presentación entretenida y accesible para el público general."
+        },
+        {
+          "rel_path": "Unidad 4/ISC Formación Política del Gobierno de la Ciudad de Buenos Aires. (2024, 10 de diciembre). Tableros interactivos para la gestión pública - Primer encu.txt",
+          "fecha": "10/12/24",
+          "temas": "Visualización y comunicación de datos en gestión pública, definición y características de tableros interactivos, tipos de tableros, componentes de tableros, herramientas para construcción de tableros (Looker Studio, Power BI, Tableau, Qlik)",
+          "resumen": "El primer encuentro del seminario introduce los tableros interactivos como herramienta de gestión de la información en el sector público. Se distinguen los tableros de otros formatos de reporte (informes, presentaciones, infografías), destacando su interactividad, componente visual y capacidad de síntesis. Se propone una tipología de tableros según su función: ejecutivos/gerenciales, operativos, de monitoreo de programas, de transparencia y rendición de cuentas, de análisis estadístico y de gestión de crisis. Se describen los elementos constitutivos de un tablero (tarjetas, gráficos, mapas, filtros, títulos) y se comparan las principales herramientas disponibles (Looker Studio, Power BI, Tableau, Qlik Sense), con criterios para elegir entre ellas según capacidad técnica, ecosistema organizacional, integración de fuentes, colaboración y costos."
         }
       ]
     ],
