@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 28/08/26_
+_Última actualización: 29/08/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -165,6 +165,11 @@ _Última actualización: 28/08/26_
 **Fecha:** 10/12/24
 **Temas:** Visualización y comunicación de datos en gestión pública, definición y características de tableros interactivos, tipos de tableros, componentes de tableros, herramientas para construcción de tableros (Looker Studio, Power BI, Tableau, Qlik)
 **Resumen:** El primer encuentro del seminario introduce los tableros interactivos como herramienta de gestión de la información en el sector público. Se distinguen los tableros de otros formatos de reporte (informes, presentaciones, infografías), destacando su interactividad, componente visual y capacidad de síntesis. Se propone una tipología de tableros según su función: ejecutivos/gerenciales, operativos, de monitoreo de programas, de transparencia y rendición de cuentas, de análisis estadístico y de gestión de crisis. Se describen los elementos constitutivos de un tablero (tarjetas, gráficos, mapas, filtros, títulos) y se comparan las principales herramientas disponibles (Looker Studio, Power BI, Tableau, Qlik Sense), con criterios para elegir entre ellas según capacidad técnica, ecosistema organizacional, integración de fuentes, colaboración y costos.
+
+**Archivo:** Unidad 4/ISC Formación Política del Gobierno de la Ciudad de Buenos Aires. (2024, 10 de diciembre). Tableros interactivos para la gestión pública - Segundo enc.txt
+**Fecha:** 05/09/24
+**Temas:** Proceso de construcción de tableros, diseño y visualización efectiva, Storytelling con datos, elección de gráficos, fuentes de datos para tableros
+**Resumen:** Segundo encuentro del seminario sobre tableros interactivos para la gestión pública. Se presenta un proceso de construcción de tableros en 7 etapas: planificación y definición de objetivos, diseño conceptual, preparación de datos, montaje, validación, publicación/documentación y mantenimiento. Se profundiza en buenas prácticas de visualización y diseño (jerarquía visual, uso de colores, consistencia, interactividad), se introduce el Storytelling con datos y se analizan errores frecuentes. Se aborda la selección del gráfico más adecuado según el tipo de dato y el objetivo, y se presentan recursos y herramientas de referencia. Cierra con una introducción a las fuentes de datos utilizadas en la gestión pública.
 
 ## Unidad 5
 **Archivo:** Unidad 5/Ord IA Promulgada.md
@@ -414,6 +419,12 @@ _Última actualización: 28/08/26_
           "fecha": "10/12/24",
           "temas": "Visualización y comunicación de datos en gestión pública, definición y características de tableros interactivos, tipos de tableros, componentes de tableros, herramientas para construcción de tableros (Looker Studio, Power BI, Tableau, Qlik)",
           "resumen": "El primer encuentro del seminario introduce los tableros interactivos como herramienta de gestión de la información en el sector público. Se distinguen los tableros de otros formatos de reporte (informes, presentaciones, infografías), destacando su interactividad, componente visual y capacidad de síntesis. Se propone una tipología de tableros según su función: ejecutivos/gerenciales, operativos, de monitoreo de programas, de transparencia y rendición de cuentas, de análisis estadístico y de gestión de crisis. Se describen los elementos constitutivos de un tablero (tarjetas, gráficos, mapas, filtros, títulos) y se comparan las principales herramientas disponibles (Looker Studio, Power BI, Tableau, Qlik Sense), con criterios para elegir entre ellas según capacidad técnica, ecosistema organizacional, integración de fuentes, colaboración y costos."
+        },
+        {
+          "rel_path": "Unidad 4/ISC Formación Política del Gobierno de la Ciudad de Buenos Aires. (2024, 10 de diciembre). Tableros interactivos para la gestión pública - Segundo enc.txt",
+          "fecha": "05/09/24",
+          "temas": "Proceso de construcción de tableros, diseño y visualización efectiva, Storytelling con datos, elección de gráficos, fuentes de datos para tableros",
+          "resumen": "Segundo encuentro del seminario sobre tableros interactivos para la gestión pública. Se presenta un proceso de construcción de tableros en 7 etapas: planificación y definición de objetivos, diseño conceptual, preparación de datos, montaje, validación, publicación/documentación y mantenimiento. Se profundiza en buenas prácticas de visualización y diseño (jerarquía visual, uso de colores, consistencia, interactividad), se introduce el Storytelling con datos y se analizan errores frecuentes. Se aborda la selección del gráfico más adecuado según el tipo de dato y el objetivo, y se presentan recursos y herramientas de referencia. Cierra con una introducción a las fuentes de datos utilizadas en la gestión pública."
         }
       ]
     ],
