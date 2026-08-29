@@ -3,7 +3,7 @@
 **Materia:** Bases de Datos · TUCD (UGR) · 2026
 **Estudio de caso:** Aplicación de música en línea
 **Herramienta de modelado:** ERDPlus (notación Chen modificada de la cátedra)
-**SGBD:** MariaDB 11.8.6 · **Script:** [`TP4_esquema.sql`](TP4_esquema.sql)
+**SGBD:** MariaDB 11.8.6 · **Script:** [`TP4_esquema.sql`](TP4_esquema.sql) · **Diagrama ER:** [`TP4_DER.drawio`](TP4_DER.drawio) (draw.io, multipágina; mismos estilos que los diagramas de Datos y Algoritmos)
 
 > **Notación:** cardinalidad en pares **(mín, máx)**; en el Modelo Relacional
 > `<u>x</u>` = PK y `*x*` = FK.

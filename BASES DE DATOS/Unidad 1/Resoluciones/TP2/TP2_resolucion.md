@@ -2,7 +2,7 @@
 
 **Materia:** Bases de Datos · TUCD (UGR) · 2026
 **Herramienta de modelado:** ERDPlus (notación Chen modificada de la cátedra)
-**SGBD:** MariaDB 11.8.6 · **Script:** [`TP2_esquema.sql`](TP2_esquema.sql)
+**SGBD:** MariaDB 11.8.6 · **Script:** [`TP2_esquema.sql`](TP2_esquema.sql) · **Diagrama ER:** [`TP2_DER.drawio`](TP2_DER.drawio) (draw.io, multipágina; mismos estilos que los diagramas de Datos y Algoritmos)
 
 > **Notación**
 > - Cardinalidad en pares **(mín, máx)** sobre cada extremo de la relación.

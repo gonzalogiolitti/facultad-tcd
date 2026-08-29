@@ -2,7 +2,7 @@
 
 **Materia:** Bases de Datos · TUCD (UGR) · 2026
 **Herramienta de modelado:** ERDPlus (notación Chen modificada de la cátedra)
-**SGBD:** MariaDB 11.8.6 · **Script:** [`TP1_esquema.sql`](TP1_esquema.sql)
+**SGBD:** MariaDB 11.8.6 · **Script:** [`TP1_esquema.sql`](TP1_esquema.sql) · **Diagrama ER:** [`TP1_DER.drawio`](TP1_DER.drawio) (draw.io, multipágina; mismos estilos que los diagramas de Datos y Algoritmos)
 
 > **Notación usada en este documento**
 > - Entidades = rectángulos (en los diagramas Mermaid, bloques con sus atributos).

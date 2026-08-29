@@ -2,7 +2,7 @@
 
 **Materia:** Bases de Datos · TUCD (UGR) · 2026
 **Herramienta de modelado:** ERDPlus (notación Chen modificada de la cátedra)
-**SGBD:** MariaDB 11.8.6 · **Script:** [`TP3_esquema.sql`](TP3_esquema.sql)
+**SGBD:** MariaDB 11.8.6 · **Script:** [`TP3_esquema.sql`](TP3_esquema.sql) · **Diagrama ER:** [`TP3_DER.drawio`](TP3_DER.drawio) (draw.io, multipágina; mismos estilos que los diagramas de Datos y Algoritmos)
 
 > **Notación:** cardinalidad en pares **(mín, máx)**; en el Modelo Relacional
 > `<u>x</u>` = PK y `*x*` = FK. Las relaciones N:M se resuelven con tabla intermedia.

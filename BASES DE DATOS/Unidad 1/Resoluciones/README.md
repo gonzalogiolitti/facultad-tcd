@@ -4,12 +4,35 @@ Bases de Datos · Tecnicatura Universitaria en Ciencia de Datos (UGR) · 2026
 
 ## Contenido
 
-| TP | Tema | Resolución | Script SQL |
-|---|---|---|---|
-| **TP1** | De explicación coloquial a DER (4 incisos) | [TP1/TP1_resolucion.md](TP1/TP1_resolucion.md) | [TP1/TP1_esquema.sql](TP1/TP1_esquema.sql) |
-| **TP2** | Estudios de caso: Arte, Reservas de autos, Farmacias | [TP2/TP2_resolucion.md](TP2/TP2_resolucion.md) | [TP2/TP2_esquema.sql](TP2/TP2_esquema.sql) |
-| **TP3** | De explicación coloquial a DER + Modelo Relacional (4 incisos) | [TP3/TP3_resolucion.md](TP3/TP3_resolucion.md) | [TP3/TP3_esquema.sql](TP3/TP3_esquema.sql) |
-| **TP4** | Estudio de caso: Aplicación de música | [TP4/TP4_resolucion.md](TP4/TP4_resolucion.md) | [TP4/TP4_esquema.sql](TP4/TP4_esquema.sql) |
+| TP | Tema | Resolución | Script SQL | Diagrama ER (draw.io) |
+|---|---|---|---|---|
+| **TP1** | De explicación coloquial a DER (4 incisos) | [TP1/TP1_resolucion.md](TP1/TP1_resolucion.md) | [TP1/TP1_esquema.sql](TP1/TP1_esquema.sql) | [TP1/TP1_DER.drawio](TP1/TP1_DER.drawio) · 4 páginas |
+| **TP2** | Estudios de caso: Arte, Reservas de autos, Farmacias | [TP2/TP2_resolucion.md](TP2/TP2_resolucion.md) | [TP2/TP2_esquema.sql](TP2/TP2_esquema.sql) | [TP2/TP2_DER.drawio](TP2/TP2_DER.drawio) · 3 páginas |
+| **TP3** | De explicación coloquial a DER + Modelo Relacional (4 incisos) | [TP3/TP3_resolucion.md](TP3/TP3_resolucion.md) | [TP3/TP3_esquema.sql](TP3/TP3_esquema.sql) | [TP3/TP3_DER.drawio](TP3/TP3_DER.drawio) · 4 páginas |
+| **TP4** | Estudio de caso: Aplicación de música | [TP4/TP4_resolucion.md](TP4/TP4_resolucion.md) | [TP4/TP4_esquema.sql](TP4/TP4_esquema.sql) | [TP4/TP4_DER.drawio](TP4/TP4_DER.drawio) · 1 página |
+
+### Diagramas `.drawio`
+
+Cada `TPn_DER.drawio` es un archivo multipágina (una pestaña por inciso / caso de estudio),
+para abrir con **draw.io** / **diagrams.net** (o la extensión Draw.io Integration de VS Code).
+
+Replican **exactamente el sistema de estilos** de los diagramas de la materia *Datos y
+Algoritmos* (`Practica/Diagramacion Logica`): fondo transparente (`fillColor=none`), trazo y
+texto en blanco adaptativo `light-dark(#FFFFFF,#FFFFFF)`, sin sombras, conectores
+ortogonales, `fontSize` 13 en nodos y 12 en relaciones/aristas, y el mismo encabezado
+`mxfile` / `mxGraphModel` (grid 10, página 900×1200).
+
+Notación ER de la cátedra de Bases de Datos (Chen modificada / ERDPlus):
+
+| Elemento | Representación |
+|---|---|
+| Entidad | rectángulo |
+| Atributo | elipse |
+| Atributo clave (PK) | elipse con **texto subrayado** |
+| Atributo multivaluado | **doble elipse** (p. ej. `corriente_artistica`, `dia`, `nombre_enfermedad`) |
+| Atributo derivado | elipse **punteada** (p. ej. `total`, `duracion_total`) |
+| Relación | rombo (los N:M llevan sus atributos propios colgando) |
+| Cardinalidad | etiqueta `(mín, máx)` sobre la línea, del lado de cada entidad |
 
 ## Ejercicios que quedaron pendientes por falta de material
 
