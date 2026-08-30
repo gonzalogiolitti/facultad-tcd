@@ -1,5 +1,5 @@
 # MATERIA ELECTIVA A - Resumen de contenido
-_Última actualización: 28/08/26_
+_Última actualización: 30/08/26_
 
 ## Grabaciones sincrónicos
 **Archivo:** Grabaciones sincrónicos/Clase 7-5 automatización 4.0.txt
@@ -21,6 +21,11 @@ _Última actualización: 28/08/26_
 **Fecha:** 20/08/26
 **Temas:** Presentación de la materia, Industria 4.0 y 5.0, Digitalización industrial, Datos en la industria, Competitividad, Tecnologías habilitadoras, Mantenimiento predictivo, Gemelos digitales
 **Resumen:** Clase inaugural de "Ciencia de Datos en Sistemas Industriales" en la que los docentes presentan la materia, su metodología y programa. Se introducen los conceptos de Industria 4.0 y 5.0, explicando la evolución histórica de las revoluciones industriales y el rol central de los datos para la competitividad. Se describen tecnologías clave como IoT industrial, IA, mantenimiento predictivo, gemelos digitales y la herramienta Node-RED. Se detallan las condiciones de aprobación (trabajo práctico integrador grupal y evaluación individual) y se asigna como primera tarea la grabación de un video de presentación personal.
+
+**Archivo:** Grabaciones sincrónicos/Link para acceder al video con contenidos de la clase 1.txt
+**Fecha:** No identificada
+**Temas:** Presentación del curso, Industria 4.0 y 5.0, digitalización industrial, datos en la industria, competitividad, tecnologías emergentes, metodología y evaluación
+**Resumen:** Clase inaugural de la materia electiva "Ciencia de Datos en Sistemas Industriales", donde los docentes presentan el programa, la metodología de trabajo y el sistema de evaluación (trabajo práctico grupal integrador, evaluación individual y trabajos prácticos). Se introduce el paradigma de la Industria 4.0 y su evolución hacia el 5.0, destacando la centralidad de las personas, la sostenibilidad y la resiliencia. Se presentan conceptos clave como redes OT e IT, IIoT, mantenimiento predictivo, gemelos digitales y modelos de negocio basados en datos. Como primera tarea, se solicita a los estudiantes grabar un video de presentación personal de hasta tres minutos y compartir el enlace.
 
 ## Trabajo practico integrador
 **Archivo:** Trabajo practico integrador/Clase 5_dictado de TP_I4.0_2025.md
@@ -184,6 +189,12 @@ _Última actualización: 28/08/26_
           "fecha": "20/08/26",
           "temas": "Presentación de la materia, Industria 4.0 y 5.0, Digitalización industrial, Datos en la industria, Competitividad, Tecnologías habilitadoras, Mantenimiento predictivo, Gemelos digitales",
           "resumen": "Clase inaugural de \"Ciencia de Datos en Sistemas Industriales\" en la que los docentes presentan la materia, su metodología y programa. Se introducen los conceptos de Industria 4.0 y 5.0, explicando la evolución histórica de las revoluciones industriales y el rol central de los datos para la competitividad. Se describen tecnologías clave como IoT industrial, IA, mantenimiento predictivo, gemelos digitales y la herramienta Node-RED. Se detallan las condiciones de aprobación (trabajo práctico integrador grupal y evaluación individual) y se asigna como primera tarea la grabación de un video de presentación personal."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Link para acceder al video con contenidos de la clase 1.txt",
+          "fecha": "No identificada",
+          "temas": "Presentación del curso, Industria 4.0 y 5.0, digitalización industrial, datos en la industria, competitividad, tecnologías emergentes, metodología y evaluación",
+          "resumen": "Clase inaugural de la materia electiva \"Ciencia de Datos en Sistemas Industriales\", donde los docentes presentan el programa, la metodología de trabajo y el sistema de evaluación (trabajo práctico grupal integrador, evaluación individual y trabajos prácticos). Se introduce el paradigma de la Industria 4.0 y su evolución hacia el 5.0, destacando la centralidad de las personas, la sostenibilidad y la resiliencia. Se presentan conceptos clave como redes OT e IT, IIoT, mantenimiento predictivo, gemelos digitales y modelos de negocio basados en datos. Como primera tarea, se solicita a los estudiantes grabar un video de presentación personal de hasta tres minutos y compartir el enlace."
         }
       ]
     ],

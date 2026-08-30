@@ -1,5 +1,11 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 29/08/26_
+_Última actualización: 30/08/26_
+
+## General
+**Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
+**Fecha:** 18/08/24
+**Temas:** Presentación de la materia, modalidad asincrónica, herramientas (R), sistema de evaluaciones, trabajo final, condiciones de acreditación
+**Resumen:** La docente presenta la materia Estadística e Inferencia, segunda estadística de la carrera, explicando que se cursa de forma asincrónica mediante videos cortos y encuentros de consulta opcionales por Meet. Se detalla el uso de R como lenguaje principal para el análisis estadístico. El sistema de evaluaciones consiste en entregas por unidad (6 en total) orientadas al trabajo final, con fecha límite el 27 de octubre, y entrega del trabajo final el 3 de noviembre. Las condiciones de acreditación son: promovido (trabajo final aprobado), regular (todas las entregas realizadas), libre (menos de la mitad de entregas) y ausente (sin entregas), con distintas exigencias en mesa de examen según cada condición.
 
 ## Grabaciones clases de consulta
 **Archivo:** Grabaciones clases de consulta/Clase Consulta (14-4-26).txt
@@ -26,6 +32,21 @@ _Última actualización: 29/08/26_
 **Fecha:** 05/05/26
 **Temas:** Análisis exploratorio de datos, diagramas de caja, gráficos de dispersión, distribuciones de frecuencia/densidad, mapas interactivos con Leaflet, distancia a planta, regresión lineal y logística
 **Resumen:** La clase es una consulta individual en la que el estudiante muestra avances de su trabajo práctico sobre calidad de agua (turbidez, cloro residual, flúor). Se revisan gráficos de dispersión entre variables (cloro y turbidez vs. distancia a la planta de tratamiento) y se discute su interpretación estadística. Se analiza un mapa interactivo generado con Leaflet para visualizar los puntos de muestreo geolocalizados, y se identifican problemas en el gráfico de distribución de turbidez (escala del eje X, interpretación de densidad). Finalmente, el docente orienta al estudiante sobre los próximos pasos: explorar modelos de regresión lineal y logística para predecir el sitio de origen a partir de los parámetros medidos, y se menciona brevemente otro proyecto de práctica preprofesional sobre arbolado urbano en Esperanza.
+
+**Archivo:** Grabaciones clases de consulta/Encuentro 7_4_2026.txt
+**Fecha:** 07/04/26
+**Temas:** Clase de consulta, instalación de paquetes en R (Linux), análisis exploratorio de datos, dataset de cursos estatales, gráficos en R, interpretación de variables cualitativas y cuantitativas
+**Resumen:** La clase fue una sesión de consultas donde los estudiantes presentaron dudas y avances en sus trabajos prácticos. Se abordó un problema de instalación de paquetes en R bajo Linux (en particular el paquete `tidyverse`), con sugerencias de instalación desde consola y reinstalación del entorno. Un estudiante presentó su análisis exploratorio sobre un dataset de cursos ofrecidos a empleados estatales (2022-2024), mostrando estadísticas descriptivas y gráficos de barras y boxplots. El docente señaló confusiones conceptuales respecto a la naturaleza de las variables (cualitativas vs. cuantitativas) y la interpretación de medidas estadísticas, recomendando definir primero el objetivo del análisis antes de aplicar herramientas.
+
+**Archivo:** Grabaciones clases de consulta/Encuentro 21_04_26.txt
+**Fecha:** 21/04/26 (26/04/21)
+**Temas:** Consultas sobre trabajos prácticos, reutilización de dataset, descripción de variables, distribuciones, código en R, manejo de fechas y datos atípicos
+**Resumen:** La clase es una sesión de consultas donde la docente responde dudas sobre los trabajos prácticos de la materia. Se aclara que el dataset usado en evaluaciones anteriores puede reutilizarse para el trabajo final, y se explica la estructura general de dicho trabajo (análisis descriptivo, contrastes y predicción). Un alumno comparte su avance en R con un dataset de calidad de agua, mostrando código para limpieza de datos, detección de valores atípicos y gráficos, y recibe orientación sobre cómo interpretar medidas de posición y dispersión. También se discute el manejo de variables de fecha/hora en R (paquete lubridate) y la selección de sitios de muestreo para análisis futuros. Finalmente, se menciona el trabajo 3, centrado en identificar distribuciones de probabilidad adecuadas para las variables elegidas y sus limitaciones.
+
+**Archivo:** Grabaciones clases de consulta/Grabación encuentro 19_5_26.txt
+**Fecha:** 19/05/26 (19 de mayo de 2026, o posiblemente 2025)
+**Temas:** Consulta trabajo final, limpieza y curación de datos, filtrado de datasets, análisis exploratorio, consignas de entrega, paquete Janitor en R
+**Resumen:** La clase fue una sesión de consulta donde un estudiante compartió su pantalla para mostrar avances en el análisis de datos de calidad de agua (turbidez, cloro residual, flúor), discutiendo problemas de datos faltantes, sitios con pocas mediciones y criterios de filtrado mínimo (≥30 muestras por año). El docente aclaró las consignas del trabajo final: informe en PDF/HTML/RMD con al menos tres medidas estadísticas, dos gráficos interpretados y dos situaciones problemáticas resueltas con métodos del curso, más entrega del script en R, con fecha límite el 9 de junio. También se mencionó la importancia de no actualizar paquetes durante el desarrollo de un trabajo y se recomendó el paquete `janitor` del tidyverse para normalización de texto en bases de datos.
 
 ## Unidad 1
 ### Clase 1
@@ -156,6 +177,19 @@ _Última actualización: 29/08/26_
   "secciones": [
     [
       [
+        "General"
+      ],
+      [
+        {
+          "rel_path": "General/Presentación de la asignatura y modalidad de trabajo.txt",
+          "fecha": "18/08/24",
+          "temas": "Presentación de la materia, modalidad asincrónica, herramientas (R), sistema de evaluaciones, trabajo final, condiciones de acreditación",
+          "resumen": "La docente presenta la materia Estadística e Inferencia, segunda estadística de la carrera, explicando que se cursa de forma asincrónica mediante videos cortos y encuentros de consulta opcionales por Meet. Se detalla el uso de R como lenguaje principal para el análisis estadístico. El sistema de evaluaciones consiste en entregas por unidad (6 en total) orientadas al trabajo final, con fecha límite el 27 de octubre, y entrega del trabajo final el 3 de noviembre. Las condiciones de acreditación son: promovido (trabajo final aprobado), regular (todas las entregas realizadas), libre (menos de la mitad de entregas) y ausente (sin entregas), con distintas exigencias en mesa de examen según cada condición."
+        }
+      ]
+    ],
+    [
+      [
         "Grabaciones clases de consulta"
       ],
       [
@@ -188,6 +222,24 @@ _Última actualización: 29/08/26_
           "fecha": "05/05/26",
           "temas": "Análisis exploratorio de datos, diagramas de caja, gráficos de dispersión, distribuciones de frecuencia/densidad, mapas interactivos con Leaflet, distancia a planta, regresión lineal y logística",
           "resumen": "La clase es una consulta individual en la que el estudiante muestra avances de su trabajo práctico sobre calidad de agua (turbidez, cloro residual, flúor). Se revisan gráficos de dispersión entre variables (cloro y turbidez vs. distancia a la planta de tratamiento) y se discute su interpretación estadística. Se analiza un mapa interactivo generado con Leaflet para visualizar los puntos de muestreo geolocalizados, y se identifican problemas en el gráfico de distribución de turbidez (escala del eje X, interpretación de densidad). Finalmente, el docente orienta al estudiante sobre los próximos pasos: explorar modelos de regresión lineal y logística para predecir el sitio de origen a partir de los parámetros medidos, y se menciona brevemente otro proyecto de práctica preprofesional sobre arbolado urbano en Esperanza."
+        },
+        {
+          "rel_path": "Grabaciones clases de consulta/Encuentro 7_4_2026.txt",
+          "fecha": "07/04/26",
+          "temas": "Clase de consulta, instalación de paquetes en R (Linux), análisis exploratorio de datos, dataset de cursos estatales, gráficos en R, interpretación de variables cualitativas y cuantitativas",
+          "resumen": "La clase fue una sesión de consultas donde los estudiantes presentaron dudas y avances en sus trabajos prácticos. Se abordó un problema de instalación de paquetes en R bajo Linux (en particular el paquete `tidyverse`), con sugerencias de instalación desde consola y reinstalación del entorno. Un estudiante presentó su análisis exploratorio sobre un dataset de cursos ofrecidos a empleados estatales (2022-2024), mostrando estadísticas descriptivas y gráficos de barras y boxplots. El docente señaló confusiones conceptuales respecto a la naturaleza de las variables (cualitativas vs. cuantitativas) y la interpretación de medidas estadísticas, recomendando definir primero el objetivo del análisis antes de aplicar herramientas."
+        },
+        {
+          "rel_path": "Grabaciones clases de consulta/Encuentro 21_04_26.txt",
+          "fecha": "21/04/26 (26/04/21)",
+          "temas": "Consultas sobre trabajos prácticos, reutilización de dataset, descripción de variables, distribuciones, código en R, manejo de fechas y datos atípicos",
+          "resumen": "La clase es una sesión de consultas donde la docente responde dudas sobre los trabajos prácticos de la materia. Se aclara que el dataset usado en evaluaciones anteriores puede reutilizarse para el trabajo final, y se explica la estructura general de dicho trabajo (análisis descriptivo, contrastes y predicción). Un alumno comparte su avance en R con un dataset de calidad de agua, mostrando código para limpieza de datos, detección de valores atípicos y gráficos, y recibe orientación sobre cómo interpretar medidas de posición y dispersión. También se discute el manejo de variables de fecha/hora en R (paquete lubridate) y la selección de sitios de muestreo para análisis futuros. Finalmente, se menciona el trabajo 3, centrado en identificar distribuciones de probabilidad adecuadas para las variables elegidas y sus limitaciones."
+        },
+        {
+          "rel_path": "Grabaciones clases de consulta/Grabación encuentro 19_5_26.txt",
+          "fecha": "19/05/26 (19 de mayo de 2026, o posiblemente 2025)",
+          "temas": "Consulta trabajo final, limpieza y curación de datos, filtrado de datasets, análisis exploratorio, consignas de entrega, paquete Janitor en R",
+          "resumen": "La clase fue una sesión de consulta donde un estudiante compartió su pantalla para mostrar avances en el análisis de datos de calidad de agua (turbidez, cloro residual, flúor), discutiendo problemas de datos faltantes, sitios con pocas mediciones y criterios de filtrado mínimo (≥30 muestras por año). El docente aclaró las consignas del trabajo final: informe en PDF/HTML/RMD con al menos tres medidas estadísticas, dos gráficos interpretados y dos situaciones problemáticas resueltas con métodos del curso, más entrega del script en R, con fecha límite el 9 de junio. También se mencionó la importancia de no actualizar paquetes durante el desarrollo de un trabajo y se recomendó el paquete `janitor` del tidyverse para normalización de texto en bases de datos."
         }
       ]
     ],

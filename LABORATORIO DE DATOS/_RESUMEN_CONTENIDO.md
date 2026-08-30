@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 29/08/26_
+_Última actualización: 30/08/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -77,6 +77,16 @@ _Última actualización: 29/08/26_
 **Fecha:** Octubre 2023
 **Temas:** Datos como insumo para la toma de decisiones, Estado Inteligente, gobernanza de datos, políticas públicas basadas en evidencia, marco jurídico de datos en Argentina, estrategia nacional de datos
 **Resumen:** El documento de Fundar propone una hoja de ruta para que el Estado argentino gestione sus datos de manera estratégica, definiéndolo como un "Estado Inteligente" que reconoce los datos como activo y los usa para diseñar políticas públicas basadas en evidencia. Analiza experiencias internacionales de gobernanza de datos (Reino Unido, España, Brasil, EE.UU., entre otros) y el marco jurídico argentino vigente. Diagnostica los principales desafíos del Estado nacional: fragmentación de la información, falta de interoperabilidad, escasas capacidades técnicas, problemas de continuidad y seguridad. Como solución central, propone institucionalizar la gestión de datos mediante una estructura dependiente de la Jefatura de Gabinete, conducida por un/a Chief Data Officer (CDO) nacional.
+
+**Archivo:** Unidad 1/Clase I - Grabación.txt
+**Fecha:** No identificada
+**Temas:** Introducción a la materia, datos en el sector público, fuentes de datos estatales, gobernanza de datos, casos prácticos Rosario
+**Resumen:** La docente presenta la materia Laboratorio de Datos, cuyo eje central es el uso de datos para la toma de mejores decisiones, con foco en el sector público. Se describen las cinco unidades del programa: fuentes y gobernanza de datos, ciclo de vida del dato, aspectos éticos y normativos, visualización y comunicación, e inteligencia artificial. A modo introductorio, se dimensiona la producción de datos en una ciudad como Rosario (1,03 millones de habitantes), recorriendo las principales fuentes: registro civil, salud, educación, transporte, sensores urbanos, trámites digitales, cultura y tributos. Se discute además la brecha entre la gran cantidad de datos recolectados por el Estado y su escaso aprovechamiento para la toma de decisiones, abordando desafíos de credibilidad, infraestructura, conectividad y competencias institucionales.
+
+**Archivo:** Unidad 1/Clase II - 25_03 Del dato a la decisión - Grabación.txt
+**Fecha:** 25/03/25
+**Temas:** Barreras en el uso de datos, madurez digital del Estado, del dato al conocimiento, calidad y estandarización de datos, políticas públicas basadas en evidencia
+**Resumen:** La clase aborda por qué la abundancia de datos no garantiza mejores decisiones, identificando problemas frecuentes como datos inexistentes, de mala calidad, no utilizados o usados con sesgos (ej. algoritmos discriminatorios). Se introduce el modelo de madurez digital del BID (analógico, digital, interoperable, automatizado, proactivo) para explicar en qué etapa se encuentran los Estados y por qué aún no aprovechan plenamente sus datos. Se discuten casos prácticos de movilidad, salud, seguridad y climatología, y se analiza la importancia de la estandarización, validación y calidad de las bases de datos como condición para la toma de decisiones efectiva.
 
 ## Unidad 2
 **Archivo:** Unidad 2/Calabrese et al Guía para evaluar calidad de datos basada en ISO IEC 25012.md
@@ -296,6 +306,18 @@ _Última actualización: 29/08/26_
           "fecha": "Octubre 2023",
           "temas": "Datos como insumo para la toma de decisiones, Estado Inteligente, gobernanza de datos, políticas públicas basadas en evidencia, marco jurídico de datos en Argentina, estrategia nacional de datos",
           "resumen": "El documento de Fundar propone una hoja de ruta para que el Estado argentino gestione sus datos de manera estratégica, definiéndolo como un \"Estado Inteligente\" que reconoce los datos como activo y los usa para diseñar políticas públicas basadas en evidencia. Analiza experiencias internacionales de gobernanza de datos (Reino Unido, España, Brasil, EE.UU., entre otros) y el marco jurídico argentino vigente. Diagnostica los principales desafíos del Estado nacional: fragmentación de la información, falta de interoperabilidad, escasas capacidades técnicas, problemas de continuidad y seguridad. Como solución central, propone institucionalizar la gestión de datos mediante una estructura dependiente de la Jefatura de Gabinete, conducida por un/a Chief Data Officer (CDO) nacional."
+        },
+        {
+          "rel_path": "Unidad 1/Clase I - Grabación.txt",
+          "fecha": "No identificada",
+          "temas": "Introducción a la materia, datos en el sector público, fuentes de datos estatales, gobernanza de datos, casos prácticos Rosario",
+          "resumen": "La docente presenta la materia Laboratorio de Datos, cuyo eje central es el uso de datos para la toma de mejores decisiones, con foco en el sector público. Se describen las cinco unidades del programa: fuentes y gobernanza de datos, ciclo de vida del dato, aspectos éticos y normativos, visualización y comunicación, e inteligencia artificial. A modo introductorio, se dimensiona la producción de datos en una ciudad como Rosario (1,03 millones de habitantes), recorriendo las principales fuentes: registro civil, salud, educación, transporte, sensores urbanos, trámites digitales, cultura y tributos. Se discute además la brecha entre la gran cantidad de datos recolectados por el Estado y su escaso aprovechamiento para la toma de decisiones, abordando desafíos de credibilidad, infraestructura, conectividad y competencias institucionales."
+        },
+        {
+          "rel_path": "Unidad 1/Clase II - 25_03 Del dato a la decisión - Grabación.txt",
+          "fecha": "25/03/25",
+          "temas": "Barreras en el uso de datos, madurez digital del Estado, del dato al conocimiento, calidad y estandarización de datos, políticas públicas basadas en evidencia",
+          "resumen": "La clase aborda por qué la abundancia de datos no garantiza mejores decisiones, identificando problemas frecuentes como datos inexistentes, de mala calidad, no utilizados o usados con sesgos (ej. algoritmos discriminatorios). Se introduce el modelo de madurez digital del BID (analógico, digital, interoperable, automatizado, proactivo) para explicar en qué etapa se encuentran los Estados y por qué aún no aprovechan plenamente sus datos. Se discuten casos prácticos de movilidad, salud, seguridad y climatología, y se analiza la importancia de la estandarización, validación y calidad de las bases de datos como condición para la toma de decisiones efectiva."
         }
       ]
     ],

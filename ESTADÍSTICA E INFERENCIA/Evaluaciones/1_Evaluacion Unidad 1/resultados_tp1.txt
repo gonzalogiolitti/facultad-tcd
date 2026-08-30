@@ -1,0 +1,82 @@
+=============================================================
+ Evaluacion Unidad 1 - Estadistica e Inferencia
+ TP1 - Cardiovascular Disease Dataset (cardio_train.csv)
+ Generado: 2026-08-29 19:02:10 
+=============================================================
+
+Archivo cargado :  /home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/ESTADÍSTICA E INFERENCIA/Evaluaciones/1_Evaluacion Unidad 1/archive/cardio_train.csv 
+Separador campos: ';'
+
+-------------------------------------------------------------
+RESULTADO DE dim(cardio)
+-------------------------------------------------------------
+Filas (observaciones):  70000 
+Columnas (variables) :  13 
+
+-------------------------------------------------------------
+RESULTADO DE summary(cardio)
+-------------------------------------------------------------
+       id             age            gender         height     
+ Min.   :    0   Min.   :10798   Min.   :1.00   Min.   : 55.0  
+ 1st Qu.:25007   1st Qu.:17664   1st Qu.:1.00   1st Qu.:159.0  
+ Median :50002   Median :19703   Median :1.00   Median :165.0  
+ Mean   :49972   Mean   :19469   Mean   :1.35   Mean   :164.4  
+ 3rd Qu.:74889   3rd Qu.:21327   3rd Qu.:2.00   3rd Qu.:170.0  
+ Max.   :99999   Max.   :23713   Max.   :2.00   Max.   :250.0  
+     weight           ap_hi             ap_lo           cholesterol   
+ Min.   : 10.00   Min.   : -150.0   Min.   :  -70.00   Min.   :1.000  
+ 1st Qu.: 65.00   1st Qu.:  120.0   1st Qu.:   80.00   1st Qu.:1.000  
+ Median : 72.00   Median :  120.0   Median :   80.00   Median :1.000  
+ Mean   : 74.21   Mean   :  128.8   Mean   :   96.63   Mean   :1.367  
+ 3rd Qu.: 82.00   3rd Qu.:  140.0   3rd Qu.:   90.00   3rd Qu.:2.000  
+ Max.   :200.00   Max.   :16020.0   Max.   :11000.00   Max.   :3.000  
+      gluc           smoke              alco             active      
+ Min.   :1.000   Min.   :0.00000   Min.   :0.00000   Min.   :0.0000  
+ 1st Qu.:1.000   1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:1.0000  
+ Median :1.000   Median :0.00000   Median :0.00000   Median :1.0000  
+ Mean   :1.226   Mean   :0.08813   Mean   :0.05377   Mean   :0.8037  
+ 3rd Qu.:1.000   3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:1.0000  
+ Max.   :3.000   Max.   :1.00000   Max.   :1.00000   Max.   :1.0000  
+     cardio      
+ Min.   :0.0000  
+ 1st Qu.:0.0000  
+ Median :0.0000  
+ Mean   :0.4997  
+ 3rd Qu.:1.0000  
+ Max.   :1.0000  
+
+-------------------------------------------------------------
+ESTRUCTURA - str(cardio)
+-------------------------------------------------------------
+'data.frame':	70000 obs. of  13 variables:
+ $ id         : int  0 1 2 3 4 8 9 12 13 14 ...
+ $ age        : int  18393 20228 18857 17623 17474 21914 22113 22584 17668 19834 ...
+ $ gender     : int  2 1 1 2 1 1 1 2 1 1 ...
+ $ height     : int  168 156 165 169 156 151 157 178 158 164 ...
+ $ weight     : num  62 85 64 82 56 67 93 95 71 68 ...
+ $ ap_hi      : int  110 140 130 150 100 120 130 130 110 110 ...
+ $ ap_lo      : int  80 90 70 100 60 80 80 90 70 60 ...
+ $ cholesterol: int  1 3 3 1 1 2 3 3 1 1 ...
+ $ gluc       : int  1 1 1 1 1 2 1 3 1 1 ...
+ $ smoke      : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ alco       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ active     : int  1 1 0 1 0 0 1 1 1 0 ...
+ $ cardio     : int  0 1 1 1 0 0 0 1 0 0 ...
+
+-------------------------------------------------------------
+PRIMERAS 6 FILAS - head(cardio)
+-------------------------------------------------------------
+  id   age gender height weight ap_hi ap_lo cholesterol gluc smoke alco active
+1  0 18393      2    168     62   110    80           1    1     0    0      1
+2  1 20228      1    156     85   140    90           3    1     0    0      1
+3  2 18857      1    165     64   130    70           3    1     0    0      0
+4  3 17623      2    169     82   150   100           1    1     0    0      1
+5  4 17474      1    156     56   100    60           1    1     0    0      0
+6  8 21914      1    151     67   120    80           2    2     0    0      0
+  cardio
+1      0
+2      1
+3      1
+4      1
+5      0
+6      0
