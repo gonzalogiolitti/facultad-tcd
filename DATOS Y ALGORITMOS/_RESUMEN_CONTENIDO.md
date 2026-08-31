@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 30/08/26_
+_Última actualización: 31/08/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -28,6 +28,16 @@ _Última actualización: 30/08/26_
 **Fecha:** No identificada
 **Temas:** Cronograma 2026, Algoritmos, Representación (pseudocódigo/diagramas), Estructuras de repetición, Arreglos y búsquedas, Procedimientos y funciones
 **Resumen:** Documento de planificación del primer cuatrimestre 2026 de la materia Datos y Algoritmos (TCD 2.14.2), con inicio el 16/03/26 y fin el 20/06/26. El cronograma organiza 14 semanas en cinco unidades: definición y tipos de algoritmos, representación mediante pseudocódigo y diagramas lógicos, estructuras de repetición (for y while), arreglos con búsqueda lineal y binaria, y procedimientos y funciones con modularidad y ámbito de variables. Incluye un trabajo práctico en la semana 8 y una evaluación parcial en la semana 11.
+
+**Archivo:** General/DATOS Y ALGORITMOS - 2°AÑO 2°CUATRIMESTRE - TUCDIA.md
+**Fecha:** No identificada
+**Temas:** Algoritmos, estructuras de datos, arreglos, búsqueda lineal y binaria, estructuras de repetición, procedimientos y funciones, complejidad algorítmica
+**Resumen:** Programa de la asignatura "Datos y Algoritmos" correspondiente al 2° año, 2° cuatrimestre de la Tecnicatura en Ciencias de Datos (UGR). Cubre fundamentos de algoritmos (búsqueda, ordenación, complejidad), estructuras de repetición, arreglos unidimensionales y multidimensionales, y modularización mediante procedimientos y funciones. La modalidad es teórico-práctica con aula invertida en plataforma virtual, y la aprobación requiere cuatro evaluaciones parciales con nota mínima de 6, pudiendo promoverse con promedio igual o superior a 8.
+
+**Archivo:** General/TCDIA 2.14.2- Datos y Algoritmos - Cronograma Clases 2026.docx.md
+**Fecha:** 17/08/26
+**Temas:** Cronograma de clases, algoritmos, representación y pseudocódigo, estructuras de repetición, arreglos y búsquedas, procedimientos y funciones
+**Resumen:** El documento presenta el cronograma completo del segundo cuatrimestre 2026 de la materia Algoritmos y Datos. Se organiza en 14 semanas distribuidas en 5 unidades: algoritmos (definición, búsqueda, ordenación), representación (pseudocódigo, diagramación lógica), estructuras de repetición (bucles For y While), arreglos y búsquedas (lineal y binaria), y procedimientos y funciones (modularidad, parámetros, ámbito de variables). Incluye además una instancia de trabajo práctico en la semana 8 y una evaluación parcial en la semana 11.
 
 ## Grabaciones 2026
 **Archivo:** Grabaciones 2026/Clase 1.txt
@@ -92,6 +102,18 @@ _Última actualización: 30/08/26_
           "fecha": "No identificada",
           "temas": "Cronograma 2026, Algoritmos, Representación (pseudocódigo/diagramas), Estructuras de repetición, Arreglos y búsquedas, Procedimientos y funciones",
           "resumen": "Documento de planificación del primer cuatrimestre 2026 de la materia Datos y Algoritmos (TCD 2.14.2), con inicio el 16/03/26 y fin el 20/06/26. El cronograma organiza 14 semanas en cinco unidades: definición y tipos de algoritmos, representación mediante pseudocódigo y diagramas lógicos, estructuras de repetición (for y while), arreglos con búsqueda lineal y binaria, y procedimientos y funciones con modularidad y ámbito de variables. Incluye un trabajo práctico en la semana 8 y una evaluación parcial en la semana 11."
+        },
+        {
+          "rel_path": "General/DATOS Y ALGORITMOS - 2°AÑO 2°CUATRIMESTRE - TUCDIA.md",
+          "fecha": "No identificada",
+          "temas": "Algoritmos, estructuras de datos, arreglos, búsqueda lineal y binaria, estructuras de repetición, procedimientos y funciones, complejidad algorítmica",
+          "resumen": "Programa de la asignatura \"Datos y Algoritmos\" correspondiente al 2° año, 2° cuatrimestre de la Tecnicatura en Ciencias de Datos (UGR). Cubre fundamentos de algoritmos (búsqueda, ordenación, complejidad), estructuras de repetición, arreglos unidimensionales y multidimensionales, y modularización mediante procedimientos y funciones. La modalidad es teórico-práctica con aula invertida en plataforma virtual, y la aprobación requiere cuatro evaluaciones parciales con nota mínima de 6, pudiendo promoverse con promedio igual o superior a 8."
+        },
+        {
+          "rel_path": "General/TCDIA 2.14.2- Datos y Algoritmos - Cronograma Clases 2026.docx.md",
+          "fecha": "17/08/26",
+          "temas": "Cronograma de clases, algoritmos, representación y pseudocódigo, estructuras de repetición, arreglos y búsquedas, procedimientos y funciones",
+          "resumen": "El documento presenta el cronograma completo del segundo cuatrimestre 2026 de la materia Algoritmos y Datos. Se organiza en 14 semanas distribuidas en 5 unidades: algoritmos (definición, búsqueda, ordenación), representación (pseudocódigo, diagramación lógica), estructuras de repetición (bucles For y While), arreglos y búsquedas (lineal y binaria), y procedimientos y funciones (modularidad, parámetros, ámbito de variables). Incluye además una instancia de trabajo práctico en la semana 8 y una evaluación parcial en la semana 11."
         }
       ]
     ],
