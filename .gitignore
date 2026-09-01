@@ -9,6 +9,7 @@
 !*.csv
 !*.json
 !*.drawio
+!*.erdplus
 !.gitignore
 !README.md
 

@@ -1,0 +1,248 @@
+{
+  "diagramType": 1,
+  "data": {
+    "nodes": [
+      {
+        "id": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "type": "Entity",
+        "position": {
+          "x": 343,
+          "y": 171
+        },
+        "data": {
+          "label": "Entity",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "facd6faf-3abe-4ec5-9838-4fe091c690a5",
+        "type": "Entity",
+        "position": {
+          "x": 362,
+          "y": 305
+        },
+        "data": {
+          "label": "Entity",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": true,
+        "dragging": false
+      },
+      {
+        "id": "1192e0ca-346f-454e-831f-8b129a31c141",
+        "parentId": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "type": "Attribute",
+        "position": {
+          "x": -6.429395695523604e-15,
+          "y": -105
+        },
+        "data": {
+          "label": "Attribute1",
+          "types": {
+            "Multivalued": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        }
+      },
+      {
+        "id": "2cfb5968-f695-45fc-b66e-fadd37970489",
+        "parentId": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "type": "Attribute",
+        "position": {
+          "x": 74.24621202458748,
+          "y": -74.24621202458749
+        },
+        "data": {
+          "label": "Attribute",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        }
+      },
+      {
+        "id": "c5f721e1-3d96-4cd2-bfe2-2706674bb836",
+        "parentId": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "type": "Attribute",
+        "position": {
+          "x": 105,
+          "y": -1.2858791391047208e-14
+        },
+        "data": {
+          "label": "Attribute",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        }
+      },
+      {
+        "id": "7a357917-fef0-418b-b37e-b0e1914a546d",
+        "type": "Label",
+        "position": {
+          "x": 521,
+          "y": 305
+        },
+        "data": {
+          "label": "New Label",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 99,
+          "height": 43
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "type": "Relationship",
+        "position": {
+          "x": 352.5,
+          "y": 238
+        },
+        "data": {
+          "label": "Relationship",
+          "sourceEntityDetails": {
+            "id": "a0d476dd-3734-451a-bf00-ede3df4d5d20"
+          },
+          "targetEntityDetails": {
+            "id": "facd6faf-3abe-4ec5-9838-4fe091c690a5",
+            "minCardinality": "Mandatory",
+            "maxCardinality": "One"
+          },
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        }
+      },
+      {
+        "id": "592942ed-c3e6-477f-ae67-94f57e879e36",
+        "parentId": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "type": "Attribute",
+        "position": {
+          "x": -6.429395695523604e-15,
+          "y": -105
+        },
+        "data": {
+          "label": "Attribute",
+          "types": [],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        }
+      },
+      {
+        "id": "363399ec-7f58-4bab-b7a7-be55610016e6",
+        "parentId": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "type": "Attribute",
+        "position": {
+          "x": 74.24621202458748,
+          "y": -74.24621202458749
+        },
+        "data": {
+          "label": "Attribute",
+          "types": [],
+          "isSelected": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "de31ffb2-8edc-4f8c-ac76-1c65b7ec4f86",
+        "type": "Attribute",
+        "source": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "target": "1192e0ca-346f-454e-831f-8b129a31c141"
+      },
+      {
+        "id": "44955405-4c43-4fed-b757-7ad4557dd26f",
+        "type": "Attribute",
+        "source": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "target": "2cfb5968-f695-45fc-b66e-fadd37970489"
+      },
+      {
+        "id": "a4c02dc2-380c-41fa-a347-750cab55b131",
+        "type": "Attribute",
+        "source": "a0d476dd-3734-451a-bf00-ede3df4d5d20",
+        "target": "c5f721e1-3d96-4cd2-bfe2-2706674bb836"
+      },
+      {
+        "id": "def56490-3e0d-4587-b7fc-1bb56e03c2ff->a0d476dd-3734-451a-bf00-ede3df4d5d20;a0d476dd-3734-451a-bf00-ede3df4d5d20->facd6faf-3abe-4ec5-9838-4fe091c690a5",
+        "type": "Relationship",
+        "source": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "target": "a0d476dd-3734-451a-bf00-ede3df4d5d20"
+      },
+      {
+        "id": "def56490-3e0d-4587-b7fc-1bb56e03c2ff->facd6faf-3abe-4ec5-9838-4fe091c690a5;a0d476dd-3734-451a-bf00-ede3df4d5d20->facd6faf-3abe-4ec5-9838-4fe091c690a5",
+        "type": "Relationship",
+        "source": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "target": "facd6faf-3abe-4ec5-9838-4fe091c690a5",
+        "data": {
+          "id": "def56490-3e0d-4587-b7fc-1bb56e03c2ff->facd6faf-3abe-4ec5-9838-4fe091c690a5",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "One"
+        }
+      },
+      {
+        "id": "136cf1ce-0924-4b60-8c3c-bf213432a022",
+        "type": "Attribute",
+        "source": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "target": "592942ed-c3e6-477f-ae67-94f57e879e36"
+      },
+      {
+        "id": "4598b8c5-8ead-4fdb-a386-3e68ebcbde16",
+        "type": "Attribute",
+        "source": "def56490-3e0d-4587-b7fc-1bb56e03c2ff",
+        "target": "363399ec-7f58-4bab-b7a7-be55610016e6"
+      }
+    ],
+    "viewport": {
+      "x": 2,
+      "y": 32,
+      "zoom": 1
+    }
+  },
+  "name": "Prueba",
+  "folder": {
+    "name": "Diagrams",
+    "folderType": 1,
+    "depth": 0,
+    "id": 400506
+  },
+  "id": 559847,
+  "updatedAtTimestamp": 1788227245
+}
