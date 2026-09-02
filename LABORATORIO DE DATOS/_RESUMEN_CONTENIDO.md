@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 30/08/26_
+_Última actualización: 02/09/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -11,6 +11,12 @@ _Última actualización: 30/08/26_
 **Fecha:** No identificada
 **Temas:** Programa de la materia, fundamentación, objetivos, unidades temáticas, bibliografía, metodología, evaluación
 **Resumen:** El documento corresponde al programa oficial de la asignatura Laboratorio de Datos (2026) de la Tecnicatura Universitaria en Ciencia de Datos (UGR), cursada en 3° año, 1° cuatrimestre. El curso aborda el ciclo completo del dato a la decisión en organizaciones, con foco en el sector público, a través de cinco unidades: datos como insumo para la decisión, producción y calidad de datos, gobernanza/ética/transparencia, visualización y comunicación, e inteligencia artificial y automatización. La metodología combina encuentros sincrónicos semanales con actividades previas en el Campus Virtual, y la evaluación incluye un parcial individual, entregas de trabajos prácticos y un examen final grupal de carácter práctico.
+
+## Grabaciones Sincrónicas
+**Archivo:** Grabaciones Sincrónicas/GMT20260819-215443_Recording_1920x1080.txt
+**Fecha:** 19/08/26
+**Temas:** Presentación de la materia, docentes y estudiantes, estructura del programa (5 unidades), modalidad de evaluación, volumen y tipos de datos en organizaciones públicas, estado inteligente y gobernanza de datos
+**Resumen:** Clase inaugural de Laboratorio de Datos en la que las docentes presentan la materia, su recorrido profesional y los contenidos del programa organizado en cinco unidades: dato como insumo para la decisión, calidad y análisis de datos, aspectos éticos y normativos, comunicación y visualización, e inteligencia artificial. Se explican las condiciones de regularidad (cuestionarios por unidad, parcial y trabajo final grupal progresivo). Los estudiantes se presentan brevemente indicando su experiencia laboral y expectativas. Hacia el final, se introduce el concepto de "estado inteligente" y se recorre el volumen de datos que genera una ciudad como Rosario en áreas como salud, educación, transporte, tributos, cultura y espacio público.
 
 ## Unidad 1
 **Archivo:** Unidad 1/Australian Bureau of Statistics. 2010. A guide to using evidence-based policy. National Statistical Service Canberra..md
@@ -221,6 +227,19 @@ _Última actualización: 30/08/26_
           "fecha": "No identificada",
           "temas": "Programa de la materia, fundamentación, objetivos, unidades temáticas, bibliografía, metodología, evaluación",
           "resumen": "El documento corresponde al programa oficial de la asignatura Laboratorio de Datos (2026) de la Tecnicatura Universitaria en Ciencia de Datos (UGR), cursada en 3° año, 1° cuatrimestre. El curso aborda el ciclo completo del dato a la decisión en organizaciones, con foco en el sector público, a través de cinco unidades: datos como insumo para la decisión, producción y calidad de datos, gobernanza/ética/transparencia, visualización y comunicación, e inteligencia artificial y automatización. La metodología combina encuentros sincrónicos semanales con actividades previas en el Campus Virtual, y la evaluación incluye un parcial individual, entregas de trabajos prácticos y un examen final grupal de carácter práctico."
+        }
+      ]
+    ],
+    [
+      [
+        "Grabaciones Sincrónicas"
+      ],
+      [
+        {
+          "rel_path": "Grabaciones Sincrónicas/GMT20260819-215443_Recording_1920x1080.txt",
+          "fecha": "19/08/26",
+          "temas": "Presentación de la materia, docentes y estudiantes, estructura del programa (5 unidades), modalidad de evaluación, volumen y tipos de datos en organizaciones públicas, estado inteligente y gobernanza de datos",
+          "resumen": "Clase inaugural de Laboratorio de Datos en la que las docentes presentan la materia, su recorrido profesional y los contenidos del programa organizado en cinco unidades: dato como insumo para la decisión, calidad y análisis de datos, aspectos éticos y normativos, comunicación y visualización, e inteligencia artificial. Se explican las condiciones de regularidad (cuestionarios por unidad, parcial y trabajo final grupal progresivo). Los estudiantes se presentan brevemente indicando su experiencia laboral y expectativas. Hacia el final, se introduce el concepto de \"estado inteligente\" y se recorre el volumen de datos que genera una ciudad como Rosario en áreas como salud, educación, transporte, tributos, cultura y espacio público."
         }
       ]
     ],

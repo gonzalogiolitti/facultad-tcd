@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 30/08/26_
+_Última actualización: 02/09/26_
 
 ## General
 **Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
@@ -171,6 +171,42 @@ _Última actualización: 30/08/26_
 **Fecha:** No identificada
 **Temas:** Estadística descriptiva, tablas de frecuencia, representaciones gráficas, medidas de tendencia central y dispersión, variables bidimensionales, correlación y regresión, probabilidad, variables aleatorias, distribuciones de probabilidad, inferencia estadística, intervalos de confianza, contrastes de hipótesis, chi-cuadrado, ANOVA, tests no paramétricos
 **Resumen:** Este archivo corresponde al libro completo "Bioestadística: Métodos y Aplicaciones" de Barón López (2004), utilizado como material de referencia para la materia. Cubre desde conceptos básicos de estadística descriptiva (tipos de variables, tablas de frecuencia, gráficos, medidas de centralización, dispersión y forma) hasta estadística inferencial avanzada, incluyendo cálculo de probabilidades, distribuciones teóricas discretas y continuas (Binomial, Poisson, Normal, t-Student, chi-cuadrado, F de Snedecor), estimación puntual y por intervalos de confianza, contrastes de hipótesis paramétricos para medias, varianzas y proporciones, análisis de la varianza (ANOVA) y alternativas no paramétricas. Cada capítulo incorpora ejemplos aplicados al ámbito de las ciencias de la salud y una sección de problemas para práctica.
+
+### Clase 3
+**Archivo:** Unidad 2/Clase 3/UNIDAD II - Clase 3.md
+**Fecha:** No identificada
+**Temas:** Definiciones básicas de estadística, población y muestra, tipos de variables, análisis exploratorio de datos, sumarización y visualización de datos, distribuciones teóricas (t de Student, Chi Cuadrado)
+**Resumen:** La clase introduce los conceptos fundamentales de la estadística inferencial, diferenciando sus dos grandes ramas: descriptiva e inferencial. Se definen términos clave como población, muestra, unidad elemental, variable, parámetro y estadístico. Se clasifican los tipos de variables (cualitativas y cuantitativas, con sus subtipos) y se presenta el análisis exploratorio de datos mediante sumarización y visualización. El contenido de la unidad también contempla distribuciones teóricas como la t de Student y Chi Cuadrado.
+
+**Archivo:** Unidad 2/Clase 3/Modulo 3 - Video 2_ Medidas de localización y dispersión.txt
+**Fecha:** No identificada
+**Temas:** Medidas de localización, percentiles, cuartiles, media aritmética, mediana, moda, medidas de dispersión, rango, varianza, desvío estándar
+**Resumen:** La clase presenta las principales herramientas estadísticas para describir datos muestrales, organizadas en medidas de localización y de dispersión. Dentro de las medidas de localización se explican el mínimo, máximo, percentiles, cuartiles (Q1, Q2, Q3), la media aritmética (promedio), la mediana y la moda. Luego se abordan las medidas de dispersión o variabilidad: el rango, el rango intercuartil, la varianza muestral y el desvío estándar, destacando que este último resulta más interpretable al expresarse en las mismas unidades que la variable analizada.
+
+**Archivo:** Unidad 2/Clase 3/Modulo 3 - Video 3_ Medidas de forma.txt
+**Fecha:** No identificada
+**Temas:** Coeficiente de variación, medidas de forma, asimetría, kurtosis, parámetros poblacionales vs. muestrales
+**Resumen:** La clase aborda primero el coeficiente de variación como medida de dispersión relativa a la media, útil para comparar distintas muestras o instrumentos. Luego se introducen las medidas de forma: asimetría (distribución con cola hacia la derecha o izquierda) y kurtosis (concentración de datos en torno a la media: leptocúrtica, platicúrtica o mesocúrtica), explicando cómo el signo del coeficiente de kurtosis permite clasificarlas. Finalmente, se menciona la distinción entre estadísticos muestrales (media, varianza y desvío muestral) y parámetros poblacionales (µ, σ², σ), señalando que los primeros actúan como estimadores de los segundos, e introduce el concepto de proporción estimada a partir de la frecuencia relativa.
+
+**Archivo:** Unidad 2/Clase 3/Modulo 3 - Video 4_ Medidas de posición.txt
+**Fecha:** No identificada
+**Temas:** Medidas de tendencia central en R, media, mediana, cuantiles, rango intercuartil, moda, creación de funciones en R
+**Resumen:** La clase muestra cómo calcular medidas de posición y tendencia central utilizando R. Se trabaja con un dataset previamente cargado y se aplican funciones como `mean()` para la media, `median()` para la mediana, `quantile()` para los cuartiles (Q1, Q2 y Q3), e `IQR()` para el rango intercuartil. Dado que R base no incluye una función nativa para la moda, se enseña a crear una función personalizada utilizando `unique()` y tablas de frecuencias para identificar el valor más repetido.
+
+**Archivo:** Unidad 2/Clase 3/Modulo 3 - Video 5_ Medidas de dispersión.txt
+**Fecha:** No identificada
+**Temas:** Moda, medidas de dispersión, varianza, desvío estándar, coeficiente de variación, funciones en R
+**Resumen:** La clase aborda el cálculo de medidas de dispersión en R aplicadas a datos de pH. Se explica cómo construir una función personalizada para calcular la moda, destacando la posibilidad de modas múltiples y la necesidad de verificar los resultados con la función `table`. Luego se calculan valores mínimo, máximo y rango con `min`, `max` y `range`, y se trabaja con varianza muestral y desvío estándar usando `var`, `sd` y `sqrt`. Finalmente, se introduce la construcción de una función personalizada para el coeficiente de variación, dado que R no lo incluye de forma nativa.
+
+**Archivo:** Unidad 2/Clase 3/Modulo 3 - Video 7 _ Medidas por varias columnas con las funciones apply.txt
+**Fecha:** No identificada
+**Temas:** Funciones apply en R, apply/lapply/sapply/tapply, estadísticas por columnas, test de normalidad (Shapiro-Wilk), hipótesis nula, coeficiente de asimetría y curtosis
+**Resumen:** La clase retoma brevemente la interpretación del test de Shapiro-Wilk para evaluar si una muestra proviene de una población con distribución normal, explicando el concepto de p-valor y la decisión de rechazar la hipótesis nula. Luego se introduce el conjunto de funciones `apply` de R (`apply`, `lapply`, `sapply` y `tapply`) como herramienta para calcular estadísticas (como la media) sobre múltiples columnas de un data frame de forma simultánea. Se explican las diferencias en el formato de salida de cada variante: tabla, lista o vector. Finalmente, se presenta `tapply` como una función que permite calcular estadísticas condicionadas a un operador lógico, por ejemplo, calcular el promedio solo para registros que superen un umbral determinado.
+
+**Archivo:** Unidad 2/Clase 3/Modulo 3 - Video 8_ Medidas en conjunto con las funciones summary y describe.txt
+**Fecha:** No identificada
+**Temas:** Función summary en R, función describe del paquete psych, medidas resumen, groupby con condiciones, cuartiles, coeficiente de asimetría y kurtosis
+**Resumen:** La clase muestra cómo calcular medidas resumen en R utilizando las funciones `summary` y `describe`. Se explica cómo aplicar `summary` a un data frame completo para obtener mínimo, cuartiles, mediana y media, y cómo segmentar el cálculo de una medida (como la media del pH) según una condición lógica. Luego se presenta la función `describe` del paquete `psych`, que ofrece una tabla más completa incluyendo desvío estándar, mediana, media truncada, rango, coeficiente de asimetría y kurtosis. Se enfatiza la interpretación de resultados y la corrección de errores por argumentos mal especificados.
 
 <!-- ESTADO_RESUMEN
 {
@@ -407,6 +443,56 @@ _Última actualización: 30/08/26_
           "fecha": "No identificada",
           "temas": "Estadística descriptiva, tablas de frecuencia, representaciones gráficas, medidas de tendencia central y dispersión, variables bidimensionales, correlación y regresión, probabilidad, variables aleatorias, distribuciones de probabilidad, inferencia estadística, intervalos de confianza, contrastes de hipótesis, chi-cuadrado, ANOVA, tests no paramétricos",
           "resumen": "Este archivo corresponde al libro completo \"Bioestadística: Métodos y Aplicaciones\" de Barón López (2004), utilizado como material de referencia para la materia. Cubre desde conceptos básicos de estadística descriptiva (tipos de variables, tablas de frecuencia, gráficos, medidas de centralización, dispersión y forma) hasta estadística inferencial avanzada, incluyendo cálculo de probabilidades, distribuciones teóricas discretas y continuas (Binomial, Poisson, Normal, t-Student, chi-cuadrado, F de Snedecor), estimación puntual y por intervalos de confianza, contrastes de hipótesis paramétricos para medias, varianzas y proporciones, análisis de la varianza (ANOVA) y alternativas no paramétricas. Cada capítulo incorpora ejemplos aplicados al ámbito de las ciencias de la salud y una sección de problemas para práctica."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2",
+        "Clase 3"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/Clase 3/UNIDAD II - Clase 3.md",
+          "fecha": "No identificada",
+          "temas": "Definiciones básicas de estadística, población y muestra, tipos de variables, análisis exploratorio de datos, sumarización y visualización de datos, distribuciones teóricas (t de Student, Chi Cuadrado)",
+          "resumen": "La clase introduce los conceptos fundamentales de la estadística inferencial, diferenciando sus dos grandes ramas: descriptiva e inferencial. Se definen términos clave como población, muestra, unidad elemental, variable, parámetro y estadístico. Se clasifican los tipos de variables (cualitativas y cuantitativas, con sus subtipos) y se presenta el análisis exploratorio de datos mediante sumarización y visualización. El contenido de la unidad también contempla distribuciones teóricas como la t de Student y Chi Cuadrado."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 3/Modulo 3 - Video 2_ Medidas de localización y dispersión.txt",
+          "fecha": "No identificada",
+          "temas": "Medidas de localización, percentiles, cuartiles, media aritmética, mediana, moda, medidas de dispersión, rango, varianza, desvío estándar",
+          "resumen": "La clase presenta las principales herramientas estadísticas para describir datos muestrales, organizadas en medidas de localización y de dispersión. Dentro de las medidas de localización se explican el mínimo, máximo, percentiles, cuartiles (Q1, Q2, Q3), la media aritmética (promedio), la mediana y la moda. Luego se abordan las medidas de dispersión o variabilidad: el rango, el rango intercuartil, la varianza muestral y el desvío estándar, destacando que este último resulta más interpretable al expresarse en las mismas unidades que la variable analizada."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 3/Modulo 3 - Video 3_ Medidas de forma.txt",
+          "fecha": "No identificada",
+          "temas": "Coeficiente de variación, medidas de forma, asimetría, kurtosis, parámetros poblacionales vs. muestrales",
+          "resumen": "La clase aborda primero el coeficiente de variación como medida de dispersión relativa a la media, útil para comparar distintas muestras o instrumentos. Luego se introducen las medidas de forma: asimetría (distribución con cola hacia la derecha o izquierda) y kurtosis (concentración de datos en torno a la media: leptocúrtica, platicúrtica o mesocúrtica), explicando cómo el signo del coeficiente de kurtosis permite clasificarlas. Finalmente, se menciona la distinción entre estadísticos muestrales (media, varianza y desvío muestral) y parámetros poblacionales (µ, σ², σ), señalando que los primeros actúan como estimadores de los segundos, e introduce el concepto de proporción estimada a partir de la frecuencia relativa."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 3/Modulo 3 - Video 4_ Medidas de posición.txt",
+          "fecha": "No identificada",
+          "temas": "Medidas de tendencia central en R, media, mediana, cuantiles, rango intercuartil, moda, creación de funciones en R",
+          "resumen": "La clase muestra cómo calcular medidas de posición y tendencia central utilizando R. Se trabaja con un dataset previamente cargado y se aplican funciones como `mean()` para la media, `median()` para la mediana, `quantile()` para los cuartiles (Q1, Q2 y Q3), e `IQR()` para el rango intercuartil. Dado que R base no incluye una función nativa para la moda, se enseña a crear una función personalizada utilizando `unique()` y tablas de frecuencias para identificar el valor más repetido."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 3/Modulo 3 - Video 5_ Medidas de dispersión.txt",
+          "fecha": "No identificada",
+          "temas": "Moda, medidas de dispersión, varianza, desvío estándar, coeficiente de variación, funciones en R",
+          "resumen": "La clase aborda el cálculo de medidas de dispersión en R aplicadas a datos de pH. Se explica cómo construir una función personalizada para calcular la moda, destacando la posibilidad de modas múltiples y la necesidad de verificar los resultados con la función `table`. Luego se calculan valores mínimo, máximo y rango con `min`, `max` y `range`, y se trabaja con varianza muestral y desvío estándar usando `var`, `sd` y `sqrt`. Finalmente, se introduce la construcción de una función personalizada para el coeficiente de variación, dado que R no lo incluye de forma nativa."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 3/Modulo 3 - Video 7 _ Medidas por varias columnas con las funciones apply.txt",
+          "fecha": "No identificada",
+          "temas": "Funciones apply en R, apply/lapply/sapply/tapply, estadísticas por columnas, test de normalidad (Shapiro-Wilk), hipótesis nula, coeficiente de asimetría y curtosis",
+          "resumen": "La clase retoma brevemente la interpretación del test de Shapiro-Wilk para evaluar si una muestra proviene de una población con distribución normal, explicando el concepto de p-valor y la decisión de rechazar la hipótesis nula. Luego se introduce el conjunto de funciones `apply` de R (`apply`, `lapply`, `sapply` y `tapply`) como herramienta para calcular estadísticas (como la media) sobre múltiples columnas de un data frame de forma simultánea. Se explican las diferencias en el formato de salida de cada variante: tabla, lista o vector. Finalmente, se presenta `tapply` como una función que permite calcular estadísticas condicionadas a un operador lógico, por ejemplo, calcular el promedio solo para registros que superen un umbral determinado."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 3/Modulo 3 - Video 8_ Medidas en conjunto con las funciones summary y describe.txt",
+          "fecha": "No identificada",
+          "temas": "Función summary en R, función describe del paquete psych, medidas resumen, groupby con condiciones, cuartiles, coeficiente de asimetría y kurtosis",
+          "resumen": "La clase muestra cómo calcular medidas resumen en R utilizando las funciones `summary` y `describe`. Se explica cómo aplicar `summary` a un data frame completo para obtener mínimo, cuartiles, mediana y media, y cómo segmentar el cálculo de una medida (como la media del pH) según una condición lógica. Luego se presenta la función `describe` del paquete `psych`, que ofrece una tabla más completa incluyendo desvío estándar, mediana, media truncada, rango, coeficiente de asimetría y kurtosis. Se enfatiza la interpretación de resultados y la corrección de errores por argumentos mal especificados."
         }
       ]
     ]
