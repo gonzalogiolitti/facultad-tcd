@@ -91,27 +91,6 @@
         "dragging": false
       },
       {
-        "id": "20ff0f06-7bbc-43a5-befa-3647bcf33049",
-        "parentId": "aa85bb1c-5e71-41c0-904f-be9de336391f",
-        "type": "Attribute",
-        "position": {
-          "x": 0.0,
-          "y": -71.0
-        },
-        "data": {
-          "label": "id_departamento",
-          "types": {
-            "Unique": true
-          },
-          "isSelected": false,
-          "isConnectable": true
-        },
-        "measured": {
-          "width": 100,
-          "height": 50
-        }
-      },
-      {
         "id": "c139258d-c791-47a1-8d1a-f1f7ab1a016a",
         "parentId": "aa85bb1c-5e71-41c0-904f-be9de336391f",
         "type": "Attribute",
@@ -121,7 +100,9 @@
         },
         "data": {
           "label": "nombre",
-          "types": [],
+          "types": {
+            "Unique": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -424,7 +405,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_pedido",
+          "label": "numero_pedido",
           "types": {
             "Unique": true
           },
@@ -446,7 +427,9 @@
         },
         "data": {
           "label": "precio",
-          "types": [],
+          "types": {
+            "Derived": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -465,7 +448,9 @@
         },
         "data": {
           "label": "cantidad_productos",
-          "types": [],
+          "types": {
+            "Derived": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -483,7 +468,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_producto",
+          "label": "codigo_producto",
           "types": {
             "Unique": true
           },
@@ -542,7 +527,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_proveedor",
+          "label": "cuit",
           "types": {
             "Unique": true
           },
@@ -865,7 +850,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_paciente",
+          "label": "dni",
           "types": {
             "Unique": true
           },
@@ -946,9 +931,7 @@
         },
         "data": {
           "label": "fecha_hora",
-          "types": {
-            "Unique": true
-          },
+          "types": [],
           "isSelected": false,
           "isConnectable": true
         },
@@ -980,12 +963,6 @@
           "minCardinality": "Mandatory",
           "maxCardinality": "One"
         }
-      },
-      {
-        "id": "49db4728-7e47-4537-89c9-50950a35bcb7",
-        "type": "Attribute",
-        "source": "aa85bb1c-5e71-41c0-904f-be9de336391f",
-        "target": "20ff0f06-7bbc-43a5-befa-3647bcf33049"
       },
       {
         "id": "35dc3e3f-faac-4d45-8642-baafd77cd7fc",

@@ -91,27 +91,6 @@
         "dragging": false
       },
       {
-        "id": "603a2338-4dd1-4748-a513-237abf9a4143",
-        "parentId": "ba743cff-959b-44cf-89c9-3f01ffb109aa",
-        "type": "Attribute",
-        "position": {
-          "x": 0.0,
-          "y": -71.0
-        },
-        "data": {
-          "label": "id_libro",
-          "types": {
-            "Unique": true
-          },
-          "isSelected": false,
-          "isConnectable": true
-        },
-        "measured": {
-          "width": 100,
-          "height": 50
-        }
-      },
-      {
         "id": "aa109ccc-4bd2-4c87-8cf4-1f5777f88fe5",
         "parentId": "ba743cff-959b-44cf-89c9-3f01ffb109aa",
         "type": "Attribute",
@@ -159,7 +138,9 @@
         },
         "data": {
           "label": "isbn",
-          "types": [],
+          "types": {
+            "Unique": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -177,7 +158,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_usuario",
+          "label": "nro_socio",
           "types": {
             "Unique": true
           },
@@ -237,9 +218,7 @@
         },
         "data": {
           "label": "fecha_inicio",
-          "types": {
-            "Unique": true
-          },
+          "types": [],
           "isSelected": false,
           "isConnectable": true
         },
@@ -413,7 +392,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_cliente",
+          "label": "dni",
           "types": {
             "Unique": true
           },
@@ -453,7 +432,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_compra",
+          "label": "numero_comprobante",
           "types": {
             "Unique": true
           },
@@ -514,7 +493,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_prenda",
+          "label": "codigo_prenda",
           "types": {
             "Unique": true
           },
@@ -798,27 +777,6 @@
         }
       },
       {
-        "id": "49ac94e3-7fe5-4765-b7b2-826e26f65a8c",
-        "parentId": "9b21dc96-6fa0-4cdf-a11e-ad3bb2112583",
-        "type": "Attribute",
-        "position": {
-          "x": 0.0,
-          "y": 71.0
-        },
-        "data": {
-          "label": "id_departamento",
-          "types": {
-            "Unique": true
-          },
-          "isSelected": false,
-          "isConnectable": true
-        },
-        "measured": {
-          "width": 100,
-          "height": 50
-        }
-      },
-      {
         "id": "881e964a-9cf5-4233-97fa-afd42cf32a20",
         "parentId": "9b21dc96-6fa0-4cdf-a11e-ad3bb2112583",
         "type": "Attribute",
@@ -828,7 +786,9 @@
         },
         "data": {
           "label": "nombre",
-          "types": [],
+          "types": {
+            "Unique": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -1228,7 +1188,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_proveedor",
+          "label": "cuit",
           "types": {
             "Unique": true
           },
@@ -1287,7 +1247,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_ingrediente",
+          "label": "codigo_ingrediente",
           "types": {
             "Unique": true
           },
@@ -1338,27 +1298,6 @@
         }
       },
       {
-        "id": "e3260717-0fa3-4340-bd4b-34f06f293c0f",
-        "parentId": "53668518-410c-4bfa-9cdc-b1baf6977e89",
-        "type": "Attribute",
-        "position": {
-          "x": 210.0,
-          "y": -63.0
-        },
-        "data": {
-          "label": "id_plato",
-          "types": {
-            "Unique": true
-          },
-          "isSelected": false,
-          "isConnectable": true
-        },
-        "measured": {
-          "width": 100,
-          "height": 50
-        }
-      },
-      {
         "id": "6abe19d1-d7a1-48ce-b5b0-e5cd9f3ef4e2",
         "parentId": "53668518-410c-4bfa-9cdc-b1baf6977e89",
         "type": "Attribute",
@@ -1368,7 +1307,9 @@
         },
         "data": {
           "label": "nombre",
-          "types": [],
+          "types": {
+            "Unique": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -1424,7 +1365,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "matricula",
+          "label": "dni",
           "types": {
             "Unique": true
           },
@@ -1464,7 +1405,7 @@
           "y": 71.0
         },
         "data": {
-          "label": "legajo",
+          "label": "dni",
           "types": {
             "Unique": true
           },
@@ -1544,7 +1485,7 @@
           "y": 71.0
         },
         "data": {
-          "label": "id_pedido",
+          "label": "numero_comanda",
           "types": {
             "Unique": true
           },
@@ -1584,7 +1525,7 @@
           "y": 71.0
         },
         "data": {
-          "label": "id_cliente",
+          "label": "dni",
           "types": {
             "Unique": true
           },
@@ -1676,12 +1617,6 @@
           "minCardinality": "Optional",
           "maxCardinality": "Many"
         }
-      },
-      {
-        "id": "245526c8-96f7-48b3-b30f-e86d24f72413",
-        "type": "Attribute",
-        "source": "ba743cff-959b-44cf-89c9-3f01ffb109aa",
-        "target": "603a2338-4dd1-4748-a513-237abf9a4143"
       },
       {
         "id": "66992397-42b9-40ba-baed-4aaf9d1d565f",
@@ -1904,12 +1839,6 @@
         "target": "7c4f7e6e-e7c1-4412-872c-da2d88df6196"
       },
       {
-        "id": "0527855d-7e01-4e62-b798-d2f67cb273a6",
-        "type": "Attribute",
-        "source": "9b21dc96-6fa0-4cdf-a11e-ad3bb2112583",
-        "target": "49ac94e3-7fe5-4765-b7b2-826e26f65a8c"
-      },
-      {
         "id": "777a49e9-7759-4ee1-a913-26f81e84f03f",
         "type": "Attribute",
         "source": "9b21dc96-6fa0-4cdf-a11e-ad3bb2112583",
@@ -2104,12 +2033,6 @@
         "type": "Attribute",
         "source": "8b86dd7f-bfbf-4278-a46c-ddee6b857fc4",
         "target": "a30b7e97-20fe-456c-9dda-eeac51214e50"
-      },
-      {
-        "id": "950140ca-3967-40e5-9c15-bb094f8cc224",
-        "type": "Attribute",
-        "source": "53668518-410c-4bfa-9cdc-b1baf6977e89",
-        "target": "e3260717-0fa3-4340-bd4b-34f06f293c0f"
       },
       {
         "id": "49107705-c64f-463b-84b2-9210353edd84",

@@ -454,27 +454,6 @@
         }
       },
       {
-        "id": "615b8c61-165d-4659-be08-23a8857bc609",
-        "parentId": "c1974f06-38ce-43d0-9fe7-b2047283472d",
-        "type": "Attribute",
-        "position": {
-          "x": 0.0,
-          "y": -71.0
-        },
-        "data": {
-          "label": "id_cancion",
-          "types": {
-            "Unique": true
-          },
-          "isSelected": false,
-          "isConnectable": true
-        },
-        "measured": {
-          "width": 100,
-          "height": 50
-        }
-      },
-      {
         "id": "065b539a-dc4b-4937-9ee6-55595ae5fa98",
         "parentId": "c1974f06-38ce-43d0-9fe7-b2047283472d",
         "type": "Attribute",
@@ -541,7 +520,9 @@
         },
         "data": {
           "label": "isrc",
-          "types": [],
+          "types": {
+            "Unique": true
+          },
           "isSelected": false,
           "isConnectable": true
         },
@@ -735,9 +716,7 @@
         },
         "data": {
           "label": "fecha_hora",
-          "types": {
-            "Unique": true
-          },
+          "types": [],
           "isSelected": false,
           "isConnectable": true
         },
@@ -927,12 +906,6 @@
         "type": "Attribute",
         "source": "39e725b9-ee6a-4d2c-b7ea-03e00e3837b1",
         "target": "edb6675e-c59e-44d3-8a78-ecffd3eed2ea"
-      },
-      {
-        "id": "1d5bdaf0-2c0b-4f98-b4b3-4056766d018a",
-        "type": "Attribute",
-        "source": "c1974f06-38ce-43d0-9fe7-b2047283472d",
-        "target": "615b8c61-165d-4659-be08-23a8857bc609"
       },
       {
         "id": "f513935f-0c4a-4838-b00a-d183f1c4c141",

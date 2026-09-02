@@ -330,9 +330,7 @@
         },
         "data": {
           "label": "inicio_expo",
-          "types": {
-            "Unique": true
-          },
+          "types": [],
           "isSelected": false,
           "isConnectable": true
         },
@@ -665,7 +663,7 @@
           "y": -42.0
         },
         "data": {
-          "label": "id_agencia",
+          "label": "numero_agencia",
           "types": {
             "Unique": true
           },
@@ -861,7 +859,7 @@
           "y": -71.0
         },
         "data": {
-          "label": "id_garage",
+          "label": "numero_garage",
           "types": {
             "Unique": true
           },
