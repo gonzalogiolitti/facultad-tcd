@@ -3,95 +3,101 @@
 **Materia:** Bases de Datos · TUCD (UGR) · 2026
 **Estudio de caso:** Sistema de gestión de un gimnasio
 **Entregable:** Diagrama Entidad‑Relación (DER)
-**Herramienta de modelado:** ERDPlus (notación Chen modificada de la cátedra) · archivo [`HE2_gimnasio.erdplus`](HE2_gimnasio.erdplus)
+**Herramienta:** ERDPlus (notación Chen modificada de la cátedra) · archivo [`HE2_gimnasio.erdplus`](HE2_gimnasio.erdplus)
 
-> **Notación usada**
-> - Entidad = rectángulo · Entidad débil = rectángulo doble.
-> - Atributo = elipse · **PK** = subrayado (`Unique`) · **clave parcial** = subrayado punteado (`Partially Unique`).
-> - Atributo **multivaluado** = doble elipse · **derivado** = elipse punteada · **compuesto** = elipse con sub‑elipses · **opcional** = admite `NULL`.
-> - Relación = rombo · Relación identificatoria (de entidad débil) = rombo doble.
-> - Cardinalidad en pares **(mín, máx)** sobre cada extremo, tal como los usa la cátedra: `(0,1)`, `(1,1)`, `(0,N)`, `(1,N)`.
->   Se lee como la **participación de esa entidad** en la relación.
+> **Metodología aplicada (pautas del profesor)**
+> 1. **No se rompen las relaciones N:M**: quedan como rombos, con sus atributos **dentro del rombo**.
+> 2. **Una sola clave por entidad, natural**: se usa el identificador del dominio (DNI, nombre de la
+>    actividad, número del recibo), **no** un `id_` sintético.
+> 3. **Los atributos calculados / derivados no se almacenan**: se marcan como derivados.
+> 4. **Los atributos de una relación N:M van en el rombo**, nunca en las entidades.
+> 5. **Cardinalidades en pares (mín, máx)**: `(0,1)`, `(1,1)`, `(0,N)`, `(1,N)`, leídas como la
+>    participación de cada entidad en la relación.
 
 ---
 
-## 1. Identificación de entidades
+## 1. Entidades
 
-| Entidad | Tipo | Justificación (del enunciado) |
+| Entidad | Clave primaria (natural) | Justificación de la PK |
 |---|---|---|
-| **ACTIVIDAD** | Fuerte | *"El gimnasio ofrece diferentes actividades…"*. Tiene existencia propia, datos propios (tarifa, fechas de oferta) y se relaciona con profesores y alumnos. |
-| **PROFESOR** | Fuerte | *"Cada actividad es impartida por un profesor… De cada profesor deberá almacenarse información personal y de contacto"*. Entidad con identidad propia (DNI). |
-| **ALUMNO** | Fuerte | *"De cada alumno se desea registrar información personal y de contacto…"*. Además *"sus datos deberán conservarse"* aunque deje de asistir → nunca se borra, es una entidad persistente. |
-| **RECIBO** | **Débil** (de ALUMNO) | *"Se deberá mantener un registro de los recibos o cuotas mensuales correspondientes a cada alumno"*. Un recibo **no se identifica por sí solo**: "el recibo del período 2026‑03" no señala nada; "el recibo del período 2026‑03 **del alumno X**" sí. Su identificación depende de ALUMNO → entidad débil con clave parcial `periodo`. |
+| **ACTIVIDAD** | `nombre` | *"Culturismo, Pilates, Ritmo, CrossFit…"*. Los nombres de las actividades **no se repiten** y no cambian; es el identificador natural con el que se las nombra en los folletos. No hace falta un `id_actividad`. |
+| **PROFESOR** | `dni` | Identificador natural, único y estable de una persona; existe fuera del sistema. |
+| **ALUMNO** | `dni` | Ídem. *(El `numero_socio` sería una clave candidata alternativa, pero el DNI ya identifica de forma natural y no se reasigna.)* |
+| **RECIBO** | `numero_recibo` | Un recibo / comprobante lleva un **número correlativo propio** asignado al emitirlo (como el número de una factura). Es un identificador **natural del documento**, no un `id_` sintético. |
 
-**Elementos del enunciado que NO son entidades:**
+Las cuatro son **entidades fuertes**: cada una tiene su propia clave natural y existencia independiente.
 
-- *"actividades que tiene a su cargo"* (profesor), *"actividades que realiza"* / *"actividades de interés"* (alumno): **no son atributos** de PROFESOR ni de ALUMNO, sino **relaciones** con ACTIVIDAD (ver §3). Modelarlas como atributos multivaluados haría imposible guardar la tarifa, el profesor o las fechas de cada actividad.
-- *"situación respecto del pago"* / *"estado de pago"*: es un **atributo derivado** de ALUMNO, calculado a partir de RECIBO (ver §2).
-- *"tarifa mensual"*: atributo de ACTIVIDAD (es *"fija"* por actividad), no una entidad ni un atributo del alumno.
+> **Sobre RECIBO:** también sería válido modelarlo como **entidad débil** de ALUMNO, identificada por
+> `dni_alumno + periodo`. Se optó por la entidad fuerte con `numero_recibo` porque el enunciado y la
+> pauta piden **una única clave natural por entidad**, y un comprobante ya tiene su número propio.
+
+**Elementos del enunciado que NO son entidades ni atributos de entidad:**
+
+- *"qué actividades realiza"* / *"en cuáles está interesado"* (alumno) y *"actividades a cargo"*
+  (profesor) → son **relaciones** con ACTIVIDAD (§3), no atributos multivaluados. Si fueran atributos
+  no podríamos guardar la tarifa ni el profesor de cada actividad.
+- *"situación respecto del pago"* → **no es un atributo** de ALUMNO: se **deriva** de RECIBO (existe
+  algún recibo con `fecha_emision` y sin `fecha_pago` ⇒ el alumno debe). Como es un dato calculado,
+  **no se almacena**.
 
 ---
 
 ## 2. Atributos por entidad
 
 ### ACTIVIDAD
-| Atributo | Tipo | Observación |
+| Atributo | Tipo | Justificación |
 |---|---|---|
-| `id_actividad` | **PK** (clave sustituta) | Se agrega un identificador propio: protege ante cambios de nombre y simplifica las FK de las relaciones N:M. |
-| `nombre` | Clave candidata (`Unique`) | *"Culturismo, Pilates, Ritmo, CrossFit…"*. No se repite; es la clave natural, se mantiene como `UNIQUE`. |
+| `nombre` | **PK** (natural) | Identifica la actividad; no se repite. |
 | `tarifa_mensual` | Simple | *"Cada actividad posee una tarifa mensual fija"*. |
 | `fecha_inicio_oferta` | Simple | *"guardando las fechas de inicio… de la oferta"*. |
-| `fecha_fin_oferta` | **Opcional** (`NULL`) | *"…y fin de la oferta"*. Está vacía mientras la actividad **sigue ofreciéndose**; se completa cuando deja de ofrecerse. Permite la consulta *"actividades que se ofrecen actualmente"* = `fecha_fin_oferta IS NULL` (o futura). |
+| `fecha_fin_oferta` | **Opcional** (`NULL`) | *"…y fin de la oferta"*. Vacía mientras la actividad **sigue ofreciéndose**; se completa al darla de baja. Habilita la consulta *"actividades ofrecidas actualmente"*. |
+| *(vigente)* | **Derivado – NO se almacena** | Se calcula: `fecha_fin_oferta IS NULL OR fecha_fin_oferta >= CURRENT_DATE`. No es una columna. |
 
 ### PROFESOR
-| Atributo | Tipo | Observación |
+| Atributo | Tipo | Justificación |
 |---|---|---|
-| `dni` | **PK** | Clave natural estable y única de una persona. |
-| `nombre` | Simple | Información personal. |
-| `apellido` | Simple | Información personal. |
-| `fecha_nacimiento` | Simple | Información personal. |
-| `direccion` | **Compuesto** → `calle`, `numero`, `localidad` | Información de contacto; se descompone para poder consultar por localidad. |
-| `telefono` | **Multivaluado** | *"información… de contacto"*: una persona puede tener varios teléfonos (celular, fijo, alternativo). |
-| `email` | Simple | Información de contacto. |
+| `dni` | **PK** (natural) | Identificador de la persona. |
+| `nombre`, `apellido`, `fecha_nacimiento` | Simple | Datos personales. |
+| `edad` | **Derivado – NO se almacena** | Se calcula a partir de `fecha_nacimiento`. No es una columna. |
+| `direccion` | **Compuesto** → `calle`, `numero`, `localidad` | Dato de contacto; se descompone para poder consultar por localidad. |
+| `telefono` | **Multivaluado** | Un profesor puede tener varios teléfonos (celular, fijo). |
+| `email` | Simple | Dato de contacto. |
 
 ### ALUMNO
-| Atributo | Tipo | Observación |
+| Atributo | Tipo | Justificación |
 |---|---|---|
-| `dni` | **PK** | Clave natural estable y única. |
-| `nombre` | Simple | Información personal. |
-| `apellido` | Simple | Información personal. |
-| `fecha_nacimiento` | Simple | Información personal. |
-| `direccion` | **Compuesto** → `calle`, `numero`, `localidad` | Contacto; se descompone. |
+| `dni` | **PK** (natural) | Identificador de la persona. |
+| `nombre`, `apellido`, `fecha_nacimiento` | Simple | Datos personales. |
+| `edad` | **Derivado – NO se almacena** | Calculada desde `fecha_nacimiento`. |
+| `direccion` | **Compuesto** → `calle`, `numero`, `localidad` | Contacto. Necesario para *"el envío de información sobre promociones"*. |
 | `telefono` | **Multivaluado** | Igual criterio que en PROFESOR. |
-| `email` | Simple | Necesario para *"el envío de información sobre promociones, ofertas o nuevas actividades"*. |
-| `fecha_alta` | Simple | Fecha en que se incorporó al gimnasio. |
-| `activo` | Simple (booleano) | *"Un alumno puede dejar de asistir… sus datos deberán conservarse"*. **No se borra el registro**: se marca `activo = falso`. Así se mantiene el historial y se lo puede seguir contactando. |
-| `fecha_baja` | **Opcional** (`NULL`) | Se completa sólo cuando el alumno deja de asistir. |
-| `estado_pago` | **Derivado** | *"cuál es su situación respecto del pago de las cuotas"*. Se calcula a partir de RECIBO: **"con deuda"** si existe algún recibo con `fecha_emision` y sin `fecha_pago`; **"al día"** en caso contrario. No se almacena para evitar inconsistencias. |
+| `email` | Simple | Contacto / envío de promociones. |
+| `activo` | Simple (booleano) | *"si asiste o no"*. Si el alumno deja de asistir se pone `activo = falso`; **el registro no se borra** para conservar el historial y poder seguir contactándolo. |
 
-### RECIBO  *(entidad débil de ALUMNO)*
-| Atributo | Tipo | Observación |
+### RECIBO
+| Atributo | Tipo | Justificación |
 |---|---|---|
-| `periodo` | **Clave parcial** (`Partially Unique`) | *"el período al que corresponde"* (mes/año, p. ej. `2026-03`). Único **dentro de cada alumno**. La PK completa del recibo es `dni_alumno + periodo`. |
-| `importe` | Simple | *"el importe"*. Total del período (la aplicación lo obtiene sumando las tarifas de las actividades que el alumno realiza; el recibo no se desglosa por actividad, el enunciado no lo pide). |
+| `numero_recibo` | **PK** (natural) | Número correlativo del comprobante. |
+| `periodo` | Simple | *"el período al que corresponde"* (mes/año, p. ej. `2026-03`). |
+| `importe` | Simple – **se almacena** | *"el importe"*. Aunque se calcula al emitir (suma de `tarifa_mensual` de las actividades que el alumno realiza en ese período), es un **dato histórico del documento**: queda congelado y no debe cambiar si luego cambian las tarifas. Por eso **sí se guarda** (a diferencia de `edad` o *vigente*). |
 | `fecha_emision` | Simple | *"la fecha de emisión"*. |
-| `fecha_pago` | **Opcional** (`NULL`) | *"cuando corresponda, la fecha de pago"*. Como *"los pagos deben ser totales, no se admiten pagos parciales"*, **su sola presencia indica que el recibo fue pagado íntegramente**; por eso no hace falta un atributo "monto pagado". |
+| `fecha_pago` | **Opcional** (`NULL`) | *"cuando corresponda, la fecha de pago"*. Como *"los pagos deben ser totales"*, **su sola presencia indica recibo saldado íntegramente**; no hace falta un atributo "monto pagado". |
 
 ---
 
 ## 3. Relaciones y cardinalidades
 
-| Relación | Extremos y cardinalidad **(mín, máx)** | Tipo | Atributos | Justificación |
+| Relación | Extremos y cardinalidad **(mín, máx)** | Tipo | Atributos (en el rombo) | Justificación |
 |---|---|---|---|---|
-| **dicta** | `PROFESOR` **(1,N)** — `ACTIVIDAD` **(1,1)** | 1:N | — | *"Cada actividad es impartida por **un** profesor"* → la actividad participa exactamente una vez `(1,1)`. *"Un mismo profesor puede estar a cargo de **una o más** actividades"* → `(1,N)`. La PK de PROFESOR baja como FK **obligatoria** a ACTIVIDAD. |
-| **realiza** | `ALUMNO` **(0,N)** — `ACTIVIDAD` **(0,N)** | N:M | `fecha_inscripcion` | *"qué actividad **o actividades** realiza actualmente"* → un alumno realiza 0..N actividades (0: alumno dado de baja cuyos datos se conservan, o sólo interesado). Una actividad la realizan 0..N alumnos (0: actividad nueva sin inscriptos). N:M → tabla intermedia; `fecha_inscripcion` es dato del **vínculo** (desde cuándo hace esa actividad). |
-| **interesado_en** | `ALUMNO` **(0,N)** — `ACTIVIDAD` **(0,N)** | N:M | — | *"qué otras actividades estaría interesado en realizar"*. Es una relación **distinta** de `realiza` aunque una los mismos dos tipos de entidad: expresa una intención futura, no una inscripción. Ambos extremos `(0,N)`: un alumno puede no tener ningún interés registrado y una actividad puede no interesarle a nadie. Sirve para *"el envío de información sobre… nuevas actividades"*. |
-| **tiene** *(identificatoria)* | `ALUMNO` **(0,N)** — `RECIBO` **(1,1)** | 1:N | — | *"los recibos… correspondientes a **cada alumno**"* → cada recibo pertenece a **exactamente un** alumno `(1,1)` (participación total: no existe un recibo sin alumno). Un alumno acumula 0..N recibos (uno por período; 0 si recién se inscribe). Relación **identificatoria**: la PK de RECIBO es `dni_alumno + periodo`. |
+| **dicta** | `PROFESOR` **(1,N)** — `ACTIVIDAD` **(1,1)** | **1:N** | — | *"Cada actividad es impartida por **un** profesor"* → la actividad participa exactamente una vez `(1,1)`. *"Un profesor puede estar a cargo de **una o más** actividades"* → `(1,N)`. |
+| **realiza** | `ALUMNO` **(0,N)** — `ACTIVIDAD` **(0,N)** | **N:M** *(se deja como rombo, no se rompe)* | **`fecha_inscripcion`** | *"qué actividad **o actividades** realiza"* → N:M. `(0,N)` de ambos lados: un alumno inactivo puede no realizar ninguna; una actividad nueva puede no tener inscriptos. **`fecha_inscripcion` depende del par (alumno, actividad)** ⇒ va **en el rombo**, no en ALUMNO ni en ACTIVIDAD. |
+| **interesado_en** | `ALUMNO` **(0,N)** — `ACTIVIDAD` **(0,N)** | **N:M** *(rombo, sin atributos)* | — | *"en cuáles está interesado"*. Relación **distinta** de `realiza` aunque una a las mismas entidades: expresa una intención, no una inscripción. `(0,N)`–`(0,N)`: puede no haber ningún interés registrado y una actividad puede no interesarle a nadie. Sirve para *"el envío de información sobre nuevas actividades"*. |
+| **tiene** | `ALUMNO` **(0,N)** — `RECIBO` **(1,1)** | **1:N** | — | *"los recibos correspondientes a **cada alumno**"* → cada recibo pertenece a **exactamente un** alumno `(1,1)`; participación total (no hay recibo sin alumno). Un alumno acumula 0..N recibos (0 si recién se inscribe). Es una relación normal: RECIBO tiene su propia PK. |
 
 **Lectura de cada relación en ambos sentidos**
 
-- `dicta`: *"un profesor dicta una o muchas actividades"* / *"una actividad es dictada por un único profesor"*.
-- `realiza`: *"un alumno realiza cero o muchas actividades"* / *"una actividad es realizada por cero o muchos alumnos"*.
+- `dicta`: *"un profesor dicta una o muchas actividades"* / *"una actividad la dicta exactamente un profesor"*.
+- `realiza`: *"un alumno realiza cero o muchas actividades"* / *"una actividad la realizan cero o muchos alumnos"*.
 - `interesado_en`: *"un alumno está interesado en cero o muchas actividades"* / *"una actividad interesa a cero o muchos alumnos"*.
 - `tiene`: *"un alumno tiene cero o muchos recibos"* / *"un recibo pertenece a exactamente un alumno"*.
 
@@ -101,14 +107,13 @@
 
 ```mermaid
 erDiagram
-    PROFESOR ||--|{ ACTIVIDAD : "dicta (1,N)–(1,1)"
-    ALUMNO   }o--o{ ACTIVIDAD : "realiza (0,N)–(0,N) · fecha_inscripcion"
-    ALUMNO   }o--o{ ACTIVIDAD : "interesado_en (0,N)–(0,N)"
-    ALUMNO   ||--o{ RECIBO    : "tiene (0,N)–(1,1) · identificatoria"
+    PROFESOR ||--|{ ACTIVIDAD : "dicta  (1,N)–(1,1)"
+    ALUMNO   }o--o{ ACTIVIDAD : "realiza  (0,N)–(0,N)  [rombo: fecha_inscripcion]"
+    ALUMNO   }o--o{ ACTIVIDAD : "interesado_en  (0,N)–(0,N)"
+    ALUMNO   ||--o{ RECIBO    : "tiene  (0,N)–(1,1)"
 
     ACTIVIDAD {
-        int  id_actividad PK
-        string nombre "UNIQUE (clave candidata)"
+        string nombre PK
         decimal tarifa_mensual
         date fecha_inicio_oferta
         date fecha_fin_oferta "opcional (NULL = vigente)"
@@ -118,6 +123,7 @@ erDiagram
         string nombre
         string apellido
         date   fecha_nacimiento
+        int    edad "DERIVADO - no se almacena"
         string direccion "compuesto: calle, numero, localidad"
         string telefono "multivaluado"
         string email
@@ -127,76 +133,90 @@ erDiagram
         string nombre
         string apellido
         date   fecha_nacimiento
+        int    edad "DERIVADO - no se almacena"
         string direccion "compuesto: calle, numero, localidad"
         string telefono "multivaluado"
         string email
-        date   fecha_alta
         bool   activo
-        date   fecha_baja "opcional"
-        string estado_pago "derivado de RECIBO"
     }
     RECIBO {
-        string periodo "clave parcial"
+        string numero_recibo PK
+        string periodo
         decimal importe
         date fecha_emision
         date fecha_pago "opcional"
     }
 ```
 
-> El diagrama para importar y presentar está en **`HE2_gimnasio.erdplus`** (formato nativo de erdplus.com):
-> RECIBO aparece como entidad **débil** (rectángulo doble), `direccion` como atributo **compuesto**,
-> `telefono` como **multivaluado**, `estado_pago` como **derivado**, y `realiza` / `interesado_en`
-> como dos rombos separados entre ALUMNO y ACTIVIDAD.
+> **En `HE2_gimnasio.erdplus`:** `realiza` e `interesado_en` son **rombos** (N:M sin romper);
+> `fecha_inscripcion` cuelga del rombo `realiza`; `edad` aparece como atributo **derivado** (elipse
+> punteada) en ALUMNO y PROFESOR; `direccion` como **compuesto**, `telefono` como **multivaluado**;
+> cada entidad tiene **un único atributo subrayado** (PK natural). El enunciado va como nota de texto.
 
-### Descripción textual del DER
+### Descripción textual
 
 ```
-ENTIDADES
-  ACTIVIDAD(id_actividad PK, nombre UNIQUE, tarifa_mensual,
-            fecha_inicio_oferta, fecha_fin_oferta [opcional])
-  PROFESOR (dni PK, nombre, apellido, fecha_nacimiento,
+ENTIDADES  (PK natural única, subrayada)
+  ACTIVIDAD(nombre, tarifa_mensual, fecha_inicio_oferta, fecha_fin_oferta [opcional])
+  PROFESOR (dni, nombre, apellido, fecha_nacimiento, edad [derivado],
             direccion{calle, numero, localidad}, telefono {multivaluado}, email)
-  ALUMNO   (dni PK, nombre, apellido, fecha_nacimiento,
-            direccion{calle, numero, localidad}, telefono {multivaluado}, email,
-            fecha_alta, activo, fecha_baja [opcional], estado_pago [derivado])
-  RECIBO   (periodo [clave parcial], importe, fecha_emision, fecha_pago [opcional])   -- débil de ALUMNO
+  ALUMNO   (dni, nombre, apellido, fecha_nacimiento, edad [derivado],
+            direccion{calle, numero, localidad}, telefono {multivaluado}, email, activo)
+  RECIBO   (numero_recibo, periodo, importe, fecha_emision, fecha_pago [opcional])
 
 RELACIONES
   dicta         : PROFESOR (1,N) ── (1,1) ACTIVIDAD
-  realiza       : ALUMNO (0,N) ── (0,N) ACTIVIDAD        [atributo: fecha_inscripcion]
-  interesado_en : ALUMNO (0,N) ── (0,N) ACTIVIDAD
-  tiene         : ALUMNO (0,N) ═══ (1,1) RECIBO          (identificatoria)
+  realiza       : ALUMNO (0,N) ──◇── (0,N) ACTIVIDAD        ◇ atributo: fecha_inscripcion
+  interesado_en : ALUMNO (0,N) ──◇── (0,N) ACTIVIDAD        (sin atributos)
+  tiene         : ALUMNO (0,N) ── (1,1) RECIBO
 ```
 
 ---
 
-## 5. Decisiones de diseño y supuestos
+## 5. Decisiones de diseño (cada una anclada al enunciado y a la metodología)
 
-1. **RECIBO como entidad débil.** El enunciado ata los recibos a *"cada alumno"* y pide como mínimo `periodo`, `importe`, `fecha_emision` y `fecha_pago`. `periodo` sólo es único **por alumno**, así que la identificación de RECIBO es `dni_alumno + periodo` a través de la relación identificatoria `tiene`.
-   *Alternativa válida:* RECIBO fuerte con `nro_recibo` sustituto y `UNIQUE(dni_alumno, periodo)`; se optó por la débil por ser más fiel a la semántica.
-2. **`estado_pago` derivado, no almacenado.** Guardarlo como dato fijo generaría inconsistencias (habría que actualizarlo con cada pago). Se deriva de los recibos impagos.
-3. **`fecha_fin_oferta` opcional = actividad vigente.** Es lo que habilita la consulta pedida: *"consultar las actividades que se ofrecen actualmente junto con sus respectivas tarifas"* → `SELECT nombre, tarifa_mensual FROM actividad WHERE fecha_fin_oferta IS NULL OR fecha_fin_oferta >= CURRENT_DATE`.
-4. **Baja lógica del alumno (`activo` + `fecha_baja`).** *"sus datos deberán conservarse"* ⇒ no hay borrado físico; el alumno inactivo sigue en la base para historial y para *"el envío de información sobre promociones"*.
-5. **Dos relaciones N:M entre ALUMNO y ACTIVIDAD.** `realiza` (inscripción vigente, con `fecha_inscripcion`) e `interesado_en` (intención) son hechos distintos y deben poder coexistir para el mismo par (un alumno puede hacer Pilates y además estar interesado en CrossFit).
-6. **`importe` del recibo sin desglose por actividad.** El enunciado sólo pide `período/importe/fecha_emisión/fecha_pago`. El importe es el total del período; la relación con las actividades que lo componen se resuelve por aplicación a partir de `realiza` + `tarifa_mensual`. No se agregan entidades que el enunciado no menciona.
-7. **`pagos totales` ⇒ sin atributo "monto pagado".** La presencia de `fecha_pago` indica pago íntegro del `importe`.
-8. **`dicta` con profesor obligatorio `(1,N)`.** El enunciado dice *"una o más"* actividades por profesor. Si el gimnasio quisiera precargar profesores sin actividad asignada, el mínimo pasaría a `(0,N)` sin otro cambio estructural.
-9. **Claves.** `dni` como PK natural de personas (estable y único); `id_actividad` sustituto en ACTIVIDAD con `nombre` como candidata `UNIQUE` (evita duplicados por error de tipeo, tal como advierte la cátedra).
+1. **PKs naturales, una por entidad.** `nombre` (ACTIVIDAD), `dni` (PROFESOR, ALUMNO),
+   `numero_recibo` (RECIBO). No se introduce ningún `id_` sintético: en todos los casos existe un
+   identificador propio del dominio.
+2. **`realiza` e `interesado_en` quedan como N:M (rombos).** No se sustituyen por entidades
+   asociativas. `fecha_inscripcion` —único dato que **no pertenece** ni al alumno ni a la actividad
+   por separado— va **dentro del rombo `realiza`**.
+3. **`edad` es derivado y no se guarda.** Se calcula desde `fecha_nacimiento`. Se marca como
+   atributo derivado para dejar explícito que **no es una columna**.
+4. **La "vigencia" de una actividad es derivada.** No hay un booleano `vigente`; se obtiene de
+   `fecha_fin_oferta`. Esto habilita, sin datos redundantes, la consulta pedida:
+   ```sql
+   SELECT nombre, tarifa_mensual
+   FROM   actividad
+   WHERE  fecha_fin_oferta IS NULL OR fecha_fin_oferta >= CURRENT_DATE;
+   ```
+5. **`importe` del recibo SÍ se almacena.** Aunque surge de una suma, es un **valor histórico
+   congelado** al emitir el comprobante (igual que el precio de una línea de factura): si mañana
+   cambia una tarifa, los recibos ya emitidos no deben alterarse. Por eso **no** se modela como
+   derivado.
+6. **Baja lógica del alumno (`activo`).** *"sus datos deberán conservarse"* ⇒ no hay borrado
+   físico; `activo = falso` marca al que dejó de asistir, que sigue en la base para historial y
+   promociones.
+7. **`estado_pago` no es atributo.** Se deriva de RECIBO (recibos sin `fecha_pago`).
+8. **Pagos totales ⇒ sin "monto pagado".** La presencia de `fecha_pago` indica pago íntegro del
+   `importe`.
+9. **Dos relaciones N:M entre ALUMNO y ACTIVIDAD.** `realiza` (inscripción, con
+   `fecha_inscripcion`) e `interesado_en` (intención) son hechos distintos que pueden coexistir para
+   el mismo par (un alumno hace Pilates y además le interesa CrossFit).
+10. **RECIBO sin desglose por actividad.** El enunciado sólo pide `periodo`, `importe`,
+    `fecha_emision`, `fecha_pago`. No se agregan entidades que el enunciado no menciona; la relación
+    con las actividades que componen el importe se resuelve por aplicación (`realiza` + `tarifa_mensual`).
+11. **`dicta` con profesor obligatorio `(1,N)`.** El enunciado dice *"una o más"* actividades por
+    profesor. Si el gimnasio quisiera precargar profesores sin actividad, el mínimo pasaría a
+    `(0,N)` sin otro cambio.
 
 ---
 
-## 6. Consulta que el modelo habilita (requerida por el enunciado)
+## 6. Consulta requerida por el enunciado
 
-*"Actividades que se ofrecen actualmente junto con sus tarifas"* (para folletos):
-
-```sql
-SELECT nombre, tarifa_mensual
-FROM   actividad
-WHERE  fecha_fin_oferta IS NULL
-   OR  fecha_fin_oferta >= CURRENT_DATE;
-```
-
-Otras consultas soportadas: recibos impagos por alumno (`estado_pago`), alumnos interesados en una actividad nueva (para promociones), actividades a cargo de cada profesor.
+*"Actividades ofrecidas actualmente con sus tarifas"* (para folletos): ver §5.4.
+Otras consultas que habilita el modelo: recibos impagos por alumno, alumnos interesados en una
+actividad nueva (promociones), actividades a cargo de cada profesor.
 
 ---
 
@@ -204,9 +224,9 @@ Otras consultas soportadas: recibos impagos por alumno (`estado_pago`), alumnos 
 
 | Criterio | Dónde se cumple |
 |---|---|
-| **Entidades correctamente identificadas** (1 pt) | §1: ACTIVIDAD, PROFESOR, ALUMNO (fuertes) y RECIBO (débil). Se explicita qué elementos del enunciado **no** son entidades. |
-| **Relaciones establecidas y justificadas** (2 pts) | §3: `dicta`, `realiza`, `interesado_en`, `tiene`, cada una con lectura en ambos sentidos y cita del enunciado. Se justifica por qué `realiza` e `interesado_en` son dos relaciones distintas. |
-| **Cardinalidades precisas (Chen modificada)** (2 pts) | §3 y §4: todos los extremos con par `(mín, máx)` — `(1,1)`, `(1,N)`, `(0,N)` — y su interpretación como participación. |
-| **Atributos bien definidos y asignados** (2 pts) | §2: cada atributo con su entidad y su tipo (PK, clave candidata, clave parcial, simple, compuesto, multivaluado, derivado, opcional). Se aclara que "actividades a cargo/realiza/interés" son relaciones, no atributos. |
-| **Diagrama claro y bien estructurado** (1 pt) | §4 (Mermaid + descripción textual) y `HE2_gimnasio.erdplus` con el enunciado incluido como nota, entidades separadas por rol y notación completa. |
-| **Consistencia total con el enunciado** (2 pts) | §5: cada decisión se ancla en una frase del enunciado; no se agregan entidades ni atributos que el enunciado no pida (recibo sin desglose, sin pagos parciales, baja lógica, oferta vigente por `fecha_fin_oferta`). |
+| **Entidades correctamente identificadas** (1 pt) | §1: ACTIVIDAD, PROFESOR, ALUMNO, RECIBO (todas fuertes, cada una con su **PK natural única**). Se explicita qué elementos del enunciado **no** son entidades ni atributos. |
+| **Relaciones establecidas y justificadas** (2 pts) | §3: `dicta` (1:N), `realiza` (N:M), `interesado_en` (N:M), `tiene` (1:N), con lectura en ambos sentidos y cita del enunciado; se justifica por qué `realiza` e `interesado_en` son dos relaciones distintas y por qué **no se rompen**. |
+| **Cardinalidades precisas (Chen modificada)** (2 pts) | §3 y §4: todos los extremos con par `(mín, máx)` — `(1,1)`, `(1,N)`, `(0,N)` — e interpretación como participación. |
+| **Atributos bien definidos y asignados** (2 pts) | §2: cada atributo con su entidad y su tipo (PK natural, simple, compuesto, multivaluado, **derivado – no almacenado**, opcional). `fecha_inscripcion` asignado **al rombo** `realiza`, no a las entidades. |
+| **Diagrama claro y bien estructurado** (1 pt) | §4 (Mermaid + descripción) y `HE2_gimnasio.erdplus` (importable, sin solapamientos, con el enunciado como nota y notación completa). |
+| **Consistencia total con el enunciado** (2 pts) | §5: cada decisión anclada a una frase del enunciado; no se agregan entidades ni atributos no pedidos; se respeta la metodología (N:M sin romper, PK natural única, derivados no almacenados, atributos de la N:M en el rombo). |
