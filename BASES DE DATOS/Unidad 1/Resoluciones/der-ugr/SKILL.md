@@ -40,17 +40,22 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
 
 ### Paso 3 — Identificar **adjetivos / características → atributos**
 - *"De cada X se sabe / se registra / interesa…"* → lista de atributos de X.
-- **Atributos en minúscula, snake_case**: `fecha_nacimiento`, `tarifa_mensual`, `nro_reserva`.
+- **Naming de la cátedra** (visto en sus resoluciones de referencia): nombres compuestos en
+  **camelCase** (`fechaFallecimiento`, `inicioExpo`, `corrienteArtistica`, `nroReserva`,
+  `ciudadNatal`) y prefijo **`IDxxx`** para identificadores creados por el diseñador
+  (`IDCuadro`, `IDGarage`, `IDAgencia`). (En este proyecto conviven `.erdplus` en camelCase
+  para TP2 casos 1–2 y en snake_case para el resto; al generar algo nuevo, seguir el estilo
+  de la cátedra: camelCase + `IDxxx`.)
 - Tipos de atributo a distinguir explícitamente:
-  | Tipo | Notación | Cuándo |
+  | Tipo | Notación | Cuándo (frases gatillo del enunciado) |
   |---|---|---|
   | simple | elipse | un valor atómico |
   | **compuesto** | elipse con sub-elipses | se descompone: `direccion → calle, numero, localidad` |
-  | **multivaluado** | doble elipse | varios valores a la vez: `telefono`, `corriente_artistica` |
+  | **multivaluado** | **doble elipse** (`isMultivalued: true`) | *"puede ser uno o varios"*, *"una o varias"*, *"la o las …"* → ej. `corrienteArtistica` en PINTOR (*"las corrientes artísticas a las que perteneció (puede ser una o varias)"*) |
   | **derivado / calculado** | **elipse punteada** | se calcula a partir de otros; **NO se guarda** |
   | **clave (PK)** | **subrayado** | identifica la instancia (ver Paso 4) |
   | clave parcial | subrayado punteado | discriminador de entidad débil |
-  | opcional | admite `NULL` | *"cuando corresponda"*, *"si tiene"* |
+  | **opcional** | admite `NULL` + **`(O)` al lado del nombre** (`isOptional: true`) | *"cuando corresponda"*, *"puede o no tener"*, *"si existe"*, *"si tiene"* → ej. `fechaFallecimiento (O)` en PINTOR, `finalExpo (O)` en la relación `exhibe` |
 
 ### Paso 4 — Definir la **PK natural** (una sola por entidad fuerte)
 - Buscar el identificador **del dominio, que existe fuera del sistema**: `dni`, `cuit`,
@@ -123,7 +128,8 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
    congelado, ver Paso 7).
 6. **Entidades: MAYÚSCULAS, singular.** `PROFESOR`, no `profesores`.
 7. **Relaciones: minúscula, verbo o frase verbal.** `dicta`, `interesado_en`.
-8. **Atributos: minúscula, snake_case.**
+8. **Atributos: camelCase** para nombres compuestos (`fechaFallecimiento`, `inicioExpo`),
+   prefijo `IDxxx` para identificadores creados por el diseñador.
 9. **Cardinalidades en pares Chen `(0,1) (1,1) (0,N) (1,N)`**, en **ambos** extremos.
 10. **Participación**: opcional = círculo (mín 0); obligatoria/total = barra (mín 1).
 11. **Entidad débil** cuando no tiene identificador propio: se identifica por la entidad
@@ -133,6 +139,32 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
     número.)*
 12. **Relación unaria** cuando una entidad se relaciona consigo misma (jefe/subordinado,
     supervisa, es_parte_de). Dos "patas" al mismo rectángulo, con roles.
+
+### Reglas nuevas (extraídas de las 2 resoluciones de referencia de la cátedra: arte y alquiler)
+
+13. **Atributo multivaluado por frase gatillo.** Si el enunciado dice *"puede ser uno o
+    varios"*, *"una o varias"*, *"la o las …"* → el atributo es **multivaluado**
+    (`isMultivalued: true`, doble elipse). Ej: `corrienteArtistica` en PINTOR —
+    *"las corrientes artísticas a las que perteneció (puede ser una o varias)"*.
+14. **Atributo opcional por frase gatillo.** Si el enunciado dice *"cuando corresponda"*,
+    *"puede o no tener"*, *"si existe"*, *"si tiene"* → el atributo es **opcional**
+    (`isOptional: true`) y se escribe **con `(O)` al lado del nombre** (convención de la
+    cátedra). Ej: `fechaFallecimiento (O)` en PINTOR; `finalExpo (O)` en la relación `exhibe`.
+15. **ID genérico *justificado*.** Cuando **no existe** un identificador natural obvio del
+    dominio, sí se usa un `IDxxx` — y eso **es correcto**, no un error. Ej: `IDCuadro` (un
+    cuadro no tiene un código universal); `IDAgencia`, `IDGarage` (el número de agencia / de
+    garage es su propio identificador dentro del sistema). Distinto de poner `IDCliente`
+    teniendo `DNI`.
+16. **Inferir relaciones no explícitas.** A veces el dominio **requiere** una relación que el
+    enunciado no nombra directamente. **Regla:** si dos entidades **deben conocerse
+    mutuamente para que el sistema funcione**, modelá la relación aunque no esté escrita.
+    Ej: `realiza` **N:M entre CLIENTE y AGENCIA** en el alquiler de autos (inferida del
+    contexto: un cliente opera con varias agencias y una agencia con varios clientes).
+17. **Atributos de fecha/período en relaciones N:M repetibles.** Si una relación **puede
+    ocurrir varias veces entre las mismas dos entidades**, el rombo lleva atributos de
+    **inicio/fin** (o período). Ej: `exhibe` lleva `inicioExpo` y `finalExpo (O)` porque un
+    cuadro puede exponerse **varias veces en el mismo museo**; `involucra` lleva `inicioUso`
+    y `finUso` porque el **uso del coche varía por reserva**.
 
 ---
 
@@ -200,6 +232,65 @@ provee   :  PRODUCTO (0,1) ─────────────── (0,N) P
   atributo: es esta relación.
 - **Errores a evitar**: `id_pedido`/`id_producto`/`id_proveedor`; romper `contiene` en dos
   1:N; poner `cantidad` en PRODUCTO; olvidar marcar `precio` como derivado.
+
+### 3.4 Institución de arte  (multivaluado, opcional `(O)`, ID justificado, N:M temporal)
+Enunciado: *"…pintores, cuadros y museos. Los pintores poseen un nombre (no se repiten),
+las corrientes artísticas a las que pertenecieron (puede ser una o varias), su ciudad natal
+y su fecha de fallecimiento. De los cuadros: quién o quiénes lo pintaron, y el título. Los
+museos poseen un nombre (no se repite), una dirección y la ciudad. Un cuadro puede ser
+pintado por varios pintores. Un cuadro puede exponerse más de una vez en el mismo museo en
+diferentes instantes."*
+
+```
+MUSEO(nombre, direccion, ciudad)
+PINTOR(nombre, corrienteArtistica {multivaluado}, ciudadNatal, fechaFallecimiento (O))
+CUADRO(IDCuadro, titulo)
+
+pinta  :  PINTOR (1,N) ──◇── (1,N) CUADRO            -- N:M, SIN atributos extra
+exhibe :  MUSEO  (0,N) ──◇[ inicioExpo, finalExpo (O) ]◇── (0,N) CUADRO   -- N:M temporal
+```
+- **`corrienteArtistica` es multivaluado** (doble elipse) por *"puede ser una o varias"*.
+- **`fechaFallecimiento (O)`**: opcional — el pintor puede seguir vivo. Se escribe con `(O)`.
+- **`IDCuadro` es un ID genérico *justificado*** (regla 15): un cuadro no tiene identificador
+  natural (los títulos se repiten). En cambio `MUSEO` y `PINTOR` usan `nombre` como PK
+  natural porque el enunciado dice que **no se repite**.
+- **`pinta` es N:M y no tiene atributos** (la coautoría es solo el vínculo). No todas las N:M
+  llevan atributos, pero **hay que pensarlo** (regla / Paso 6).
+- **`exhibe` es N:M con atributos temporales en el rombo** (regla 17): `inicioExpo` y
+  `finalExpo (O)` porque *"un cuadro puede exponerse más de una vez en el mismo museo"* — el
+  par (museo, cuadro) no alcanza para identificar la exposición.
+
+### 3.5 Alquiler de autos  (relación inferida, N:M temporal, 1:1, participación opcional)
+Enunciado: *"…reservas de una empresa de alquiler de autos. De un cliente: DNI, nombre,
+dirección (puede haber clientes sin reservas). De una reserva: número único, descripción,
+fecha de comienzo y fecha final; la realiza un único cliente pero involucra varios coches.
+De un coche: modelo, marca y patente (única). Todo coche tiene siempre asignado un garage
+fijo (no cambia). De un garage: número único y dirección. Cada reserva se realiza en una
+agencia (número único, nombre, dirección)."*
+
+```
+CLIENTE(DNI, nombre, direccion)
+RESERVA(nroReserva, descripcion, fechaInicio, fechaFin)
+COCHE(patente, modelo, marca)
+GARAGE(IDGarage, direccion)
+AGENCIA(IDAgencia, nombre, direccion)
+
+efectua   :  CLIENTE (0,N) ─────────── (1,1) RESERVA       -- 1:N ; (0,N): puede haber clientes sin reservas
+involucra :  RESERVA (1,N) ──◇[ inicioUso, finUso ]◇── (0,N) COCHE   -- N:M temporal
+estaciona :  COCHE   (1,1) ─────────── (0,1) GARAGE        -- 1:1 ; garage fijo, aloja a lo sumo un coche
+realiza   :  CLIENTE (0,N) ──◇── (0,N) AGENCIA             -- N:M INFERIDA (regla 16)
+```
+- **`DNI` PK natural** del cliente; **`patente`** natural del coche; **`nroReserva`** natural
+  (*"número único"*). **`IDGarage` / `IDAgencia`** son IDs *justificados* (regla 15): el
+  *"número único"* del garage / de la agencia es su propio identificador en el sistema.
+- **`efectua` es 1:N** con **participación opcional del lado cliente `(0,N)`**: *"puede haber
+  clientes sin reservas"*.
+- **`involucra` es N:M con `inicioUso` / `finUso` en el rombo** (regla 17): el uso de cada
+  coche varía por reserva.
+- **`estaciona` es 1:1**: *"todo coche tiene siempre asignado un garage fijo, que no cambia"*.
+- **`realiza` (CLIENTE–AGENCIA) es una relación *inferida*** (regla 16): el enunciado no la
+  nombra explícitamente, pero cliente y agencia **deben conocerse** para que el sistema del
+  alquiler funcione.
 
 ---
 
@@ -289,11 +380,19 @@ Mapeo cardinalidad de la cátedra → ERDPlus:
 
 Reglas al generar el `.erdplus`:
 - **N:M** = nodo `Relationship` (rombo). **No** convertir en entidad (salvo ternaria).
-- Atributo de N:M → `Attribute` con `parentId` = id del rombo.
+- Atributo de N:M → `Attribute` con `parentId` = id del rombo. Si la N:M es **repetible en el
+  tiempo**, agregar `inicioXxx` / `finXxx` en el rombo (regla 17).
 - **PK** = `types:{"Unique":true}`, **una sola** por entidad `Regular`.
+- **Multivaluado** = `types:{"Multivalued":true}` (doble elipse) — frases *"una o varias"*.
+- **Opcional** = `types:{"Optional":true}` **y** `label` termina en `" (O)"` — frases
+  *"cuando corresponda"* / *"si existe"* / *"puede o no tener"*.
 - **Derivado** = `types:{"Derived":true}` (nunca marcar además `Unique`).
 - Compuesto = `types:{"Composite":true}` + hijos `Attribute` con `parentId` = el compuesto
   y su propia arista `Attribute`.
+- **ID justificado**: cuando no hay identificador natural, la PK es un `IDxxx` marcado
+  `Unique` — es correcto (regla 15).
+- **Relación inferida** (regla 16): agregar el `Relationship` aunque el enunciado no la nombre
+  si el dominio la exige.
 - Incluir el **enunciado como nodo `Label`** a un costado, sin solaparse con el DER.
 - Validar antes de entregar: JSON válido; toda `parentId`/`source`/`target` existe; cada
   rombo tiene exactamente 2 aristas `Relationship`; cada entidad `Regular` tiene exactamente
@@ -312,8 +411,17 @@ Reglas al generar el `.erdplus`:
       pedido, `duracion_total`, "vigente", "estado de pago").
 - [ ] Guardar un derivado en la BD (salvo dato histórico congelado como `importe` de recibo).
 - [ ] Cardinalidad escrita en **un solo sentido**.
-- [ ] Entidad en plural o en minúscula; relación con sustantivo; atributo sin snake_case.
+- [ ] Entidad en plural o en minúscula; relación con sustantivo; nombre compuesto sin camelCase.
 - [ ] Relación N:M **sin pensar** sus atributos (casi siempre tiene al menos uno).
+- [ ] Relación N:M **repetible en el tiempo** sin atributos de `inicio` / `fin` en el rombo
+      (`exhibe` → `inicioExpo`/`finalExpo (O)`; `involucra` → `inicioUso`/`finUso`).
+- [ ] No marcar **multivaluado** ante *"puede ser uno o varios"* / *"una o varias"*.
+- [ ] No marcar **opcional** (ni poner `(O)`) ante *"cuando corresponda"* / *"si existe"* /
+      *"puede o no tener"*.
+- [ ] Tomar por error un **ID justificado** (`IDCuadro`, `IDGarage`, `IDAgencia`: no hay
+      identificador natural) como si fuera un `id_` genérico mal puesto.
+- [ ] No **inferir** una relación necesaria que el enunciado no nombra pero el dominio exige
+      (`CLIENTE`–`AGENCIA` en el alquiler).
 - [ ] No usar entidad **débil** cuando la entidad no tiene identificador propio.
 - [ ] No detectar una relación **unaria** (entidad relacionada consigo misma).
 - [ ] Confundir un **atributo** que en realidad es una **relación** (*"actividades a cargo"*,

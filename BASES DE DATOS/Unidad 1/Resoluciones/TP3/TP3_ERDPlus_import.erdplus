@@ -236,8 +236,10 @@
           "y": 129.0
         },
         "data": {
-          "label": "fecha_fin",
-          "types": [],
+          "label": "fecha_fin (O)",
+          "types": {
+            "Optional": true
+          },
           "isSelected": false,
           "isConnectable": true
         },

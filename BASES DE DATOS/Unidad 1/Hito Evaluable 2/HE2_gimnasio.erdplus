@@ -175,7 +175,7 @@
           "y": 169.71
         },
         "data": {
-          "label": "fecha_fin_oferta",
+          "label": "fecha_fin_oferta (O)",
           "types": {
             "Optional": true
           },
@@ -783,7 +783,7 @@
           "y": 134.99
         },
         "data": {
-          "label": "fecha_pago",
+          "label": "fecha_pago (O)",
           "types": {
             "Optional": true
           },

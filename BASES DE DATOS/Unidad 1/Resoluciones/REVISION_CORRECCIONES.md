@@ -226,3 +226,77 @@ simple), `ALBUM` y `USUARIO`-TP4 (el enunciado pide identificador propio), `LIST
 (`parentId` / `source` / `target`) existe, cada rombo tiene exactamente 2 aristas, **cada
 entidad fuerte tiene exactamente 1 atributo `Unique`**, ninguna relación N:M quedó rota y no
 hay solapamientos entre entidades / rombos / notas.
+
+---
+
+# Segunda revisión — reglas nuevas de las 2 resoluciones de referencia de la cátedra
+
+Aprendizajes incorporados a la skill `der-ugr` (reglas 13–17) y aplicados a los `.erdplus`:
+**multivaluado por frase gatillo**, **opcional con `(O)`**, **ID genérico justificado**,
+**inferir relaciones no explícitas**, **atributos `inicio/fin` en N:M repetibles**.
+
+## TP2 — `TP2_ERDPlus_import.erdplus`  (contiene los dos casos de referencia)
+
+### Caso 1 — Institución de arte
+
+| Elemento | Antes | Ahora | Regla |
+|---|---|---|---|
+| `PINTOR.corriente_artistica` | multivaluado ✔ | **`corrienteArtistica`** multivaluado | 13 — *"puede ser una o varias"* (ya estaba marcado; se ajusta el naming) |
+| `PINTOR.fecha_fallecimiento` | opcional, sin `(O)` | **`fechaFallecimiento (O)`** | 14 — se agrega el sufijo `(O)` (convención de la cátedra) |
+| `PINTOR.ciudad_natal` | — | **`ciudadNatal`** | 8 — naming camelCase de la cátedra |
+| `CUADRO.id_cuadro` | `id_cuadro` (Unique) | **`IDCuadro`** (Unique) | 15 — **ID justificado**: un cuadro no tiene identificador natural. Se explicita como decisión correcta, no como error. |
+| `exhibe.inicio_expo` / `final_expo` | atributos del rombo, sin `(O)` | **`inicioExpo`** / **`finalExpo (O)`** | 14 + 17 — N:M temporal; `finalExpo` opcional (exposición en curso) |
+| `pinta` | N:M sin atributos | N:M sin atributos | 6 — se confirma: la coautoría no tiene datos propios (no toda N:M lleva atributos) |
+
+### Caso 2 — Alquiler de autos
+
+| Elemento | Antes | Ahora | Regla |
+|---|---|---|---|
+| `GARAGE.numero_garage` | `numero_garage` (Unique) | **`IDGarage`** (Unique) | 15 — **revierte** el cambio de la 1.ª revisión: el *"número único"* del garage **es** su identificador de sistema → ID justificado, naming de la cátedra. |
+| `AGENCIA.numero_agencia` | `numero_agencia` (Unique) | **`IDAgencia`** (Unique) | 15 — ídem. |
+| `CLIENTE.dni` | `dni` | **`DNI`** | 8 — naming de la cátedra (PK natural, sin cambio de concepto). |
+| `RESERVA.nro_reserva` / `fecha_inicio` / `fecha_fin` | snake_case | **`nroReserva`** / **`fechaInicio`** / **`fechaFin`** | 8 — camelCase. |
+| `involucra` (RESERVA–COCHE N:M) | sin atributos | **`inicioUso`, `finUso`** en el rombo | 17 — N:M temporal: el uso del coche varía por reserva. |
+| `estaciona` | `GARAGE (0,N) — (1,1) COCHE`  (1:N) | **`COCHE (1,1) — (0,1) GARAGE`  (1:1)** | Consistencia con el enunciado: *"todo coche tiene siempre asignado un garage fijo, que no cambia"* y un garage aloja a lo sumo un coche. |
+| `realiza` | `AGENCIA (0,N) — (1,1) RESERVA` | **`CLIENTE (0,N) — (0,N) AGENCIA`  (N:M)** | 16 — **relación inferida**: el enunciado no vincula explícitamente cliente y agencia, pero el sistema del alquiler lo exige. Sustituye al vínculo RESERVA–AGENCIA. |
+| `efectua` | `CLIENTE (0,N) — (1,1) RESERVA` | igual | Se confirma: *"puede haber clientes sin reservas"* → participación `(0,N)` del lado cliente. |
+
+### Caso 3 — Cadena de farmacias
+Sin cambios (no es una de las dos resoluciones de referencia). `dia` y `nombre_enfermedad` ya
+estaban como multivaluados (regla 13, *"los días que le corresponde guardia"*, *"las
+enfermedades que tuvo"*).
+
+## TP3 — `TP3_ERDPlus_import.erdplus`
+
+| Elemento | Antes | Ahora | Regla |
+|---|---|---|---|
+| `presta.fecha_fin` | atributo del rombo | **`fecha_fin (O)`** (opcional) | 14 — un préstamo en curso todavía no tiene fecha de devolución. `presta` ya era N:M temporal (`fecha_inicio` / `fecha_fin`). |
+
+## TP1 — `TP1_ERDPlus_import.erdplus`
+Revisado: sin cambios. No hay frases gatillo de multivaluado ni de opcional; `contiene` es
+N:M no repetible (un pedido es un evento único, `cantidad` en el rombo alcanza).
+
+## TP4 — `TP4_ERDPlus_import.erdplus`
+Revisado: sin cambios. `historial` (USUARIO–CANCION) ya es N:M temporal con `fecha_hora` en el
+rombo (regla 17). No hay atributos multivaluados ni opcionales pendientes.
+
+## HE2 — `HE2_gimnasio.erdplus`
+
+| Elemento | Antes | Ahora | Regla |
+|---|---|---|---|
+| `ACTIVIDAD.fecha_fin_oferta` | opcional, sin `(O)` | **`fecha_fin_oferta (O)`** | 14 — sufijo `(O)`. |
+| `RECIBO.fecha_pago` | opcional, sin `(O)` | **`fecha_pago (O)`** | 14 — sufijo `(O)`. |
+
+Resto sin cambios: `realiza` (ALUMNO–ACTIVIDAD) ya lleva `fecha_inscripcion` en el rombo;
+`edad` derivada; `telefono` multivaluado; `direccion` compuesta; N:M sin romper.
+
+## Verificación final (script)
+Los 5 `.erdplus` siguen siendo JSON válido; toda `parentId`/`source`/`target` existe; cada
+rombo tiene exactamente 2 aristas; cada entidad `Regular` tiene **exactamente 1** atributo
+`Unique`; coherencia `(O)` ↔ `isOptional` en todos los atributos; ninguna N:M rota; sin
+solapamientos entre entidades / rombos / notas.
+
+> Nota de naming: los `.erdplus` de **TP2 casos 1 y 2** quedaron en **camelCase + `IDxxx`**
+> (naming exacto de las resoluciones de referencia de la cátedra). El resto de los archivos
+> y los `TP*_resolucion.md` / `.drawio` conservan snake_case. Alinear todo a camelCase es un
+> cambio disponible a pedido.
