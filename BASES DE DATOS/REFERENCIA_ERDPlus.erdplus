@@ -1,0 +1,1216 @@
+{
+  "diagramType": 1,
+  "data": {
+    "nodes": [
+      {
+        "id": "4c115dd6-193f-4e42-8d2c-588a60a62f4f",
+        "type": "Label",
+        "position": {
+          "x": 40,
+          "y": 40
+        },
+        "data": {
+          "label": "REFERENCIA — Notación Chen modificada (cátedra UGR · ERDPlus)\nUn ejemplo de cada elemento del DER, con su configuración exacta en erdplus.com.\n\nRegla de cardinalidad: cada entidad lleva su propio par (mín,máx) en su lado del rombo.\n   mín 0 = participación OPCIONAL (círculo)     ·   mín 1 = participación OBLIGATORIA / total (barra)\n   máx 1 = maxCardinality \"One\"                 ·   máx N = maxCardinality \"Many\"\n   minCardinality: \"Optional\" (mín 0)   |   \"Mandatory\" (mín 1)",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 1520,
+          "height": 156
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "620ae7a8-e353-46da-a205-fcb9771d1bdc",
+        "type": "Label",
+        "position": {
+          "x": 40,
+          "y": 340
+        },
+        "data": {
+          "label": "1) ENTIDADES",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 320,
+          "height": 40
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "0e737c30-a68f-4632-927a-552715a713b4",
+        "type": "Entity",
+        "position": {
+          "x": 560,
+          "y": 470
+        },
+        "data": {
+          "label": "ENTIDAD_FUERTE",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "9568c599-18b2-4df7-89ad-e2d0d3d1aa05",
+        "parentId": "0e737c30-a68f-4632-927a-552715a713b4",
+        "type": "Attribute",
+        "position": {
+          "x": -170,
+          "y": -40
+        },
+        "data": {
+          "label": "id",
+          "types": {
+            "Unique": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "a52b0e43-82ca-4778-ad22-b33ff529f7d9",
+        "type": "Label",
+        "position": {
+          "x": 180,
+          "y": 560
+        },
+        "data": {
+          "label": "ENTIDAD FUERTE — rectángulo simple.\nTiene identificador propio y existencia independiente.\nERDPlus:  type: \"Entity\" ,  data.type: \"Regular\"",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 470,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "497a4fea-4a83-4e20-9463-bd41f339bb94",
+        "type": "Entity",
+        "position": {
+          "x": 1180,
+          "y": 470
+        },
+        "data": {
+          "label": "ENTIDAD_DEBIL",
+          "type": "Weak",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "81bd6a8b-5f4d-4c61-9873-8dba3f4b1960",
+        "parentId": "497a4fea-4a83-4e20-9463-bd41f339bb94",
+        "type": "Attribute",
+        "position": {
+          "x": 170,
+          "y": -40
+        },
+        "data": {
+          "label": "nro_item",
+          "types": {
+            "Partially Unique": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "255bff04-7280-4bd4-9d61-36f7f20be74d",
+        "type": "Label",
+        "position": {
+          "x": 1320,
+          "y": 560
+        },
+        "data": {
+          "label": "ENTIDAD DÉBIL — rectángulo doble.\nNO tiene identificador propio: se identifica con la\nentidad fuerte + una CLAVE PARCIAL.\nERDPlus:  data.type: \"Weak\"",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 470,
+          "height": 96
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "d8a8505b-e7ac-4010-bf30-93114f1094e5",
+        "type": "Relationship",
+        "position": {
+          "x": 870,
+          "y": 470
+        },
+        "data": {
+          "label": "posee",
+          "sourceEntityDetails": {
+            "id": "0e737c30-a68f-4632-927a-552715a713b4",
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
+          },
+          "targetEntityDetails": {
+            "id": "497a4fea-4a83-4e20-9463-bd41f339bb94",
+            "minCardinality": "Mandatory",
+            "maxCardinality": "One"
+          },
+          "isSelected": false,
+          "isConnectable": true,
+          "isIdentifying": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "2cffac7b-affe-4b4f-a01c-6531e166282f",
+        "type": "Label",
+        "position": {
+          "x": 700,
+          "y": 300
+        },
+        "data": {
+          "label": "RELACIÓN IDENTIFICATORIA — rombo doble.\nUne la entidad débil con su entidad fuerte.\nERDPlus:  data.isIdentifying: true",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 470,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "c1580f73-9ba0-444f-bf7d-c1834820845a",
+        "type": "Label",
+        "position": {
+          "x": 1240,
+          "y": 300
+        },
+        "data": {
+          "label": "CLAVE PARCIAL — subrayado punteado.\nDiscrimina las instancias de la entidad débil.\nERDPlus:  types: { \"Partially Unique\": true }",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 470,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "2bad0220-1145-48f0-8f5f-b021981368d1",
+        "type": "Label",
+        "position": {
+          "x": 40,
+          "y": 860
+        },
+        "data": {
+          "label": "2) ATRIBUTOS  (todos colgados de la entidad ATRIBUTOS_DEMO)",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 780,
+          "height": 40
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Entity",
+        "position": {
+          "x": 1400,
+          "y": 980
+        },
+        "data": {
+          "label": "ATRIBUTOS_DEMO",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "e37d417e-147b-45e6-9022-1a0474bbf3b8",
+        "parentId": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Attribute",
+        "position": {
+          "x": -1300,
+          "y": 190
+        },
+        "data": {
+          "label": "nombre",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "c6e8f1c9-f8b8-47e3-a404-7e55e80483f6",
+        "type": "Label",
+        "position": {
+          "x": -115,
+          "y": 1250
+        },
+        "data": {
+          "label": "ATRIBUTO NORMAL — elipse.\nERDPlus:  types: []  (lista vacía)",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 440,
+          "height": 56
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "56719d66-c3e8-484b-9672-77740c79ce2d",
+        "parentId": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Attribute",
+        "position": {
+          "x": -780,
+          "y": 190
+        },
+        "data": {
+          "label": "dni",
+          "types": {
+            "Unique": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "906b081a-8e82-4a9f-92cd-f4261805ccf9",
+        "type": "Label",
+        "position": {
+          "x": 405,
+          "y": 1250
+        },
+        "data": {
+          "label": "ATRIBUTO CLAVE / PK — subrayado.\nUno solo por entidad fuerte.\nERDPlus:  types: { \"Unique\": true }",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 440,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "028b7df0-d5ae-4c9d-b98a-ed3608ece0ec",
+        "parentId": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Attribute",
+        "position": {
+          "x": -260,
+          "y": 190
+        },
+        "data": {
+          "label": "telefono (O)",
+          "types": {
+            "Optional": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "62a662bf-3ab8-4b67-9dc4-bca70105d7cb",
+        "type": "Label",
+        "position": {
+          "x": 925,
+          "y": 1250
+        },
+        "data": {
+          "label": "ATRIBUTO OPCIONAL — se escribe con \"(O)\" al lado del nombre.\nEnunciado: \"cuando corresponda\", \"si existe\".\nERDPlus:  types: { \"Optional\": true }",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 440,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "ae54b00c-8d16-4311-ab5b-337413503573",
+        "parentId": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Attribute",
+        "position": {
+          "x": 260,
+          "y": 190
+        },
+        "data": {
+          "label": "correos",
+          "types": {
+            "Multivalued": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "ce3e55b0-fe36-421d-9e29-af234ddda404",
+        "type": "Label",
+        "position": {
+          "x": 1445,
+          "y": 1250
+        },
+        "data": {
+          "label": "ATRIBUTO MULTIVALUADO — doble elipse.\nEnunciado: \"puede ser uno o varios\", \"una o varias\".\nERDPlus:  types: { \"Multivalued\": true }",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 440,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "fb43561d-457c-4e14-a5da-f41476f6dbec",
+        "parentId": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Attribute",
+        "position": {
+          "x": 780,
+          "y": 190
+        },
+        "data": {
+          "label": "edad",
+          "types": {
+            "Derived": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "faab8881-10ce-4e8d-a26c-7c3c80695d9c",
+        "type": "Label",
+        "position": {
+          "x": 1965,
+          "y": 1250
+        },
+        "data": {
+          "label": "ATRIBUTO DERIVADO — elipse punteada.\nSe calcula a partir de otros; NO se almacena en la BD.\nERDPlus:  types: { \"Derived\": true }",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 440,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "parentId": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "type": "Attribute",
+        "position": {
+          "x": 1300,
+          "y": 190
+        },
+        "data": {
+          "label": "direccion",
+          "types": {
+            "Composite": true
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "a499b74e-3e2d-47d7-ad31-c2de0c9dbfb4",
+        "type": "Label",
+        "position": {
+          "x": 2485,
+          "y": 1250
+        },
+        "data": {
+          "label": "ATRIBUTO COMPUESTO — se descompone en sub-atributos.\nERDPlus:  types: { \"Composite\": true }  +  hijos Attribute\ncon parentId = id de este atributo.",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 440,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "799212d0-519b-434c-8da9-9cd3dbb3d39c",
+        "parentId": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "type": "Attribute",
+        "position": {
+          "x": 260,
+          "y": -130
+        },
+        "data": {
+          "label": "calle",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "fa73be06-3e07-47e4-a241-280362c9dca8",
+        "parentId": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "type": "Attribute",
+        "position": {
+          "x": 260,
+          "y": 0
+        },
+        "data": {
+          "label": "numero",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "25dcdd9e-7c66-4b37-97f8-da34f258e78d",
+        "parentId": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "type": "Attribute",
+        "position": {
+          "x": 260,
+          "y": 130
+        },
+        "data": {
+          "label": "localidad",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "c731bee2-7c7e-4c20-b6f8-788b1962a9f1",
+        "type": "Label",
+        "position": {
+          "x": 40,
+          "y": 1720
+        },
+        "data": {
+          "label": "3) CARDINALIDADES  —  el par (mín,máx) de cada lado del rombo",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 800,
+          "height": 40
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "2c6c467a-b8a0-43b9-b9a2-15abc0a212eb",
+        "type": "Entity",
+        "position": {
+          "x": 560,
+          "y": 1880
+        },
+        "data": {
+          "label": "A",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "81c5b627-6e08-4ce8-adaa-5946df54417e",
+        "type": "Entity",
+        "position": {
+          "x": 1220,
+          "y": 1880
+        },
+        "data": {
+          "label": "B",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "2f432451-7af3-4877-8868-19f500c699d7",
+        "type": "Relationship",
+        "position": {
+          "x": 890,
+          "y": 1880
+        },
+        "data": {
+          "label": "relacion_1",
+          "sourceEntityDetails": {
+            "id": "2c6c467a-b8a0-43b9-b9a2-15abc0a212eb",
+            "minCardinality": "Mandatory",
+            "maxCardinality": "One"
+          },
+          "targetEntityDetails": {
+            "id": "81c5b627-6e08-4ce8-adaa-5946df54417e",
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "5f4c4def-e46e-487e-9922-9c55cafa9d38",
+        "type": "Label",
+        "position": {
+          "x": 360,
+          "y": 1790
+        },
+        "data": {
+          "label": "Lado A  →  (1,1)  obligatorio, exactamente uno\nERDPlus:  minCardinality: \"Mandatory\" ,  maxCardinality: \"One\"",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 480,
+          "height": 56
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "5dd90f2f-2597-467c-beb7-cd6463b80324",
+        "type": "Label",
+        "position": {
+          "x": 1030,
+          "y": 1990
+        },
+        "data": {
+          "label": "Lado B  →  (0,N)  opcional, cero o muchos\nERDPlus:  minCardinality: \"Optional\" ,  maxCardinality: \"Many\"",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 480,
+          "height": 56
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "2a7556f9-274b-4d1a-80e2-0d5cdf1abd09",
+        "type": "Entity",
+        "position": {
+          "x": 2000,
+          "y": 1880
+        },
+        "data": {
+          "label": "C",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "30ea75a6-96e2-41f2-a70c-8d5dbb8305ef",
+        "type": "Entity",
+        "position": {
+          "x": 2660,
+          "y": 1880
+        },
+        "data": {
+          "label": "D",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "00b74188-9fd6-4a2f-b10b-33641132466c",
+        "type": "Relationship",
+        "position": {
+          "x": 2330,
+          "y": 1880
+        },
+        "data": {
+          "label": "relacion_2",
+          "sourceEntityDetails": {
+            "id": "2a7556f9-274b-4d1a-80e2-0d5cdf1abd09",
+            "minCardinality": "Optional",
+            "maxCardinality": "One"
+          },
+          "targetEntityDetails": {
+            "id": "30ea75a6-96e2-41f2-a70c-8d5dbb8305ef",
+            "minCardinality": "Mandatory",
+            "maxCardinality": "Many"
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "0633da3d-d142-42a0-858b-9c0febfdf7b1",
+        "type": "Label",
+        "position": {
+          "x": 1800,
+          "y": 1790
+        },
+        "data": {
+          "label": "Lado C  →  (0,1)  opcional, a lo sumo uno\nERDPlus:  minCardinality: \"Optional\" ,  maxCardinality: \"One\"",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 480,
+          "height": 56
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "27318aba-325a-4604-9b01-284c8975224e",
+        "type": "Label",
+        "position": {
+          "x": 2470,
+          "y": 1990
+        },
+        "data": {
+          "label": "Lado D  →  (1,N)  obligatorio, uno o muchos\nERDPlus:  minCardinality: \"Mandatory\" ,  maxCardinality: \"Many\"",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 480,
+          "height": 56
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "e7e5ea30-b800-4391-b3c9-75388ffd8e8a",
+        "type": "Label",
+        "position": {
+          "x": 40,
+          "y": 2350
+        },
+        "data": {
+          "label": "4) RELACIÓN N:M  y  RELACIÓN UNARIA",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 800,
+          "height": 40
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "cb265bd8-e67a-4ede-9c01-30c992de8367",
+        "type": "Entity",
+        "position": {
+          "x": 560,
+          "y": 2540
+        },
+        "data": {
+          "label": "PEDIDO",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "2d1fea4a-e864-4063-a016-cfcb1c927c14",
+        "type": "Entity",
+        "position": {
+          "x": 1220,
+          "y": 2540
+        },
+        "data": {
+          "label": "PRODUCTO",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "ad286db4-6692-4189-8baf-fe3a3b44b226",
+        "type": "Relationship",
+        "position": {
+          "x": 890,
+          "y": 2540
+        },
+        "data": {
+          "label": "contiene",
+          "sourceEntityDetails": {
+            "id": "cb265bd8-e67a-4ede-9c01-30c992de8367",
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
+          },
+          "targetEntityDetails": {
+            "id": "2d1fea4a-e864-4063-a016-cfcb1c927c14",
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "c50deb47-a1e6-4ab1-acef-8e7586aa9b46",
+        "parentId": "ad286db4-6692-4189-8baf-fe3a3b44b226",
+        "type": "Attribute",
+        "position": {
+          "x": 0,
+          "y": -160
+        },
+        "data": {
+          "label": "cantidad",
+          "types": [],
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "07a72efc-5cb4-43fc-973a-bf05e76ec0cb",
+        "type": "Label",
+        "position": {
+          "x": 360,
+          "y": 2640
+        },
+        "data": {
+          "label": "RELACIÓN N:M — muchos a muchos.\nAmbos lados con maxCardinality: \"Many\".\nNO se rompe: queda como rombo.\nSu atributo (cantidad) va DENTRO del rombo:\nAttribute con parentId = id del rombo.",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 480,
+          "height": 116
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "5ea20465-d07e-46f4-8871-6435e13bb2bc",
+        "type": "Entity",
+        "position": {
+          "x": 2250,
+          "y": 2540
+        },
+        "data": {
+          "label": "EMPLEADO",
+          "type": "Regular",
+          "isConnectable": true,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "f07145de-634c-4407-8a57-8dc64c7d983a",
+        "type": "Relationship",
+        "position": {
+          "x": 2250,
+          "y": 2330
+        },
+        "data": {
+          "label": "supervisa",
+          "sourceEntityDetails": {
+            "id": "5ea20465-d07e-46f4-8871-6435e13bb2bc",
+            "minCardinality": "Optional",
+            "maxCardinality": "One"
+          },
+          "targetEntityDetails": {
+            "id": "5ea20465-d07e-46f4-8871-6435e13bb2bc",
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
+          },
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 100,
+          "height": 50
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "478906bd-403b-4542-b7ab-2eb50bb1c4dc",
+        "type": "Label",
+        "position": {
+          "x": 1850,
+          "y": 2640
+        },
+        "data": {
+          "label": "RELACIÓN UNARIA (recursiva) — una entidad se relaciona consigo misma.\nERDPlus:  sourceEntityDetails.id == targetEntityDetails.id  (la misma entidad)\nLado subordinado = (0,1)   ·   lado jefe = (0,N)",
+          "isSelected": false,
+          "isConnectable": true
+        },
+        "measured": {
+          "width": 560,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "63984b56-6bcf-4e09-ad0d-a4d13faebee3",
+        "type": "Attribute",
+        "source": "0e737c30-a68f-4632-927a-552715a713b4",
+        "target": "9568c599-18b2-4df7-89ad-e2d0d3d1aa05"
+      },
+      {
+        "id": "16f03fb2-66e5-4ad8-a3bb-5452f94766a3",
+        "type": "Attribute",
+        "source": "497a4fea-4a83-4e20-9463-bd41f339bb94",
+        "target": "81bd6a8b-5f4d-4c61-9873-8dba3f4b1960"
+      },
+      {
+        "id": "d8a8505b-e7ac-4010-bf30-93114f1094e5->0e737c30-a68f-4632-927a-552715a713b4;0e737c30-a68f-4632-927a-552715a713b4->497a4fea-4a83-4e20-9463-bd41f339bb94",
+        "type": "Relationship",
+        "source": "d8a8505b-e7ac-4010-bf30-93114f1094e5",
+        "target": "0e737c30-a68f-4632-927a-552715a713b4",
+        "data": {
+          "id": "d8a8505b-e7ac-4010-bf30-93114f1094e5->0e737c30-a68f-4632-927a-552715a713b4",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "d8a8505b-e7ac-4010-bf30-93114f1094e5->497a4fea-4a83-4e20-9463-bd41f339bb94;497a4fea-4a83-4e20-9463-bd41f339bb94->0e737c30-a68f-4632-927a-552715a713b4",
+        "type": "Relationship",
+        "source": "d8a8505b-e7ac-4010-bf30-93114f1094e5",
+        "target": "497a4fea-4a83-4e20-9463-bd41f339bb94",
+        "data": {
+          "id": "d8a8505b-e7ac-4010-bf30-93114f1094e5->497a4fea-4a83-4e20-9463-bd41f339bb94",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "One"
+        }
+      },
+      {
+        "id": "28be7fea-e117-4123-8bd1-9a720d39988e",
+        "type": "Attribute",
+        "source": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "target": "e37d417e-147b-45e6-9022-1a0474bbf3b8"
+      },
+      {
+        "id": "4c9aace9-5cf4-4a7b-bdec-70a88bd5006c",
+        "type": "Attribute",
+        "source": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "target": "56719d66-c3e8-484b-9672-77740c79ce2d"
+      },
+      {
+        "id": "eea82363-1fe3-437e-8754-78b0961e3106",
+        "type": "Attribute",
+        "source": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "target": "028b7df0-d5ae-4c9d-b98a-ed3608ece0ec"
+      },
+      {
+        "id": "f43f3c78-cb3e-436c-8695-69b077a7c9a5",
+        "type": "Attribute",
+        "source": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "target": "ae54b00c-8d16-4311-ab5b-337413503573"
+      },
+      {
+        "id": "a62baf1f-a4a6-4497-8b8b-987839da8160",
+        "type": "Attribute",
+        "source": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "target": "fb43561d-457c-4e14-a5da-f41476f6dbec"
+      },
+      {
+        "id": "b9b98dc6-6ddd-4660-9418-d1fb55d9b5c0",
+        "type": "Attribute",
+        "source": "6612dab8-ff58-4441-abec-28a528ab2d69",
+        "target": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1"
+      },
+      {
+        "id": "25f58cc9-1111-4fd9-8706-b7ccb24fca12",
+        "type": "Attribute",
+        "source": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "target": "799212d0-519b-434c-8da9-9cd3dbb3d39c"
+      },
+      {
+        "id": "e1aff934-60ea-41d9-bc34-51c40316cac2",
+        "type": "Attribute",
+        "source": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "target": "fa73be06-3e07-47e4-a241-280362c9dca8"
+      },
+      {
+        "id": "4b4820ac-5238-46c4-ab61-d0ce71ac183d",
+        "type": "Attribute",
+        "source": "ddb1f0eb-5ad5-47eb-8045-ecad090bf9d1",
+        "target": "25dcdd9e-7c66-4b37-97f8-da34f258e78d"
+      },
+      {
+        "id": "2f432451-7af3-4877-8868-19f500c699d7->2c6c467a-b8a0-43b9-b9a2-15abc0a212eb;2c6c467a-b8a0-43b9-b9a2-15abc0a212eb->81c5b627-6e08-4ce8-adaa-5946df54417e",
+        "type": "Relationship",
+        "source": "2f432451-7af3-4877-8868-19f500c699d7",
+        "target": "2c6c467a-b8a0-43b9-b9a2-15abc0a212eb",
+        "data": {
+          "id": "2f432451-7af3-4877-8868-19f500c699d7->2c6c467a-b8a0-43b9-b9a2-15abc0a212eb",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "One"
+        }
+      },
+      {
+        "id": "2f432451-7af3-4877-8868-19f500c699d7->81c5b627-6e08-4ce8-adaa-5946df54417e;81c5b627-6e08-4ce8-adaa-5946df54417e->2c6c467a-b8a0-43b9-b9a2-15abc0a212eb",
+        "type": "Relationship",
+        "source": "2f432451-7af3-4877-8868-19f500c699d7",
+        "target": "81c5b627-6e08-4ce8-adaa-5946df54417e",
+        "data": {
+          "id": "2f432451-7af3-4877-8868-19f500c699d7->81c5b627-6e08-4ce8-adaa-5946df54417e",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "00b74188-9fd6-4a2f-b10b-33641132466c->2a7556f9-274b-4d1a-80e2-0d5cdf1abd09;2a7556f9-274b-4d1a-80e2-0d5cdf1abd09->30ea75a6-96e2-41f2-a70c-8d5dbb8305ef",
+        "type": "Relationship",
+        "source": "00b74188-9fd6-4a2f-b10b-33641132466c",
+        "target": "2a7556f9-274b-4d1a-80e2-0d5cdf1abd09",
+        "data": {
+          "id": "00b74188-9fd6-4a2f-b10b-33641132466c->2a7556f9-274b-4d1a-80e2-0d5cdf1abd09",
+          "minCardinality": "Optional",
+          "maxCardinality": "One"
+        }
+      },
+      {
+        "id": "00b74188-9fd6-4a2f-b10b-33641132466c->30ea75a6-96e2-41f2-a70c-8d5dbb8305ef;30ea75a6-96e2-41f2-a70c-8d5dbb8305ef->2a7556f9-274b-4d1a-80e2-0d5cdf1abd09",
+        "type": "Relationship",
+        "source": "00b74188-9fd6-4a2f-b10b-33641132466c",
+        "target": "30ea75a6-96e2-41f2-a70c-8d5dbb8305ef",
+        "data": {
+          "id": "00b74188-9fd6-4a2f-b10b-33641132466c->30ea75a6-96e2-41f2-a70c-8d5dbb8305ef",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "ad286db4-6692-4189-8baf-fe3a3b44b226->cb265bd8-e67a-4ede-9c01-30c992de8367;cb265bd8-e67a-4ede-9c01-30c992de8367->2d1fea4a-e864-4063-a016-cfcb1c927c14",
+        "type": "Relationship",
+        "source": "ad286db4-6692-4189-8baf-fe3a3b44b226",
+        "target": "cb265bd8-e67a-4ede-9c01-30c992de8367",
+        "data": {
+          "id": "ad286db4-6692-4189-8baf-fe3a3b44b226->cb265bd8-e67a-4ede-9c01-30c992de8367",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "ad286db4-6692-4189-8baf-fe3a3b44b226->2d1fea4a-e864-4063-a016-cfcb1c927c14;2d1fea4a-e864-4063-a016-cfcb1c927c14->cb265bd8-e67a-4ede-9c01-30c992de8367",
+        "type": "Relationship",
+        "source": "ad286db4-6692-4189-8baf-fe3a3b44b226",
+        "target": "2d1fea4a-e864-4063-a016-cfcb1c927c14",
+        "data": {
+          "id": "ad286db4-6692-4189-8baf-fe3a3b44b226->2d1fea4a-e864-4063-a016-cfcb1c927c14",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "3f665314-5131-45a0-b036-fea859a3c0a7",
+        "type": "Attribute",
+        "source": "ad286db4-6692-4189-8baf-fe3a3b44b226",
+        "target": "c50deb47-a1e6-4ab1-acef-8e7586aa9b46"
+      },
+      {
+        "id": "f07145de-634c-4407-8a57-8dc64c7d983a->5ea20465-d07e-46f4-8871-6435e13bb2bc;5ea20465-d07e-46f4-8871-6435e13bb2bc->5ea20465-d07e-46f4-8871-6435e13bb2bc#src",
+        "type": "Relationship",
+        "source": "f07145de-634c-4407-8a57-8dc64c7d983a",
+        "target": "5ea20465-d07e-46f4-8871-6435e13bb2bc",
+        "data": {
+          "id": "f07145de-634c-4407-8a57-8dc64c7d983a->5ea20465-d07e-46f4-8871-6435e13bb2bc#src",
+          "minCardinality": "Optional",
+          "maxCardinality": "One"
+        }
+      },
+      {
+        "id": "f07145de-634c-4407-8a57-8dc64c7d983a->5ea20465-d07e-46f4-8871-6435e13bb2bc;5ea20465-d07e-46f4-8871-6435e13bb2bc->5ea20465-d07e-46f4-8871-6435e13bb2bc#tgt",
+        "type": "Relationship",
+        "source": "f07145de-634c-4407-8a57-8dc64c7d983a",
+        "target": "5ea20465-d07e-46f4-8871-6435e13bb2bc",
+        "data": {
+          "id": "f07145de-634c-4407-8a57-8dc64c7d983a->5ea20465-d07e-46f4-8871-6435e13bb2bc#tgt",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      }
+    ],
+    "viewport": {
+      "x": 40,
+      "y": 40,
+      "zoom": 0.2
+    }
+  },
+  "name": "REFERENCIA - Notación Chen modificada (cátedra UGR)",
+  "folder": {
+    "name": "Diagrams",
+    "folderType": 1,
+    "depth": 0,
+    "id": 1
+  },
+  "id": 954466921,
+  "updatedAtTimestamp": 1788399826
+}
