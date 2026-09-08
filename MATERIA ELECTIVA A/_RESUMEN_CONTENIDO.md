@@ -1,5 +1,5 @@
 # MATERIA ELECTIVA A - Resumen de contenido
-_Última actualización: 30/08/26_
+_Última actualización: 08/09/26_
 
 ## Grabaciones sincrónicos
 **Archivo:** Grabaciones sincrónicos/Clase 7-5 automatización 4.0.txt
@@ -26,6 +26,11 @@ _Última actualización: 30/08/26_
 **Fecha:** No identificada
 **Temas:** Presentación del curso, Industria 4.0 y 5.0, digitalización industrial, datos en la industria, competitividad, tecnologías emergentes, metodología y evaluación
 **Resumen:** Clase inaugural de la materia electiva "Ciencia de Datos en Sistemas Industriales", donde los docentes presentan el programa, la metodología de trabajo y el sistema de evaluación (trabajo práctico grupal integrador, evaluación individual y trabajos prácticos). Se introduce el paradigma de la Industria 4.0 y su evolución hacia el 5.0, destacando la centralidad de las personas, la sostenibilidad y la resiliencia. Se presentan conceptos clave como redes OT e IT, IIoT, mantenimiento predictivo, gemelos digitales y modelos de negocio basados en datos. Como primera tarea, se solicita a los estudiantes grabar un video de presentación personal de hasta tres minutos y compartir el enlace.
+
+**Archivo:** Grabaciones sincrónicos/Introducción OT-IT.txt
+**Fecha:** No identificada
+**Temas:** Redes OT e IT, sensores y actuadores, PLC, protocolo OPC-UA, sistemas SCADA, HMI
+**Resumen:** La clase introductoria aborda las diferencias entre redes OT (tecnología operacional, determinista, orientada al control de procesos físicos en tiempo real) y redes IT (tecnología de la información, orientada al procesamiento y transmisión de datos). Se explican los conceptos de sensores, transductores y actuadores como componentes clave para la adquisición de datos del entorno físico. Se presenta el PLC (Controlador Lógico Programable) como dispositivo central de automatización industrial, junto con el protocolo OPC-UA como estándar de comunicación que estructura e integra datos provenientes de máquinas. Finalmente, se introducen los sistemas SCADA como software de supervisión y control remoto de procesos, y la interfaz HMI como herramienta de visualización e interacción con los procesos industriales.
 
 ## Trabajo practico integrador
 **Archivo:** Trabajo practico integrador/Clase 5_dictado de TP_I4.0_2025.md
@@ -195,6 +200,12 @@ _Última actualización: 30/08/26_
           "fecha": "No identificada",
           "temas": "Presentación del curso, Industria 4.0 y 5.0, digitalización industrial, datos en la industria, competitividad, tecnologías emergentes, metodología y evaluación",
           "resumen": "Clase inaugural de la materia electiva \"Ciencia de Datos en Sistemas Industriales\", donde los docentes presentan el programa, la metodología de trabajo y el sistema de evaluación (trabajo práctico grupal integrador, evaluación individual y trabajos prácticos). Se introduce el paradigma de la Industria 4.0 y su evolución hacia el 5.0, destacando la centralidad de las personas, la sostenibilidad y la resiliencia. Se presentan conceptos clave como redes OT e IT, IIoT, mantenimiento predictivo, gemelos digitales y modelos de negocio basados en datos. Como primera tarea, se solicita a los estudiantes grabar un video de presentación personal de hasta tres minutos y compartir el enlace."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Introducción OT-IT.txt",
+          "fecha": "No identificada",
+          "temas": "Redes OT e IT, sensores y actuadores, PLC, protocolo OPC-UA, sistemas SCADA, HMI",
+          "resumen": "La clase introductoria aborda las diferencias entre redes OT (tecnología operacional, determinista, orientada al control de procesos físicos en tiempo real) y redes IT (tecnología de la información, orientada al procesamiento y transmisión de datos). Se explican los conceptos de sensores, transductores y actuadores como componentes clave para la adquisición de datos del entorno físico. Se presenta el PLC (Controlador Lógico Programable) como dispositivo central de automatización industrial, junto con el protocolo OPC-UA como estándar de comunicación que estructura e integra datos provenientes de máquinas. Finalmente, se introducen los sistemas SCADA como software de supervisión y control remoto de procesos, y la interfaz HMI como herramienta de visualización e interacción con los procesos industriales."
         }
       ]
     ],

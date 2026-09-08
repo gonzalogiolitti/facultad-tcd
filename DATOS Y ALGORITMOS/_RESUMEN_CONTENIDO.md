@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 31/08/26_
+_Última actualización: 08/09/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -11,6 +11,11 @@ _Última actualización: 31/08/26_
 **Fecha:** No identificada
 **Temas:** Datos e información, ciclo de vida del software, modelado, programación, algoritmos, requerimientos funcionales y no funcionales, pseudocódigo, diagramación lógica, pre y poscondiciones, dominio y codominio
 **Resumen:** El archivo introduce los conceptos fundamentales de la materia: la distinción entre dato e información, las fases del ciclo de vida del software y las etapas de la programación. Se define qué es un algoritmo (secuencia no ambigua, finita y ordenada de pasos) y se presentan formas de expresarlo mediante pseudocódigo y diagramación lógica. También se abordan los requerimientos funcionales y no funcionales, las pre y poscondiciones de un algoritmo, y los conceptos de dominio y codominio, acompañados de ejercicios prácticos de aplicación.
+
+**Archivo:** Contenido/AyD-diagramacionlogica-parte2.md
+**Fecha:** No identificada
+**Temas:** Estructuras de control de repetición, sentencia "para", sentencia "mientras", variables acumuladoras, variables contadoras, máximos y mínimos, ejercicios de diagramación lógica
+**Resumen:** El archivo corresponde a la segunda parte de diagramación lógica y presenta una serie de ejercicios prácticos que abarcan operaciones matemáticas (seno, coseno, hipotenusa, factorial), estructuras condicionales y estructuras de repetición. Se introducen los conceptos de sentencia "para" y sentencia "mientras", junto con el uso de variables acumuladoras y contadoras dentro de ciclos. También se trabajan problemas de búsqueda de máximos y mínimos, y situaciones con condiciones de corte variables definidas por el usuario o por valores centinela.
 
 ### Bibliografía
 **Archivo:** Contenido/Bibliografía/TCD-1-AyD-intro.md
@@ -69,6 +74,12 @@ _Última actualización: 31/08/26_
           "fecha": "No identificada",
           "temas": "Datos e información, ciclo de vida del software, modelado, programación, algoritmos, requerimientos funcionales y no funcionales, pseudocódigo, diagramación lógica, pre y poscondiciones, dominio y codominio",
           "resumen": "El archivo introduce los conceptos fundamentales de la materia: la distinción entre dato e información, las fases del ciclo de vida del software y las etapas de la programación. Se define qué es un algoritmo (secuencia no ambigua, finita y ordenada de pasos) y se presentan formas de expresarlo mediante pseudocódigo y diagramación lógica. También se abordan los requerimientos funcionales y no funcionales, las pre y poscondiciones de un algoritmo, y los conceptos de dominio y codominio, acompañados de ejercicios prácticos de aplicación."
+        },
+        {
+          "rel_path": "Contenido/AyD-diagramacionlogica-parte2.md",
+          "fecha": "No identificada",
+          "temas": "Estructuras de control de repetición, sentencia \"para\", sentencia \"mientras\", variables acumuladoras, variables contadoras, máximos y mínimos, ejercicios de diagramación lógica",
+          "resumen": "El archivo corresponde a la segunda parte de diagramación lógica y presenta una serie de ejercicios prácticos que abarcan operaciones matemáticas (seno, coseno, hipotenusa, factorial), estructuras condicionales y estructuras de repetición. Se introducen los conceptos de sentencia \"para\" y sentencia \"mientras\", junto con el uso de variables acumuladoras y contadoras dentro de ciclos. También se trabajan problemas de búsqueda de máximos y mínimos, y situaciones con condiciones de corte variables definidas por el usuario o por valores centinela."
         }
       ]
     ],
