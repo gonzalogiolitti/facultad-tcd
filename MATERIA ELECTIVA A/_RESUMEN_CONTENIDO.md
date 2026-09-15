@@ -1,5 +1,5 @@
 # MATERIA ELECTIVA A - Resumen de contenido
-_Última actualización: 08/09/26_
+_Última actualización: 15/09/26_
 
 ## Grabaciones sincrónicos
 **Archivo:** Grabaciones sincrónicos/Clase 7-5 automatización 4.0.txt
@@ -130,6 +130,37 @@ _Última actualización: 08/09/26_
 **Fecha:** No identificada
 **Temas:** Digital Twin, Node-RED, IoT Industrial, mantenimiento predictivo, Random Forest, MQTT, moldeo por inyección de plástico
 **Resumen:** Este artículo científico presenta una implementación de gemelo digital (digital twin) usando Node-RED en el sector manufacturero, tomando como caso de estudio el moldeo por inyección de plástico. Se describe la arquitectura del sistema, que conecta el gemelo digital con su contraparte física mediante el protocolo MQTT. El gemelo digital incorpora un algoritmo de Random Forest para clasificación de calidad de productos, logrando una precisión del 92,76%. Además, incluye un dashboard interactivo para visualización y un sistema de notificaciones por SMS y correo electrónico ante condiciones anómalas, demostrando la viabilidad y flexibilidad de Node-RED para este tipo de aplicaciones IIoT.
+
+### Clase de Mongodb Influxdb IIoTCarpeta
+**Archivo:** Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/00-IIoT.txt
+**Fecha:** No identificada
+**Temas:** IoT, IIoT, plataformas IoT, Node-RED, MongoDB, InfluxDB, sensores y actuadores, protocolos de comunicación industrial
+**Resumen:** La clase introduce los conceptos de Internet de las Cosas (IoT) e Internet Industrial de las Cosas (IIoT), explicando cómo redes de sensores, actuadores y dispositivos autónomos permiten monitorear y optimizar procesos industriales. Se describen principios clave como la recopilación masiva de datos, comunicación máquina a máquina, geolocalización y actuación automatizada. Se presenta la tipología de niveles IoT (sensores, PLC, HMI/SCADA, ERP) y la importancia de integrar datos en una única plataforma para eliminar registros en papel y construir indicadores. Finalmente, se introduce Node-RED como framework de desarrollo basado en JavaScript para conectar hardware, APIs y servicios, explicando su sistema de mensajes, contextos (nodo, flujo y global) y ejemplos de uso con protocolos industriales y bots de alertas.
+
+**Archivo:** Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/1-Registro MongoDB.txt
+**Fecha:** No identificada
+**Temas:** MongoDB Atlas, creación de organización y proyecto, configuración de clúster, usuarios y conexión con Node.js
+**Resumen:** La clase explica paso a paso cómo registrarse y configurar una base de datos NoSQL en MongoDB Atlas para su uso en entornos IoT con Node.js. Se muestra la creación de una organización, un proyecto y un clúster gratuito, incluyendo la selección del proveedor de nube. Luego se configura el usuario y contraseña de acceso a la base de datos. Finalmente, se obtiene el string de conexión y se indica cómo instalar el driver de MongoDB para Node.js mediante npm, dejando preparado el entorno para la integración.
+
+**Archivo:** Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/2-Creación de variable MongoDB.txt
+**Fecha:** No identificada
+**Temas:** MongoDB, Node-RED, configuración de nodo MongoDB4, variables globales, inserción de datos, flujo de datos IoT
+**Resumen:** La clase muestra cómo integrar MongoDB dentro del entorno Node-RED para almacenar datos generados en un contexto IIoT. Se explica la instalación del nodo MongoDB4, su configuración con credenciales, nombre de base de datos y colección, y el uso de la operación "insert one". Luego se construye un flujo demostrativo que genera valores aleatorios cada 30 segundos, los asocia a una variable global (simulando un protocolo OPC-UA/PSC), agrega un timestamp formateado y los inserta en la base de datos MongoDB, verificando finalmente que los datos se almacenan correctamente en el cluster.
+
+**Archivo:** Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/4-Construir varibale en Influxdb.txt
+**Fecha:** No identificada
+**Temas:** Configuración de nodos InfluxDB, organización y contenedores en InfluxDB, mediciones de vapor, tokens de autenticación, integración con flujo de datos IIoT
+**Resumen:** La clase explica cómo terminar de configurar los nodos de InfluxDB para enviar y recibir información desde la base de datos. Se detalla cómo identificar la organización, el contenedor (bucket) y la medición (measurement) dentro de InfluxDB, utilizando como ejemplo mediciones de vapor. También se explica el uso de nodos "in" y "out" para almacenar y extraer datos, y se indica cómo solucionar errores de autenticación generando un nuevo token (maestro o específico por sensor) desde el panel de InfluxDB.
+
+**Archivo:** Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/Configuración de grafana e influx db (1).md
+**Fecha:** No identificada
+**Temas:** Configuración de Grafana Cloud, Integración con InfluxDB Cloud, Flux queries, Dashboards IoT, Tokens API
+**Resumen:** El archivo describe paso a paso cómo conectar Grafana Cloud con InfluxDB Cloud, incluyendo la configuración de la URL de organización, selección del lenguaje Flux, generación y uso de tokens API, y la creación de data sources. Explica cómo construir dashboards con visualizaciones de series de tiempo usando queries en Flux para filtrar datos por bucket, measurement y field. También cubre opciones de personalización de los paneles, como ajuste de rangos de tiempo, múltiples queries, overrides de campos y el uso del asistente de IA integrado de Grafana.
+
+**Archivo:** Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/Presentacion DB configuraciones.md
+**Fecha:** No identificada
+**Temas:** IoT, IIoT, Node-RED, MongoDB, InfluxDB, Siemens Xcelerator, bases de datos NoSQL, series de tiempo
+**Resumen:** La presentación introduce los conceptos de IoT e IIoT, describiendo sus principios, plataformas web destacadas (AWS, Azure, Ubidots, Grafana) y la herramienta Node-RED para conectar dispositivos, APIs y servicios. Se explica la configuración y uso de MongoDB Atlas e InfluxDB como bases de datos NoSQL para almacenamiento de datos en proyectos IoT, incluyendo su integración con Node-RED. Finalmente, se presenta la plataforma Siemens Xcelerator (Insight Hub) para la gestión industrial de datos IIoT, con funcionalidades de monitoreo, dashboards y alertas.
 
 ### Mongodb Influxdb IIoTCarpeta
 **Archivo:** Unidad 2/Mongodb Influxdb IIoTCarpeta/00-IIoT.txt
@@ -384,6 +415,50 @@ _Última actualización: 08/09/26_
           "fecha": "No identificada",
           "temas": "Digital Twin, Node-RED, IoT Industrial, mantenimiento predictivo, Random Forest, MQTT, moldeo por inyección de plástico",
           "resumen": "Este artículo científico presenta una implementación de gemelo digital (digital twin) usando Node-RED en el sector manufacturero, tomando como caso de estudio el moldeo por inyección de plástico. Se describe la arquitectura del sistema, que conecta el gemelo digital con su contraparte física mediante el protocolo MQTT. El gemelo digital incorpora un algoritmo de Random Forest para clasificación de calidad de productos, logrando una precisión del 92,76%. Además, incluye un dashboard interactivo para visualización y un sistema de notificaciones por SMS y correo electrónico ante condiciones anómalas, demostrando la viabilidad y flexibilidad de Node-RED para este tipo de aplicaciones IIoT."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2",
+        "Clase de Mongodb Influxdb IIoTCarpeta"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/00-IIoT.txt",
+          "fecha": "No identificada",
+          "temas": "IoT, IIoT, plataformas IoT, Node-RED, MongoDB, InfluxDB, sensores y actuadores, protocolos de comunicación industrial",
+          "resumen": "La clase introduce los conceptos de Internet de las Cosas (IoT) e Internet Industrial de las Cosas (IIoT), explicando cómo redes de sensores, actuadores y dispositivos autónomos permiten monitorear y optimizar procesos industriales. Se describen principios clave como la recopilación masiva de datos, comunicación máquina a máquina, geolocalización y actuación automatizada. Se presenta la tipología de niveles IoT (sensores, PLC, HMI/SCADA, ERP) y la importancia de integrar datos en una única plataforma para eliminar registros en papel y construir indicadores. Finalmente, se introduce Node-RED como framework de desarrollo basado en JavaScript para conectar hardware, APIs y servicios, explicando su sistema de mensajes, contextos (nodo, flujo y global) y ejemplos de uso con protocolos industriales y bots de alertas."
+        },
+        {
+          "rel_path": "Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/1-Registro MongoDB.txt",
+          "fecha": "No identificada",
+          "temas": "MongoDB Atlas, creación de organización y proyecto, configuración de clúster, usuarios y conexión con Node.js",
+          "resumen": "La clase explica paso a paso cómo registrarse y configurar una base de datos NoSQL en MongoDB Atlas para su uso en entornos IoT con Node.js. Se muestra la creación de una organización, un proyecto y un clúster gratuito, incluyendo la selección del proveedor de nube. Luego se configura el usuario y contraseña de acceso a la base de datos. Finalmente, se obtiene el string de conexión y se indica cómo instalar el driver de MongoDB para Node.js mediante npm, dejando preparado el entorno para la integración."
+        },
+        {
+          "rel_path": "Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/2-Creación de variable MongoDB.txt",
+          "fecha": "No identificada",
+          "temas": "MongoDB, Node-RED, configuración de nodo MongoDB4, variables globales, inserción de datos, flujo de datos IoT",
+          "resumen": "La clase muestra cómo integrar MongoDB dentro del entorno Node-RED para almacenar datos generados en un contexto IIoT. Se explica la instalación del nodo MongoDB4, su configuración con credenciales, nombre de base de datos y colección, y el uso de la operación \"insert one\". Luego se construye un flujo demostrativo que genera valores aleatorios cada 30 segundos, los asocia a una variable global (simulando un protocolo OPC-UA/PSC), agrega un timestamp formateado y los inserta en la base de datos MongoDB, verificando finalmente que los datos se almacenan correctamente en el cluster."
+        },
+        {
+          "rel_path": "Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/4-Construir varibale en Influxdb.txt",
+          "fecha": "No identificada",
+          "temas": "Configuración de nodos InfluxDB, organización y contenedores en InfluxDB, mediciones de vapor, tokens de autenticación, integración con flujo de datos IIoT",
+          "resumen": "La clase explica cómo terminar de configurar los nodos de InfluxDB para enviar y recibir información desde la base de datos. Se detalla cómo identificar la organización, el contenedor (bucket) y la medición (measurement) dentro de InfluxDB, utilizando como ejemplo mediciones de vapor. También se explica el uso de nodos \"in\" y \"out\" para almacenar y extraer datos, y se indica cómo solucionar errores de autenticación generando un nuevo token (maestro o específico por sensor) desde el panel de InfluxDB."
+        },
+        {
+          "rel_path": "Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/Configuración de grafana e influx db (1).md",
+          "fecha": "No identificada",
+          "temas": "Configuración de Grafana Cloud, Integración con InfluxDB Cloud, Flux queries, Dashboards IoT, Tokens API",
+          "resumen": "El archivo describe paso a paso cómo conectar Grafana Cloud con InfluxDB Cloud, incluyendo la configuración de la URL de organización, selección del lenguaje Flux, generación y uso de tokens API, y la creación de data sources. Explica cómo construir dashboards con visualizaciones de series de tiempo usando queries en Flux para filtrar datos por bucket, measurement y field. También cubre opciones de personalización de los paneles, como ajuste de rangos de tiempo, múltiples queries, overrides de campos y el uso del asistente de IA integrado de Grafana."
+        },
+        {
+          "rel_path": "Unidad 2/Clase de Mongodb Influxdb IIoTCarpeta/Presentacion DB configuraciones.md",
+          "fecha": "No identificada",
+          "temas": "IoT, IIoT, Node-RED, MongoDB, InfluxDB, Siemens Xcelerator, bases de datos NoSQL, series de tiempo",
+          "resumen": "La presentación introduce los conceptos de IoT e IIoT, describiendo sus principios, plataformas web destacadas (AWS, Azure, Ubidots, Grafana) y la herramienta Node-RED para conectar dispositivos, APIs y servicios. Se explica la configuración y uso de MongoDB Atlas e InfluxDB como bases de datos NoSQL para almacenamiento de datos en proyectos IoT, incluyendo su integración con Node-RED. Finalmente, se presenta la plataforma Siemens Xcelerator (Insight Hub) para la gestión industrial de datos IIoT, con funcionalidades de monitoreo, dashboards y alertas."
         }
       ]
     ],

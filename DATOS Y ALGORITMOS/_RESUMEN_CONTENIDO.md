@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 08/09/26_
+_Última actualización: 15/09/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -16,6 +16,12 @@ _Última actualización: 08/09/26_
 **Fecha:** No identificada
 **Temas:** Estructuras de control de repetición, sentencia "para", sentencia "mientras", variables acumuladoras, variables contadoras, máximos y mínimos, ejercicios de diagramación lógica
 **Resumen:** El archivo corresponde a la segunda parte de diagramación lógica y presenta una serie de ejercicios prácticos que abarcan operaciones matemáticas (seno, coseno, hipotenusa, factorial), estructuras condicionales y estructuras de repetición. Se introducen los conceptos de sentencia "para" y sentencia "mientras", junto con el uso de variables acumuladoras y contadoras dentro de ciclos. También se trabajan problemas de búsqueda de máximos y mínimos, y situaciones con condiciones de corte variables definidas por el usuario o por valores centinela.
+
+### Actividades
+**Archivo:** Contenido/Actividades/Práctica 1.md
+**Fecha:** No identificada
+**Temas:** Pseudocódigo en PseInt, diagramas de flujo en draw.io, algoritmos secuenciales, estructuras de decisión simple, resolución de problemas con variables y condiciones
+**Resumen:** Práctica 1 de la materia Datos y Algoritmos, compuesta por 12 ejercicios divididos en dos grupos: secuenciales (cálculo de suma, producto, promedio, ángulos, IVA y bonificaciones) y de decisión simple (comparación de números, días de la semana, control de calidad de piezas, búsqueda del mayor entre varios valores y cálculo de descuentos según tipo de cliente). Se incluyen soluciones en pseudocódigo PseInt para la mayoría de los ejercicios, con uso de estructuras condicionales simples y anidadas. Las herramientas indicadas para resolver la práctica son draw.io para diagramas de flujo y PseInt para pseudocódigo.
 
 ### Bibliografía
 **Archivo:** Contenido/Bibliografía/TCD-1-AyD-intro.md
@@ -55,6 +61,16 @@ _Última actualización: 08/09/26_
 **Temas:** Diagramas de flujo, variables, estructuras de control, decisiones simples y dobles, decisiones anidadas, operadores lógicos, concatenación de strings, intercambio de variables (SWAP), función random
 **Resumen:** La clase profundiza en diagramación lógica (flowcharts) repasando símbolos básicos y convenciones de escritura. Se trabaja el concepto de variable como espacio en memoria, sus reglas de nomenclatura y tipos de datos (numéricos y texto). Se introduce la estructura de control de decisión en sus formas simple, doble y anidada, utilizando la herramienta draw.io para construir diagramas con ejercicios prácticos (perímetro de circunferencia, comparación de números, conversión de negativos a positivos). Hacia el final se presentan operadores relacionales y lógicos (AND, OR, NOT), el concepto de intercambio de variables (SWAP) con variable auxiliar, y la función random para generación de números aleatorios.
 
+**Archivo:** Grabaciones 2026/Clase 3 - Estructura de Repetición _Para_.txt
+**Fecha:** No identificada
+**Temas:** Estructura de repetición "Para", variables acumuladoras y contadoras, inicialización de variables, ejercicios con random, condicionales anidados dentro del Para
+**Resumen:** La clase comienza con la corrección de ejercicios previos (seno/coseno, hipotenusa, par/impar, dado aleatorio) y luego introduce la estructura de repetición "Para", explicando su sintaxis con valor inicial, valor final y paso. Se trabaja el concepto de variables acumuladoras y contadoras, destacando la importancia de inicializarlas en cero. Se resuelven ejercicios progresivos: promedio de edades de 30 animales clasificados por especie, generación de N números aleatorios contando pares e impares, listado descendente de números, y cálculo del factorial de un número. Se anuncia que la próxima clase se verá la estructura "Mientras" y el tema de máximos y mínimos.
+
+**Archivo:** Grabaciones 2026/Clase 4 - Estructura Mientras.txt
+**Fecha:** No identificada
+**Temas:** Repaso de variables acumuladoras y contadoras, máximos y mínimos con estructura Para, estructura de repetición Mientras (While), ejercicios prácticos con Mientras, introducción a PSeInt, primer parcial
+**Resumen:** La clase comienza con un repaso de variables acumuladoras y contadoras, para luego introducir el concepto de máximos y mínimos dentro de la estructura Para, explicando la importancia de inicializar la variable con un valor extremo. Luego se presenta la estructura Mientras (While), diferenciándola del Para por no tener un número de iteraciones predefinido, sino una condición de corte. Se realizan varios ejercicios prácticos: suma de números hasta ingresar un cero, conteo de pares e impares hasta valor negativo, cociente entre dos números pares, y generación de números impares al azar. Al cierre, se menciona la herramienta PSeInt para pseudocódigo y se informa sobre la modalidad y fechas del primer parcial.
+
 <!-- ESTADO_RESUMEN
 {
   "secciones": [
@@ -80,6 +96,20 @@ _Última actualización: 08/09/26_
           "fecha": "No identificada",
           "temas": "Estructuras de control de repetición, sentencia \"para\", sentencia \"mientras\", variables acumuladoras, variables contadoras, máximos y mínimos, ejercicios de diagramación lógica",
           "resumen": "El archivo corresponde a la segunda parte de diagramación lógica y presenta una serie de ejercicios prácticos que abarcan operaciones matemáticas (seno, coseno, hipotenusa, factorial), estructuras condicionales y estructuras de repetición. Se introducen los conceptos de sentencia \"para\" y sentencia \"mientras\", junto con el uso de variables acumuladoras y contadoras dentro de ciclos. También se trabajan problemas de búsqueda de máximos y mínimos, y situaciones con condiciones de corte variables definidas por el usuario o por valores centinela."
+        }
+      ]
+    ],
+    [
+      [
+        "Contenido",
+        "Actividades"
+      ],
+      [
+        {
+          "rel_path": "Contenido/Actividades/Práctica 1.md",
+          "fecha": "No identificada",
+          "temas": "Pseudocódigo en PseInt, diagramas de flujo en draw.io, algoritmos secuenciales, estructuras de decisión simple, resolución de problemas con variables y condiciones",
+          "resumen": "Práctica 1 de la materia Datos y Algoritmos, compuesta por 12 ejercicios divididos en dos grupos: secuenciales (cálculo de suma, producto, promedio, ángulos, IVA y bonificaciones) y de decisión simple (comparación de números, días de la semana, control de calidad de piezas, búsqueda del mayor entre varios valores y cálculo de descuentos según tipo de cliente). Se incluyen soluciones en pseudocódigo PseInt para la mayoría de los ejercicios, con uso de estructuras condicionales simples y anidadas. Las herramientas indicadas para resolver la práctica son draw.io para diagramas de flujo y PseInt para pseudocódigo."
         }
       ]
     ],
@@ -144,6 +174,18 @@ _Última actualización: 08/09/26_
           "fecha": "No identificada",
           "temas": "Diagramas de flujo, variables, estructuras de control, decisiones simples y dobles, decisiones anidadas, operadores lógicos, concatenación de strings, intercambio de variables (SWAP), función random",
           "resumen": "La clase profundiza en diagramación lógica (flowcharts) repasando símbolos básicos y convenciones de escritura. Se trabaja el concepto de variable como espacio en memoria, sus reglas de nomenclatura y tipos de datos (numéricos y texto). Se introduce la estructura de control de decisión en sus formas simple, doble y anidada, utilizando la herramienta draw.io para construir diagramas con ejercicios prácticos (perímetro de circunferencia, comparación de números, conversión de negativos a positivos). Hacia el final se presentan operadores relacionales y lógicos (AND, OR, NOT), el concepto de intercambio de variables (SWAP) con variable auxiliar, y la función random para generación de números aleatorios."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 3 - Estructura de Repetición _Para_.txt",
+          "fecha": "No identificada",
+          "temas": "Estructura de repetición \"Para\", variables acumuladoras y contadoras, inicialización de variables, ejercicios con random, condicionales anidados dentro del Para",
+          "resumen": "La clase comienza con la corrección de ejercicios previos (seno/coseno, hipotenusa, par/impar, dado aleatorio) y luego introduce la estructura de repetición \"Para\", explicando su sintaxis con valor inicial, valor final y paso. Se trabaja el concepto de variables acumuladoras y contadoras, destacando la importancia de inicializarlas en cero. Se resuelven ejercicios progresivos: promedio de edades de 30 animales clasificados por especie, generación de N números aleatorios contando pares e impares, listado descendente de números, y cálculo del factorial de un número. Se anuncia que la próxima clase se verá la estructura \"Mientras\" y el tema de máximos y mínimos."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 4 - Estructura Mientras.txt",
+          "fecha": "No identificada",
+          "temas": "Repaso de variables acumuladoras y contadoras, máximos y mínimos con estructura Para, estructura de repetición Mientras (While), ejercicios prácticos con Mientras, introducción a PSeInt, primer parcial",
+          "resumen": "La clase comienza con un repaso de variables acumuladoras y contadoras, para luego introducir el concepto de máximos y mínimos dentro de la estructura Para, explicando la importancia de inicializar la variable con un valor extremo. Luego se presenta la estructura Mientras (While), diferenciándola del Para por no tener un número de iteraciones predefinido, sino una condición de corte. Se realizan varios ejercicios prácticos: suma de números hasta ingresar un cero, conteo de pares e impares hasta valor negativo, cociente entre dos números pares, y generación de números impares al azar. Al cierre, se menciona la herramienta PSeInt para pseudocódigo y se informa sobre la modalidad y fechas del primer parcial."
         }
       ]
     ]

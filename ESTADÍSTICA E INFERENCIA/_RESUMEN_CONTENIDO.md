@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 02/09/26_
+_Última actualización: 15/09/26_
 
 ## General
 **Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
@@ -207,6 +207,83 @@ _Última actualización: 02/09/26_
 **Fecha:** No identificada
 **Temas:** Función summary en R, función describe del paquete psych, medidas resumen, groupby con condiciones, cuartiles, coeficiente de asimetría y kurtosis
 **Resumen:** La clase muestra cómo calcular medidas resumen en R utilizando las funciones `summary` y `describe`. Se explica cómo aplicar `summary` a un data frame completo para obtener mínimo, cuartiles, mediana y media, y cómo segmentar el cálculo de una medida (como la media del pH) según una condición lógica. Luego se presenta la función `describe` del paquete `psych`, que ofrece una tabla más completa incluyendo desvío estándar, mediana, media truncada, rango, coeficiente de asimetría y kurtosis. Se enfatiza la interpretación de resultados y la corrección de errores por argumentos mal especificados.
+
+### Clase 4
+**Archivo:** Unidad 2/Clase 4/Video 2 - Unidad 4_ Generando variables auxiliares.txt
+**Fecha:** No identificada
+**Temas:** Variables auxiliares en R, función ifelse anidado, recodificación de variables, creación de columnas categóricas, directorio de trabajo en R
+**Resumen:** La clase muestra cómo generar columnas auxiliares en R a partir de una base de datos previamente utilizada, comenzando con la configuración del directorio de trabajo y el renombramiento de columnas. Se crean variables categóricas usando `ifelse`, como "conductividad alta/baja" y clasificación de pH en ácido, básico o neutro mediante `ifelse` anidados. También se genera una columna con valores de temperatura redondeados usando la función `round`, y un vector de colores para uso posterior en gráficos. Finalmente, se inspecciona la tabla resultante para verificar que las nuevas columnas fueron agregadas correctamente.
+
+**Archivo:** Unidad 2/Clase 4/Video 3 - Unidad 4_ Gráfico de sectores con pie().txt
+**Fecha:** No identificada
+**Temas:** Gráfico de sectores en R, función pie(), función table(), colores en gráficos, cálculo de porcentajes, etiquetas y leyendas
+**Resumen:** La clase explica cómo construir un gráfico de sectores (pie chart) en R usando la función `pie()` junto con `table()` para una variable cualitativa auxiliar. Se muestra cómo personalizar el gráfico modificando colores mediante el argumento `col`, cómo calcular y mostrar porcentajes usando `round()` y la suma de frecuencias, y cómo agregar etiquetas con el argumento `labels`. Finalmente, se introduce la necesidad de incorporar una leyenda con el comando `legend()` para identificar correctamente cada categoría, tema que se continuará en el siguiente video.
+
+**Archivo:** Unidad 2/Clase 4/Video 4 - Unidad 4_ Grádico de barras con barplot().txt
+**Fecha:** No identificada
+**Temas:** Gráfico de barras en R, función barplot(), función legend(), argumentos estéticos, exportación de gráficos
+**Resumen:** La clase muestra cómo agregar una leyenda a gráficos en R usando la función `legend()`, especificando posición, etiquetas y colores. Luego se trabaja con la función `barplot()` para crear gráficos de barras horizontales (convención para variables categóricas), ajustando argumentos como nombres de ejes, límites del eje x, colores y título. Se explica cómo modificar aspectos estéticos del gráfico de forma incremental. Finalmente, se indica cómo exportar los gráficos desde RStudio usando la opción "Export" para guardarlos en el directorio de trabajo y evitar perderlos al cerrar la sesión.
+
+**Archivo:** Unidad 2/Clase 4/Video 5 - Unidad 4_ Diagrama de pareto con qcc+pareto.chart().txt
+**Fecha:** No identificada
+**Temas:** Diagrama de Pareto, librería qcc, función pareto.chart(), frecuencia acumulada, porcentaje acumulado, R
+**Resumen:** La clase muestra cómo construir un diagrama de Pareto en R utilizando la librería `qcc` (quality control) y su función `pareto.chart()`. Se explica cómo configurar los argumentos del gráfico (etiquetas de ejes, título, doble eje vertical) y cómo exportar la imagen. Además, se destaca que la función genera automáticamente una tabla con frecuencia, frecuencia acumulada, porcentaje y porcentaje acumulado. Finalmente, se ilustra la interpretación del gráfico con un ejemplo de categorías de pH, señalando que más del 50% de las muestras presentaron pH básico y más del 95% tuvieron pH básico o neutro.
+
+**Archivo:** Unidad 2/Clase 4/Video 6 - Unidad 4_ Diagrama de puntos con plot().txt
+**Fecha:** No identificada
+**Temas:** Gráfico de puntos, función plot(), variables cuantitativas, personalización de gráficos, factorización de variables, leyenda en R
+**Resumen:** La clase presenta el uso de la función `plot()` en R para crear diagramas de puntos como herramienta exploratoria de variables cuantitativas, utilizando la variable pH como ejemplo. Se explica cómo personalizar el gráfico agregando etiquetas de ejes (`xlab`, `ylab`), título (`main`), tipo de punto (`pch`) y color. Además, se muestra cómo incorporar una segunda variable categórica (conductividad) mediante la factorización de niveles para asignar colores diferenciados a cada grupo. Finalmente, se menciona la posibilidad de agregar una leyenda con el comando `legend()` para identificar cada categoría en el gráfico.
+
+**Archivo:** Unidad 2/Clase 4/Video 7 - Unidad 4_ Diagrama de tallo y hoja con función stem()  y, diagrama de bastones con función  barplot().txt
+**Fecha:** No identificada
+**Temas:** Diagrama de tallo y hoja, función stem(), diagrama de bastones, función barplot(), visualización de variables cuantitativas en R
+**Resumen:** La clase presenta dos gráficos para analizar la distribución de variables cuantitativas en R. Se explica el diagrama de tallo y hoja mediante la función `stem()`, destacando cómo interpretar la posición del punto decimal y cómo cada hoja representa una observación, permitiendo identificar valores repetidos y la distribución general. Luego se aborda el diagrama de bastones usando `barplot()`, señalando que para variables cuantitativas no se utiliza el argumento `horizontal`. Se muestra cómo personalizar el gráfico agregando nombres a los ejes, límites, color y título, utilizando datos de pH como ejemplo práctico.
+
+**Archivo:** Unidad 2/Clase 4/Video 8 - Unidad 4_ Histograma de frecuencias con hist().txt
+**Fecha:** No identificada
+**Temas:** Histograma de frecuencias, función hist() en R, variables cuantitativas, intervalos de clase, personalización de gráficos en R
+**Resumen:** La clase explica cómo construir un histograma de frecuencias en R usando la función `hist()` para variables cuantitativas con muchos valores diferentes. Se distingue el histograma del diagrama de bastones, destacando que el histograma agrupa observaciones en intervalos en lugar de representar valores individuales. Se muestra cómo personalizar el gráfico modificando etiquetas de ejes, límites del eje Y, título y color, y se menciona la importancia de la sintaxis correcta en R para evitar errores.
+
+**Archivo:** Unidad 2/Clase 4/Video 9 - Unidad 4_ Boxplot.txt
+**Fecha:** No identificada
+**Temas:** Boxplot en R, función boxplot(), argumentos estéticos, boxplot por variable categórica, interpretación de cuartiles y bigotes
+**Resumen:** La clase explica cómo construir un boxplot en R utilizando la función `boxplot()`, describiendo la lectura del gráfico a partir de Q1, Q2 (mediana) y Q3, así como la extensión de los bigotes. Se muestran distintas configuraciones estéticas como orientación horizontal/vertical, límites de ejes, etiquetas y colores. También se introduce el uso del boxplot segmentado por una variable categórica (conductividad alta vs. baja), lo que permite comparar visualmente la distribución del pH entre grupos y extraer primeras interpretaciones sobre la relación entre variables.
+
+**Archivo:** Unidad 2/Clase 4/Video 10 - Unidad 4_ ggplot 1.txt
+**Fecha:** No identificada
+**Temas:** Introducción a ggplot2, gráficos de puntos, aesthetics, capas en ggplot2, variables categóricas con color
+**Resumen:** La clase introduce la librería ggplot2 (parte del ecosistema tidyverse) y su estructura de capas para construir gráficos en R. Se muestra cómo crear un gráfico de dispersión (geom_point) usando un dataset con variables de pH, temperatura y conductividad. Se explica el concepto de aesthetics (aes), incluyendo cómo asignar ejes x e y, y cómo agregar una tercera variable categórica mediante el argumento color dentro de aes. También se trabaja sobre un error frecuente relacionado con el cierre incorrecto del paréntesis de aesthetics, aprovechándolo como ejemplo didáctico.
+
+**Archivo:** Unidad 2/Clase 4/Video 11 - Unidad 4_ ggplot 2.txt
+**Fecha:** No identificada
+**Temas:** ggplot2, facetas (facet_wrap), gráfico de líneas, box plot, visualización multivariada, personalización de ejes
+**Resumen:** La clase muestra cómo construir visualizaciones en R usando ggplot2 con capas adicionales. Se explica el uso de `facet_wrap` para dividir gráficos en paneles según una variable categórica (categoría de pH), aplicado a la relación entre conductividad y demanda de oxígeno mediante gráfico de líneas. También se trabaja la construcción de un box plot para analizar la conductividad según la categoría de pH, incluyendo la personalización de etiquetas en los ejes con parámetros adicionales de ggplot2.
+
+**Archivo:** Unidad 2/Clase 4/Video 12 - Unidad 4_ ggplot 3.txt
+**Fecha:** No identificada
+**Temas:** ggplot2, histograma de frecuencias, personalización estética, facet, tema minimal, gráfico de barras, geom_bar
+**Resumen:** La clase muestra cómo construir un histograma en ggplot2 utilizando datos de pH, agregando capas para etiquetas de ejes, título y parámetros estéticos como color de relleno, separación de columnas y ajuste de bins. Se introduce la capa `facet` para separar el histograma según niveles de conductividad (alta y baja), y se aplica `theme_minimal` para mejorar la presentación visual eliminando el fondo. Finalmente, se introduce `geom_bar` para construir un gráfico de barras con una variable categórica, destacando el uso del eje y en lugar del eje x para ese tipo de variable.
+
+**Archivo:** Unidad 2/Clase 4/Video 14 - Unidad 4_ Rchartas y cheatsheet para mejorar gráficos.txt
+**Fecha:** No identificada
+**Temas:** Recharts, ggplot2, cheat sheet, paletas de colores, recursos gráficos en R
+**Resumen:** La clase presenta la página de Recharts como recurso para explorar y mejorar gráficos en R, mostrando cómo elegir tipos de gráficos y personalizar títulos, etiquetas, colores y leyendas. Se explica cómo consultar los códigos de colores disponibles y las paletas predefinidas, incluyendo opciones accesibles. También se presenta el cheat sheet de ggplot2 como referencia de las geometrías y posibilidades gráficas del paquete. Se recomienda a los estudiantes practicar guardando los códigos de gráficos que más utilicen para mantener un estilo unificado y evitar reescribir código repetidamente.
+
+### Clase 5
+**Archivo:** Unidad 2/Clase 5/Video material teórico.txt
+**Fecha:** No identificada
+**Temas:** Distribución de frecuencias, frecuencia absoluta y relativa, distribución de probabilidad, distribución de Bernoulli, distribución binomial, distribución de Poisson, distribución normal, distribución t de Student, distribución chi-cuadrado
+**Resumen:** La clase introduce el concepto de distribución de una variable aleatoria, distinguiendo entre frecuencia absoluta y relativa. Se presentan las distribuciones teóricas para variables discretas (Bernoulli, Binomial y Poisson) y continuas (Normal, t de Student y chi-cuadrado), explicando sus parámetros y contextos de aplicación. Se enfatiza que las distribuciones con las que se trabajará principalmente en la materia son la Binomial, Poisson y Normal. Las distribuciones t de Student y chi-cuadrado se mencionan como herramientas que se utilizarán más adelante en la unidad de inferencia estadística.
+
+**Archivo:** Unidad 2/Clase 5/Video simulación de muestras.txt
+**Fecha:** No identificada
+**Temas:** Simulación de muestras en R, distribución binomial, distribución de Poisson, distribución normal, funciones `rbinom`, `rpois`, `rnorm`
+**Resumen:** La clase muestra cómo simular datos aleatorios en R usando funciones de distribuciones de probabilidad (`rbinom`, `rpois`, `rnorm`). Se trabaja con tres distribuciones: binomial (ejemplo de tornillos defectuosos con n=50 y p=0,08), Poisson (llamadas telefónicas con λ=15 por hora) y normal (concentración de vitamina D con μ=20 y σ=5). Para cada caso se explica cómo definir los parámetros propios de cada distribución y cómo interpretar los resultados generados. También se menciona el uso de semillas para reproducibilidad y la función `round` para redondear salidas.
+
+**Archivo:** Unidad 2/Clase 5/UNIDAD II - Clase 5 (1).md
+**Fecha:** 2024 (no se puede precisar más)
+**Temas:** Distribución empírica, Distribuciones teóricas, Variables aleatorias discretas y continuas, Distribución Normal, Distribución t de Student, Distribución Chi Cuadrado
+**Resumen:** La clase aborda el concepto de distribución empírica, explicando frecuencia absoluta y relativa, y los aspectos clave de la distribución de una variable cuantitativa (posición, dispersión y forma). Luego introduce las distribuciones teóricas de probabilidad, diferenciando entre variables aleatorias discretas (Bernoulli, Binomial, Poisson, entre otras) y continuas (Normal, Uniforme, Exponencial, entre otras). Se profundiza en la distribución Normal, destacando su relación con el teorema central del límite. Finalmente, se presentan la distribución t de Student —útil para muestras pequeñas con varianza poblacional desconocida— y la distribución Chi Cuadrado, ambas relevantes para inferencia estadística y pruebas de hipótesis.
 
 <!-- ESTADO_RESUMEN
 {
@@ -493,6 +570,112 @@ _Última actualización: 02/09/26_
           "fecha": "No identificada",
           "temas": "Función summary en R, función describe del paquete psych, medidas resumen, groupby con condiciones, cuartiles, coeficiente de asimetría y kurtosis",
           "resumen": "La clase muestra cómo calcular medidas resumen en R utilizando las funciones `summary` y `describe`. Se explica cómo aplicar `summary` a un data frame completo para obtener mínimo, cuartiles, mediana y media, y cómo segmentar el cálculo de una medida (como la media del pH) según una condición lógica. Luego se presenta la función `describe` del paquete `psych`, que ofrece una tabla más completa incluyendo desvío estándar, mediana, media truncada, rango, coeficiente de asimetría y kurtosis. Se enfatiza la interpretación de resultados y la corrección de errores por argumentos mal especificados."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2",
+        "Clase 4"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 2 - Unidad 4_ Generando variables auxiliares.txt",
+          "fecha": "No identificada",
+          "temas": "Variables auxiliares en R, función ifelse anidado, recodificación de variables, creación de columnas categóricas, directorio de trabajo en R",
+          "resumen": "La clase muestra cómo generar columnas auxiliares en R a partir de una base de datos previamente utilizada, comenzando con la configuración del directorio de trabajo y el renombramiento de columnas. Se crean variables categóricas usando `ifelse`, como \"conductividad alta/baja\" y clasificación de pH en ácido, básico o neutro mediante `ifelse` anidados. También se genera una columna con valores de temperatura redondeados usando la función `round`, y un vector de colores para uso posterior en gráficos. Finalmente, se inspecciona la tabla resultante para verificar que las nuevas columnas fueron agregadas correctamente."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 3 - Unidad 4_ Gráfico de sectores con pie().txt",
+          "fecha": "No identificada",
+          "temas": "Gráfico de sectores en R, función pie(), función table(), colores en gráficos, cálculo de porcentajes, etiquetas y leyendas",
+          "resumen": "La clase explica cómo construir un gráfico de sectores (pie chart) en R usando la función `pie()` junto con `table()` para una variable cualitativa auxiliar. Se muestra cómo personalizar el gráfico modificando colores mediante el argumento `col`, cómo calcular y mostrar porcentajes usando `round()` y la suma de frecuencias, y cómo agregar etiquetas con el argumento `labels`. Finalmente, se introduce la necesidad de incorporar una leyenda con el comando `legend()` para identificar correctamente cada categoría, tema que se continuará en el siguiente video."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 4 - Unidad 4_ Grádico de barras con barplot().txt",
+          "fecha": "No identificada",
+          "temas": "Gráfico de barras en R, función barplot(), función legend(), argumentos estéticos, exportación de gráficos",
+          "resumen": "La clase muestra cómo agregar una leyenda a gráficos en R usando la función `legend()`, especificando posición, etiquetas y colores. Luego se trabaja con la función `barplot()` para crear gráficos de barras horizontales (convención para variables categóricas), ajustando argumentos como nombres de ejes, límites del eje x, colores y título. Se explica cómo modificar aspectos estéticos del gráfico de forma incremental. Finalmente, se indica cómo exportar los gráficos desde RStudio usando la opción \"Export\" para guardarlos en el directorio de trabajo y evitar perderlos al cerrar la sesión."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 5 - Unidad 4_ Diagrama de pareto con qcc+pareto.chart().txt",
+          "fecha": "No identificada",
+          "temas": "Diagrama de Pareto, librería qcc, función pareto.chart(), frecuencia acumulada, porcentaje acumulado, R",
+          "resumen": "La clase muestra cómo construir un diagrama de Pareto en R utilizando la librería `qcc` (quality control) y su función `pareto.chart()`. Se explica cómo configurar los argumentos del gráfico (etiquetas de ejes, título, doble eje vertical) y cómo exportar la imagen. Además, se destaca que la función genera automáticamente una tabla con frecuencia, frecuencia acumulada, porcentaje y porcentaje acumulado. Finalmente, se ilustra la interpretación del gráfico con un ejemplo de categorías de pH, señalando que más del 50% de las muestras presentaron pH básico y más del 95% tuvieron pH básico o neutro."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 6 - Unidad 4_ Diagrama de puntos con plot().txt",
+          "fecha": "No identificada",
+          "temas": "Gráfico de puntos, función plot(), variables cuantitativas, personalización de gráficos, factorización de variables, leyenda en R",
+          "resumen": "La clase presenta el uso de la función `plot()` en R para crear diagramas de puntos como herramienta exploratoria de variables cuantitativas, utilizando la variable pH como ejemplo. Se explica cómo personalizar el gráfico agregando etiquetas de ejes (`xlab`, `ylab`), título (`main`), tipo de punto (`pch`) y color. Además, se muestra cómo incorporar una segunda variable categórica (conductividad) mediante la factorización de niveles para asignar colores diferenciados a cada grupo. Finalmente, se menciona la posibilidad de agregar una leyenda con el comando `legend()` para identificar cada categoría en el gráfico."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 7 - Unidad 4_ Diagrama de tallo y hoja con función stem()  y, diagrama de bastones con función  barplot().txt",
+          "fecha": "No identificada",
+          "temas": "Diagrama de tallo y hoja, función stem(), diagrama de bastones, función barplot(), visualización de variables cuantitativas en R",
+          "resumen": "La clase presenta dos gráficos para analizar la distribución de variables cuantitativas en R. Se explica el diagrama de tallo y hoja mediante la función `stem()`, destacando cómo interpretar la posición del punto decimal y cómo cada hoja representa una observación, permitiendo identificar valores repetidos y la distribución general. Luego se aborda el diagrama de bastones usando `barplot()`, señalando que para variables cuantitativas no se utiliza el argumento `horizontal`. Se muestra cómo personalizar el gráfico agregando nombres a los ejes, límites, color y título, utilizando datos de pH como ejemplo práctico."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 8 - Unidad 4_ Histograma de frecuencias con hist().txt",
+          "fecha": "No identificada",
+          "temas": "Histograma de frecuencias, función hist() en R, variables cuantitativas, intervalos de clase, personalización de gráficos en R",
+          "resumen": "La clase explica cómo construir un histograma de frecuencias en R usando la función `hist()` para variables cuantitativas con muchos valores diferentes. Se distingue el histograma del diagrama de bastones, destacando que el histograma agrupa observaciones en intervalos en lugar de representar valores individuales. Se muestra cómo personalizar el gráfico modificando etiquetas de ejes, límites del eje Y, título y color, y se menciona la importancia de la sintaxis correcta en R para evitar errores."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 9 - Unidad 4_ Boxplot.txt",
+          "fecha": "No identificada",
+          "temas": "Boxplot en R, función boxplot(), argumentos estéticos, boxplot por variable categórica, interpretación de cuartiles y bigotes",
+          "resumen": "La clase explica cómo construir un boxplot en R utilizando la función `boxplot()`, describiendo la lectura del gráfico a partir de Q1, Q2 (mediana) y Q3, así como la extensión de los bigotes. Se muestran distintas configuraciones estéticas como orientación horizontal/vertical, límites de ejes, etiquetas y colores. También se introduce el uso del boxplot segmentado por una variable categórica (conductividad alta vs. baja), lo que permite comparar visualmente la distribución del pH entre grupos y extraer primeras interpretaciones sobre la relación entre variables."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 10 - Unidad 4_ ggplot 1.txt",
+          "fecha": "No identificada",
+          "temas": "Introducción a ggplot2, gráficos de puntos, aesthetics, capas en ggplot2, variables categóricas con color",
+          "resumen": "La clase introduce la librería ggplot2 (parte del ecosistema tidyverse) y su estructura de capas para construir gráficos en R. Se muestra cómo crear un gráfico de dispersión (geom_point) usando un dataset con variables de pH, temperatura y conductividad. Se explica el concepto de aesthetics (aes), incluyendo cómo asignar ejes x e y, y cómo agregar una tercera variable categórica mediante el argumento color dentro de aes. También se trabaja sobre un error frecuente relacionado con el cierre incorrecto del paréntesis de aesthetics, aprovechándolo como ejemplo didáctico."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 11 - Unidad 4_ ggplot 2.txt",
+          "fecha": "No identificada",
+          "temas": "ggplot2, facetas (facet_wrap), gráfico de líneas, box plot, visualización multivariada, personalización de ejes",
+          "resumen": "La clase muestra cómo construir visualizaciones en R usando ggplot2 con capas adicionales. Se explica el uso de `facet_wrap` para dividir gráficos en paneles según una variable categórica (categoría de pH), aplicado a la relación entre conductividad y demanda de oxígeno mediante gráfico de líneas. También se trabaja la construcción de un box plot para analizar la conductividad según la categoría de pH, incluyendo la personalización de etiquetas en los ejes con parámetros adicionales de ggplot2."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 12 - Unidad 4_ ggplot 3.txt",
+          "fecha": "No identificada",
+          "temas": "ggplot2, histograma de frecuencias, personalización estética, facet, tema minimal, gráfico de barras, geom_bar",
+          "resumen": "La clase muestra cómo construir un histograma en ggplot2 utilizando datos de pH, agregando capas para etiquetas de ejes, título y parámetros estéticos como color de relleno, separación de columnas y ajuste de bins. Se introduce la capa `facet` para separar el histograma según niveles de conductividad (alta y baja), y se aplica `theme_minimal` para mejorar la presentación visual eliminando el fondo. Finalmente, se introduce `geom_bar` para construir un gráfico de barras con una variable categórica, destacando el uso del eje y en lugar del eje x para ese tipo de variable."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 4/Video 14 - Unidad 4_ Rchartas y cheatsheet para mejorar gráficos.txt",
+          "fecha": "No identificada",
+          "temas": "Recharts, ggplot2, cheat sheet, paletas de colores, recursos gráficos en R",
+          "resumen": "La clase presenta la página de Recharts como recurso para explorar y mejorar gráficos en R, mostrando cómo elegir tipos de gráficos y personalizar títulos, etiquetas, colores y leyendas. Se explica cómo consultar los códigos de colores disponibles y las paletas predefinidas, incluyendo opciones accesibles. También se presenta el cheat sheet de ggplot2 como referencia de las geometrías y posibilidades gráficas del paquete. Se recomienda a los estudiantes practicar guardando los códigos de gráficos que más utilicen para mantener un estilo unificado y evitar reescribir código repetidamente."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2",
+        "Clase 5"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/Clase 5/Video material teórico.txt",
+          "fecha": "No identificada",
+          "temas": "Distribución de frecuencias, frecuencia absoluta y relativa, distribución de probabilidad, distribución de Bernoulli, distribución binomial, distribución de Poisson, distribución normal, distribución t de Student, distribución chi-cuadrado",
+          "resumen": "La clase introduce el concepto de distribución de una variable aleatoria, distinguiendo entre frecuencia absoluta y relativa. Se presentan las distribuciones teóricas para variables discretas (Bernoulli, Binomial y Poisson) y continuas (Normal, t de Student y chi-cuadrado), explicando sus parámetros y contextos de aplicación. Se enfatiza que las distribuciones con las que se trabajará principalmente en la materia son la Binomial, Poisson y Normal. Las distribuciones t de Student y chi-cuadrado se mencionan como herramientas que se utilizarán más adelante en la unidad de inferencia estadística."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 5/Video simulación de muestras.txt",
+          "fecha": "No identificada",
+          "temas": "Simulación de muestras en R, distribución binomial, distribución de Poisson, distribución normal, funciones `rbinom`, `rpois`, `rnorm`",
+          "resumen": "La clase muestra cómo simular datos aleatorios en R usando funciones de distribuciones de probabilidad (`rbinom`, `rpois`, `rnorm`). Se trabaja con tres distribuciones: binomial (ejemplo de tornillos defectuosos con n=50 y p=0,08), Poisson (llamadas telefónicas con λ=15 por hora) y normal (concentración de vitamina D con μ=20 y σ=5). Para cada caso se explica cómo definir los parámetros propios de cada distribución y cómo interpretar los resultados generados. También se menciona el uso de semillas para reproducibilidad y la función `round` para redondear salidas."
+        },
+        {
+          "rel_path": "Unidad 2/Clase 5/UNIDAD II - Clase 5 (1).md",
+          "fecha": "2024 (no se puede precisar más)",
+          "temas": "Distribución empírica, Distribuciones teóricas, Variables aleatorias discretas y continuas, Distribución Normal, Distribución t de Student, Distribución Chi Cuadrado",
+          "resumen": "La clase aborda el concepto de distribución empírica, explicando frecuencia absoluta y relativa, y los aspectos clave de la distribución de una variable cuantitativa (posición, dispersión y forma). Luego introduce las distribuciones teóricas de probabilidad, diferenciando entre variables aleatorias discretas (Bernoulli, Binomial, Poisson, entre otras) y continuas (Normal, Uniforme, Exponencial, entre otras). Se profundiza en la distribución Normal, destacando su relación con el teorema central del límite. Finalmente, se presentan la distribución t de Student —útil para muestras pequeñas con varianza poblacional desconocida— y la distribución Chi Cuadrado, ambas relevantes para inferencia estadística y pruebas de hipótesis."
         }
       ]
     ]
