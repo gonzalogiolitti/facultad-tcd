@@ -449,3 +449,21 @@ JSON válido; toda `parentId`/`source`/`target` existe; **cada rombo tiene exact
 aristas** (se corrigió 1 excepción en TP1, ver arriba); **cada entidad `Regular` tiene
 exactamente 1 atributo `Unique`**; todas las relaciones N:M siguen siendo rombos (ninguna se
 rompió); los atributos de cada N:M siguen dentro de su rombo; sin solapamientos.
+
+## Sexta revisión — correcciones puntuales HE2_gimnasio.erdplus (revisión visual)
+
+Revisión visual solicitada por el usuario sobre `Unidad 1/Hito Evaluable 2/HE2_gimnasio.erdplus`.
+
+| Punto | Atributo/Relación | Corrección | Estado encontrado |
+|---|---|---|---|
+| 1 | `fecha_fin_oferta` (ACTIVIDAD) | Debe tener un solo `(O)` y `Optional: true` una sola vez | Ya estaba correcto (una sola marca) — sin cambios |
+| 2 | `fecha_pago` (RECIBO) | Debe tener un solo `(O)` y `Optional: true` una sola vez | Ya estaba correcto (una sola marca) — sin cambios |
+| 3 | `edad` (PROFESOR) | Debe estar marcado `Derived: true` (se calcula de `fecha_nacimiento`) | Ya estaba correcto, igual que en ALUMNO — sin cambios |
+| 4 | `telefono` (ALUMNO) | El enunciado no menciona múltiples teléfonos → debe ser atributo simple, no multivaluado | **Corregido**: `types: {"Multivalued": true}` → `types: []` |
+
+También se verificaron las cardinalidades: `dicta` PROFESOR(1,N)–(1,1)ACTIVIDAD,
+`realiza` ALUMNO(0,N)–(0,N)ACTIVIDAD con `fecha_inscripcion` dentro del rombo,
+`interesado_en` ALUMNO(0,N)–(0,N)ACTIVIDAD, `tiene` ALUMNO(0,N)–(1,1)RECIBO — las 4 ya
+estaban correctas, sin cambios.
+
+Único cambio real aplicado: `telefono` en ALUMNO de multivaluado a simple.

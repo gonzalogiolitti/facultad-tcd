@@ -568,9 +568,7 @@
         },
         "data": {
           "label": "telefono",
-          "types": {
-            "Multivalued": true
-          },
+          "types": [],
           "isSelected": false,
           "isConnectable": true
         },
