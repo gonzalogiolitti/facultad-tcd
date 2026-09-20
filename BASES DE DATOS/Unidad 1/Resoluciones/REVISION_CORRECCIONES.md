@@ -393,3 +393,59 @@ El resto de los archivos (TP1, TP2 casos 1 y 3, TP3, TP4, HE2, `REFERENCIA_ERDPl
 metodología. Dado que en este único caso (alquiler de autos) se necesitaron **4 rondas de
 corrección** sobre solo 4 relaciones, es razonable esperar errores similares en otras partes
 del proyecto.
+
+---
+
+# Quinta revisión — auditoría completa de cardinalidades en todos los .erdplus
+
+Auditoría de **TP1, TP2 (casos 1/2/3), TP3, TP4 y HE2**: para cada relación de cada archivo
+se releyó el enunciado correspondiente, se justificó cada lado con una frase concreta, se
+verificó la lógica cruzada donde corresponde, y se revisaron N:M (no rotas, atributos en el
+rombo), opcionales/multivaluados y PKs naturales.
+
+## Corrección puntual confirmada
+
+| Archivo | Relación | Corrección | Frase del enunciado |
+|---|---|---|---|
+| TP2 caso 1 | `exhibe` | CUADRO: `(0,N)` → **`(1,N)`** | *"los cuadros se exponen en varios museos"* → participación obligatoria del cuadro (mín 1). |
+
+## Correcciones adicionales encontradas en la auditoría
+
+| Archivo | Relación | Corrección | Frase del enunciado |
+|---|---|---|---|
+| TP2 caso 2 | `involucra` | RESERVA `(1,N)`→**`(0,N)`** ; COCHE `(0,N)`→**`(1,N)`** | Mismo patrón cruzado ya confirmado en `efectua`/`realiza` **dentro del mismo caso**: la reserva involucra 1..N coches y un coche participa en 0..N reservas a lo largo del tiempo (*"puede involucrar a varios coches"*). |
+| TP2 caso 3 | `produce` | MEDICAMENTO `(0,N)`→**`(1,N)`** | *"…y las acciones terapéuticas **que tiene**"* — misma construcción que *"la o las monodrogas que componen cada medicamento"* (ya `(1,N)` en `composicion`): todo medicamento tiene al menos una acción terapéutica. |
+| TP3 | `dirige` | DEPARTAMENTO `(0,1)`→**`(1,1)`** | *"Cada departamento **tiene** un nombre y un jefe"* → todo departamento tiene jefe: participación obligatoria, no opcional. |
+| TP1 | `reporta_a` (arista duplicada) | Se corrige un **id de arista duplicado** (bug de generación, no de cardinalidad): las dos aristas de la relación unaria tenían el mismo `id`, lo que podía hacer que ERDPlus sólo reconociera una de las dos cardinalidades al importar. | — (defecto estructural, no de contenido) |
+
+## Alcance de la "lógica cruzada" — decisión metodológica
+
+Se verificó **cada una de las ~30 relaciones** de los 5 archivos contra su enunciado. La
+"lógica cruzada" (regla 18 de la skill) sólo se **reaplicó** donde:
+(a) ya había evidencia confirmada por el usuario en ese mismo caso (`involucra`, dentro del
+caso alquiler de autos, junto a `efectua`/`realiza`), o
+(b) el patrón es idéntico al confirmado (actor/transacción que "se realiza en" un lugar).
+
+**No se aplicó un swap ciego a todas las relaciones 1:N/N:M restantes** (`pertenece`,
+`contiene`, `provee`, `emplea`, `comercializa`, `composicion`, `presta`, `detalle`,
+`trabaja_en`, `especialidad`, `atiende`, `aloja`, entre otras), porque:
+1. No hay evidencia confirmada de que el patrón cruzado se extienda a relaciones de
+   posesión/composición simple (pertenece-a, contiene, es-parte-de) — son estructuralmente
+   distintas de "actor ejecuta transacción en lugar".
+2. Al probar el swap en varias de ellas (p. ej. `dirige`) el resultado es **semánticamente
+   absurdo** (forzaría a que *todo* médico sea jefe de un departamento), lo que indica que el
+   swap no aplica de forma universal.
+3. Todas esas relaciones, leídas de forma estándar (participación propia de cada entidad),
+   **ya coinciden** con la frase del enunciado — no se detectó ningún error en ellas más allá
+   de los cuatro listados arriba.
+
+**Recomendación:** si al comparar contra la resolución del profesor aparece un patrón
+similar en alguna de las relaciones no tocadas, avisar con el mismo detalle (archivo,
+relación, lado, valor esperado) para poder corregirla y así seguir afinando la regla en la
+skill `der-ugr`.
+
+## Verificación estructural final (los 5 archivos)
+JSON válido; toda `parentId`/`source`/`target` existe; **cada rombo tiene exactamente 2
+aristas** (se corrigió 1 excepción en TP1, ver arriba); **cada entidad `Regular` tiene
+exactamente 1 atributo `Unique`**; todas las relaciones N:M siguen siendo rombos (ninguna se
+rompió); los atributos de cada N:M siguen dentro de su rombo; sin solapamientos.

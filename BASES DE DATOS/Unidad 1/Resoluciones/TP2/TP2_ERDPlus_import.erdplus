@@ -126,7 +126,7 @@
           },
           "targetEntityDetails": {
             "id": "703de740-1893-4438-a559-8dc5418f92e3",
-            "minCardinality": "Optional",
+            "minCardinality": "Mandatory",
             "maxCardinality": "Many"
           },
           "isSelected": false,
@@ -519,12 +519,12 @@
           "label": "involucra",
           "sourceEntityDetails": {
             "id": "d95bfc17-ece1-428d-b884-818e06b96893",
-            "minCardinality": "Mandatory",
+            "minCardinality": "Optional",
             "maxCardinality": "Many"
           },
           "targetEntityDetails": {
             "id": "f91135b7-4c61-4bb0-8552-006df7b87075",
-            "minCardinality": "Optional",
+            "minCardinality": "Mandatory",
             "maxCardinality": "Many"
           },
           "isSelected": false,
@@ -1167,7 +1167,7 @@
           "label": "produce",
           "sourceEntityDetails": {
             "id": "f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
-            "minCardinality": "Optional",
+            "minCardinality": "Mandatory",
             "maxCardinality": "Many"
           },
           "targetEntityDetails": {
@@ -1891,28 +1891,6 @@
         }
       },
       {
-        "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->a14f0df2-f8ca-4d55-96cc-da68456e4877;a14f0df2-f8ca-4d55-96cc-da68456e4877->703de740-1893-4438-a559-8dc5418f92e3",
-        "type": "Relationship",
-        "source": "d69c3789-f4a4-42ad-95f9-c05e4145af20",
-        "target": "a14f0df2-f8ca-4d55-96cc-da68456e4877",
-        "data": {
-          "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->a14f0df2-f8ca-4d55-96cc-da68456e4877",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
-        }
-      },
-      {
-        "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->703de740-1893-4438-a559-8dc5418f92e3;703de740-1893-4438-a559-8dc5418f92e3->a14f0df2-f8ca-4d55-96cc-da68456e4877",
-        "type": "Relationship",
-        "source": "d69c3789-f4a4-42ad-95f9-c05e4145af20",
-        "target": "703de740-1893-4438-a559-8dc5418f92e3",
-        "data": {
-          "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->703de740-1893-4438-a559-8dc5418f92e3",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
-        }
-      },
-      {
         "id": "068ce4ab-68d9-471b-b06a-16812fa1aed0",
         "type": "Attribute",
         "source": "3bb5f912-89e4-4722-84e7-0ab35b3d1c4a",
@@ -1977,28 +1955,6 @@
         "type": "Attribute",
         "source": "d69c3789-f4a4-42ad-95f9-c05e4145af20",
         "target": "3447bf6c-cb66-4bf5-81b0-faa4fd8f8ced"
-      },
-      {
-        "id": "264010f2-8aad-48e7-a210-c6007353fefa->d95bfc17-ece1-428d-b884-818e06b96893;d95bfc17-ece1-428d-b884-818e06b96893->f91135b7-4c61-4bb0-8552-006df7b87075",
-        "type": "Relationship",
-        "source": "264010f2-8aad-48e7-a210-c6007353fefa",
-        "target": "d95bfc17-ece1-428d-b884-818e06b96893",
-        "data": {
-          "id": "264010f2-8aad-48e7-a210-c6007353fefa->d95bfc17-ece1-428d-b884-818e06b96893",
-          "minCardinality": "Mandatory",
-          "maxCardinality": "Many"
-        }
-      },
-      {
-        "id": "264010f2-8aad-48e7-a210-c6007353fefa->f91135b7-4c61-4bb0-8552-006df7b87075;f91135b7-4c61-4bb0-8552-006df7b87075->d95bfc17-ece1-428d-b884-818e06b96893",
-        "type": "Relationship",
-        "source": "264010f2-8aad-48e7-a210-c6007353fefa",
-        "target": "f91135b7-4c61-4bb0-8552-006df7b87075",
-        "data": {
-          "id": "264010f2-8aad-48e7-a210-c6007353fefa->f91135b7-4c61-4bb0-8552-006df7b87075",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
-        }
       },
       {
         "id": "5fa2d727-7254-4d6d-a239-20887c79379b",
@@ -2196,28 +2152,6 @@
         "target": "da31211b-72fd-40ba-8b44-59db3639966b",
         "data": {
           "id": "b4a80394-235c-4793-a253-3fab1d200791->da31211b-72fd-40ba-8b44-59db3639966b",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
-        }
-      },
-      {
-        "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de;f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de->f1c902af-49e7-408a-aaf5-4e24fd86ddbd",
-        "type": "Relationship",
-        "source": "4c1edeca-622b-4371-9cd6-18df16c0ecac",
-        "target": "f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
-        "data": {
-          "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
-        }
-      },
-      {
-        "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f1c902af-49e7-408a-aaf5-4e24fd86ddbd;f1c902af-49e7-408a-aaf5-4e24fd86ddbd->f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
-        "type": "Relationship",
-        "source": "4c1edeca-622b-4371-9cd6-18df16c0ecac",
-        "target": "f1c902af-49e7-408a-aaf5-4e24fd86ddbd",
-        "data": {
-          "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f1c902af-49e7-408a-aaf5-4e24fd86ddbd",
           "minCardinality": "Optional",
           "maxCardinality": "Many"
         }
@@ -2488,6 +2422,72 @@
           "id": "dc646de4-2ca0-459e-945e-fbf655e681b0->ceb5de00-e665-41c3-8df7-aebd7fd63a49",
           "minCardinality": "Mandatory",
           "maxCardinality": "One"
+        }
+      },
+      {
+        "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->a14f0df2-f8ca-4d55-96cc-da68456e4877;a14f0df2-f8ca-4d55-96cc-da68456e4877->703de740-1893-4438-a559-8dc5418f92e3",
+        "type": "Relationship",
+        "source": "d69c3789-f4a4-42ad-95f9-c05e4145af20",
+        "target": "a14f0df2-f8ca-4d55-96cc-da68456e4877",
+        "data": {
+          "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->a14f0df2-f8ca-4d55-96cc-da68456e4877",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->703de740-1893-4438-a559-8dc5418f92e3;703de740-1893-4438-a559-8dc5418f92e3->a14f0df2-f8ca-4d55-96cc-da68456e4877",
+        "type": "Relationship",
+        "source": "d69c3789-f4a4-42ad-95f9-c05e4145af20",
+        "target": "703de740-1893-4438-a559-8dc5418f92e3",
+        "data": {
+          "id": "d69c3789-f4a4-42ad-95f9-c05e4145af20->703de740-1893-4438-a559-8dc5418f92e3",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "264010f2-8aad-48e7-a210-c6007353fefa->d95bfc17-ece1-428d-b884-818e06b96893;d95bfc17-ece1-428d-b884-818e06b96893->f91135b7-4c61-4bb0-8552-006df7b87075",
+        "type": "Relationship",
+        "source": "264010f2-8aad-48e7-a210-c6007353fefa",
+        "target": "d95bfc17-ece1-428d-b884-818e06b96893",
+        "data": {
+          "id": "264010f2-8aad-48e7-a210-c6007353fefa->d95bfc17-ece1-428d-b884-818e06b96893",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "264010f2-8aad-48e7-a210-c6007353fefa->f91135b7-4c61-4bb0-8552-006df7b87075;f91135b7-4c61-4bb0-8552-006df7b87075->d95bfc17-ece1-428d-b884-818e06b96893",
+        "type": "Relationship",
+        "source": "264010f2-8aad-48e7-a210-c6007353fefa",
+        "target": "f91135b7-4c61-4bb0-8552-006df7b87075",
+        "data": {
+          "id": "264010f2-8aad-48e7-a210-c6007353fefa->f91135b7-4c61-4bb0-8552-006df7b87075",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de;f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de->f1c902af-49e7-408a-aaf5-4e24fd86ddbd",
+        "type": "Relationship",
+        "source": "4c1edeca-622b-4371-9cd6-18df16c0ecac",
+        "target": "f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
+        "data": {
+          "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
+          "minCardinality": "Mandatory",
+          "maxCardinality": "Many"
+        }
+      },
+      {
+        "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f1c902af-49e7-408a-aaf5-4e24fd86ddbd;f1c902af-49e7-408a-aaf5-4e24fd86ddbd->f8b8bc5f-9b2f-4fb2-b3a4-2fe4900d88de",
+        "type": "Relationship",
+        "source": "4c1edeca-622b-4371-9cd6-18df16c0ecac",
+        "target": "f1c902af-49e7-408a-aaf5-4e24fd86ddbd",
+        "data": {
+          "id": "4c1edeca-622b-4371-9cd6-18df16c0ecac->f1c902af-49e7-408a-aaf5-4e24fd86ddbd",
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
         }
       }
     ],

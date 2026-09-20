@@ -994,12 +994,12 @@
         }
       },
       {
-        "id": "4ba32ab9-3d68-4e03-b314-753acc38ca17->fd85ca4d-008f-47a0-a045-a7b2a06031e7;fd85ca4d-008f-47a0-a045-a7b2a06031e7->fd85ca4d-008f-47a0-a045-a7b2a06031e7",
+        "id": "4ba32ab9-3d68-4e03-b314-753acc38ca17->fd85ca4d-008f-47a0-a045-a7b2a06031e7;fd85ca4d-008f-47a0-a045-a7b2a06031e7->fd85ca4d-008f-47a0-a045-a7b2a06031e7#dup2",
         "type": "Relationship",
         "source": "4ba32ab9-3d68-4e03-b314-753acc38ca17",
         "target": "fd85ca4d-008f-47a0-a045-a7b2a06031e7",
         "data": {
-          "id": "4ba32ab9-3d68-4e03-b314-753acc38ca17->fd85ca4d-008f-47a0-a045-a7b2a06031e7",
+          "id": "4ba32ab9-3d68-4e03-b314-753acc38ca17->fd85ca4d-008f-47a0-a045-a7b2a06031e7#dup2",
           "minCardinality": "Optional",
           "maxCardinality": "Many"
         }

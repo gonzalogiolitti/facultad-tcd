@@ -206,6 +206,17 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
     el vínculo modelando además una relación directa actor–lugar salvo que el enunciado lo
     pida explícitamente.
 
+> **Alcance confirmado de la regla 18 (auditoría completa, TP1–TP4 + HE2):** el patrón
+> "cruzado" se confirmó en relaciones del tipo **actor ejecuta una transacción / la
+> transacción pertenece a un lugar** (`efectua`, `realiza`, `involucra` — todas dentro del
+> mismo caso "alquiler de autos"). Al auditar el resto de las relaciones de posesión o
+> composición simple (`pertenece`, `contiene`, `provee`, `emplea`, `dirige`, `trabaja_en`,
+> etc.) **no se encontró evidencia de que el patrón se extienda ahí** — y en al menos un caso
+> (`dirige`) aplicar el swap a ciegas producía un resultado semánticamente absurdo. **No
+> generalizar el swap a toda relación asimétrica**: aplicarlo sólo donde el enunciado
+> describe explícitamente una transacción ejecutada por un actor en un lugar/contexto, o
+> donde ya haya evidencia confirmada contra la resolución del profesor.
+
 ---
 
 ## 3. Ejemplos resueltos por el profesor (referencia)
