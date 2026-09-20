@@ -88,6 +88,9 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
 - Procedimiento: *"voy primero hacia la derecha"* (¿cuántas B se relacionan con una A?) *"y
   luego hacia la izquierda"* (¿cuántas A con una B?). Siempre las dos lecturas, nunca una sola.
 - Tipos por cardinalidad **máxima**: 1:1, **1:N** (el más común), **N:M**.
+- ⚠️ **Antes de confirmar, releer cada lado contra una frase concreta del enunciado** (ver
+  reglas 18–21): es muy fácil invertir los dos lados de una 1:N, o vincular al actor
+  equivocado cuando el enunciado dice *"X se realiza en Y"*.
 
 ### Paso 6 — Identificar los **atributos de las relaciones N:M** (van EN EL ROMBO)
 - **Las relaciones N:M casi siempre tienen atributos** — hay que pensar bien cuáles.
@@ -158,13 +161,50 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
 16. **Inferir relaciones no explícitas.** A veces el dominio **requiere** una relación que el
     enunciado no nombra directamente. **Regla:** si dos entidades **deben conocerse
     mutuamente para que el sistema funcione**, modelá la relación aunque no esté escrita.
-    Ej: `realiza` **N:M entre CLIENTE y AGENCIA** en el alquiler de autos (inferida del
-    contexto: un cliente opera con varias agencias y una agencia con varios clientes).
+    **Ojo:** verificar bien QUIÉN se relaciona con quién (ver regla 19) — una versión
+    anterior de esta skill usaba acá el ejemplo `realiza CLIENTE–AGENCIA`, que resultó
+    **incorrecto** (era `RESERVA–AGENCIA`, ver regla 19). Se corrige en la sección 3.5.
 17. **Atributos de fecha/período en relaciones N:M repetibles.** Si una relación **puede
     ocurrir varias veces entre las mismas dos entidades**, el rombo lleva atributos de
     **inicio/fin** (o período). Ej: `exhibe` lleva `inicioExpo` y `finalExpo (O)` porque un
     cuadro puede exponerse **varias veces en el mismo museo**; `involucra` lleva `inicioUso`
     y `finUso` porque el **uso del coche varía por reserva**.
+
+### Reglas nuevas (corrección de errores detectados comparando con la resolución del profesor)
+
+18. **Verificar SIEMPRE la dirección semántica de cada cardinalidad antes de confirmar —
+    y desconfiar de la primera intuición.** No alcanza con poner un par `(mín,máx)` en cada
+    lado "porque suena razonable": en este ejercicio (TP2 caso alquiler) la lectura
+    directa/intuitiva del enunciado **resultó invertida** dos veces seguidas al compararla
+    con la resolución real del profesor (`efectua` y `realiza`, ver 3.5). **Checklist
+    obligatorio antes de cerrar cada relación:**
+    1. Escribí en una frase, para cada lado, *"¿cuántas [B] hay por un [A]?"* y
+       *"¿cuántas [A] hay por un [B]?"*, citando la frase exacta del enunciado.
+    2. Fijá el par en el campo (`sourceEntityDetails` / `targetEntityDetails`) correcto.
+    3. **Antes de dar por cerrado, probá invertir los dos pares entre sí y volvé a leer el
+       enunciado con esa lectura invertida.** Si ambas lecturas "suenan" plausibles a
+       primera vista, es señal de que hay que verificar con más cuidado (o contra una
+       resolución de referencia) en vez de confiar en la intuición — este es exactamente el
+       tipo de error que más costó puntos en la rúbrica.
+19. **Relación fija / "no puede cambiar" → 1:1 obligatoria en AMBOS lados.** Si el enunciado
+    dice que una relación *"no puede cambiar"*, es *"fija"* o *"siempre la misma"*, la
+    cardinalidad es **`(1,1)` en los dos extremos** (`Mandatory`/`One` en ambos). Ej:
+    `estaciona` COCHE–GARAGE: *"todo coche tiene siempre asignado un determinado garage, que
+    no puede cambiar"* → `COCHE (1,1) — (1,1) GARAGE`, **no** `(1,1)–(0,N)` (eso sería 1:N,
+    que permite que el garage cambie de coche con el tiempo).
+20. **"X se realiza en Y" → la relación va entre X e Y, NO entre el actor que ejecuta X e
+    Y.** Si el enunciado dice *"cada reserva se realiza en una determinada agencia"*, la
+    relación es **RESERVA–AGENCIA**, no CLIENTE–AGENCIA. El sujeto gramatical de "se realiza
+    en" es la transacción (`reserva`), no la persona que la hizo. (Cuáles son los valores
+    `(mín,máx)` de cada lado: ver regla 18 — en este caso resultó `RESERVA (0,N) — (1,1)
+    AGENCIA`, ver 3.5.)
+21. **Entidad fuerte (lugar/contexto) vs. transacción/evento: verificar cuál "pertenece"
+    a cuál.** Cuando una relación vincula un lugar/organización (agencia, sucursal,
+    depósito) con una transacción (reserva, pedido, pago) y con el actor que la originó
+    (cliente, alumno), la transacción es casi siempre la que **pertenece** al lugar — el
+    actor se vincula al lugar **indirectamente**, a través de la transacción. No dupliques
+    el vínculo modelando además una relación directa actor–lugar salvo que el enunciado lo
+    pida explícitamente.
 
 ---
 
@@ -260,7 +300,7 @@ exhibe :  MUSEO  (0,N) ──◇[ inicioExpo, finalExpo (O) ]◇── (0,N) CUA
   `finalExpo (O)` porque *"un cuadro puede exponerse más de una vez en el mismo museo"* — el
   par (museo, cuadro) no alcanza para identificar la exposición.
 
-### 3.5 Alquiler de autos  (relación inferida, N:M temporal, 1:1, participación opcional)
+### 3.5 Alquiler de autos  (cardinalidades, N:M temporal, participación opcional)
 Enunciado: *"…reservas de una empresa de alquiler de autos. De un cliente: DNI, nombre,
 dirección (puede haber clientes sin reservas). De una reserva: número único, descripción,
 fecha de comienzo y fecha final; la realiza un único cliente pero involucra varios coches.
@@ -275,22 +315,35 @@ COCHE(patente, modelo, marca)
 GARAGE(IDGarage, direccion)
 AGENCIA(IDAgencia, nombre, direccion)
 
-efectua   :  CLIENTE (0,N) ─────────── (1,1) RESERVA       -- 1:N ; (0,N): puede haber clientes sin reservas
+efectua   :  CLIENTE (1,1) ─────────── (0,N) RESERVA       -- 1:N
 involucra :  RESERVA (1,N) ──◇[ inicioUso, finUso ]◇── (0,N) COCHE   -- N:M temporal
-estaciona :  COCHE   (1,1) ─────────── (0,1) GARAGE        -- 1:1 ; garage fijo, aloja a lo sumo un coche
-realiza   :  CLIENTE (0,N) ──◇── (0,N) AGENCIA             -- N:M INFERIDA (regla 16)
+estaciona :  COCHE   (1,1) ─────────── (1,1) GARAGE        -- 1:1 FIJA ; garage que "no puede cambiar"
+realiza   :  RESERVA (0,N) ─────────── (1,1) AGENCIA       -- 1:N
 ```
 - **`DNI` PK natural** del cliente; **`patente`** natural del coche; **`nroReserva`** natural
   (*"número único"*). **`IDGarage` / `IDAgencia`** son IDs *justificados* (regla 15): el
   *"número único"* del garage / de la agencia es su propio identificador en el sistema.
-- **`efectua` es 1:N** con **participación opcional del lado cliente `(0,N)`**: *"puede haber
-  clientes sin reservas"*.
+- **`efectua` es 1:N**: lado CLIENTE **`(1,1)`**, lado RESERVA **`(0,N)`** — *"la realiza un
+  único cliente"* + *"puede haber clientes sin reservas"* (regla 18: no dar por buena la
+  primera lectura sin verificar contra la resolución de referencia).
 - **`involucra` es N:M con `inicioUso` / `finUso` en el rombo** (regla 17): el uso de cada
   coche varía por reserva.
-- **`estaciona` es 1:1**: *"todo coche tiene siempre asignado un garage fijo, que no cambia"*.
-- **`realiza` (CLIENTE–AGENCIA) es una relación *inferida*** (regla 16): el enunciado no la
-  nombra explícitamente, pero cliente y agencia **deben conocerse** para que el sistema del
-  alquiler funcione.
+- **`estaciona` es 1:1 en AMBOS lados** (regla 19): *"todo coche tiene siempre asignado un
+  determinado garage, que no puede cambiar"* → relación **fija** → `COCHE (1,1) — (1,1)
+  GARAGE`. No es 1:N: "fijo / no cambia" siempre es `(1,1)`–`(1,1)`.
+- **`realiza` es RESERVA–AGENCIA** (regla 20), con cardinalidad **`RESERVA (0,N) — (1,1)
+  AGENCIA`** (regla 18): la relación va entre la transacción y el lugar (no CLIENTE–AGENCIA),
+  y los valores exactos de cada lado se verificaron contra la resolución del profesor, no
+  contra la primera lectura intuitiva del enunciado.
+
+> **Nota de corrección:** este ejemplo se corrigió **tres veces** comparando contra la
+> resolución real del profesor: (1) `efectua` tenía los lados invertidos; (2) `realiza`
+> conectaba CLIENTE–AGENCIA en vez de RESERVA–AGENCIA, y luego sus dos cardinalidades
+> quedaron invertidas en el primer intento de arreglo; (3) `estaciona` pasó de `(0,1)` a
+> `(0,N)` a, finalmente, `(1,1)`–`(1,1)` (relación fija). Moraleja de las reglas 18–21: en
+> cardinalidades, **verificar siempre contra una fuente de verdad** (la resolución del
+> profesor) en vez de confiar en que la lectura del enunciado "suena bien" — el error más
+> común es invertir los dos lados de una relación sin darse cuenta.
 
 ---
 

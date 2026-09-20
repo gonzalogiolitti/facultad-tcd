@@ -300,3 +300,96 @@ solapamientos entre entidades / rombos / notas.
 > (naming exacto de las resoluciones de referencia de la cátedra). El resto de los archivos
 > y los `TP*_resolucion.md` / `.drawio` conservan snake_case. Alinear todo a camelCase es un
 > cambio disponible a pedido.
+
+---
+
+# Tercera revisión — corrección de 3 errores de cardinalidad/relación en TP2 caso 2
+
+Detectados por el usuario comparando `TP2_ERDPlus_import.erdplus` (caso alquiler de autos)
+contra la resolución real del profesor. **Los tres eran errores introducidos en revisiones
+anteriores de este mismo proyecto**, no del enunciado.
+
+| Relación | Antes (incorrecto) | Ahora (corregido) | Motivo |
+|---|---|---|---|
+| `efectua` | CLIENTE `(0,N)` — `(1,1)` RESERVA | **CLIENTE `(1,1)` — `(0,N)` RESERVA** | Los dos lados estaban invertidos: *"la realiza un único cliente"* es la restricción del lado **RESERVA** (`(1,1)`... espera, ver nota); *"puede haber clientes sin reservas"* es la del lado **CLIENTE**. |
+| `estaciona` | COCHE `(1,1)` — `(0,1)` GARAGE  (1:1) | **COCHE `(1,1)` — `(0,N)` GARAGE**  (1:N) | El enunciado no dice que un garage aloje un único coche; sólo que *"todo coche tiene siempre asignado un garage fijo"*. La 2ª revisión lo había cambiado a 1:1 por error. |
+| `realiza` | CLIENTE `(0,N)` — `(0,N)` AGENCIA  (N:M, agregada en la 2ª revisión como "inferida") | **Se elimina.** Se crea `realiza`: RESERVA `(1,1)` — `(0,N)` AGENCIA  (1:N) | *"Cada reserva se realiza en una determinada agencia"*: el sujeto es la **reserva**, no el cliente. La relación CLIENTE–AGENCIA de la 2ª revisión estaba mal inferida. |
+
+> **Nota sobre `efectua`:** la tabla de cardinalidades que dejó el usuario en el pedido
+> describe el resultado final tal como quedó configurado en el archivo (que es el que
+> importa): `sourceEntityDetails` de **CLIENTE** → `Mandatory/One` **(1,1)**,
+> `targetEntityDetails` de **RESERVA** → `Optional/Many` **(0,N)**. Aplicado tal cual.
+
+## Regla general que motivó el error (agregada a la skill `der-ugr` como reglas 18–20)
+
+1. **Regla 18 — verificar siempre la dirección semántica de cada cardinalidad** antes de
+   confirmarla: no alcanza con que el par `(mín,máx)` "parezca" razonable, hay que releer
+   cada lado contra una frase concreta del enunciado y confirmar que quedó en el campo
+   correcto (`sourceEntityDetails` vs `targetEntityDetails`).
+2. **Regla 19 — "X se realiza en Y" → relación entre X e Y**, no entre el actor que ejecuta
+   X e Y. Causó el error de `realiza` (CLIENTE–AGENCIA en vez de RESERVA–AGENCIA).
+3. **Regla 20 — entidad fuerte (lugar) vs. transacción**: ante una relación entre un lugar/
+   organización y una transacción, verificar cuál de las dos "pertenece" al lugar — casi
+   siempre es la transacción, no el actor que la originó.
+
+El **Ejemplo 3.5** de la skill (alquiler de autos) se reescribió con los valores correctos y
+una nota explícita de la corrección, para que quede como caso de estudio.
+
+## Verificación
+`TP2_ERDPlus_import.erdplus` sigue siendo JSON válido; las 4 relaciones del caso 2
+(`efectua`, `involucra`, `estaciona`, `realiza`) tienen exactamente 2 aristas cada una;
+ninguna referencia rota; cada entidad `Regular` conserva exactamente 1 atributo `Unique`.
+
+## ⚠️ Pendiente — alcance de la corrección
+
+Esta corrección se aplicó **solo a las 3 relaciones señaladas de TP2 caso 2**. El mismo tipo
+de error (lados de cardinalidad invertidos, o relación conectando al actor en vez de a la
+transacción) **podría estar presente en otras relaciones** de TP1, TP2 (casos 1 y 3), TP3,
+TP4, HE2 y `REFERENCIA_ERDPlus.erdplus`, que no fueron re-verificadas contra la resolución
+del profesor en esta pasada. Se recomienda una auditoría específica de cardinalidades con la
+misma metodología (releer cada lado contra una frase del enunciado) antes de dar por
+definitivos esos archivos.
+
+---
+
+# Cuarta revisión — 2 errores adicionales en TP2 caso 2 (estaciona, realiza)
+
+Detectados por el usuario comparando de nuevo contra la resolución real del profesor.
+
+| Relación | Antes | Ahora | Motivo |
+|---|---|---|---|
+| `estaciona` | COCHE `(1,1)` — `(0,N)` GARAGE | **COCHE `(1,1)` — `(1,1)` GARAGE**  (1:1 fija) | *"todo coche tiene siempre asignado un determinado garage, que no puede cambiar"* describe una relación **fija**: ambos lados `(1,1)`, no 1:N. |
+| `realiza` | RESERVA `(1,1)` — `(0,N)` AGENCIA | **RESERVA `(0,N)` — `(1,1)` AGENCIA** | Las cardinalidades de la 3ª revisión habían quedado invertidas: *"una reserva se realiza en exactamente una agencia"* corresponde al lado **AGENCIA** `(1,1)`; *"una agencia puede tener cero o muchas reservas"* corresponde al lado **RESERVA** `(0,N)`. |
+
+`estaciona` y `realiza` quedaron así corregidos **por tercera vez** en este proyecto — ver
+el detalle completo del ida y vuelta en la sección "Nota de corrección" del Ejemplo 3.5 de
+la skill `der-ugr`.
+
+## Regla nueva agregada a la skill (regla 19)
+
+**Relación fija / "no puede cambiar" → `(1,1)` en AMBOS lados.** Si el enunciado dice que
+una relación es fija, no cambia, o queda asignada de manera permanente, la cardinalidad es
+`(1,1)`–`(1,1)` (1:1 obligatoria), no 1:N. Se reordenaron las reglas 18–21 (antes 18–20) y
+se reescribió la regla 18 con un checklist más estricto: escribir la frase de cada lado,
+fijar el campo correcto, y **probar la lectura invertida** antes de confirmar — porque en
+este ejercicio la lectura "intuitiva" resultó invertida más de una vez.
+
+## Verificación
+`TP2_ERDPlus_import.erdplus`: JSON válido, sin referencias rotas, 2 aristas por rombo, 1
+atributo `Unique` por entidad fuerte.
+
+## Estado de TP2 caso 2 (alquiler de autos) — cardinalidades finales
+
+| Relación | Cardinalidad final |
+|---|---|
+| `efectua` | CLIENTE `(1,1)` — `(0,N)` RESERVA |
+| `involucra` | RESERVA `(1,N)` — `(0,N)` COCHE  (N:M, `inicioUso`/`finUso` en el rombo) |
+| `estaciona` | COCHE `(1,1)` — `(1,1)` GARAGE  (1:1 fija) |
+| `realiza` | RESERVA `(0,N)` — `(1,1)` AGENCIA |
+
+## ⚠️ Sigue pendiente
+El resto de los archivos (TP1, TP2 casos 1 y 3, TP3, TP4, HE2, `REFERENCIA_ERDPlus.erdplus`)
+**todavía no fue re-verificado** contra la resolución del profesor con esta misma
+metodología. Dado que en este único caso (alquiler de autos) se necesitaron **4 rondas de
+corrección** sobre solo 4 relaciones, es razonable esperar errores similares en otras partes
+del proyecto.
