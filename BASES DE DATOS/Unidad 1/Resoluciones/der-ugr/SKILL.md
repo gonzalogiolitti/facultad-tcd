@@ -79,7 +79,10 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
 
 ### Paso 5 — Determinar **cardinalidades leyendo en AMBOS sentidos**
 - Notación **Chen modificada de la cátedra: pares `(mín, máx)`** sobre cada extremo del rombo,
-  leídos como la **participación de esa entidad** en la relación:
+  leídos como la **participación de esa entidad** en la relación (en el diagrama Chen).
+  ⚠️ **Al cargarlos en ERDPlus la lectura es cruzada:** el dropdown "Edit cardinalities for: X"
+  describe a la **OTRA** entidad — cuántas hay por cada X (ver *Regla de cardinalidades en
+  ERDPlus (CRÍTICA)* en §4.2). Ej: "for: CLIENTE = Optional/Many" = cuántas RESERVAS por cliente.
   - `(0,1)` opcional, a lo sumo una · `(1,1)` obligatoria, exactamente una
   - `(0,N)` opcional, muchas · `(1,N)` obligatoria, al menos una
 - **Participación mínima**: `0` = participación opcional (se dibuja con **círculo**);
@@ -180,7 +183,9 @@ diagrama claro 1pt · consistencia con el enunciado 2pt).
     obligatorio antes de cerrar cada relación:**
     1. Escribí en una frase, para cada lado, *"¿cuántas [B] hay por un [A]?"* y
        *"¿cuántas [A] hay por un [B]?"*, citando la frase exacta del enunciado.
-    2. Fijá el par en el campo (`sourceEntityDetails` / `targetEntityDetails`) correcto.
+    2. Fijá el par en el campo (`sourceEntityDetails` / `targetEntityDetails`) correcto,
+       recordando que en ERDPlus "for: X" describe a la **OTRA** entidad (cuántas hay por
+       cada X), no la participación propia de X (ver §4.2, regla CRÍTICA).
     3. **Antes de dar por cerrado, probá invertir los dos pares entre sí y volvé a leer el
        enunciado con esa lectura invertida.** Si ambas lecturas "suenan" plausibles a
        primera vista, es señal de que hay que verificar con más cuidado (o contra una
@@ -440,7 +445,31 @@ Basarse en `BASES DE DATOS/Unidad 1/Prueba.erdplus` (exportación real analizada
 
 Mapeo cardinalidad de la cátedra → ERDPlus:
 `(0,1)`→`Optional`/`One` · `(1,1)`→`Mandatory`/`One` · `(0,N)`→`Optional`/`Many` ·
-`(1,N)`→`Mandatory`/`Many`. Cada entidad lleva **su propia** `(mín,máx)` en su lado.
+`(1,N)`→`Mandatory`/`Many`. **Qué valor va en cada bloque: ver la sección siguiente
+(regla de cardinalidades en ERDPlus, CRÍTICA).**
+
+## Regla de cardinalidades en ERDPlus (CRÍTICA)
+
+Cuando editás "Edit cardinalities for: X" en ERDPlus, el valor que configurás
+describe a la OTRA entidad de la relación, no a X.
+
+Para saber qué poner: preguntate "la entidad que NO elegí en el dropdown,
+¿cuántas hay por cada una de la que sí elegí?"
+
+Ejemplo confirmado (Cliente-Reserva, ejercicio del profesor):
+- "Un cliente puede realizar 0 o varias reservas"
+  → for: CLIENTE = Optional / Many (describe cuántas RESERVAS hay por cliente)
+- "Una reserva la realiza un único cliente"
+  → for: RESERVA = Mandatory / One (describe cuántos CLIENTES hay por reserva)
+
+Patrón general: para una relación A-B donde "un A tiene 1 o muchos B" y
+"un B pertenece a 1 solo A":
+- for: A = Mandatory / Many
+- for: B = Mandatory / One
+
+Esta regla reemplaza cualquier versión anterior de esta sección que diga
+lo contrario (fue validada y corregida el 21/09/2026 tras verificar
+contra el ejercicio Cliente-Reserva del profesor).
 
 Reglas al generar el `.erdplus`:
 - **N:M** = nodo `Relationship` (rombo). **No** convertir en entidad (salvo ternaria).
