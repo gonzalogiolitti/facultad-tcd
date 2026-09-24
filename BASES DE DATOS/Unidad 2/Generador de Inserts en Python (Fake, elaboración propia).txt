@@ -1,0 +1,5 @@
+Generador de Inserts en Python (Fake, elaboración propia)
+
+https://colab.research.google.com/drive/1GVkwxq-bbmVDci4wIayBF4S-mny9swO8?usp=sharing
+
+(link externo (no es un archivo descargable))

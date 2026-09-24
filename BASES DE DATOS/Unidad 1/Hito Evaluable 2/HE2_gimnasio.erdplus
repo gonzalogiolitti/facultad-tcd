@@ -25,8 +25,8 @@
         "id": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Entity",
         "position": {
-          "x": 1120,
-          "y": 340
+          "x": 1500,
+          "y": 300
         },
         "data": {
           "label": "PROFESOR",
@@ -45,8 +45,8 @@
         "id": "35d27f60-5dab-4ecc-b99d-b1758f8e267e",
         "type": "Entity",
         "position": {
-          "x": 1980,
-          "y": 340
+          "x": 2400,
+          "y": 300
         },
         "data": {
           "label": "ACTIVIDAD",
@@ -65,8 +65,8 @@
         "id": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Entity",
         "position": {
-          "x": 1120,
-          "y": 1320
+          "x": 1500,
+          "y": 1200
         },
         "data": {
           "label": "ALUMNO",
@@ -85,8 +85,8 @@
         "id": "53d89d2a-8584-41d7-a530-83dd9d479d81",
         "type": "Entity",
         "position": {
-          "x": 2060,
-          "y": 1320
+          "x": 2400,
+          "y": 1200
         },
         "data": {
           "label": "RECIBO",
@@ -106,8 +106,8 @@
         "parentId": "35d27f60-5dab-4ecc-b99d-b1758f8e267e",
         "type": "Attribute",
         "position": {
-          "x": -169.71,
-          "y": -169.71
+          "x": 109.45,
+          "y": -300.7
         },
         "data": {
           "label": "nombre",
@@ -129,8 +129,8 @@
         "parentId": "35d27f60-5dab-4ecc-b99d-b1758f8e267e",
         "type": "Attribute",
         "position": {
-          "x": 62.12,
-          "y": -231.82
+          "x": 293.83,
+          "y": -126.75
         },
         "data": {
           "label": "tarifa_mensual",
@@ -150,8 +150,8 @@
         "parentId": "35d27f60-5dab-4ecc-b99d-b1758f8e267e",
         "type": "Attribute",
         "position": {
-          "x": 231.82,
-          "y": -62.12
+          "x": 293.83,
+          "y": 126.75
         },
         "data": {
           "label": "fecha_inicio_oferta",
@@ -171,8 +171,8 @@
         "parentId": "35d27f60-5dab-4ecc-b99d-b1758f8e267e",
         "type": "Attribute",
         "position": {
-          "x": 169.71,
-          "y": 169.71
+          "x": 109.45,
+          "y": 300.7
         },
         "data": {
           "label": "fecha_fin_oferta (O)",
@@ -194,8 +194,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": -208.08,
-          "y": 187.36
+          "x": -69.46,
+          "y": 393.92
         },
         "data": {
           "label": "dni",
@@ -217,8 +217,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": -270.99,
-          "y": 70.44
+          "x": -217.02,
+          "y": 336.01
         },
         "data": {
           "label": "nombre",
@@ -238,8 +238,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": -272.98,
-          "y": -62.31
+          "x": -330.5,
+          "y": 225.33
         },
         "data": {
           "label": "apellido",
@@ -259,8 +259,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": -213.59,
-          "y": -181.05
+          "x": -392.07,
+          "y": 79.26
         },
         "data": {
           "label": "fecha_nacimiento",
@@ -280,8 +280,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": -106.18,
-          "y": -259.09
+          "x": -392.07,
+          "y": -79.26
         },
         "data": {
           "label": "edad",
@@ -303,8 +303,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": 25.1,
-          "y": -278.87
+          "x": -330.5,
+          "y": -225.33
         },
         "data": {
           "label": "email",
@@ -324,8 +324,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": 150.74,
-          "y": -235.96
+          "x": -217.02,
+          "y": -336.01
         },
         "data": {
           "label": "telefono",
@@ -347,8 +347,8 @@
         "parentId": "030f65d1-90f0-4656-a528-635a1bb8bf98",
         "type": "Attribute",
         "position": {
-          "x": 242.49,
-          "y": -140.0
+          "x": -79.88,
+          "y": -453.01
         },
         "data": {
           "label": "direccion",
@@ -370,8 +370,8 @@
         "parentId": "edf54a89-4f26-4041-92c7-25d157330576",
         "type": "Attribute",
         "position": {
-          "x": -82.27,
-          "y": 47.5
+          "x": -344.4,
+          "y": -160.59
         },
         "data": {
           "label": "calle",
@@ -391,8 +391,8 @@
         "parentId": "edf54a89-4f26-4041-92c7-25d157330576",
         "type": "Attribute",
         "position": {
-          "x": -82.27,
-          "y": -47.5
+          "x": -65.99,
+          "y": -374.23
         },
         "data": {
           "label": "numero",
@@ -412,8 +412,8 @@
         "parentId": "edf54a89-4f26-4041-92c7-25d157330576",
         "type": "Attribute",
         "position": {
-          "x": -0.0,
-          "y": -95.0
+          "x": 268.7,
+          "y": -268.7
         },
         "data": {
           "label": "localidad",
@@ -433,8 +433,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": 160.0,
-          "y": 277.13
+          "x": -37.48,
+          "y": 428.36
         },
         "data": {
           "label": "dni",
@@ -456,8 +456,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": 31.37,
-          "y": 318.46
+          "x": -210.34,
+          "y": 375.04
         },
         "data": {
           "label": "nombre",
@@ -477,8 +477,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": -102.86,
-          "y": 303.02
+          "x": -345.98,
+          "y": 255.34
         },
         "data": {
           "label": "apellido",
@@ -498,8 +498,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": -218.75,
-          "y": 233.56
+          "x": -420.38,
+          "y": 90.45
         },
         "data": {
           "label": "fecha_nacimiento",
@@ -515,35 +515,12 @@
         "dragging": false
       },
       {
-        "id": "e31e9e8a-f128-4d69-a9bc-24512c1a7e55",
-        "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
-        "type": "Attribute",
-        "position": {
-          "x": -295.64,
-          "y": 122.46
-        },
-        "data": {
-          "label": "edad",
-          "types": {
-            "Derived": true
-          },
-          "isSelected": false,
-          "isConnectable": true
-        },
-        "measured": {
-          "width": 100,
-          "height": 50
-        },
-        "selected": false,
-        "dragging": false
-      },
-      {
         "id": "b7acca8e-9d65-476f-8eb9-3685ab1c859f",
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": -319.83,
-          "y": -10.47
+          "x": -420.38,
+          "y": -90.45
         },
         "data": {
           "label": "email",
@@ -563,8 +540,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": -287.0,
-          "y": -141.53
+          "x": -345.98,
+          "y": -255.34
         },
         "data": {
           "label": "telefono",
@@ -584,8 +561,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": -203.01,
-          "y": -247.36
+          "x": -239.69,
+          "y": -427.37
         },
         "data": {
           "label": "direccion",
@@ -607,8 +584,8 @@
         "parentId": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "type": "Attribute",
         "position": {
-          "x": -82.82,
-          "y": -309.1
+          "x": -37.48,
+          "y": -428.36
         },
         "data": {
           "label": "activo",
@@ -628,8 +605,8 @@
         "parentId": "4e70d42a-d1ff-4912-8398-65e0d9e7fcc0",
         "type": "Attribute",
         "position": {
-          "x": -47.5,
-          "y": 82.27
+          "x": -378.11,
+          "y": -37.84
         },
         "data": {
           "label": "calle",
@@ -649,8 +626,8 @@
         "parentId": "4e70d42a-d1ff-4912-8398-65e0d9e7fcc0",
         "type": "Attribute",
         "position": {
-          "x": -95.0,
-          "y": 0.0
+          "x": -185.88,
+          "y": -331.43
         },
         "data": {
           "label": "numero",
@@ -670,8 +647,8 @@
         "parentId": "4e70d42a-d1ff-4912-8398-65e0d9e7fcc0",
         "type": "Attribute",
         "position": {
-          "x": -47.5,
-          "y": -82.27
+          "x": 164.88,
+          "y": -342.37
         },
         "data": {
           "label": "localidad",
@@ -691,8 +668,8 @@
         "parentId": "53d89d2a-8584-41d7-a530-83dd9d479d81",
         "type": "Attribute",
         "position": {
-          "x": 148.49,
-          "y": -148.49
+          "x": 55.57,
+          "y": -315.14
         },
         "data": {
           "label": "numero_recibo",
@@ -714,8 +691,8 @@
         "parentId": "53d89d2a-8584-41d7-a530-83dd9d479d81",
         "type": "Attribute",
         "position": {
-          "x": 209.95,
-          "y": 4.58
+          "x": 245.13,
+          "y": -205.69
         },
         "data": {
           "label": "periodo",
@@ -735,8 +712,8 @@
         "parentId": "53d89d2a-8584-41d7-a530-83dd9d479d81",
         "type": "Attribute",
         "position": {
-          "x": 141.87,
-          "y": 154.83
+          "x": 320.0,
+          "y": 0.0
         },
         "data": {
           "label": "importe",
@@ -756,8 +733,8 @@
         "parentId": "53d89d2a-8584-41d7-a530-83dd9d479d81",
         "type": "Attribute",
         "position": {
-          "x": -13.73,
-          "y": 209.55
+          "x": 245.13,
+          "y": 205.69
         },
         "data": {
           "label": "fecha_emision",
@@ -777,8 +754,8 @@
         "parentId": "53d89d2a-8584-41d7-a530-83dd9d479d81",
         "type": "Attribute",
         "position": {
-          "x": -160.87,
-          "y": 134.99
+          "x": 55.57,
+          "y": 315.14
         },
         "data": {
           "label": "fecha_pago (O)",
@@ -799,8 +776,8 @@
         "id": "2ed3da0c-2a8e-42f2-96a4-6400eb846f69",
         "type": "Relationship",
         "position": {
-          "x": 1550,
-          "y": 340
+          "x": 1950,
+          "y": 300
         },
         "data": {
           "label": "dicta",
@@ -828,8 +805,8 @@
         "id": "ea04ea7f-fab1-473c-b72c-fd825e4590fa",
         "type": "Relationship",
         "position": {
-          "x": 1480,
-          "y": 720
+          "x": 1900,
+          "y": 650
         },
         "data": {
           "label": "realiza",
@@ -858,8 +835,8 @@
         "parentId": "ea04ea7f-fab1-473c-b72c-fd825e4590fa",
         "type": "Attribute",
         "position": {
-          "x": 0,
-          "y": -120
+          "x": -60,
+          "y": -170
         },
         "data": {
           "label": "fecha_inscripcion",
@@ -878,8 +855,8 @@
         "id": "f38ab615-3cb6-4c19-aed1-8e59906f639e",
         "type": "Relationship",
         "position": {
-          "x": 1700,
-          "y": 960
+          "x": 2100,
+          "y": 900
         },
         "data": {
           "label": "interesado_en",
@@ -907,8 +884,8 @@
         "id": "88f092aa-38b2-4863-9ea7-d94d2f63fa2e",
         "type": "Relationship",
         "position": {
-          "x": 1600,
-          "y": 1320
+          "x": 1950,
+          "y": 1200
         },
         "data": {
           "label": "tiene",
@@ -1047,12 +1024,6 @@
         "type": "Attribute",
         "source": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
         "target": "ccb54000-ede6-4ea4-ba59-81e935a776ac"
-      },
-      {
-        "id": "51a33869-bb08-4f8c-b6f0-d9d800c64b93",
-        "type": "Attribute",
-        "source": "6db4a39a-a5d3-43cd-bafc-999265ebc8c7",
-        "target": "e31e9e8a-f128-4d69-a9bc-24512c1a7e55"
       },
       {
         "id": "12503f55-acef-4113-b903-0fe7ec66fb32",
