@@ -1,0 +1,5 @@
+página
+
+https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/bandwidth
+
+(link externo (no es un archivo descargable))

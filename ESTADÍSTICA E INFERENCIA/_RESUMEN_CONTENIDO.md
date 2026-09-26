@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 15/09/26_
+_Última actualización: 26/09/26_
 
 ## General
 **Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
@@ -284,6 +284,18 @@ _Última actualización: 15/09/26_
 **Fecha:** 2024 (no se puede precisar más)
 **Temas:** Distribución empírica, Distribuciones teóricas, Variables aleatorias discretas y continuas, Distribución Normal, Distribución t de Student, Distribución Chi Cuadrado
 **Resumen:** La clase aborda el concepto de distribución empírica, explicando frecuencia absoluta y relativa, y los aspectos clave de la distribución de una variable cuantitativa (posición, dispersión y forma). Luego introduce las distribuciones teóricas de probabilidad, diferenciando entre variables aleatorias discretas (Bernoulli, Binomial, Poisson, entre otras) y continuas (Normal, Uniforme, Exponencial, entre otras). Se profundiza en la distribución Normal, destacando su relación con el teorema central del límite. Finalmente, se presentan la distribución t de Student —útil para muestras pequeñas con varianza poblacional desconocida— y la distribución Chi Cuadrado, ambas relevantes para inferencia estadística y pruebas de hipótesis.
+
+## Unidad 3
+### Clase 7
+**Archivo:** Unidad 3/Clase 7/Video teorico-practico estimación de núcleo.txt
+**Fecha:** No identificada
+**Temas:** Estimación de densidad de probabilidad, método de núcleo (kernel), función density en R, ancho de banda (bandwidth), tipos de kernel (rectangular y gaussiano)
+**Resumen:** La clase muestra cómo estimar funciones de densidad de probabilidad a partir de datos usando la función `density` de R, tomando como ejemplo una variable de colesterol con distribución uniforme (35 datos, entre 140 y 300). Se compara la estimación por defecto (kernel gaussiano) con un kernel rectangular, variando también el ancho de banda para observar el efecto sobre el suavizado de la curva. Se menciona la existencia de métodos automáticos para seleccionar el ancho de banda (como NRD0) y se muestra cómo extraer las estadísticas de posición de la estimación resultante.
+
+**Archivo:** Unidad 3/Clase 7/Video teorico-practico arbol de desiciones.txt
+**Fecha:** No identificada
+**Temas:** Árboles de decisión, dataset de calidad del agua, librerías rpart y caret, partición entrenamiento/prueba, matriz de confusión, métricas de evaluación (precisión, kappa), overfitting
+**Resumen:** La clase muestra cómo implementar árboles de decisión en R usando un dataset de potabilidad del agua. Se explica la carga y preparación de datos, la conversión de la variable objetivo a factor y la separación del dataset en 70% entrenamiento y 30% prueba con `sample_frac` y `setdiff`. Se construyen y grafican árboles con `rpart` y `rpart.plot`, interpretando los nodos y las reglas de separación (como el umbral de sulfato). Finalmente, se evalúan las predicciones con la función `predict` y la matriz de confusión de `caret`, analizando métricas como precisión y kappa, y se generan múltiples árboles con distintas muestras para buscar el mejor modelo. Se mencionan ventajas (bajo costo computacional, interpretabilidad) y desventajas (necesidad de iterar, riesgo de overfitting) de los árboles de decisión.
 
 <!-- ESTADO_RESUMEN
 {
@@ -676,6 +688,26 @@ _Última actualización: 15/09/26_
           "fecha": "2024 (no se puede precisar más)",
           "temas": "Distribución empírica, Distribuciones teóricas, Variables aleatorias discretas y continuas, Distribución Normal, Distribución t de Student, Distribución Chi Cuadrado",
           "resumen": "La clase aborda el concepto de distribución empírica, explicando frecuencia absoluta y relativa, y los aspectos clave de la distribución de una variable cuantitativa (posición, dispersión y forma). Luego introduce las distribuciones teóricas de probabilidad, diferenciando entre variables aleatorias discretas (Bernoulli, Binomial, Poisson, entre otras) y continuas (Normal, Uniforme, Exponencial, entre otras). Se profundiza en la distribución Normal, destacando su relación con el teorema central del límite. Finalmente, se presentan la distribución t de Student —útil para muestras pequeñas con varianza poblacional desconocida— y la distribución Chi Cuadrado, ambas relevantes para inferencia estadística y pruebas de hipótesis."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 3",
+        "Clase 7"
+      ],
+      [
+        {
+          "rel_path": "Unidad 3/Clase 7/Video teorico-practico estimación de núcleo.txt",
+          "fecha": "No identificada",
+          "temas": "Estimación de densidad de probabilidad, método de núcleo (kernel), función density en R, ancho de banda (bandwidth), tipos de kernel (rectangular y gaussiano)",
+          "resumen": "La clase muestra cómo estimar funciones de densidad de probabilidad a partir de datos usando la función `density` de R, tomando como ejemplo una variable de colesterol con distribución uniforme (35 datos, entre 140 y 300). Se compara la estimación por defecto (kernel gaussiano) con un kernel rectangular, variando también el ancho de banda para observar el efecto sobre el suavizado de la curva. Se menciona la existencia de métodos automáticos para seleccionar el ancho de banda (como NRD0) y se muestra cómo extraer las estadísticas de posición de la estimación resultante."
+        },
+        {
+          "rel_path": "Unidad 3/Clase 7/Video teorico-practico arbol de desiciones.txt",
+          "fecha": "No identificada",
+          "temas": "Árboles de decisión, dataset de calidad del agua, librerías rpart y caret, partición entrenamiento/prueba, matriz de confusión, métricas de evaluación (precisión, kappa), overfitting",
+          "resumen": "La clase muestra cómo implementar árboles de decisión en R usando un dataset de potabilidad del agua. Se explica la carga y preparación de datos, la conversión de la variable objetivo a factor y la separación del dataset en 70% entrenamiento y 30% prueba con `sample_frac` y `setdiff`. Se construyen y grafican árboles con `rpart` y `rpart.plot`, interpretando los nodos y las reglas de separación (como el umbral de sulfato). Finalmente, se evalúan las predicciones con la función `predict` y la matriz de confusión de `caret`, analizando métricas como precisión y kappa, y se generan múltiples árboles con distintas muestras para buscar el mejor modelo. Se mencionan ventajas (bajo costo computacional, interpretabilidad) y desventajas (necesidad de iterar, riesgo de overfitting) de los árboles de decisión."
         }
       ]
     ]

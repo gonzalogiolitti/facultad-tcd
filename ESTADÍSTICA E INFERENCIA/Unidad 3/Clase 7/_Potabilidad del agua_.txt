@@ -1,0 +1,5 @@
+"Potabilidad del agua"
+
+https://www.kaggle.com/datasets/adityakadiwal/water-potability
+
+(link externo (no es un archivo descargable))
