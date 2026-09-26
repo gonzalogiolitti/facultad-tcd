@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 02/09/26_
+_Última actualización: 26/09/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -17,6 +17,11 @@ _Última actualización: 02/09/26_
 **Fecha:** 19/08/26
 **Temas:** Presentación de la materia, docentes y estudiantes, estructura del programa (5 unidades), modalidad de evaluación, volumen y tipos de datos en organizaciones públicas, estado inteligente y gobernanza de datos
 **Resumen:** Clase inaugural de Laboratorio de Datos en la que las docentes presentan la materia, su recorrido profesional y los contenidos del programa organizado en cinco unidades: dato como insumo para la decisión, calidad y análisis de datos, aspectos éticos y normativos, comunicación y visualización, e inteligencia artificial. Se explican las condiciones de regularidad (cuestionarios por unidad, parcial y trabajo final grupal progresivo). Los estudiantes se presentan brevemente indicando su experiencia laboral y expectativas. Hacia el final, se introduce el concepto de "estado inteligente" y se recorre el volumen de datos que genera una ciudad como Rosario en áreas como salud, educación, transporte, tributos, cultura y espacio público.
+
+**Archivo:** Grabaciones Sincrónicas/Clase IV - 09_09.txt
+**Fecha:** 09/09/24
+**Temas:** Transformación digital, niveles de madurez digital, gobernanza de datos, roles en gestión de datos, políticas públicas basadas en evidencia
+**Resumen:** La clase aborda la evolución histórica de la digitalización (desde los años 60 hasta la era de la IA) y los cinco niveles de madurez digital de las organizaciones: analógico, digital, interoperable, inteligente y proactivo. Se discute cómo la incorporación de tecnología no garantiza una transformación real si no se acompañan cambios en procesos, personas y reglas organizacionales. Se presentan ejemplos prácticos del sector privado y público (salud, logística, corralón) para ilustrar los conceptos. Finalmente, se introduce la gobernanza de datos: sus elementos clave (organización, principios, políticas, procesos, métricas y tecnología), los modelos institucionales (CDO centralizado, descentralizado o autónomo) y los roles estratégicos, tácticos y operativos según el estándar DAMA.
 
 ## Unidad 1
 **Archivo:** Unidad 1/Australian Bureau of Statistics. 2010. A guide to using evidence-based policy. National Statistical Service Canberra..md
@@ -240,6 +245,12 @@ _Última actualización: 02/09/26_
           "fecha": "19/08/26",
           "temas": "Presentación de la materia, docentes y estudiantes, estructura del programa (5 unidades), modalidad de evaluación, volumen y tipos de datos en organizaciones públicas, estado inteligente y gobernanza de datos",
           "resumen": "Clase inaugural de Laboratorio de Datos en la que las docentes presentan la materia, su recorrido profesional y los contenidos del programa organizado en cinco unidades: dato como insumo para la decisión, calidad y análisis de datos, aspectos éticos y normativos, comunicación y visualización, e inteligencia artificial. Se explican las condiciones de regularidad (cuestionarios por unidad, parcial y trabajo final grupal progresivo). Los estudiantes se presentan brevemente indicando su experiencia laboral y expectativas. Hacia el final, se introduce el concepto de \"estado inteligente\" y se recorre el volumen de datos que genera una ciudad como Rosario en áreas como salud, educación, transporte, tributos, cultura y espacio público."
+        },
+        {
+          "rel_path": "Grabaciones Sincrónicas/Clase IV - 09_09.txt",
+          "fecha": "09/09/24",
+          "temas": "Transformación digital, niveles de madurez digital, gobernanza de datos, roles en gestión de datos, políticas públicas basadas en evidencia",
+          "resumen": "La clase aborda la evolución histórica de la digitalización (desde los años 60 hasta la era de la IA) y los cinco niveles de madurez digital de las organizaciones: analógico, digital, interoperable, inteligente y proactivo. Se discute cómo la incorporación de tecnología no garantiza una transformación real si no se acompañan cambios en procesos, personas y reglas organizacionales. Se presentan ejemplos prácticos del sector privado y público (salud, logística, corralón) para ilustrar los conceptos. Finalmente, se introduce la gobernanza de datos: sus elementos clave (organización, principios, políticas, procesos, métricas y tecnología), los modelos institucionales (CDO centralizado, descentralizado o autónomo) y los roles estratégicos, tácticos y operativos según el estándar DAMA."
         }
       ]
     ],

@@ -1,5 +1,5 @@
 # BASES DE DATOS - Resumen de contenido
-_Última actualización: 02/09/26_
+_Última actualización: 26/09/26_
 
 ## General
 **Archivo:** General/ProgramaBBDD-TUCD_v00.md
@@ -33,6 +33,16 @@ _Última actualización: 02/09/26_
 **Temas:** Diagrama Entidad-Relación, entidades, atributos, cardinalidades, relaciones unarias, relaciones muchos a muchos, conversión a esquema relacional
 **Resumen:** La clase (tercera de la materia) introduce el modelado con diagramas Entidad-Relación utilizando una herramienta de software específica. Se trabajan conceptos como entidades fuertes y débiles, tipos de atributos (únicos, multivaluados, opcionales, compuestos y derivados), y cardinalidades. Se desarrollan ejercicios prácticos: un modelo departamento-empleado, una relación unaria de jefes-empleados, y un modelo de pedidos-productos-proveedores. Se hace especial énfasis en que las relaciones de muchos a muchos no deben romperse y pueden contener atributos propios, y se muestra cómo el diagrama puede convertirse automáticamente en un esquema relacional y código SQL.
 
+**Archivo:** Grabaciones sincrónicos/Clase 05 - Introducción a los Modelos Relacionales..txt
+**Fecha:** No identificada
+**Temas:** Modelo relacional, tablas y relaciones, transformación desde DER, cardinalidades, entidades débiles, restricciones de integridad, tipos de datos
+**Resumen:** La clase introduce el modelo relacional explicando la equivalencia entre relaciones, tablas, tuplas y atributos, y diferencia datos relacionales de no relacionales. Se aborda la transformación del diagrama entidad-relación al modelo relacional, cubriendo relaciones uno a muchos, muchos a muchos, atributos multivaluados, relaciones reflexivas y entidades débiles. Se explican las cuatro restricciones de integridad (entidad, clave foránea, tipo de dato y definidas por el usuario), y se muestra cómo asignar tipos de datos (VARCHAR, INT, DATE, FLOAT) al construir el esquema relacional, con ejemplos prácticos como personas y mascotas, empleados y departamentos, y cobros con recibos.
+
+**Archivo:** Grabaciones sincrónicos/Clase 06 - Normalización de Tablas.txt
+**Fecha:** No identificada
+**Temas:** Normalización de tablas, Primera Forma Normal, Segunda Forma Normal, Tercera Forma Normal, dependencias funcionales, atomicidad de datos, claves primarias y foráneas
+**Resumen:** La clase aborda el proceso de normalización de tablas en bases de datos, explicando su propósito: eliminar redundancias, evitar anomalías de inserción/actualización/eliminación y garantizar la integridad lógica. Se presentan las tres formas normales de manera progresiva: la Primera exige valores atómicos y sin campos multivaluados; la Segunda elimina dependencias parciales respecto a claves compuestas; la Tercera elimina dependencias entre atributos no clave. A través de ejemplos prácticos (una tabla de ventas con cliente, producto, vendedor y comisión), se muestra cómo una tabla inicial puede descomponerse en cinco tablas normalizadas relacionadas mediante claves primarias y foráneas. Se conecta el resultado de la normalización con el diagrama entidad-relación trabajado en clases anteriores.
+
 ## Unidad 0
 **Archivo:** Unidad 0/Apunte de Bases de datos.md
 **Fecha:** No identificada
@@ -64,6 +74,12 @@ _Última actualización: 02/09/26_
 **Fecha:** No identificada
 **Temas:** Diagrama Entidad-Relación (DER), entidades y atributos, cardinalidades, claves primarias y candidatas, relaciones entre entidades
 **Resumen:** La clase presenta la resolución práctica de dos ejercicios de construcción de Diagramas de Entidad-Relación (DER). El primer caso modela una empresa de ventas con entidades Cliente, Producto y Proveedor, identificando atributos, claves primarias (DNI, código de producto, NIF) y cardinalidades (M:N entre cliente y producto; 1:N entre proveedor y producto). El segundo caso modela una empresa de transportes con entidades Camionero, Paquete, Ciudad y Camión, estableciendo sus respectivas cardinalidades (1:N entre ciudad y paquete, 1:N entre camionero y paquete, M:N entre camionero y camión). Se hace énfasis en cómo identificar entidades a partir de sustantivos, relaciones a partir de verbos, y en la correcta selección de claves primarias según unicidad y estabilidad del atributo.
+
+## Unidad 2
+**Archivo:** Unidad 2/MoureDev_ Curso COMPLETO de SQL y BASES DE DATOS Desde Cero para PRINCIPIANTES.txt
+**Fecha:** No identificada
+**Temas:** Introducción a SQL y bases de datos relacionales, tipos de datos, comandos DDL y DML, consultas SELECT, JOINs, relaciones entre tablas, conceptos avanzados (índices, triggers, vistas, procedimientos almacenados, transacciones, seguridad)
+**Resumen:** Transcripción de un curso completo de SQL y bases de datos relacionales orientado a principiantes, impartido por Brais Moure (MoureDev). El curso abarca desde los fundamentos teóricos (qué es SQL, diferencia entre bases de datos relacionales y no relacionales, motores como MySQL y PostgreSQL) hasta la práctica con comandos de lectura (SELECT, WHERE, JOIN, GROUP BY, etc.) y escritura (INSERT, UPDATE, DELETE), pasando por la creación y modificación de tablas, tipos de relaciones (1:1, 1:N, N:M), y conceptos avanzados como índices, triggers, vistas, procedimientos almacenados y seguridad (SQL Injection). Incluye también una introducción al despliegue de bases de datos en entornos remotos y la conexión desde código Python mediante conectores.
 
 <!-- ESTADO_RESUMEN
 {
@@ -115,6 +131,18 @@ _Última actualización: 02/09/26_
           "fecha": "No identificada",
           "temas": "Diagrama Entidad-Relación, entidades, atributos, cardinalidades, relaciones unarias, relaciones muchos a muchos, conversión a esquema relacional",
           "resumen": "La clase (tercera de la materia) introduce el modelado con diagramas Entidad-Relación utilizando una herramienta de software específica. Se trabajan conceptos como entidades fuertes y débiles, tipos de atributos (únicos, multivaluados, opcionales, compuestos y derivados), y cardinalidades. Se desarrollan ejercicios prácticos: un modelo departamento-empleado, una relación unaria de jefes-empleados, y un modelo de pedidos-productos-proveedores. Se hace especial énfasis en que las relaciones de muchos a muchos no deben romperse y pueden contener atributos propios, y se muestra cómo el diagrama puede convertirse automáticamente en un esquema relacional y código SQL."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 05 - Introducción a los Modelos Relacionales..txt",
+          "fecha": "No identificada",
+          "temas": "Modelo relacional, tablas y relaciones, transformación desde DER, cardinalidades, entidades débiles, restricciones de integridad, tipos de datos",
+          "resumen": "La clase introduce el modelo relacional explicando la equivalencia entre relaciones, tablas, tuplas y atributos, y diferencia datos relacionales de no relacionales. Se aborda la transformación del diagrama entidad-relación al modelo relacional, cubriendo relaciones uno a muchos, muchos a muchos, atributos multivaluados, relaciones reflexivas y entidades débiles. Se explican las cuatro restricciones de integridad (entidad, clave foránea, tipo de dato y definidas por el usuario), y se muestra cómo asignar tipos de datos (VARCHAR, INT, DATE, FLOAT) al construir el esquema relacional, con ejemplos prácticos como personas y mascotas, empleados y departamentos, y cobros con recibos."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 06 - Normalización de Tablas.txt",
+          "fecha": "No identificada",
+          "temas": "Normalización de tablas, Primera Forma Normal, Segunda Forma Normal, Tercera Forma Normal, dependencias funcionales, atomicidad de datos, claves primarias y foráneas",
+          "resumen": "La clase aborda el proceso de normalización de tablas en bases de datos, explicando su propósito: eliminar redundancias, evitar anomalías de inserción/actualización/eliminación y garantizar la integridad lógica. Se presentan las tres formas normales de manera progresiva: la Primera exige valores atómicos y sin campos multivaluados; la Segunda elimina dependencias parciales respecto a claves compuestas; la Tercera elimina dependencias entre atributos no clave. A través de ejemplos prácticos (una tabla de ventas con cliente, producto, vendedor y comisión), se muestra cómo una tabla inicial puede descomponerse en cinco tablas normalizadas relacionadas mediante claves primarias y foráneas. Se conecta el resultado de la normalización con el diagrama entidad-relación trabajado en clases anteriores."
         }
       ]
     ],
@@ -165,6 +193,19 @@ _Última actualización: 02/09/26_
           "fecha": "No identificada",
           "temas": "Diagrama Entidad-Relación (DER), entidades y atributos, cardinalidades, claves primarias y candidatas, relaciones entre entidades",
           "resumen": "La clase presenta la resolución práctica de dos ejercicios de construcción de Diagramas de Entidad-Relación (DER). El primer caso modela una empresa de ventas con entidades Cliente, Producto y Proveedor, identificando atributos, claves primarias (DNI, código de producto, NIF) y cardinalidades (M:N entre cliente y producto; 1:N entre proveedor y producto). El segundo caso modela una empresa de transportes con entidades Camionero, Paquete, Ciudad y Camión, estableciendo sus respectivas cardinalidades (1:N entre ciudad y paquete, 1:N entre camionero y paquete, M:N entre camionero y camión). Se hace énfasis en cómo identificar entidades a partir de sustantivos, relaciones a partir de verbos, y en la correcta selección de claves primarias según unicidad y estabilidad del atributo."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 2"
+      ],
+      [
+        {
+          "rel_path": "Unidad 2/MoureDev_ Curso COMPLETO de SQL y BASES DE DATOS Desde Cero para PRINCIPIANTES.txt",
+          "fecha": "No identificada",
+          "temas": "Introducción a SQL y bases de datos relacionales, tipos de datos, comandos DDL y DML, consultas SELECT, JOINs, relaciones entre tablas, conceptos avanzados (índices, triggers, vistas, procedimientos almacenados, transacciones, seguridad)",
+          "resumen": "Transcripción de un curso completo de SQL y bases de datos relacionales orientado a principiantes, impartido por Brais Moure (MoureDev). El curso abarca desde los fundamentos teóricos (qué es SQL, diferencia entre bases de datos relacionales y no relacionales, motores como MySQL y PostgreSQL) hasta la práctica con comandos de lectura (SELECT, WHERE, JOIN, GROUP BY, etc.) y escritura (INSERT, UPDATE, DELETE), pasando por la creación y modificación de tablas, tipos de relaciones (1:1, 1:N, N:M), y conceptos avanzados como índices, triggers, vistas, procedimientos almacenados y seguridad (SQL Injection). Incluye también una introducción al despliegue de bases de datos en entornos remotos y la conexión desde código Python mediante conectores."
         }
       ]
     ]
