@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 26/09/26_
+_Última actualización: 01/10/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -22,6 +22,11 @@ _Última actualización: 26/09/26_
 **Fecha:** 09/09/24
 **Temas:** Transformación digital, niveles de madurez digital, gobernanza de datos, roles en gestión de datos, políticas públicas basadas en evidencia
 **Resumen:** La clase aborda la evolución histórica de la digitalización (desde los años 60 hasta la era de la IA) y los cinco niveles de madurez digital de las organizaciones: analógico, digital, interoperable, inteligente y proactivo. Se discute cómo la incorporación de tecnología no garantiza una transformación real si no se acompañan cambios en procesos, personas y reglas organizacionales. Se presentan ejemplos prácticos del sector privado y público (salud, logística, corralón) para ilustrar los conceptos. Finalmente, se introduce la gobernanza de datos: sus elementos clave (organización, principios, políticas, procesos, métricas y tecnología), los modelos institucionales (CDO centralizado, descentralizado o autónomo) y los roles estratégicos, tácticos y operativos según el estándar DAMA.
+
+**Archivo:** Grabaciones Sincrónicas/GMT20260923-215937_Recording_1920x1008.txt
+**Fecha:** 23/09/26
+**Temas:** Normalización de bases de datos, Formas normales (1FN, 2FN, 3FN), Proceso ETL (Extracción, Transformación y Carga), Data Warehouse, Estrategias de carga de datos
+**Resumen:** La clase aborda la normalización de bases de datos relacionales, explicando las tres formas normales principales: la primera (atomicidad y ausencia de grupos repetidos), la segunda (eliminación de dependencias parciales respecto a claves primarias compuestas) y la tercera (eliminación de dependencias transitivas entre atributos no clave). Luego se desarrolla el proceso ETL, describiendo sus tres etapas: extracción de datos desde distintas fuentes, transformación (limpieza, unificación de formatos, reestructuración y normalización) y carga hacia el destino final. Se presentan los distintos tipos de carga (completa, incremental, delta, por lotes y en tiempo real) y las estrategias asociadas (Append, Upsert, Truncate and Load, SCD). Finalmente, se contextualiza el ETL dentro de la arquitectura de Data Warehouse y se vincula con el trabajo práctico final de la materia.
 
 ## Unidad 1
 **Archivo:** Unidad 1/Australian Bureau of Statistics. 2010. A guide to using evidence-based policy. National Statistical Service Canberra..md
@@ -251,6 +256,12 @@ _Última actualización: 26/09/26_
           "fecha": "09/09/24",
           "temas": "Transformación digital, niveles de madurez digital, gobernanza de datos, roles en gestión de datos, políticas públicas basadas en evidencia",
           "resumen": "La clase aborda la evolución histórica de la digitalización (desde los años 60 hasta la era de la IA) y los cinco niveles de madurez digital de las organizaciones: analógico, digital, interoperable, inteligente y proactivo. Se discute cómo la incorporación de tecnología no garantiza una transformación real si no se acompañan cambios en procesos, personas y reglas organizacionales. Se presentan ejemplos prácticos del sector privado y público (salud, logística, corralón) para ilustrar los conceptos. Finalmente, se introduce la gobernanza de datos: sus elementos clave (organización, principios, políticas, procesos, métricas y tecnología), los modelos institucionales (CDO centralizado, descentralizado o autónomo) y los roles estratégicos, tácticos y operativos según el estándar DAMA."
+        },
+        {
+          "rel_path": "Grabaciones Sincrónicas/GMT20260923-215937_Recording_1920x1008.txt",
+          "fecha": "23/09/26",
+          "temas": "Normalización de bases de datos, Formas normales (1FN, 2FN, 3FN), Proceso ETL (Extracción, Transformación y Carga), Data Warehouse, Estrategias de carga de datos",
+          "resumen": "La clase aborda la normalización de bases de datos relacionales, explicando las tres formas normales principales: la primera (atomicidad y ausencia de grupos repetidos), la segunda (eliminación de dependencias parciales respecto a claves primarias compuestas) y la tercera (eliminación de dependencias transitivas entre atributos no clave). Luego se desarrolla el proceso ETL, describiendo sus tres etapas: extracción de datos desde distintas fuentes, transformación (limpieza, unificación de formatos, reestructuración y normalización) y carga hacia el destino final. Se presentan los distintos tipos de carga (completa, incremental, delta, por lotes y en tiempo real) y las estrategias asociadas (Append, Upsert, Truncate and Load, SCD). Finalmente, se contextualiza el ETL dentro de la arquitectura de Data Warehouse y se vincula con el trabajo práctico final de la materia."
         }
       ]
     ],

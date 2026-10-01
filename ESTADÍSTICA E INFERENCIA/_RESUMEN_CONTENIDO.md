@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 26/09/26_
+_Última actualización: 01/10/26_
 
 ## General
 **Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
@@ -296,6 +296,27 @@ _Última actualización: 26/09/26_
 **Fecha:** No identificada
 **Temas:** Árboles de decisión, dataset de calidad del agua, librerías rpart y caret, partición entrenamiento/prueba, matriz de confusión, métricas de evaluación (precisión, kappa), overfitting
 **Resumen:** La clase muestra cómo implementar árboles de decisión en R usando un dataset de potabilidad del agua. Se explica la carga y preparación de datos, la conversión de la variable objetivo a factor y la separación del dataset en 70% entrenamiento y 30% prueba con `sample_frac` y `setdiff`. Se construyen y grafican árboles con `rpart` y `rpart.plot`, interpretando los nodos y las reglas de separación (como el umbral de sulfato). Finalmente, se evalúan las predicciones con la función `predict` y la matriz de confusión de `caret`, analizando métricas como precisión y kappa, y se generan múltiples árboles con distintas muestras para buscar el mejor modelo. Se mencionan ventajas (bajo costo computacional, interpretabilidad) y desventajas (necesidad de iterar, riesgo de overfitting) de los árboles de decisión.
+
+## Unidad 4
+**Archivo:** Unidad 4/Video teorico-practico (contraste de dos muestras, NeI).txt
+**Fecha:** No identificada
+**Temas:** Contraste de dos muestras independientes, test t de Student, test de proporciones, test de Shapiro-Wilk, test de Bartlett, hipótesis nula y alternativa, R (lapply, t.test, prop.test)
+**Resumen:** La clase aborda la resolución práctica de contrastes de hipótesis para dos muestras independientes con distribución normal, aplicado a niveles de expresión de una proteína asociada al cáncer en personas de dos ciudades. Se trabaja en R verificando normalidad (Shapiro-Wilk) e igualdad de varianzas (Bartlett) antes de aplicar el t-test, y se discute el planteo correcto de hipótesis unilaterales y bilaterales. Además, se realiza un contraste de proporciones (prop.test) para comparar la proporción de personas con niveles de expresión por encima de un umbral entre ambas ciudades. Se enfatiza la importancia de definir correctamente la dirección de la hipótesis alternativa (greater, less o two-sided) para obtener conclusiones válidas.
+
+**Archivo:** Unidad 4/Video teorico-practico (contraste de dos muestras, nN).txt
+**Fecha:** No identificada
+**Temas:** Contraste de dos muestras sin normalidad, Test de Wilcoxon, Shapiro-Wilk en R, distribución uniforme, comparación de grupos
+**Resumen:** La clase aborda el contraste de hipótesis entre dos muestras cuando no se cumple el supuesto de normalidad. Se genera un conjunto de datos en R con 100 pacientes divididos en dos grupos, usando distribución uniforme (runif) para la variable concentración de ácido úrico. Se verifica la ausencia de normalidad mediante el test de Shapiro-Wilk aplicado con sapply por grupo, obteniendo p-valores menores a 0,05. Al no cumplirse el supuesto de normalidad, se descarta el test T y se aplica el test de Wilcoxon para muestras independientes, cuyo resultado (p > 0,05) indica que no hay evidencia suficiente para afirmar diferencias entre los grupos.
+
+**Archivo:** Unidad 4/Video teorico-practico (contraste de mas de dos muestras, NyH).txt
+**Fecha:** No identificada
+**Temas:** ANOVA, test de Shapiro-Wilk, test de Bartlett, homocedasticidad, comparaciones múltiples, librería agricolae
+**Resumen:** La clase aborda el análisis de más de dos muestras mediante el test ANOVA (análisis de la varianza), aplicado a un ejemplo de comparación de fertilizantes en altura de plantas con tres grupos (control, fertilizante 1 y fertilizante 2). Se explican los requisitos previos del ANOVA: normalidad (test de Shapiro-Wilk) y homocedasticidad (test de Bartlett). Una vez verificados ambos supuestos, se construye el modelo ANOVA en R y se interpreta el F-valor y el p-valor para decidir si rechazar H₀. Finalmente, ante un resultado significativo, se aplica un test de comparaciones múltiples con la librería `agricolae` para identificar qué grupos difieren entre sí, concluyendo que ambos fertilizantes aumentan la altura respecto al control pero no difieren entre ellos.
+
+**Archivo:** Unidad 4/Video teorico-practico (contraste de mas de dos muestras, nNyH).txt
+**Fecha:** No identificada
+**Temas:** Test de Kruskal-Wallis, comparaciones múltiples no paramétricas, verificación de normalidad y homocedasticidad, ANOVA como prerequisito
+**Resumen:** La clase aborda el caso en que los datos no cumplen los supuestos de normalidad u homocedasticidad necesarios para aplicar ANOVA. Se introduce el test de Kruskal-Wallis como alternativa no paramétrica para comparar más de dos muestras. Se trabaja con ejemplos prácticos en R usando datos de alturas de plantas con distintos tratamientos de fertilizantes, aplicando previamente el test de Shapiro-Wilk y el test de Bartlett para verificar supuestos. Finalmente, se menciona el uso de pruebas de comparaciones múltiples post-hoc (librería de comparaciones múltiples en R) para identificar cuáles grupos difieren entre sí cuando el test global resulta significativo.
 
 <!-- ESTADO_RESUMEN
 {
@@ -708,6 +729,37 @@ _Última actualización: 26/09/26_
           "fecha": "No identificada",
           "temas": "Árboles de decisión, dataset de calidad del agua, librerías rpart y caret, partición entrenamiento/prueba, matriz de confusión, métricas de evaluación (precisión, kappa), overfitting",
           "resumen": "La clase muestra cómo implementar árboles de decisión en R usando un dataset de potabilidad del agua. Se explica la carga y preparación de datos, la conversión de la variable objetivo a factor y la separación del dataset en 70% entrenamiento y 30% prueba con `sample_frac` y `setdiff`. Se construyen y grafican árboles con `rpart` y `rpart.plot`, interpretando los nodos y las reglas de separación (como el umbral de sulfato). Finalmente, se evalúan las predicciones con la función `predict` y la matriz de confusión de `caret`, analizando métricas como precisión y kappa, y se generan múltiples árboles con distintas muestras para buscar el mejor modelo. Se mencionan ventajas (bajo costo computacional, interpretabilidad) y desventajas (necesidad de iterar, riesgo de overfitting) de los árboles de decisión."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 4"
+      ],
+      [
+        {
+          "rel_path": "Unidad 4/Video teorico-practico (contraste de dos muestras, NeI).txt",
+          "fecha": "No identificada",
+          "temas": "Contraste de dos muestras independientes, test t de Student, test de proporciones, test de Shapiro-Wilk, test de Bartlett, hipótesis nula y alternativa, R (lapply, t.test, prop.test)",
+          "resumen": "La clase aborda la resolución práctica de contrastes de hipótesis para dos muestras independientes con distribución normal, aplicado a niveles de expresión de una proteína asociada al cáncer en personas de dos ciudades. Se trabaja en R verificando normalidad (Shapiro-Wilk) e igualdad de varianzas (Bartlett) antes de aplicar el t-test, y se discute el planteo correcto de hipótesis unilaterales y bilaterales. Además, se realiza un contraste de proporciones (prop.test) para comparar la proporción de personas con niveles de expresión por encima de un umbral entre ambas ciudades. Se enfatiza la importancia de definir correctamente la dirección de la hipótesis alternativa (greater, less o two-sided) para obtener conclusiones válidas."
+        },
+        {
+          "rel_path": "Unidad 4/Video teorico-practico (contraste de dos muestras, nN).txt",
+          "fecha": "No identificada",
+          "temas": "Contraste de dos muestras sin normalidad, Test de Wilcoxon, Shapiro-Wilk en R, distribución uniforme, comparación de grupos",
+          "resumen": "La clase aborda el contraste de hipótesis entre dos muestras cuando no se cumple el supuesto de normalidad. Se genera un conjunto de datos en R con 100 pacientes divididos en dos grupos, usando distribución uniforme (runif) para la variable concentración de ácido úrico. Se verifica la ausencia de normalidad mediante el test de Shapiro-Wilk aplicado con sapply por grupo, obteniendo p-valores menores a 0,05. Al no cumplirse el supuesto de normalidad, se descarta el test T y se aplica el test de Wilcoxon para muestras independientes, cuyo resultado (p > 0,05) indica que no hay evidencia suficiente para afirmar diferencias entre los grupos."
+        },
+        {
+          "rel_path": "Unidad 4/Video teorico-practico (contraste de mas de dos muestras, NyH).txt",
+          "fecha": "No identificada",
+          "temas": "ANOVA, test de Shapiro-Wilk, test de Bartlett, homocedasticidad, comparaciones múltiples, librería agricolae",
+          "resumen": "La clase aborda el análisis de más de dos muestras mediante el test ANOVA (análisis de la varianza), aplicado a un ejemplo de comparación de fertilizantes en altura de plantas con tres grupos (control, fertilizante 1 y fertilizante 2). Se explican los requisitos previos del ANOVA: normalidad (test de Shapiro-Wilk) y homocedasticidad (test de Bartlett). Una vez verificados ambos supuestos, se construye el modelo ANOVA en R y se interpreta el F-valor y el p-valor para decidir si rechazar H₀. Finalmente, ante un resultado significativo, se aplica un test de comparaciones múltiples con la librería `agricolae` para identificar qué grupos difieren entre sí, concluyendo que ambos fertilizantes aumentan la altura respecto al control pero no difieren entre ellos."
+        },
+        {
+          "rel_path": "Unidad 4/Video teorico-practico (contraste de mas de dos muestras, nNyH).txt",
+          "fecha": "No identificada",
+          "temas": "Test de Kruskal-Wallis, comparaciones múltiples no paramétricas, verificación de normalidad y homocedasticidad, ANOVA como prerequisito",
+          "resumen": "La clase aborda el caso en que los datos no cumplen los supuestos de normalidad u homocedasticidad necesarios para aplicar ANOVA. Se introduce el test de Kruskal-Wallis como alternativa no paramétrica para comparar más de dos muestras. Se trabaja con ejemplos prácticos en R usando datos de alturas de plantas con distintos tratamientos de fertilizantes, aplicando previamente el test de Shapiro-Wilk y el test de Bartlett para verificar supuestos. Finalmente, se menciona el uso de pruebas de comparaciones múltiples post-hoc (librería de comparaciones múltiples en R) para identificar cuáles grupos difieren entre sí cuando el test global resulta significativo."
         }
       ]
     ]

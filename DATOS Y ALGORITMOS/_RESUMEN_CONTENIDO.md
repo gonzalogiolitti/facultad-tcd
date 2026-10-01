@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 15/09/26_
+_Última actualización: 01/10/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -70,6 +70,11 @@ _Última actualización: 15/09/26_
 **Fecha:** No identificada
 **Temas:** Repaso de variables acumuladoras y contadoras, máximos y mínimos con estructura Para, estructura de repetición Mientras (While), ejercicios prácticos con Mientras, introducción a PSeInt, primer parcial
 **Resumen:** La clase comienza con un repaso de variables acumuladoras y contadoras, para luego introducir el concepto de máximos y mínimos dentro de la estructura Para, explicando la importancia de inicializar la variable con un valor extremo. Luego se presenta la estructura Mientras (While), diferenciándola del Para por no tener un número de iteraciones predefinido, sino una condición de corte. Se realizan varios ejercicios prácticos: suma de números hasta ingresar un cero, conteo de pares e impares hasta valor negativo, cociente entre dos números pares, y generación de números impares al azar. Al cierre, se menciona la herramienta PSeInt para pseudocódigo y se informa sobre la modalidad y fechas del primer parcial.
+
+**Archivo:** Grabaciones 2026/Clase 5 - Pseint.txt
+**Fecha:** No identificada
+**Temas:** PSeInt, pseudocódigo, estructuras condicionales, estructuras de repetición (Para, Mientras), ejercicios prácticos, depuración de algoritmos
+**Resumen:** La clase es de tipo práctica, centrada en el uso de PSeInt para traducir diagramas de flujo a pseudocódigo. Se resuelven ejercicios progresivos: determinar si un número es par/impar, divisibilidad por 7 y comparación con 40, promedio de edades con estructura Para, sumatoria de números aleatorios con la función azar, anidación de condicionales (ejercicio veterinaria con perros, gatos y otros animales), y estructuras Mientras para calcular promedios con condición de corte. Se explica cómo ejecutar y depurar paso a paso en PSeInt (botón verde y "piecitos"), cómo guardar archivos con extensión .pc y cómo subir los trabajos al campus para evaluación parcial.
 
 <!-- ESTADO_RESUMEN
 {
@@ -186,6 +191,12 @@ _Última actualización: 15/09/26_
           "fecha": "No identificada",
           "temas": "Repaso de variables acumuladoras y contadoras, máximos y mínimos con estructura Para, estructura de repetición Mientras (While), ejercicios prácticos con Mientras, introducción a PSeInt, primer parcial",
           "resumen": "La clase comienza con un repaso de variables acumuladoras y contadoras, para luego introducir el concepto de máximos y mínimos dentro de la estructura Para, explicando la importancia de inicializar la variable con un valor extremo. Luego se presenta la estructura Mientras (While), diferenciándola del Para por no tener un número de iteraciones predefinido, sino una condición de corte. Se realizan varios ejercicios prácticos: suma de números hasta ingresar un cero, conteo de pares e impares hasta valor negativo, cociente entre dos números pares, y generación de números impares al azar. Al cierre, se menciona la herramienta PSeInt para pseudocódigo y se informa sobre la modalidad y fechas del primer parcial."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 5 - Pseint.txt",
+          "fecha": "No identificada",
+          "temas": "PSeInt, pseudocódigo, estructuras condicionales, estructuras de repetición (Para, Mientras), ejercicios prácticos, depuración de algoritmos",
+          "resumen": "La clase es de tipo práctica, centrada en el uso de PSeInt para traducir diagramas de flujo a pseudocódigo. Se resuelven ejercicios progresivos: determinar si un número es par/impar, divisibilidad por 7 y comparación con 40, promedio de edades con estructura Para, sumatoria de números aleatorios con la función azar, anidación de condicionales (ejercicio veterinaria con perros, gatos y otros animales), y estructuras Mientras para calcular promedios con condición de corte. Se explica cómo ejecutar y depurar paso a paso en PSeInt (botón verde y \"piecitos\"), cómo guardar archivos con extensión .pc y cómo subir los trabajos al campus para evaluación parcial."
         }
       ]
     ]
