@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 01/10/26_
+_Última actualización: 19/10/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -16,6 +16,21 @@ _Última actualización: 01/10/26_
 **Fecha:** No identificada
 **Temas:** Estructuras de control de repetición, sentencia "para", sentencia "mientras", variables acumuladoras, variables contadoras, máximos y mínimos, ejercicios de diagramación lógica
 **Resumen:** El archivo corresponde a la segunda parte de diagramación lógica y presenta una serie de ejercicios prácticos que abarcan operaciones matemáticas (seno, coseno, hipotenusa, factorial), estructuras condicionales y estructuras de repetición. Se introducen los conceptos de sentencia "para" y sentencia "mientras", junto con el uso de variables acumuladoras y contadoras dentro de ciclos. También se trabajan problemas de búsqueda de máximos y mínimos, y situaciones con condiciones de corte variables definidas por el usuario o por valores centinela.
+
+**Archivo:** Contenido/Práctica arreglos.md
+**Fecha:** No identificada
+**Temas:** Arreglos unidimensionales, matrices bidimensionales, operaciones con arrays, búsqueda de valores, transposición de matrices
+**Resumen:** El archivo contiene una guía de práctica de la materia Datos y Algoritmos enfocada en el trabajo con arreglos y matrices. Incluye ejercicios con arrays unidimensionales como inicialización, suma, promedio y búsqueda de valores. También abarca operaciones con matrices bidimensionales como suma por fila, promedio por columna, búsqueda de elementos y cálculo de la matriz traspuesta. Los ejercicios están orientados a que el usuario ingrese datos y el programa los procese y muestre resultados.
+
+**Archivo:** Contenido/Ordenamiento y búsqueda.md
+**Fecha:** No identificada
+**Temas:** Ordenamiento burbuja, Ordenamiento por selección del mínimo, Búsqueda en arreglos, Práctica con algoritmos de ordenamiento
+**Resumen:** El archivo corresponde a una guía de práctica de la materia Datos y Algoritmos sobre ordenamiento y búsqueda en arreglos. Incluye ejercicios de ordenamiento burbuja (ascendente y descendente) aplicados a enteros y palabras, con operaciones adicionales como encontrar máximo, mínimo y suma. También presenta ejercicios de ordenamiento por selección del mínimo, tanto en orden ascendente como descendente, aplicados a enteros, nombres y números reales, combinados con cálculos estadísticos básicos.
+
+**Archivo:** Contenido/AyD-array.md
+**Fecha:** No identificada
+**Temas:** Arrays/arreglos, declaración y tipos, arreglos unidimensionales y bidimensionales, ordenamiento (burbuja y selección de mínimo), búsqueda secuencial, búsqueda dicotómica (binaria)
+**Resumen:** El archivo presenta el concepto de arrays como estructuras de datos que permiten agrupar múltiples valores del mismo tipo bajo un identificador, con tamaño fijo y acceso por índice. Se cubren arreglos unidimensionales (vectores) y bidimensionales (matrices), con problemas resueltos en pseudocódigo. Se desarrollan métodos de ordenamiento (intercambio/burbuja y selección del mínimo) y métodos de búsqueda (secuencial y dicotómica), incluyendo ejemplos ilustrativos y algoritmos completos para cada caso.
 
 ### Actividades
 **Archivo:** Contenido/Actividades/Práctica 1.md
@@ -76,6 +91,21 @@ _Última actualización: 01/10/26_
 **Temas:** PSeInt, pseudocódigo, estructuras condicionales, estructuras de repetición (Para, Mientras), ejercicios prácticos, depuración de algoritmos
 **Resumen:** La clase es de tipo práctica, centrada en el uso de PSeInt para traducir diagramas de flujo a pseudocódigo. Se resuelven ejercicios progresivos: determinar si un número es par/impar, divisibilidad por 7 y comparación con 40, promedio de edades con estructura Para, sumatoria de números aleatorios con la función azar, anidación de condicionales (ejercicio veterinaria con perros, gatos y otros animales), y estructuras Mientras para calcular promedios con condición de corte. Se explica cómo ejecutar y depurar paso a paso en PSeInt (botón verde y "piecitos"), cómo guardar archivos con extensión .pc y cómo subir los trabajos al campus para evaluación parcial.
 
+**Archivo:** Grabaciones 2026/Ejercicios Pre-Parcial.txt
+**Fecha:** No identificada
+**Temas:** Repaso pre-parcial, algoritmos con decisiones simples y anidadas, estructura Para, estructura Mientras, contadores, acumuladores, PCI (herramienta), prueba de escritorio
+**Resumen:** Clase de ejercicios preparatoria para el parcial asincrónico de la materia, donde se aclara que las entregas deben realizarse en PCI (diagramación lógica y código). Se resuelven ejercicios en grupo: un sistema de descuentos por tipo de cliente y forma de pago (decisiones simples/anidadas), organización de producción según demanda, control de calidad de piezas con estructura Para, cálculo de precios con impuestos usando acumuladores y contadores, y registro de temperaturas con alerta usando estructura Mientras. Se enfatiza la importancia de la eficiencia algorítmica, la prueba de los programas antes de entregarlos, y el uso de la prueba de escritorio para depurar errores.
+
+**Archivo:** Grabaciones 2026/Clase 7 - Arrays.txt
+**Fecha:** No identificada
+**Temas:** Arreglos (arrays), vectores, matrices, declaración e inicialización, recorrido con estructura Para, búsqueda de elementos, suma de filas y columnas, prueba de escritorio en PSeInt
+**Resumen:** La clase introduce el concepto de arreglos como tipo de dato estructurado de tamaño fijo y elementos homogéneos, diferenciando arreglos unidimensionales (vectores) y bidimensionales (matrices). Se explica la declaración, carga y recorrido de arreglos usando la estructura Para, con indexación desde 1 en pseudocódigo. A través de ejemplos prácticos se trabajan ejercicios como suma de productos entre dos vectores, suma por filas y columnas de una matriz, y búsqueda de un valor en un arreglo. También se muestra el uso de la prueba de escritorio en PSeInt para visualizar el contenido del arreglo en cada iteración y se advierte sobre errores de desbordamiento al superar la dimensión declarada.
+
+**Archivo:** Grabaciones 2026/Clase 8 - Operaciones con Arreglos.txt
+**Fecha:** No identificada
+**Temas:** Arreglos unidimensionales y bidimensionales, método de ordenamiento por intercambio (burbuja), método de ordenamiento por selección del mínimo, prueba de escritorio de algoritmos de ordenamiento, ejercicios prácticos en PSeInt
+**Resumen:** La clase aborda operaciones con arreglos, repasando su definición, declaración y carga de datos. Se explican en detalle dos métodos de ordenamiento: el método de la burbuja (intercambio), donde el elemento menor "sube" progresivamente en cada recorrida, y el método de selección del mínimo, donde se busca el menor elemento y se lo intercambia con la posición correspondiente. Se realizan pruebas de escritorio paso a paso para ambos algoritmos y se resuelven ejercicios prácticos en PSeInt, incluyendo ordenamiento ascendente y descendente de números y palabras. Al cierre, se anticipa que la clase siguiente cubrirá búsqueda en arreglos, y se brindan indicaciones sobre el formato del parcial.
+
 <!-- ESTADO_RESUMEN
 {
   "secciones": [
@@ -101,6 +131,24 @@ _Última actualización: 01/10/26_
           "fecha": "No identificada",
           "temas": "Estructuras de control de repetición, sentencia \"para\", sentencia \"mientras\", variables acumuladoras, variables contadoras, máximos y mínimos, ejercicios de diagramación lógica",
           "resumen": "El archivo corresponde a la segunda parte de diagramación lógica y presenta una serie de ejercicios prácticos que abarcan operaciones matemáticas (seno, coseno, hipotenusa, factorial), estructuras condicionales y estructuras de repetición. Se introducen los conceptos de sentencia \"para\" y sentencia \"mientras\", junto con el uso de variables acumuladoras y contadoras dentro de ciclos. También se trabajan problemas de búsqueda de máximos y mínimos, y situaciones con condiciones de corte variables definidas por el usuario o por valores centinela."
+        },
+        {
+          "rel_path": "Contenido/Práctica arreglos.md",
+          "fecha": "No identificada",
+          "temas": "Arreglos unidimensionales, matrices bidimensionales, operaciones con arrays, búsqueda de valores, transposición de matrices",
+          "resumen": "El archivo contiene una guía de práctica de la materia Datos y Algoritmos enfocada en el trabajo con arreglos y matrices. Incluye ejercicios con arrays unidimensionales como inicialización, suma, promedio y búsqueda de valores. También abarca operaciones con matrices bidimensionales como suma por fila, promedio por columna, búsqueda de elementos y cálculo de la matriz traspuesta. Los ejercicios están orientados a que el usuario ingrese datos y el programa los procese y muestre resultados."
+        },
+        {
+          "rel_path": "Contenido/Ordenamiento y búsqueda.md",
+          "fecha": "No identificada",
+          "temas": "Ordenamiento burbuja, Ordenamiento por selección del mínimo, Búsqueda en arreglos, Práctica con algoritmos de ordenamiento",
+          "resumen": "El archivo corresponde a una guía de práctica de la materia Datos y Algoritmos sobre ordenamiento y búsqueda en arreglos. Incluye ejercicios de ordenamiento burbuja (ascendente y descendente) aplicados a enteros y palabras, con operaciones adicionales como encontrar máximo, mínimo y suma. También presenta ejercicios de ordenamiento por selección del mínimo, tanto en orden ascendente como descendente, aplicados a enteros, nombres y números reales, combinados con cálculos estadísticos básicos."
+        },
+        {
+          "rel_path": "Contenido/AyD-array.md",
+          "fecha": "No identificada",
+          "temas": "Arrays/arreglos, declaración y tipos, arreglos unidimensionales y bidimensionales, ordenamiento (burbuja y selección de mínimo), búsqueda secuencial, búsqueda dicotómica (binaria)",
+          "resumen": "El archivo presenta el concepto de arrays como estructuras de datos que permiten agrupar múltiples valores del mismo tipo bajo un identificador, con tamaño fijo y acceso por índice. Se cubren arreglos unidimensionales (vectores) y bidimensionales (matrices), con problemas resueltos en pseudocódigo. Se desarrollan métodos de ordenamiento (intercambio/burbuja y selección del mínimo) y métodos de búsqueda (secuencial y dicotómica), incluyendo ejemplos ilustrativos y algoritmos completos para cada caso."
         }
       ]
     ],
@@ -197,6 +245,24 @@ _Última actualización: 01/10/26_
           "fecha": "No identificada",
           "temas": "PSeInt, pseudocódigo, estructuras condicionales, estructuras de repetición (Para, Mientras), ejercicios prácticos, depuración de algoritmos",
           "resumen": "La clase es de tipo práctica, centrada en el uso de PSeInt para traducir diagramas de flujo a pseudocódigo. Se resuelven ejercicios progresivos: determinar si un número es par/impar, divisibilidad por 7 y comparación con 40, promedio de edades con estructura Para, sumatoria de números aleatorios con la función azar, anidación de condicionales (ejercicio veterinaria con perros, gatos y otros animales), y estructuras Mientras para calcular promedios con condición de corte. Se explica cómo ejecutar y depurar paso a paso en PSeInt (botón verde y \"piecitos\"), cómo guardar archivos con extensión .pc y cómo subir los trabajos al campus para evaluación parcial."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Ejercicios Pre-Parcial.txt",
+          "fecha": "No identificada",
+          "temas": "Repaso pre-parcial, algoritmos con decisiones simples y anidadas, estructura Para, estructura Mientras, contadores, acumuladores, PCI (herramienta), prueba de escritorio",
+          "resumen": "Clase de ejercicios preparatoria para el parcial asincrónico de la materia, donde se aclara que las entregas deben realizarse en PCI (diagramación lógica y código). Se resuelven ejercicios en grupo: un sistema de descuentos por tipo de cliente y forma de pago (decisiones simples/anidadas), organización de producción según demanda, control de calidad de piezas con estructura Para, cálculo de precios con impuestos usando acumuladores y contadores, y registro de temperaturas con alerta usando estructura Mientras. Se enfatiza la importancia de la eficiencia algorítmica, la prueba de los programas antes de entregarlos, y el uso de la prueba de escritorio para depurar errores."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 7 - Arrays.txt",
+          "fecha": "No identificada",
+          "temas": "Arreglos (arrays), vectores, matrices, declaración e inicialización, recorrido con estructura Para, búsqueda de elementos, suma de filas y columnas, prueba de escritorio en PSeInt",
+          "resumen": "La clase introduce el concepto de arreglos como tipo de dato estructurado de tamaño fijo y elementos homogéneos, diferenciando arreglos unidimensionales (vectores) y bidimensionales (matrices). Se explica la declaración, carga y recorrido de arreglos usando la estructura Para, con indexación desde 1 en pseudocódigo. A través de ejemplos prácticos se trabajan ejercicios como suma de productos entre dos vectores, suma por filas y columnas de una matriz, y búsqueda de un valor en un arreglo. También se muestra el uso de la prueba de escritorio en PSeInt para visualizar el contenido del arreglo en cada iteración y se advierte sobre errores de desbordamiento al superar la dimensión declarada."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 8 - Operaciones con Arreglos.txt",
+          "fecha": "No identificada",
+          "temas": "Arreglos unidimensionales y bidimensionales, método de ordenamiento por intercambio (burbuja), método de ordenamiento por selección del mínimo, prueba de escritorio de algoritmos de ordenamiento, ejercicios prácticos en PSeInt",
+          "resumen": "La clase aborda operaciones con arreglos, repasando su definición, declaración y carga de datos. Se explican en detalle dos métodos de ordenamiento: el método de la burbuja (intercambio), donde el elemento menor \"sube\" progresivamente en cada recorrida, y el método de selección del mínimo, donde se busca el menor elemento y se lo intercambia con la posición correspondiente. Se realizan pruebas de escritorio paso a paso para ambos algoritmos y se resuelven ejercicios prácticos en PSeInt, incluyendo ordenamiento ascendente y descendente de números y palabras. Al cierre, se anticipa que la clase siguiente cubrirá búsqueda en arreglos, y se brindan indicaciones sobre el formato del parcial."
         }
       ]
     ]

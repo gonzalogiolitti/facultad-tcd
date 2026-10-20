@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 01/10/26_
+_Última actualización: 20/10/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -27,6 +27,16 @@ _Última actualización: 01/10/26_
 **Fecha:** 23/09/26
 **Temas:** Normalización de bases de datos, Formas normales (1FN, 2FN, 3FN), Proceso ETL (Extracción, Transformación y Carga), Data Warehouse, Estrategias de carga de datos
 **Resumen:** La clase aborda la normalización de bases de datos relacionales, explicando las tres formas normales principales: la primera (atomicidad y ausencia de grupos repetidos), la segunda (eliminación de dependencias parciales respecto a claves primarias compuestas) y la tercera (eliminación de dependencias transitivas entre atributos no clave). Luego se desarrolla el proceso ETL, describiendo sus tres etapas: extracción de datos desde distintas fuentes, transformación (limpieza, unificación de formatos, reestructuración y normalización) y carga hacia el destino final. Se presentan los distintos tipos de carga (completa, incremental, delta, por lotes y en tiempo real) y las estrategias asociadas (Append, Upsert, Truncate and Load, SCD). Finalmente, se contextualiza el ETL dentro de la arquitectura de Data Warehouse y se vincula con el trabajo práctico final de la materia.
+
+**Archivo:** Grabaciones Sincrónicas/GMT20260930-215958_Recording_1920x1080.txt
+**Fecha:** 30/09/26
+**Temas:** Arquitectura de datos (Data Warehouse, Data Lake, Data Lakehouse), calidad de datos, dimensiones ISO 25012, gobernanza de datos, guía de calidad de Ciudad de Buenos Aires
+**Resumen:** La clase aborda las tres principales estrategias de arquitectura de datos: Data Warehouse (organización y normalización para reportes e indicadores), Data Lake (almacenamiento masivo y flexible para análisis exploratorio) y Data Lakehouse (combinación de ambas para organizaciones más maduras), ilustrando cada una con ejemplos de gestión pública. Se analiza el riesgo del "Data Swamp" y la importancia de la gobernanza. Luego se introduce la calidad de datos a través de un caso real (falla en el sistema de rastreo COVID en Inglaterra), presentando las 15 dimensiones de calidad de la norma ISO 25012 (5 inherentes al dato y 10 dependientes del sistema). Finalmente, se describe la guía práctica de calidad de datos de la Ciudad de Buenos Aires, que establece umbrales y puntajes para evaluar si una base de datos es confiable para la toma de decisiones.
+
+**Archivo:** Grabaciones Sincrónicas/GMT20261007-215947_Recording_1920x1008.txt
+**Fecha:** 07/10/26 (probablemente 07/10/2024, dado el contexto académico)
+**Temas:** Governance de datos, ética y transparencia, protección de datos personales (Ley 25.326, habeas data), secreto estadístico, Sistema Estadístico Nacional (SEN/INDEC), datos abiertos, portales de datos abiertos, uso ético de los datos
+**Resumen:** La clase aborda la Unidad 3 de la materia, centrada en governance, ética, transparencia y acceso a la información pública. Se repasan el marco normativo argentino (Constitución Nacional, Ley 25.326 y decreto reglamentario), los conceptos de dato personal y dato sensible, y el funcionamiento del Sistema Estadístico Nacional y el secreto estadístico. Se presentan los principios del uso ético de los datos (transparencia, responsabilidad, equidad, privacidad, entre otros) y se distinguen las formas de transparencia (pasiva, activa y focalizada). Finalmente, se analizan ejemplos concretos de portales de datos abiertos (Rosario, Argentina, Luján de Cuyo) y se introducen consignas del trabajo práctico final relacionadas con el análisis exploratorio de datasets.
 
 ## Unidad 1
 **Archivo:** Unidad 1/Australian Bureau of Statistics. 2010. A guide to using evidence-based policy. National Statistical Service Canberra..md
@@ -140,6 +150,11 @@ _Última actualización: 01/10/26_
 **Temas:** Calidad de datos, criterios mínimos (exactitud y completitud), criterios básicos (consistencia, credibilidad, actualidad), criterios óptimos (pertinencia y valor agregado), score de calidad, gobernanza de datos
 **Resumen:** La Guía de Calidad de Datos del Gobierno de la Ciudad de Buenos Aires (GCBA) establece un marco estructurado para evaluar la calidad de datasets, organizado en tres niveles: criterios mínimos (exactitud y completitud), criterios básicos (consistencia, credibilidad y actualidad) y criterios óptimos (pertinencia y valor agregado). Para cada criterio se definen dimensiones cualitativas y cuantitativas, pasos concretos para su verificación y umbrales de aceptación (por defecto, 75%). El documento propone un score final de calidad por campo, resultante de la multiplicación de los puntajes obtenidos en cada nivel, que determina el grado de confiabilidad del dato (muy confiable, confiable o poco confiable) y su aptitud para ser usado en la toma de decisiones basada en evidencia.
 
+**Archivo:** Unidad 2/Segunda Actividad Obligatoria (1).md
+**Fecha:** No identificada
+**Temas:** Análisis Exploratorio de Datos (EDA), preparación y limpieza de datos, análisis de variables, visualización de datos, identificación de patrones y hallazgos
+**Resumen:** La Segunda Actividad Obligatoria de Laboratorio de Datos solicita a cada equipo realizar un Análisis Exploratorio de Datos (EDA) sobre los datasets elegidos en la primera actividad, en el marco del desafío de gestión ya definido. El proceso incluye etapas de preparación (carga, descripción, limpieza y transformación de datos), análisis individual de variables, exploración de relaciones entre variables y detección de patrones, valores atípicos y problemas de calidad. La entrega consiste en un PDF con descripción de los datos, decisiones tomadas, visualizaciones pertinentes y una síntesis de hallazgos vinculada al desafío planteado. Se evalúa la calidad del proceso exploratorio, la interpretación de resultados y su relación con el problema, independientemente de la herramienta utilizada.
+
 ## Unidad 3
 **Archivo:** Unidad 3/BID Los-datos-abiertos-en-América-Latina-y-el-Caribe.md
 **Fecha:** No identificada
@@ -160,6 +175,21 @@ _Última actualización: 01/10/26_
 **Fecha:** No identificada
 **Temas:** ISO 27001:2022, seguridad de la información, sistemas de gestión de seguridad (SGSI), gestión de riesgos, controles de seguridad
 **Resumen:** El archivo corresponde al texto completo de la norma ISO/IEC 27001:2022 (versión UNE-ISO/IEC 27001:2023), que establece los requisitos para implementar y mantener un Sistema de Gestión de la Seguridad de la Información (SGSI). Cubre los pilares de confidencialidad, integridad y disponibilidad de la información mediante gestión de riesgos. Incluye las secciones de contexto organizacional, liderazgo, planificación, soporte, operación, evaluación del desempeño y mejora continua. El Anexo A presenta un listado normativo de controles organizacionales, de personas, infraestructura y tecnología. El documento incluye una advertencia indicando que no forma parte del material del curso y es solo para uso interno de NOEDER.
+
+**Archivo:** Unidad 3/Open data, open government _ Tim Wisniewski _ TEDx.txt
+**Fecha:** No identificada
+**Temas:** Open data, gobierno abierto, open source, tecnología cívica, participación ciudadana, aplicaciones móviles, colaboración gobierno-ciudadanos
+**Resumen:** La charla TEDx de Tim Wisniewski explora la analogía entre el software de código abierto y el gobierno abierto, proponiendo que así como el open source genera confianza y colaboración mediante la transparencia del código, el gobierno puede generar lo mismo publicando sus datos y procesos. Presenta tres pilares: "open" (publicar datos públicos proactivamente, como hace Filadelfia con más de 80 datasets), "engage" (usar apps móviles, SMS y redes sociales para llegar a los ciudadanos donde ya están) y "collaborate" (permitir que la ciudadanía contribuya con ideas, soluciones y aplicaciones basadas en datos abiertos). El expositor argumenta que la apatía ciudadana hacia el gobierno se combate con transparencia y canales de participación accesibles. Menciona ejemplos concretos como myPhillyRising.com, aplicaciones de búsqueda de propiedades y el sistema 311 por SMS de Nueva York.
+
+**Archivo:** Unidad 3/Discurso Obama en el lanzamiento del Open Government Partnership (ONU, 2011).txt
+**Fecha:** No identificada (el evento es del 20/09/2011, según contexto histórico del lanzamiento del OGP en la ONU)
+**Temas:** Open Government Partnership, transparencia gubernamental, rendición de cuentas, participación ciudadana, acceso a la información, corrupción, tecnología y gobierno abierto
+**Resumen:** El archivo contiene la transcripción del evento de lanzamiento de la Open Government Partnership (OGP) en la ONU en 2011, con discursos del presidente Obama, la presidenta Dilma Rousseff de Brasil, el presidente de México, representantes de Noruega, Sudáfrica, Reino Unido, Indonesia y Filipinas, y un representante de la sociedad civil. Los oradores presentaron los principios fundacionales de la OGP: transparencia, participación ciudadana, integridad y acceso a la tecnología. Cada país expuso sus compromisos y avances en materia de gobierno abierto, acceso a la información pública y lucha contra la corrupción. La transcripción presenta importantes interferencias y fragmentos ininteligibles o corruptos intercalados con los segmentos en inglés y español, lo que dificulta la lectura fluida del documento.
+
+**Archivo:** Unidad 3/Gobierno Abierto y redes de gobernanza de datos.md
+**Fecha:** No identificada
+**Temas:** Gobierno Abierto, datos abiertos, transparencia, participación ciudadana, colaboración, rendición de cuentas, gobernanza de datos, OGP, caso Argentina, ecosistema internacional de datos
+**Resumen:** La presentación introduce el concepto de Gobierno Abierto a partir de tres hitos clave (Memorando de Obama 2009, creación de la OGP 2011 y Carta Iberoamericana CLAD 2016), explicando sus principios de transparencia, participación, colaboración, rendición de cuentas e innovación. Se describen los mecanismos concretos de cada principio (portales de datos abiertos, presupuesto participativo, hackatones, etc.) y se aplican a un caso integrador sobre siniestros viales. Luego se repasa la trayectoria argentina en Gobierno Abierto, incluyendo la Ley 27.275 y plataformas nacionales. Finalmente, se presenta el ecosistema internacional de gobernanza de datos, con organismos multilaterales (ONU, Banco Mundial, OCDE, BID), la regulación de la Unión Europea y programas de fortalecimiento para gobiernos locales.
 
 ## Unidad 4
 **Archivo:** Unidad 4/De los datos a las decisiones.md
@@ -262,6 +292,18 @@ _Última actualización: 01/10/26_
           "fecha": "23/09/26",
           "temas": "Normalización de bases de datos, Formas normales (1FN, 2FN, 3FN), Proceso ETL (Extracción, Transformación y Carga), Data Warehouse, Estrategias de carga de datos",
           "resumen": "La clase aborda la normalización de bases de datos relacionales, explicando las tres formas normales principales: la primera (atomicidad y ausencia de grupos repetidos), la segunda (eliminación de dependencias parciales respecto a claves primarias compuestas) y la tercera (eliminación de dependencias transitivas entre atributos no clave). Luego se desarrolla el proceso ETL, describiendo sus tres etapas: extracción de datos desde distintas fuentes, transformación (limpieza, unificación de formatos, reestructuración y normalización) y carga hacia el destino final. Se presentan los distintos tipos de carga (completa, incremental, delta, por lotes y en tiempo real) y las estrategias asociadas (Append, Upsert, Truncate and Load, SCD). Finalmente, se contextualiza el ETL dentro de la arquitectura de Data Warehouse y se vincula con el trabajo práctico final de la materia."
+        },
+        {
+          "rel_path": "Grabaciones Sincrónicas/GMT20260930-215958_Recording_1920x1080.txt",
+          "fecha": "30/09/26",
+          "temas": "Arquitectura de datos (Data Warehouse, Data Lake, Data Lakehouse), calidad de datos, dimensiones ISO 25012, gobernanza de datos, guía de calidad de Ciudad de Buenos Aires",
+          "resumen": "La clase aborda las tres principales estrategias de arquitectura de datos: Data Warehouse (organización y normalización para reportes e indicadores), Data Lake (almacenamiento masivo y flexible para análisis exploratorio) y Data Lakehouse (combinación de ambas para organizaciones más maduras), ilustrando cada una con ejemplos de gestión pública. Se analiza el riesgo del \"Data Swamp\" y la importancia de la gobernanza. Luego se introduce la calidad de datos a través de un caso real (falla en el sistema de rastreo COVID en Inglaterra), presentando las 15 dimensiones de calidad de la norma ISO 25012 (5 inherentes al dato y 10 dependientes del sistema). Finalmente, se describe la guía práctica de calidad de datos de la Ciudad de Buenos Aires, que establece umbrales y puntajes para evaluar si una base de datos es confiable para la toma de decisiones."
+        },
+        {
+          "rel_path": "Grabaciones Sincrónicas/GMT20261007-215947_Recording_1920x1008.txt",
+          "fecha": "07/10/26 (probablemente 07/10/2024, dado el contexto académico)",
+          "temas": "Governance de datos, ética y transparencia, protección de datos personales (Ley 25.326, habeas data), secreto estadístico, Sistema Estadístico Nacional (SEN/INDEC), datos abiertos, portales de datos abiertos, uso ético de los datos",
+          "resumen": "La clase aborda la Unidad 3 de la materia, centrada en governance, ética, transparencia y acceso a la información pública. Se repasan el marco normativo argentino (Constitución Nacional, Ley 25.326 y decreto reglamentario), los conceptos de dato personal y dato sensible, y el funcionamiento del Sistema Estadístico Nacional y el secreto estadístico. Se presentan los principios del uso ético de los datos (transparencia, responsabilidad, equidad, privacidad, entre otros) y se distinguen las formas de transparencia (pasiva, activa y focalizada). Finalmente, se analizan ejemplos concretos de portales de datos abiertos (Rosario, Argentina, Luján de Cuyo) y se introducen consignas del trabajo práctico final relacionadas con el análisis exploratorio de datasets."
         }
       ]
     ],
@@ -408,6 +450,12 @@ _Última actualización: 01/10/26_
           "fecha": "No identificada",
           "temas": "Calidad de datos, criterios mínimos (exactitud y completitud), criterios básicos (consistencia, credibilidad, actualidad), criterios óptimos (pertinencia y valor agregado), score de calidad, gobernanza de datos",
           "resumen": "La Guía de Calidad de Datos del Gobierno de la Ciudad de Buenos Aires (GCBA) establece un marco estructurado para evaluar la calidad de datasets, organizado en tres niveles: criterios mínimos (exactitud y completitud), criterios básicos (consistencia, credibilidad y actualidad) y criterios óptimos (pertinencia y valor agregado). Para cada criterio se definen dimensiones cualitativas y cuantitativas, pasos concretos para su verificación y umbrales de aceptación (por defecto, 75%). El documento propone un score final de calidad por campo, resultante de la multiplicación de los puntajes obtenidos en cada nivel, que determina el grado de confiabilidad del dato (muy confiable, confiable o poco confiable) y su aptitud para ser usado en la toma de decisiones basada en evidencia."
+        },
+        {
+          "rel_path": "Unidad 2/Segunda Actividad Obligatoria (1).md",
+          "fecha": "No identificada",
+          "temas": "Análisis Exploratorio de Datos (EDA), preparación y limpieza de datos, análisis de variables, visualización de datos, identificación de patrones y hallazgos",
+          "resumen": "La Segunda Actividad Obligatoria de Laboratorio de Datos solicita a cada equipo realizar un Análisis Exploratorio de Datos (EDA) sobre los datasets elegidos en la primera actividad, en el marco del desafío de gestión ya definido. El proceso incluye etapas de preparación (carga, descripción, limpieza y transformación de datos), análisis individual de variables, exploración de relaciones entre variables y detección de patrones, valores atípicos y problemas de calidad. La entrega consiste en un PDF con descripción de los datos, decisiones tomadas, visualizaciones pertinentes y una síntesis de hallazgos vinculada al desafío planteado. Se evalúa la calidad del proceso exploratorio, la interpretación de resultados y su relación con el problema, independientemente de la herramienta utilizada."
         }
       ]
     ],
@@ -439,6 +487,24 @@ _Última actualización: 01/10/26_
           "fecha": "No identificada",
           "temas": "ISO 27001:2022, seguridad de la información, sistemas de gestión de seguridad (SGSI), gestión de riesgos, controles de seguridad",
           "resumen": "El archivo corresponde al texto completo de la norma ISO/IEC 27001:2022 (versión UNE-ISO/IEC 27001:2023), que establece los requisitos para implementar y mantener un Sistema de Gestión de la Seguridad de la Información (SGSI). Cubre los pilares de confidencialidad, integridad y disponibilidad de la información mediante gestión de riesgos. Incluye las secciones de contexto organizacional, liderazgo, planificación, soporte, operación, evaluación del desempeño y mejora continua. El Anexo A presenta un listado normativo de controles organizacionales, de personas, infraestructura y tecnología. El documento incluye una advertencia indicando que no forma parte del material del curso y es solo para uso interno de NOEDER."
+        },
+        {
+          "rel_path": "Unidad 3/Open data, open government _ Tim Wisniewski _ TEDx.txt",
+          "fecha": "No identificada",
+          "temas": "Open data, gobierno abierto, open source, tecnología cívica, participación ciudadana, aplicaciones móviles, colaboración gobierno-ciudadanos",
+          "resumen": "La charla TEDx de Tim Wisniewski explora la analogía entre el software de código abierto y el gobierno abierto, proponiendo que así como el open source genera confianza y colaboración mediante la transparencia del código, el gobierno puede generar lo mismo publicando sus datos y procesos. Presenta tres pilares: \"open\" (publicar datos públicos proactivamente, como hace Filadelfia con más de 80 datasets), \"engage\" (usar apps móviles, SMS y redes sociales para llegar a los ciudadanos donde ya están) y \"collaborate\" (permitir que la ciudadanía contribuya con ideas, soluciones y aplicaciones basadas en datos abiertos). El expositor argumenta que la apatía ciudadana hacia el gobierno se combate con transparencia y canales de participación accesibles. Menciona ejemplos concretos como myPhillyRising.com, aplicaciones de búsqueda de propiedades y el sistema 311 por SMS de Nueva York."
+        },
+        {
+          "rel_path": "Unidad 3/Discurso Obama en el lanzamiento del Open Government Partnership (ONU, 2011).txt",
+          "fecha": "No identificada (el evento es del 20/09/2011, según contexto histórico del lanzamiento del OGP en la ONU)",
+          "temas": "Open Government Partnership, transparencia gubernamental, rendición de cuentas, participación ciudadana, acceso a la información, corrupción, tecnología y gobierno abierto",
+          "resumen": "El archivo contiene la transcripción del evento de lanzamiento de la Open Government Partnership (OGP) en la ONU en 2011, con discursos del presidente Obama, la presidenta Dilma Rousseff de Brasil, el presidente de México, representantes de Noruega, Sudáfrica, Reino Unido, Indonesia y Filipinas, y un representante de la sociedad civil. Los oradores presentaron los principios fundacionales de la OGP: transparencia, participación ciudadana, integridad y acceso a la tecnología. Cada país expuso sus compromisos y avances en materia de gobierno abierto, acceso a la información pública y lucha contra la corrupción. La transcripción presenta importantes interferencias y fragmentos ininteligibles o corruptos intercalados con los segmentos en inglés y español, lo que dificulta la lectura fluida del documento."
+        },
+        {
+          "rel_path": "Unidad 3/Gobierno Abierto y redes de gobernanza de datos.md",
+          "fecha": "No identificada",
+          "temas": "Gobierno Abierto, datos abiertos, transparencia, participación ciudadana, colaboración, rendición de cuentas, gobernanza de datos, OGP, caso Argentina, ecosistema internacional de datos",
+          "resumen": "La presentación introduce el concepto de Gobierno Abierto a partir de tres hitos clave (Memorando de Obama 2009, creación de la OGP 2011 y Carta Iberoamericana CLAD 2016), explicando sus principios de transparencia, participación, colaboración, rendición de cuentas e innovación. Se describen los mecanismos concretos de cada principio (portales de datos abiertos, presupuesto participativo, hackatones, etc.) y se aplican a un caso integrador sobre siniestros viales. Luego se repasa la trayectoria argentina en Gobierno Abierto, incluyendo la Ley 27.275 y plataformas nacionales. Finalmente, se presenta el ecosistema internacional de gobernanza de datos, con organismos multilaterales (ONU, Banco Mundial, OCDE, BID), la regulación de la Unión Europea y programas de fortalecimiento para gobiernos locales."
         }
       ]
     ],

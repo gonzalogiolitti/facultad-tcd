@@ -62,23 +62,41 @@ Identificar y dejar escrito:
 
 ### 5. Convención visual EXACTA de la cátedra (obligatoria)
 
-| Elemento | Símbolo en draw.io | Estilo sugerido (mxCell `style`) |
+Es el estilo **más básico de draw.io**: **fondo blanco, bordes negros y texto negro**, sin colores adicionales. Por eso los `style` **no llevan** `fillColor`, `strokeColor` ni `fontColor`: se deja el color por defecto de draw.io. Usar **exactamente** estos `style`:
+
+| Elemento | Shape de draw.io (grupo Flowchart) | `style` exacto |
 |---|---|---|
-| Inicio / Fin | **Círculo perfecto** (no elipse ni cápsula): ancho = alto | `ellipse;aspect=fixed;whiteSpace=wrap;html=1;` con `width=height` (p. ej. 80×80) |
-| Entrada | **Paralelogramo** inclinado hacia la derecha | `shape=parallelogram;perimeter=parallelogramPerimeter;fixedSize=1;whiteSpace=wrap;html=1;` |
-| Salida | **Triángulo** apuntando a la derecha con la **punta redondeada** (tipo "play"/cinta) | `triangle;rounded=1;arcSize=20;whiteSpace=wrap;html=1;` (verificar que apunte a la derecha; usar tamaño generoso, p. ej. 160×80, y texto corto) |
+| Inicio / Fin | **Círculo perfecto** (ancho = alto, p. ej. 80×80) | `ellipse;whiteSpace=wrap;html=1;` |
+| Entrada | **Data** (paralelogramo inclinado hacia la derecha) | `shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=15;` |
+| Salida | **Display** (NO triángulo, NO paralelogramo) | `shape=display;whiteSpace=wrap;html=1;` |
 | Proceso | **Rectángulo simple**, sin bordes redondeados | `rounded=0;whiteSpace=wrap;html=1;` |
 | Decisión | **Rombo**; rama que cumple la condición rotulada **"Sí"**, la otra **"No"** | `rhombus;whiteSpace=wrap;html=1;` |
-| Flechas | Siempre con punta de flecha, indican el flujo | `edgeStyle=orthogonalEdgeStyle;endArrow=classic;html=1;` |
-| Anotaciones | Recuadros **punteados** con texto explicativo, conectados con flecha al elemento (opcionales, bienvenidas) | `rounded=0;dashed=1;whiteSpace=wrap;html=1;` + flecha punteada |
+| Conectores | **Ortogonal**, flecha simple sin decoraciones; indica el flujo | `edgeStyle=orthogonalEdgeStyle;html=1;` (se pueden **agregar** `exitX/exitY/entryX/entryY` y puntos intermedios para fijar el trazado, pero sin cambiar lo anterior) |
+| Texto libre (enunciado) | Bloque de texto sin borde ni relleno | `text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;` |
+| Rótulos "Sí"/"No" | Mismo estilo de texto libre, centrado | igual que el texto libre pero `align=center;` |
+| Anotaciones | Opcionales: recuadros punteados con texto, unidos con flecha (agregar `dashed=1;` al estilo de proceso) | `rounded=0;dashed=1;whiteSpace=wrap;html=1;` |
+
+**Reglas de símbolos:**
+- **Salida** → siempre `shape=display`. **Entrada** → siempre el paralelogramo Data. Nunca intercambiarlos ni usar triángulo.
+- **Conectores de la salida (Display):** el flujo se mantiene vertical: la flecha **entra por arriba** (`entryX=0.5;entryY=0;`) y **sale por abajo** (`exitX=0.5;exitY=1;`), centrada en el eje del flujo.
+- **Conversiones y cálculos no son entradas.** Una operación como `monto ← ConvertirANumero(entrada)` va en un **rectángulo de proceso**, no en el paralelogramo de entrada: es una asignación, no una lectura del usuario. Solo `Leer` va en el paralelogramo.
+- Las constantes se asignan en un **rectángulo de proceso** (p. ej. `PI ← 3.1416`).
+
+**Layout (una sola columna vertical central):**
+- Todo el diagrama fluye de arriba a abajo en **una columna central** (eje común, p. ej. x=400): Inicio → inicialización de variables → lectura(s) previa(s) → [inicialización del contador del `Para`] → rombo de condición del ciclo → salidas → Fin.
+- **Rama "No" del rombo del ciclo (el ciclo terminó):** baja **verticalmente por el centro** (salida inferior del rombo). Nunca hacia la derecha.
+- **Salidas:** centradas debajo del rombo, **una debajo de la otra**, sobre el mismo eje. **Fin** al final, también en el centro.
+- **Rama "Sí" (cuerpo del ciclo):** sale por el **vértice izquierdo** del rombo hacia una columna a la **izquierda** de la central (el cuerpo puede ocupar esa columna de arriba hacia abajo, con sus propias decisiones).
+- **Flecha de retorno:** sale por la **izquierda** del último paso del cuerpo, sube por un carril libre a la izquierda del cuerpo (que no cruce la columna central ni el texto del enunciado) y **vuelve al rombo principal por arriba**.
+- Si dentro del cuerpo hay una decisión cuya rama "No" salta un paso, esa flecha rodea por el lado derecho del cuerpo (sin invadir la columna central).
+- Sin elementos flotando a un costado de la columna central, salvo el cuerpo del ciclo y el bloque de texto del enunciado.
 
 **Estilo global:**
-- **Fondo negro** (`background="#000000"` en `mxGraphModel`), **líneas y texto blancos** (`strokeColor=#FFFFFF;fontColor=#FFFFFF` en cada elemento y flecha; también en etiquetas "Sí"/"No": `labelBackgroundColor=none`).
-- `fillColor=none` en todo. Sin colores adicionales, gradientes, sombras (`shadow=0`, `gradientColor=none`) ni rellenos.
-- Constantes se asignan en un **rectángulo de proceso** (p. ej. `PI ← 3.1416`).
-- El **enunciado** se incluye como bloque de texto (celda sin borde, texto blanco, alineado a la izquierda) dentro del `.drawio`, **fuera del diagrama**, arriba o a la izquierda del flujo, sin flechas que lo conecten.
-- Los ejercicios previos del repo pueden no cumplir esta convención al 100 % (p. ej. procesos redondeados); **no modificarlos**, solo seguir la convención correcta en los nuevos. Si el usuario lo quiere, ofrecérselo aparte.
-- Para ciclos: la flecha de retorno vuelve al rombo de la condición; el rombo tiene "Sí"/"No" claros.
+- Fondo blanco por defecto: **no** poner `background` ni colores en el `mxGraphModel` ni en los `style`. Bordes y texto negros por defecto.
+- Sin sombra, sin bosquejo (`sketch`), sin gradientes ni colores adicionales. No agregar `fontSize`, `rounded=1`, `arcSize` ni `endArrow` personalizados.
+- El **enunciado** se incluye como bloque de texto (celda sin borde, alineado a la izquierda) dentro del `.drawio`, **fuera del diagrama**, arriba o a la izquierda del flujo, sin flechas que lo conecten.
+- **Sin círculos de unión:** las ramas de una decisión que confluyen se conectan directo al siguiente elemento (varias flechas pueden entrar al mismo nodo).
+- Para ciclos: el rombo de la condición tiene "Sí"/"No" claros y la flecha de retorno vuelve a él (ver Layout).
 
 ### 6. Control de calidad (antes de terminar)
 Verificar y corregir:
@@ -86,7 +104,9 @@ Verificar y corregir:
 - [ ] No faltan pasos (inicialización de contadores/acumuladores, lecturas, salidas).
 - [ ] El diagrama es coherente con el pseudocódigo (mismos pasos, mismo orden, mismos nombres de variables).
 - [ ] Cada rombo tiene "Sí" y "No"; todas las flechas tienen punta; no hay elementos sueltos; todo termina en Fin.
-- [ ] Se respeta la convención visual (círculos perfectos, rectángulos sin redondeo, fondo negro, sin colores).
+- [ ] Se respeta la convención visual: los `style` exactos de la tabla (sin atributos de color), círculos perfectos, rectángulos sin redondeo, sin círculos de unión.
+- [ ] Salidas con `shape=display` y entradas con el paralelogramo Data; ninguna conversión (`ConvertirANumero`, etc.) dentro de una entrada.
+- [ ] Layout: columna central única; rama "No" del ciclo baja al centro; salidas y Fin centrados debajo del rombo; cuerpo a la izquierda; retorno por la izquierda y entrando al rombo por arriba.
 - [ ] Los archivos están en la carpeta correcta y con los nombres exactos.
 - [ ] No hay archivos temporales ni cambios fuera de `Practica/`.
 

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "drawio": {
+      "type": "stdio",
+      "command": "wsl.exe",
+      "args": ["-d", "Ubuntu", "--", "npx", "-y", "@drawio/mcp"],
+      "env": {}
+    }
+  }
+}

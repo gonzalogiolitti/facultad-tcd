@@ -1,5 +1,5 @@
 # MATERIA ELECTIVA A - Resumen de contenido
-_Última actualización: 15/09/26_
+_Última actualización: 20/10/26_
 
 ## Grabaciones sincrónicos
 **Archivo:** Grabaciones sincrónicos/Clase 7-5 automatización 4.0.txt
@@ -31,6 +31,11 @@ _Última actualización: 15/09/26_
 **Fecha:** No identificada
 **Temas:** Redes OT e IT, sensores y actuadores, PLC, protocolo OPC-UA, sistemas SCADA, HMI
 **Resumen:** La clase introductoria aborda las diferencias entre redes OT (tecnología operacional, determinista, orientada al control de procesos físicos en tiempo real) y redes IT (tecnología de la información, orientada al procesamiento y transmisión de datos). Se explican los conceptos de sensores, transductores y actuadores como componentes clave para la adquisición de datos del entorno físico. Se presenta el PLC (Controlador Lógico Programable) como dispositivo central de automatización industrial, junto con el protocolo OPC-UA como estándar de comunicación que estructura e integra datos provenientes de máquinas. Finalmente, se introducen los sistemas SCADA como software de supervisión y control remoto de procesos, y la interfaz HMI como herramienta de visualización e interacción con los procesos industriales.
+
+**Archivo:** Grabaciones sincrónicos/Link al video de la clase del 08_10.txt
+**Fecha:** 08/10/24
+**Temas:** IIoT (Internet Industrial de las Cosas), pirámide de Purdue/ISA-95, Machine Learning en industria, metodología Lean Startup, casos de uso industriales, Node-RED, analítica descriptiva y predictiva
+**Resumen:** La clase repasa la arquitectura de Internet Industrial de las Cosas (IIoT) y la pirámide de información ISA-95, explicando cómo los datos de planta viajan desde sensores y controladores hasta un dispositivo Edge con Node-RED para generar analítica. Se introduce el uso de Machine Learning para pasar de analítica descriptiva a predictiva, detallando el ciclo de vida de un proyecto (caso de uso, preparación de datos, entrenamiento y evaluación del modelo). Se presenta la metodología Lean Startup como enfoque ágil para implementar soluciones de ML en entornos industriales, destacando la cocreación con expertos de planta. Finalmente, se ilustra con casos reales en industrias metalúrgica, minera y de refinería de grasa.
 
 ## Trabajo practico integrador
 **Archivo:** Trabajo practico integrador/Clase 5_dictado de TP_I4.0_2025.md
@@ -107,6 +112,11 @@ _Última actualización: 15/09/26_
 **Fecha:** 02/10/25
 **Temas:** Automatización 4.0, ISA 95, jerarquía de automatización, Gateway IoT, SIMATIC IoT, obtención de datos de planta, OEE, trabajo práctico
 **Resumen:** La clase aborda los conceptos de Automatización 4.0 e ISA 95, explicando la jerarquía de organización industrial (firma, planta, área, línea, equipo) y la identificación de activos y variables mediante TAGs. Se presentan ejemplos concretos de obtención de datos en un proceso de cocción de aceite refinado, incluyendo series temporales de sensores, datos de órdenes de producción y métricas OEE. Se introducen conceptos de integración con protocolos OPC-UA, Node-RED y niveles L2/L3 de la pirámide de automatización. La clase cierra con un trabajo práctico donde los alumnos deben armar una planilla Excel con la jerarquía completa de una planta y sus variables codificadas.
+
+**Archivo:** Unidad 2/video1498829923.txt
+**Fecha:** No identificada
+**Temas:** Automatización 4.0, ISA-95, pirámide de automatización, Gateway OT, niveles de datos industriales, protocolo OPC-UA, estructura jerárquica de variables, indicadores de performance (OEE), datos de planta y organización
+**Resumen:** La clase aborda los fundamentos de la automatización 4.0 bajo el estándar ISA-95, explicando cómo se integran datos provenientes de distintos niveles de la pirámide de automatización (sensores, PLCs, SCADA, MES y ERP). Se describe la estructura jerárquica para catalogar variables industriales (firma, planta, sector, línea, activo, variable) y el rol del Gateway OT como integrador y cifrador de datos entre redes OT e IT. Se presentan los tipos de datos que intervienen en una planta (estáticos, dinámicos y de capacidad), así como indicadores clave como disponibilidad, rendimiento y calidad (OEE). Finalmente, se plantea un trabajo práctico donde los estudiantes deben construir una estructura de datos ISA-95 para una empresa ficticia, identificando tres variables asociadas a un horno industrial.
 
 ### Actividades
 **Archivo:** Unidad 2/Actividades/TP_presentado en 2023.md
@@ -237,6 +247,12 @@ _Última actualización: 15/09/26_
           "fecha": "No identificada",
           "temas": "Redes OT e IT, sensores y actuadores, PLC, protocolo OPC-UA, sistemas SCADA, HMI",
           "resumen": "La clase introductoria aborda las diferencias entre redes OT (tecnología operacional, determinista, orientada al control de procesos físicos en tiempo real) y redes IT (tecnología de la información, orientada al procesamiento y transmisión de datos). Se explican los conceptos de sensores, transductores y actuadores como componentes clave para la adquisición de datos del entorno físico. Se presenta el PLC (Controlador Lógico Programable) como dispositivo central de automatización industrial, junto con el protocolo OPC-UA como estándar de comunicación que estructura e integra datos provenientes de máquinas. Finalmente, se introducen los sistemas SCADA como software de supervisión y control remoto de procesos, y la interfaz HMI como herramienta de visualización e interacción con los procesos industriales."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Link al video de la clase del 08_10.txt",
+          "fecha": "08/10/24",
+          "temas": "IIoT (Internet Industrial de las Cosas), pirámide de Purdue/ISA-95, Machine Learning en industria, metodología Lean Startup, casos de uso industriales, Node-RED, analítica descriptiva y predictiva",
+          "resumen": "La clase repasa la arquitectura de Internet Industrial de las Cosas (IIoT) y la pirámide de información ISA-95, explicando cómo los datos de planta viajan desde sensores y controladores hasta un dispositivo Edge con Node-RED para generar analítica. Se introduce el uso de Machine Learning para pasar de analítica descriptiva a predictiva, detallando el ciclo de vida de un proyecto (caso de uso, preparación de datos, entrenamiento y evaluación del modelo). Se presenta la metodología Lean Startup como enfoque ágil para implementar soluciones de ML en entornos industriales, destacando la cocreación con expertos de planta. Finalmente, se ilustra con casos reales en industrias metalúrgica, minera y de refinería de grasa."
         }
       ]
     ],
@@ -366,6 +382,12 @@ _Última actualización: 15/09/26_
           "fecha": "02/10/25",
           "temas": "Automatización 4.0, ISA 95, jerarquía de automatización, Gateway IoT, SIMATIC IoT, obtención de datos de planta, OEE, trabajo práctico",
           "resumen": "La clase aborda los conceptos de Automatización 4.0 e ISA 95, explicando la jerarquía de organización industrial (firma, planta, área, línea, equipo) y la identificación de activos y variables mediante TAGs. Se presentan ejemplos concretos de obtención de datos en un proceso de cocción de aceite refinado, incluyendo series temporales de sensores, datos de órdenes de producción y métricas OEE. Se introducen conceptos de integración con protocolos OPC-UA, Node-RED y niveles L2/L3 de la pirámide de automatización. La clase cierra con un trabajo práctico donde los alumnos deben armar una planilla Excel con la jerarquía completa de una planta y sus variables codificadas."
+        },
+        {
+          "rel_path": "Unidad 2/video1498829923.txt",
+          "fecha": "No identificada",
+          "temas": "Automatización 4.0, ISA-95, pirámide de automatización, Gateway OT, niveles de datos industriales, protocolo OPC-UA, estructura jerárquica de variables, indicadores de performance (OEE), datos de planta y organización",
+          "resumen": "La clase aborda los fundamentos de la automatización 4.0 bajo el estándar ISA-95, explicando cómo se integran datos provenientes de distintos niveles de la pirámide de automatización (sensores, PLCs, SCADA, MES y ERP). Se describe la estructura jerárquica para catalogar variables industriales (firma, planta, sector, línea, activo, variable) y el rol del Gateway OT como integrador y cifrador de datos entre redes OT e IT. Se presentan los tipos de datos que intervienen en una planta (estáticos, dinámicos y de capacidad), así como indicadores clave como disponibilidad, rendimiento y calidad (OEE). Finalmente, se plantea un trabajo práctico donde los estudiantes deben construir una estructura de datos ISA-95 para una empresa ficticia, identificando tres variables asociadas a un horno industrial."
         }
       ]
     ],

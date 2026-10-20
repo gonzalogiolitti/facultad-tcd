@@ -1,0 +1,5 @@
+Salary_dataset
+
+https://www.kaggle.com/datasets/abhishek14398/salary-dataset-simple-linear-regression
+
+(link externo (no es un archivo descargable))

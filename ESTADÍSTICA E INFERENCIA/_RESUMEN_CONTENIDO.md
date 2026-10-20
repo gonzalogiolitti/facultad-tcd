@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 01/10/26_
+_Última actualización: 19/10/26_
 
 ## General
 **Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
@@ -317,6 +317,34 @@ _Última actualización: 01/10/26_
 **Fecha:** No identificada
 **Temas:** Test de Kruskal-Wallis, comparaciones múltiples no paramétricas, verificación de normalidad y homocedasticidad, ANOVA como prerequisito
 **Resumen:** La clase aborda el caso en que los datos no cumplen los supuestos de normalidad u homocedasticidad necesarios para aplicar ANOVA. Se introduce el test de Kruskal-Wallis como alternativa no paramétrica para comparar más de dos muestras. Se trabaja con ejemplos prácticos en R usando datos de alturas de plantas con distintos tratamientos de fertilizantes, aplicando previamente el test de Shapiro-Wilk y el test de Bartlett para verificar supuestos. Finalmente, se menciona el uso de pruebas de comparaciones múltiples post-hoc (librería de comparaciones múltiples en R) para identificar cuáles grupos difieren entre sí cuando el test global resulta significativo.
+
+## Unidad 5
+### Clase 9
+**Archivo:** Unidad 5/Clase 9/Video teorico-practico (regresión lineal simple).txt
+**Fecha:** No identificada
+**Temas:** Regresión lineal simple, modelo lineal (lm), coeficientes beta, método de mínimos cuadrados, residuos, supuestos del modelo, R cuadrado, intervalos de confianza, gráficos en R (ggplot2)
+**Resumen:** La clase introduce la regresión lineal simple como caso particular de los modelos lineales, donde una sola variable explicativa permite predecir una variable respuesta. Se trabaja en R con un dataset de salarios, ajustando un modelo lineal (función `lm`) que relaciona salario con años de experiencia, interpretando los coeficientes beta 0 y beta 1, los p-valores (test de Wald y estadístico F) y el coeficiente de determinación R². Se analizan los supuestos sobre los residuos (normalidad, esperanza cero y varianza constante) mediante gráficos Q-Q y el test de Shapiro-Wilk, y se visualiza la recta de regresión ajustada sobre el diagrama de dispersión con ggplot2.
+
+**Archivo:** Unidad 5/Clase 9/Video teorico-practico (regresión lineal multiple).txt
+**Fecha:** No identificada
+**Temas:** Regresión lineal múltiple, modelo lineal en R, coeficientes e interpretación, predicción con intervalos de confianza, análisis de residuos, significancia de variables
+**Resumen:** La clase aborda la implementación del modelo de regresión lineal múltiple en R, incorporando variables como edad y antigüedad para predecir el salario. Se muestra cómo agregar múltiples variables predictoras al modelo, interpretar los coeficientes (incluyendo relaciones directas e inversas), y evaluar la mejora en el poder predictivo respecto al modelo simple (de 65% a 66%). También se trabaja la obtención de estimaciones por intervalos de confianza, el análisis de residuos y la construcción de la ecuación final del modelo para realizar predicciones concretas, como estimar el salario de una persona de 30 años con 5 de antigüedad.
+
+**Archivo:** Unidad 5/Clase 9/Video teorico-practico (regresión lineal multiple VC).txt
+**Fecha:** No identificada
+**Temas:** Regresión lineal múltiple, variables categóricas, variables dummy (dummies), interpretación de coeficientes, modelo de salario
+**Resumen:** La clase aborda la incorporación de variables categóricas (como género) en modelos de regresión lineal múltiple, ampliando modelos previos que solo usaban variables numéricas como edad y antigüedad. Se explica el concepto de variable dummy, donde una categoría actúa como referencia (mujer) y las demás (varón, otro) se interpretan como desvíos respecto a ella. Se detalla cómo leer e interpretar los coeficientes del modelo en R a partir del summary, incluyendo el signo y magnitud de cada variable. Finalmente, se muestra cómo calcular el salario estimado para una persona concreta según sus valores de edad, antigüedad y género, ilustrando el funcionamiento práctico del modelo extendido.
+
+**Archivo:** Unidad 5/Clase 9/Video teorico-practico (regresión lineal eleccion modelo).txt
+**Fecha:** No identificada
+**Temas:** Regresión lineal múltiple, comparación de modelos, criterio AIC, selección de variables, sobreajuste (overfitting)
+**Resumen:** La clase muestra cómo construir y comparar múltiples modelos de regresión lineal incorporando distintas combinaciones de variables predictoras (antigüedad, edad, género, cargo, educación). Se introduce el criterio de información AIC como herramienta para seleccionar el mejor modelo, explicando que penaliza la cantidad de parámetros para evitar el sobreajuste. Se analiza que el modelo más completo (modelo 4, con todas las variables) obtiene el AIC más bajo, aunque se reflexiona sobre si la diferencia justifica la complejidad adicional frente a modelos más simples. Finalmente, se invita a los estudiantes a explorar distintas combinaciones de variables para encontrar el modelo óptimo según este criterio.
+
+### Clase 10
+**Archivo:** Unidad 5/Clase 10/Video teorico-practico (regresión NP knn).txt
+**Fecha:** No identificada
+**Temas:** Regresión no paramétrica, estimador de vecinos cercanos (KNN), librería caret en R, predicción con KNN, comparación de modelos con distintos valores de K
+**Resumen:** La clase aborda los métodos de regresión no paramétrica, específicamente el estimador de núcleo y el método de vecinos cercanos (KNN), en el marco del capítulo 5 de la materia. Se implementa en R el modelo KNN usando la librería `caret`, aplicándolo a un dataset de salarios para estimar la función de regresión del salario en función de la antigüedad. Se generan predicciones para secuencias de datos nuevos y se visualizan gráficamente, comparando modelos con distinto número de vecinos (3, 8 y otros valores) para analizar cómo varía el ajuste. Se concluye destacando que estos estimadores tienen amplia aplicación en modelos predictivos y de clasificación más avanzados.
 
 <!-- ESTADO_RESUMEN
 {
@@ -760,6 +788,52 @@ _Última actualización: 01/10/26_
           "fecha": "No identificada",
           "temas": "Test de Kruskal-Wallis, comparaciones múltiples no paramétricas, verificación de normalidad y homocedasticidad, ANOVA como prerequisito",
           "resumen": "La clase aborda el caso en que los datos no cumplen los supuestos de normalidad u homocedasticidad necesarios para aplicar ANOVA. Se introduce el test de Kruskal-Wallis como alternativa no paramétrica para comparar más de dos muestras. Se trabaja con ejemplos prácticos en R usando datos de alturas de plantas con distintos tratamientos de fertilizantes, aplicando previamente el test de Shapiro-Wilk y el test de Bartlett para verificar supuestos. Finalmente, se menciona el uso de pruebas de comparaciones múltiples post-hoc (librería de comparaciones múltiples en R) para identificar cuáles grupos difieren entre sí cuando el test global resulta significativo."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 5",
+        "Clase 9"
+      ],
+      [
+        {
+          "rel_path": "Unidad 5/Clase 9/Video teorico-practico (regresión lineal simple).txt",
+          "fecha": "No identificada",
+          "temas": "Regresión lineal simple, modelo lineal (lm), coeficientes beta, método de mínimos cuadrados, residuos, supuestos del modelo, R cuadrado, intervalos de confianza, gráficos en R (ggplot2)",
+          "resumen": "La clase introduce la regresión lineal simple como caso particular de los modelos lineales, donde una sola variable explicativa permite predecir una variable respuesta. Se trabaja en R con un dataset de salarios, ajustando un modelo lineal (función `lm`) que relaciona salario con años de experiencia, interpretando los coeficientes beta 0 y beta 1, los p-valores (test de Wald y estadístico F) y el coeficiente de determinación R². Se analizan los supuestos sobre los residuos (normalidad, esperanza cero y varianza constante) mediante gráficos Q-Q y el test de Shapiro-Wilk, y se visualiza la recta de regresión ajustada sobre el diagrama de dispersión con ggplot2."
+        },
+        {
+          "rel_path": "Unidad 5/Clase 9/Video teorico-practico (regresión lineal multiple).txt",
+          "fecha": "No identificada",
+          "temas": "Regresión lineal múltiple, modelo lineal en R, coeficientes e interpretación, predicción con intervalos de confianza, análisis de residuos, significancia de variables",
+          "resumen": "La clase aborda la implementación del modelo de regresión lineal múltiple en R, incorporando variables como edad y antigüedad para predecir el salario. Se muestra cómo agregar múltiples variables predictoras al modelo, interpretar los coeficientes (incluyendo relaciones directas e inversas), y evaluar la mejora en el poder predictivo respecto al modelo simple (de 65% a 66%). También se trabaja la obtención de estimaciones por intervalos de confianza, el análisis de residuos y la construcción de la ecuación final del modelo para realizar predicciones concretas, como estimar el salario de una persona de 30 años con 5 de antigüedad."
+        },
+        {
+          "rel_path": "Unidad 5/Clase 9/Video teorico-practico (regresión lineal multiple VC).txt",
+          "fecha": "No identificada",
+          "temas": "Regresión lineal múltiple, variables categóricas, variables dummy (dummies), interpretación de coeficientes, modelo de salario",
+          "resumen": "La clase aborda la incorporación de variables categóricas (como género) en modelos de regresión lineal múltiple, ampliando modelos previos que solo usaban variables numéricas como edad y antigüedad. Se explica el concepto de variable dummy, donde una categoría actúa como referencia (mujer) y las demás (varón, otro) se interpretan como desvíos respecto a ella. Se detalla cómo leer e interpretar los coeficientes del modelo en R a partir del summary, incluyendo el signo y magnitud de cada variable. Finalmente, se muestra cómo calcular el salario estimado para una persona concreta según sus valores de edad, antigüedad y género, ilustrando el funcionamiento práctico del modelo extendido."
+        },
+        {
+          "rel_path": "Unidad 5/Clase 9/Video teorico-practico (regresión lineal eleccion modelo).txt",
+          "fecha": "No identificada",
+          "temas": "Regresión lineal múltiple, comparación de modelos, criterio AIC, selección de variables, sobreajuste (overfitting)",
+          "resumen": "La clase muestra cómo construir y comparar múltiples modelos de regresión lineal incorporando distintas combinaciones de variables predictoras (antigüedad, edad, género, cargo, educación). Se introduce el criterio de información AIC como herramienta para seleccionar el mejor modelo, explicando que penaliza la cantidad de parámetros para evitar el sobreajuste. Se analiza que el modelo más completo (modelo 4, con todas las variables) obtiene el AIC más bajo, aunque se reflexiona sobre si la diferencia justifica la complejidad adicional frente a modelos más simples. Finalmente, se invita a los estudiantes a explorar distintas combinaciones de variables para encontrar el modelo óptimo según este criterio."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 5",
+        "Clase 10"
+      ],
+      [
+        {
+          "rel_path": "Unidad 5/Clase 10/Video teorico-practico (regresión NP knn).txt",
+          "fecha": "No identificada",
+          "temas": "Regresión no paramétrica, estimador de vecinos cercanos (KNN), librería caret en R, predicción con KNN, comparación de modelos con distintos valores de K",
+          "resumen": "La clase aborda los métodos de regresión no paramétrica, específicamente el estimador de núcleo y el método de vecinos cercanos (KNN), en el marco del capítulo 5 de la materia. Se implementa en R el modelo KNN usando la librería `caret`, aplicándolo a un dataset de salarios para estimar la función de regresión del salario en función de la antigüedad. Se generan predicciones para secuencias de datos nuevos y se visualizan gráficamente, comparando modelos con distinto número de vecinos (3, 8 y otros valores) para analizar cómo varía el ajuste. Se concluye destacando que estos estimadores tienen amplia aplicación en modelos predictivos y de clasificación más avanzados."
         }
       ]
     ]

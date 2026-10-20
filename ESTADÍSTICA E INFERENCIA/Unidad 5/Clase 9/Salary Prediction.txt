@@ -1,0 +1,5 @@
+Salary Prediction
+
+https://www.kaggle.com/datasets/rkiattisak/salaly-prediction-for-beginer
+
+(link externo (no es un archivo descargable))

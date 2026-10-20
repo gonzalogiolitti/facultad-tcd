@@ -1,5 +1,5 @@
 # BASES DE DATOS - Resumen de contenido
-_Última actualización: 26/09/26_
+_Última actualización: 20/10/26_
 
 ## General
 **Archivo:** General/ProgramaBBDD-TUCD_v00.md
@@ -42,6 +42,21 @@ _Última actualización: 26/09/26_
 **Fecha:** No identificada
 **Temas:** Normalización de tablas, Primera Forma Normal, Segunda Forma Normal, Tercera Forma Normal, dependencias funcionales, atomicidad de datos, claves primarias y foráneas
 **Resumen:** La clase aborda el proceso de normalización de tablas en bases de datos, explicando su propósito: eliminar redundancias, evitar anomalías de inserción/actualización/eliminación y garantizar la integridad lógica. Se presentan las tres formas normales de manera progresiva: la Primera exige valores atómicos y sin campos multivaluados; la Segunda elimina dependencias parciales respecto a claves compuestas; la Tercera elimina dependencias entre atributos no clave. A través de ejemplos prácticos (una tabla de ventas con cliente, producto, vendedor y comisión), se muestra cómo una tabla inicial puede descomponerse en cinco tablas normalizadas relacionadas mediante claves primarias y foráneas. Se conecta el resultado de la normalización con el diagrama entidad-relación trabajado en clases anteriores.
+
+**Archivo:** Grabaciones sincrónicos/Clase 05 - Introducción a los Modelos Relacionales. (copia) (copia).txt
+**Fecha:** 29/09/24
+**Temas:** Introducción a SQL, creación de bases de datos y tablas, tipos de datos, restricciones e integridad referencial, comandos DDL (CREATE, ALTER, DROP), claves primarias y foráneas, lenguajes compilados vs. interpretados, vigencia de SQL frente a Python
+**Resumen:** La clase introduce el trabajo práctico con SQL utilizando un modelo relacional previo (sucursal, sabores, relación posee). Se explican y ejecutan comandos DDL para crear bases de datos y tablas, agregar y eliminar columnas, y gestionar restricciones de integridad referencial (claves primarias, foráneas y constraints). Se discuten conceptos como autoincrement, valores por defecto, tipos de datos numéricos y de fecha, y el manejo de errores en el motor. Al cierre, se debate la vigencia de SQL frente a Python, destacando la superioridad de SQL en consultas sobre grandes volúmenes de datos y su rol como base de los sistemas de almacenamiento estructurado.
+
+**Archivo:** Grabaciones sincrónicos/Clase 08 - Consultas en SQL, funciones de agregación..txt
+**Fecha:** No identificada
+**Temas:** Consultas SQL básicas, SELECT/FROM/WHERE/GROUP BY/HAVING/ORDER BY, funciones de agregación (SUM/COUNT/AVG/MAX/MIN), JOIN entre tablas, subconsultas, INSERT/UPDATE, operadores LIKE/BETWEEN/IN/IS NULL, LIMIT y OFFSET
+**Resumen:** La clase se centra en la construcción progresiva de consultas SQL sobre una base de datos de ventas con tablas de clientes y pedidos (con datos ficticios generados en Python). Se explican las seis partes de una consulta SQL, comenzando por SELECT y FROM, avanzando hacia filtros con WHERE, agrupaciones con GROUP BY, filtrado de grupos con HAVING y ordenamiento con ORDER BY. Se trabajan en vivo conceptos como alias de tablas, DISTINCT, operadores lógicos y de rango, funciones de agregación, JOIN con cláusula ON, subconsultas dentro de WHERE y HAVING, y paginación de resultados mediante LIMIT y OFFSET.
+
+**Archivo:** Grabaciones sincrónicos/Clase 05 - Introducción a los Modelos Relacionales. (copia) (copia) (copia) (copia).txt
+**Fecha:** No identificada
+**Temas:** Exportación e importación de bases de datos, transacciones (COMMIT, ROLLBACK, SAVEPOINT), triggers, vistas, procedimientos almacenados, gestión de usuarios y permisos en SQL
+**Resumen:** La clase comienza mostrando cómo exportar e importar una base de datos en MariaDB/MySQL, explicando que el resultado es un archivo SQL que recrea estructuras y datos. Luego se trabaja el concepto de transacciones con START TRANSACTION, COMMIT y ROLLBACK (incluyendo SAVEPOINT), enfatizando su importancia para evitar errores irreversibles. Se crean un trigger para auditar eliminaciones en una tabla de pedidos, una vista para presentar datos filtrados a distintos usuarios, y un procedimiento almacenado parametrizado para insertar registros. Finalmente, se aborda la creación de usuarios con CREATE USER, la asignación de permisos con GRANT y su revocación con REVOKE.
 
 ## Unidad 0
 **Archivo:** Unidad 0/Apunte de Bases de datos.md
@@ -143,6 +158,24 @@ _Última actualización: 26/09/26_
           "fecha": "No identificada",
           "temas": "Normalización de tablas, Primera Forma Normal, Segunda Forma Normal, Tercera Forma Normal, dependencias funcionales, atomicidad de datos, claves primarias y foráneas",
           "resumen": "La clase aborda el proceso de normalización de tablas en bases de datos, explicando su propósito: eliminar redundancias, evitar anomalías de inserción/actualización/eliminación y garantizar la integridad lógica. Se presentan las tres formas normales de manera progresiva: la Primera exige valores atómicos y sin campos multivaluados; la Segunda elimina dependencias parciales respecto a claves compuestas; la Tercera elimina dependencias entre atributos no clave. A través de ejemplos prácticos (una tabla de ventas con cliente, producto, vendedor y comisión), se muestra cómo una tabla inicial puede descomponerse en cinco tablas normalizadas relacionadas mediante claves primarias y foráneas. Se conecta el resultado de la normalización con el diagrama entidad-relación trabajado en clases anteriores."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 05 - Introducción a los Modelos Relacionales. (copia) (copia).txt",
+          "fecha": "29/09/24",
+          "temas": "Introducción a SQL, creación de bases de datos y tablas, tipos de datos, restricciones e integridad referencial, comandos DDL (CREATE, ALTER, DROP), claves primarias y foráneas, lenguajes compilados vs. interpretados, vigencia de SQL frente a Python",
+          "resumen": "La clase introduce el trabajo práctico con SQL utilizando un modelo relacional previo (sucursal, sabores, relación posee). Se explican y ejecutan comandos DDL para crear bases de datos y tablas, agregar y eliminar columnas, y gestionar restricciones de integridad referencial (claves primarias, foráneas y constraints). Se discuten conceptos como autoincrement, valores por defecto, tipos de datos numéricos y de fecha, y el manejo de errores en el motor. Al cierre, se debate la vigencia de SQL frente a Python, destacando la superioridad de SQL en consultas sobre grandes volúmenes de datos y su rol como base de los sistemas de almacenamiento estructurado."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 08 - Consultas en SQL, funciones de agregación..txt",
+          "fecha": "No identificada",
+          "temas": "Consultas SQL básicas, SELECT/FROM/WHERE/GROUP BY/HAVING/ORDER BY, funciones de agregación (SUM/COUNT/AVG/MAX/MIN), JOIN entre tablas, subconsultas, INSERT/UPDATE, operadores LIKE/BETWEEN/IN/IS NULL, LIMIT y OFFSET",
+          "resumen": "La clase se centra en la construcción progresiva de consultas SQL sobre una base de datos de ventas con tablas de clientes y pedidos (con datos ficticios generados en Python). Se explican las seis partes de una consulta SQL, comenzando por SELECT y FROM, avanzando hacia filtros con WHERE, agrupaciones con GROUP BY, filtrado de grupos con HAVING y ordenamiento con ORDER BY. Se trabajan en vivo conceptos como alias de tablas, DISTINCT, operadores lógicos y de rango, funciones de agregación, JOIN con cláusula ON, subconsultas dentro de WHERE y HAVING, y paginación de resultados mediante LIMIT y OFFSET."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 05 - Introducción a los Modelos Relacionales. (copia) (copia) (copia) (copia).txt",
+          "fecha": "No identificada",
+          "temas": "Exportación e importación de bases de datos, transacciones (COMMIT, ROLLBACK, SAVEPOINT), triggers, vistas, procedimientos almacenados, gestión de usuarios y permisos en SQL",
+          "resumen": "La clase comienza mostrando cómo exportar e importar una base de datos en MariaDB/MySQL, explicando que el resultado es un archivo SQL que recrea estructuras y datos. Luego se trabaja el concepto de transacciones con START TRANSACTION, COMMIT y ROLLBACK (incluyendo SAVEPOINT), enfatizando su importancia para evitar errores irreversibles. Se crean un trigger para auditar eliminaciones en una tabla de pedidos, una vista para presentar datos filtrados a distintos usuarios, y un procedimiento almacenado parametrizado para insertar registros. Finalmente, se aborda la creación de usuarios con CREATE USER, la asignación de permisos con GRANT y su revocación con REVOKE."
         }
       ]
     ],

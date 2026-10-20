@@ -1,0 +1,5 @@
+Ejercicio teórico práctico: regresión lineal simple
+
+https://rstudio-pubs-static.s3.amazonaws.com/226291_e8ecd8ba8e314dd8a0a1afe86879201c.html#cb16-2
+
+(link externo (no es un archivo descargable))
