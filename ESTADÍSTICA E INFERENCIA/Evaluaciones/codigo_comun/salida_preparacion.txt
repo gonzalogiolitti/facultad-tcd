@@ -1,0 +1,35 @@
+=== PREPARACION DE DATOS ===
+Registros originales: 70000 
+
+Registros fuera de rango por cada regla (se pueden solapar):
+                              regla registros porcentaje
+  Presion sistolica fuera de 60-250       228       0.33
+ Presion diastolica fuera de 40-200      1012       1.45
+         Altura fuera de 120-220 cm        53       0.08
+            Peso fuera de 30-200 kg         7       0.01
+
+Registros descartados (union de las reglas): 1281 (1.83%)
+Registros que quedan: 68719 
+
+Control informativo (no se descartan): presion sistolica <= diastolica: 103 registros
+
+Categorias de gender (codificacion no documentada):
+
+Categoría 1 Categoría 2 
+      44754       23965 
+
+Resumen de las variables numericas limpias:
+   edad_anios        height          weight            IMC        
+ Min.   :29.56   Min.   :120.0   Min.   : 30.00   Min.   : 10.73  
+ 1st Qu.:48.34   1st Qu.:159.0   1st Qu.: 65.00   1st Qu.: 23.88  
+ Median :53.94   Median :165.0   Median : 72.00   Median : 26.35  
+ Mean   :53.29   Mean   :164.4   Mean   : 74.12   Mean   : 27.46  
+ 3rd Qu.:58.38   3rd Qu.:170.0   3rd Qu.: 82.00   3rd Qu.: 30.12  
+ Max.   :64.92   Max.   :207.0   Max.   :200.00   Max.   :108.17  
+     ap_hi           ap_lo       
+ Min.   : 60.0   Min.   : 40.00  
+ 1st Qu.:120.0   1st Qu.: 80.00  
+ Median :120.0   Median : 80.00  
+ Mean   :126.6   Mean   : 81.38  
+ 3rd Qu.:140.0   3rd Qu.: 90.00  
+ Max.   :240.0   Max.   :190.00  

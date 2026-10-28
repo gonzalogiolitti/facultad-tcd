@@ -1,5 +1,5 @@
 # LABORATORIO DE DATOS - Resumen de contenido
-_Última actualización: 20/10/26_
+_Última actualización: 28/10/26_
 
 ## General
 **Archivo:** General/Cronograma Laboratorio De Datos.md
@@ -37,6 +37,11 @@ _Última actualización: 20/10/26_
 **Fecha:** 07/10/26 (probablemente 07/10/2024, dado el contexto académico)
 **Temas:** Governance de datos, ética y transparencia, protección de datos personales (Ley 25.326, habeas data), secreto estadístico, Sistema Estadístico Nacional (SEN/INDEC), datos abiertos, portales de datos abiertos, uso ético de los datos
 **Resumen:** La clase aborda la Unidad 3 de la materia, centrada en governance, ética, transparencia y acceso a la información pública. Se repasan el marco normativo argentino (Constitución Nacional, Ley 25.326 y decreto reglamentario), los conceptos de dato personal y dato sensible, y el funcionamiento del Sistema Estadístico Nacional y el secreto estadístico. Se presentan los principios del uso ético de los datos (transparencia, responsabilidad, equidad, privacidad, entre otros) y se distinguen las formas de transparencia (pasiva, activa y focalizada). Finalmente, se analizan ejemplos concretos de portales de datos abiertos (Rosario, Argentina, Luján de Cuyo) y se introducen consignas del trabajo práctico final relacionadas con el análisis exploratorio de datasets.
+
+**Archivo:** Grabaciones Sincrónicas/GMT20261021-215848_Recording_1920x1080.txt
+**Fecha:** 21/10/26
+**Temas:** Gobierno de datos municipal, geoportal y datos abiertos, interoperabilidad, seguridad ciudadana (gemelo digital), broker ciudadano, Machine Learning aplicado a gestión pública, certificaciones de gobernanza de datos
+**Resumen:** Clase con invitado especial Cristian Chabarini, director de Transformación Digital de la Ciudad de Mendoza, quien presentó el ecosistema de datos y herramientas desarrolladas en su municipio. Mostró productos como un geoportal con más de 250 capas georeferenciadas, una plataforma de geomarketing para inversores, un gemelo digital de seguridad ciudadana que cruza datos de cámaras, móviles policiales y denuncias judiciales, y un sistema de predicción de ausentismo en centros de salud. El foco principal fue la herramienta "broker ciudadano", que consolida más de 20 fuentes de datos municipales para generar un registro único de ciudadanos y permitir campañas de comunicación segmentadas y cifradas vía WhatsApp. También se abordaron los procesos de certificación internacional (Data-Driven Cities/Bloomberg Philanthropies), la gobernanza interna con comité de datos y data champions, y el uso de Machine Learning para inferir género y edad a partir de registros incompletos.
 
 ## Unidad 1
 **Archivo:** Unidad 1/Australian Bureau of Statistics. 2010. A guide to using evidence-based policy. National Statistical Service Canberra..md
@@ -304,6 +309,12 @@ _Última actualización: 20/10/26_
           "fecha": "07/10/26 (probablemente 07/10/2024, dado el contexto académico)",
           "temas": "Governance de datos, ética y transparencia, protección de datos personales (Ley 25.326, habeas data), secreto estadístico, Sistema Estadístico Nacional (SEN/INDEC), datos abiertos, portales de datos abiertos, uso ético de los datos",
           "resumen": "La clase aborda la Unidad 3 de la materia, centrada en governance, ética, transparencia y acceso a la información pública. Se repasan el marco normativo argentino (Constitución Nacional, Ley 25.326 y decreto reglamentario), los conceptos de dato personal y dato sensible, y el funcionamiento del Sistema Estadístico Nacional y el secreto estadístico. Se presentan los principios del uso ético de los datos (transparencia, responsabilidad, equidad, privacidad, entre otros) y se distinguen las formas de transparencia (pasiva, activa y focalizada). Finalmente, se analizan ejemplos concretos de portales de datos abiertos (Rosario, Argentina, Luján de Cuyo) y se introducen consignas del trabajo práctico final relacionadas con el análisis exploratorio de datasets."
+        },
+        {
+          "rel_path": "Grabaciones Sincrónicas/GMT20261021-215848_Recording_1920x1080.txt",
+          "fecha": "21/10/26",
+          "temas": "Gobierno de datos municipal, geoportal y datos abiertos, interoperabilidad, seguridad ciudadana (gemelo digital), broker ciudadano, Machine Learning aplicado a gestión pública, certificaciones de gobernanza de datos",
+          "resumen": "Clase con invitado especial Cristian Chabarini, director de Transformación Digital de la Ciudad de Mendoza, quien presentó el ecosistema de datos y herramientas desarrolladas en su municipio. Mostró productos como un geoportal con más de 250 capas georeferenciadas, una plataforma de geomarketing para inversores, un gemelo digital de seguridad ciudadana que cruza datos de cámaras, móviles policiales y denuncias judiciales, y un sistema de predicción de ausentismo en centros de salud. El foco principal fue la herramienta \"broker ciudadano\", que consolida más de 20 fuentes de datos municipales para generar un registro único de ciudadanos y permitir campañas de comunicación segmentadas y cifradas vía WhatsApp. También se abordaron los procesos de certificación internacional (Data-Driven Cities/Bloomberg Philanthropies), la gobernanza interna con comité de datos y data champions, y el uso de Machine Learning para inferir género y edad a partir de registros incompletos."
         }
       ]
     ],

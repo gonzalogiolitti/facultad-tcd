@@ -1,0 +1,18 @@
+
+	Kruskal-Wallis rank sum test
+
+data:  weight by cholesterol_f
+Kruskal-Wallis chi-squared = 1300.3, df = 2, p-value < 2.2e-16
+
+Multiple comparison test after Kruskal-Wallis 
+alpha: 0.05 
+Comparisons
+                                                     obs.dif critical.dif
+Normal-Por encima de lo normal                      4847.209     534.8351
+Normal-Muy por encima de lo normal                  7577.211     574.4115
+Por encima de lo normal-Muy por encima de lo normal 2730.001     726.9518
+                                                    stat.signif
+Normal-Por encima de lo normal                             TRUE
+Normal-Muy por encima de lo normal                         TRUE
+Por encima de lo normal-Muy por encima de lo normal        TRUE
+[1] 0.01889299

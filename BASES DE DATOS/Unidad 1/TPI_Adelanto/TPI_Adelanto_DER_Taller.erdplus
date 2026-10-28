@@ -689,13 +689,13 @@
           "label": "tiene",
           "sourceEntityDetails": {
             "id": "c0c25542-39d9-4ceb-9d23-8546baa59aed",
-            "minCardinality": "Optional",
-            "maxCardinality": "Many"
+            "minCardinality": "Mandatory",
+            "maxCardinality": "One"
           },
           "targetEntityDetails": {
             "id": "0c249e01-a218-4334-8787-78a86ff31829",
-            "minCardinality": "Mandatory",
-            "maxCardinality": "One"
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
           },
           "isConnectable": true,
           "isSelected": false
@@ -718,13 +718,13 @@
           "label": "genera",
           "sourceEntityDetails": {
             "id": "0c249e01-a218-4334-8787-78a86ff31829",
-            "minCardinality": "Optional",
-            "maxCardinality": "Many"
+            "minCardinality": "Mandatory",
+            "maxCardinality": "One"
           },
           "targetEntityDetails": {
             "id": "d49b5317-362e-4187-b4bf-9292be6ee93e",
-            "minCardinality": "Mandatory",
-            "maxCardinality": "One"
+            "minCardinality": "Optional",
+            "maxCardinality": "Many"
           },
           "isConnectable": true,
           "isSelected": false
@@ -1024,8 +1024,8 @@
         "target": "c0c25542-39d9-4ceb-9d23-8546baa59aed",
         "data": {
           "id": "7d23b58a-024a-4559-931a-12df278dccc5->c0c25542-39d9-4ceb-9d23-8546baa59aed",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
+          "minCardinality": "Mandatory",
+          "maxCardinality": "One"
         }
       },
       {
@@ -1035,8 +1035,8 @@
         "target": "0c249e01-a218-4334-8787-78a86ff31829",
         "data": {
           "id": "7d23b58a-024a-4559-931a-12df278dccc5->0c249e01-a218-4334-8787-78a86ff31829",
-          "minCardinality": "Mandatory",
-          "maxCardinality": "One"
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
         }
       },
       {
@@ -1046,8 +1046,8 @@
         "target": "0c249e01-a218-4334-8787-78a86ff31829",
         "data": {
           "id": "c3f61027-5416-4d5b-825a-6019a2c617b2->0c249e01-a218-4334-8787-78a86ff31829",
-          "minCardinality": "Optional",
-          "maxCardinality": "Many"
+          "minCardinality": "Mandatory",
+          "maxCardinality": "One"
         }
       },
       {
@@ -1057,8 +1057,8 @@
         "target": "d49b5317-362e-4187-b4bf-9292be6ee93e",
         "data": {
           "id": "c3f61027-5416-4d5b-825a-6019a2c617b2->d49b5317-362e-4187-b4bf-9292be6ee93e",
-          "minCardinality": "Mandatory",
-          "maxCardinality": "One"
+          "minCardinality": "Optional",
+          "maxCardinality": "Many"
         }
       },
       {

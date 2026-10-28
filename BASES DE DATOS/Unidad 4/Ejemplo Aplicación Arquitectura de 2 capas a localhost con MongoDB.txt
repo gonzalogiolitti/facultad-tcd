@@ -1,0 +1,5 @@
+Ejemplo Aplicación Arquitectura de 2 capas a localhost con MongoDB
+
+https://github.com/bgauna/clase-mongodb-geo.git
+
+(link externo (no es un archivo descargable))

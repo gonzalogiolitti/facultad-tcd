@@ -43,8 +43,8 @@ ORDEN_REPUESTO (id_orden → FK a ORDEN_TRABAJO(id_orden),
 
 | Relación | A ↔ B | (mín,máx) | for: (lado "1"/catálogo) | for: (lado "N") |
 |---|---|---|---|---|
-| `tiene` | CLIENTE ↔ VEHICULO | CLIENTE (0,N) — VEHICULO (1,1) | for:CLIENTE = **Optional/Many** | for:VEHICULO = **Mandatory/One** |
-| `genera` | VEHICULO ↔ ORDEN_TRABAJO | VEHICULO (0,N) — ORDEN_TRABAJO (1,1) | for:VEHICULO = **Optional/Many** | for:ORDEN_TRABAJO = **Mandatory/One** |
+| `tiene` | CLIENTE ↔ VEHICULO | CLIENTE (0,N) — VEHICULO (1,1) | for:CLIENTE = **Mandatory/One** | for:VEHICULO = **Optional/Many** |
+| `genera` | VEHICULO ↔ ORDEN_TRABAJO | VEHICULO (0,N) — ORDEN_TRABAJO (1,1) | for:VEHICULO = **Mandatory/One** | for:ORDEN_TRABAJO = **Optional/Many** |
 | `asigna` (N:M) | ORDEN_TRABAJO ↔ TECNICO | (0,N) — (0,N) | for:ORDEN_TRABAJO = **Optional/Many** | for:TECNICO = **Optional/Many** |
 | `incluye` (N:M) | ORDEN_TRABAJO ↔ SERVICIO | (0,N) — (0,N) | for:ORDEN_TRABAJO = **Optional/Many** | for:SERVICIO = **Optional/Many** |
 | `usa` (N:M) | ORDEN_TRABAJO ↔ REPUESTO | (0,N) — (0,N) | for:ORDEN_TRABAJO = **Optional/Many** | for:REPUESTO = **Optional/Many** |

@@ -1,0 +1,15 @@
+Maximum likelihood estimation
+
+Call:
+mle(minuslogl = NLV_ber, start = list(p = 0.5), method = "L-BFGS-B", 
+    lower = 1e-04, upper = 0.9999, control = list(parscale = 0.1, 
+        factr = 10))
+
+Coefficients:
+    Estimate  Std. Error
+p 0.08801063 0.001080683
+
+-2 log L: 40944.26 
+Profiling...
+     2.5 %     97.5 % 
+0.08590773 0.09014418 

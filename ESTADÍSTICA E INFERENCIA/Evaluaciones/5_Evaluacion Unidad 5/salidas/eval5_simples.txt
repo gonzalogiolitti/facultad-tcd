@@ -1,0 +1,38 @@
+
+Call:
+lm(formula = ap_hi ~ edad_anios, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-62.110  -9.895  -3.711   9.319 115.032 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 99.027232   0.497123  199.20   <2e-16 ***
+edad_anios   0.517700   0.009254   55.94   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 16.39 on 68717 degrees of freedom
+Multiple R-squared:  0.04356,	Adjusted R-squared:  0.04354 
+F-statistic:  3129 on 1 and 68717 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = ap_hi ~ IMC, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-74.859  -9.173  -3.414   8.407 115.656 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 103.39904    0.32789  315.35   <2e-16 ***
+IMC           0.84552    0.01173   72.09   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 16.16 on 68717 degrees of freedom
+Multiple R-squared:  0.07032,	Adjusted R-squared:  0.0703 
+F-statistic:  5198 on 1 and 68717 DF,  p-value: < 2.2e-16
+

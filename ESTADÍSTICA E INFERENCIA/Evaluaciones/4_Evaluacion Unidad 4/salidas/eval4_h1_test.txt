@@ -1,0 +1,10 @@
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  sis_con and sis_sin
+W = 885627806, p-value < 2.2e-16
+alternative hypothesis: true location shift is greater than 0
+
+  dif_medias dif_medianas 
+    14.25224     10.00000 
+[1] 0.7502444

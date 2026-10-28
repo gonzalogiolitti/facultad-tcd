@@ -1,5 +1,5 @@
 # MATERIA ELECTIVA A - Resumen de contenido
-_Última actualización: 20/10/26_
+_Última actualización: 28/10/26_
 
 ## Grabaciones sincrónicos
 **Archivo:** Grabaciones sincrónicos/Clase 7-5 automatización 4.0.txt
@@ -36,6 +36,16 @@ _Última actualización: 20/10/26_
 **Fecha:** 08/10/24
 **Temas:** IIoT (Internet Industrial de las Cosas), pirámide de Purdue/ISA-95, Machine Learning en industria, metodología Lean Startup, casos de uso industriales, Node-RED, analítica descriptiva y predictiva
 **Resumen:** La clase repasa la arquitectura de Internet Industrial de las Cosas (IIoT) y la pirámide de información ISA-95, explicando cómo los datos de planta viajan desde sensores y controladores hasta un dispositivo Edge con Node-RED para generar analítica. Se introduce el uso de Machine Learning para pasar de analítica descriptiva a predictiva, detallando el ciclo de vida de un proyecto (caso de uso, preparación de datos, entrenamiento y evaluación del modelo). Se presenta la metodología Lean Startup como enfoque ágil para implementar soluciones de ML en entornos industriales, destacando la cocreación con expertos de planta. Finalmente, se ilustra con casos reales en industrias metalúrgica, minera y de refinería de grasa.
+
+**Archivo:** Grabaciones sincrónicos/Clase 15.10.26- Datos IT- Gestión de la cadena de suministro.txt
+**Fecha:** 15/10/26 (inferida del nombre del archivo; probablemente 15/10/2024 o 26/10/2015, formato ambiguo)
+**Temas:** Gemelos digitales, simulación de flujos, modelado basado en agentes, gemelos digitales en salud, gemelos digitales en museos, herramientas de simulación (AnyLogic, Unity), trabajos finales de la materia
+**Resumen:** La clase gira en torno a proyectos finales de los estudiantes vinculados a gemelos digitales: uno sobre una cafetera con sensores de temperatura y presión, y otro sobre simulación de flujos de visitantes en un museo cultural. Se discuten herramientas como AnyLogic para simulación y Unity para visualización, y la posibilidad de integrarlas. El docente presenta un caso de aplicación de gemelos digitales en un servicio de urgencias hospitalarias (paper de Barcelona), explicando el uso de modelos basados en agentes para simular pacientes, personal y recursos. Se abordan conceptos clave como precisión del modelo, capacidad de cómputo, etapas descriptiva/predictiva/prescriptiva y situaciones de estrés del sistema.
+
+**Archivo:** Grabaciones sincrónicos/clase de repaso 22-10-26.txt
+**Fecha:** 26/10/22
+**Temas:** Repaso general, IIoT vs IoT, ISA-95, datos OT vs IT, KPIs y OEE, Node-RED y Grafana, trabajo práctico integrador, modalidad de examen
+**Resumen:** La clase consistió en un repaso general previo al examen parcial, repasando los temas centrales de la materia: la diferencia entre Internet de las Cosas e Internet Industrial de las Cosas (IIoT), la pirámide ISA-95 y sus niveles (sensores, PLCs, SCADA, MES, ERP), y la integración de datos OT con datos IT. Se mencionaron conceptos clave como analítica descriptiva vs. predictiva, KPIs industriales y el OEE. También se discutieron los requisitos del trabajo práctico integrador (dashboard con Node-RED y Grafana, sistema de alertas por Telegram o email). Por último, el docente informó la modalidad del examen: disponible el jueves siguiente a las 20 hs, asincrónico, con 3-4 preguntas y 2-3 horas para responder.
 
 ## Trabajo practico integrador
 **Archivo:** Trabajo practico integrador/Clase 5_dictado de TP_I4.0_2025.md
@@ -253,6 +263,18 @@ _Última actualización: 20/10/26_
           "fecha": "08/10/24",
           "temas": "IIoT (Internet Industrial de las Cosas), pirámide de Purdue/ISA-95, Machine Learning en industria, metodología Lean Startup, casos de uso industriales, Node-RED, analítica descriptiva y predictiva",
           "resumen": "La clase repasa la arquitectura de Internet Industrial de las Cosas (IIoT) y la pirámide de información ISA-95, explicando cómo los datos de planta viajan desde sensores y controladores hasta un dispositivo Edge con Node-RED para generar analítica. Se introduce el uso de Machine Learning para pasar de analítica descriptiva a predictiva, detallando el ciclo de vida de un proyecto (caso de uso, preparación de datos, entrenamiento y evaluación del modelo). Se presenta la metodología Lean Startup como enfoque ágil para implementar soluciones de ML en entornos industriales, destacando la cocreación con expertos de planta. Finalmente, se ilustra con casos reales en industrias metalúrgica, minera y de refinería de grasa."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 15.10.26- Datos IT- Gestión de la cadena de suministro.txt",
+          "fecha": "15/10/26 (inferida del nombre del archivo; probablemente 15/10/2024 o 26/10/2015, formato ambiguo)",
+          "temas": "Gemelos digitales, simulación de flujos, modelado basado en agentes, gemelos digitales en salud, gemelos digitales en museos, herramientas de simulación (AnyLogic, Unity), trabajos finales de la materia",
+          "resumen": "La clase gira en torno a proyectos finales de los estudiantes vinculados a gemelos digitales: uno sobre una cafetera con sensores de temperatura y presión, y otro sobre simulación de flujos de visitantes en un museo cultural. Se discuten herramientas como AnyLogic para simulación y Unity para visualización, y la posibilidad de integrarlas. El docente presenta un caso de aplicación de gemelos digitales en un servicio de urgencias hospitalarias (paper de Barcelona), explicando el uso de modelos basados en agentes para simular pacientes, personal y recursos. Se abordan conceptos clave como precisión del modelo, capacidad de cómputo, etapas descriptiva/predictiva/prescriptiva y situaciones de estrés del sistema."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/clase de repaso 22-10-26.txt",
+          "fecha": "26/10/22",
+          "temas": "Repaso general, IIoT vs IoT, ISA-95, datos OT vs IT, KPIs y OEE, Node-RED y Grafana, trabajo práctico integrador, modalidad de examen",
+          "resumen": "La clase consistió en un repaso general previo al examen parcial, repasando los temas centrales de la materia: la diferencia entre Internet de las Cosas e Internet Industrial de las Cosas (IIoT), la pirámide ISA-95 y sus niveles (sensores, PLCs, SCADA, MES, ERP), y la integración de datos OT con datos IT. Se mencionaron conceptos clave como analítica descriptiva vs. predictiva, KPIs industriales y el OEE. También se discutieron los requisitos del trabajo práctico integrador (dashboard con Node-RED y Grafana, sistema de alertas por Telegram o email). Por último, el docente informó la modalidad del examen: disponible el jueves siguiente a las 20 hs, asincrónico, con 3-4 preguntas y 2-3 horas para responder."
         }
       ]
     ],

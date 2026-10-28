@@ -1,5 +1,5 @@
 # BASES DE DATOS - Resumen de contenido
-_Última actualización: 20/10/26_
+_Última actualización: 28/10/26_
 
 ## General
 **Archivo:** General/ProgramaBBDD-TUCD_v00.md
@@ -58,6 +58,11 @@ _Última actualización: 20/10/26_
 **Temas:** Exportación e importación de bases de datos, transacciones (COMMIT, ROLLBACK, SAVEPOINT), triggers, vistas, procedimientos almacenados, gestión de usuarios y permisos en SQL
 **Resumen:** La clase comienza mostrando cómo exportar e importar una base de datos en MariaDB/MySQL, explicando que el resultado es un archivo SQL que recrea estructuras y datos. Luego se trabaja el concepto de transacciones con START TRANSACTION, COMMIT y ROLLBACK (incluyendo SAVEPOINT), enfatizando su importancia para evitar errores irreversibles. Se crean un trigger para auditar eliminaciones en una tabla de pedidos, una vista para presentar datos filtrados a distintos usuarios, y un procedimiento almacenado parametrizado para insertar registros. Finalmente, se aborda la creación de usuarios con CREATE USER, la asignación de permisos con GRANT y su revocación con REVOKE.
 
+**Archivo:** Grabaciones sincrónicos/Clase 10 - SQL_ Construcción de Tablas,.txt
+**Fecha:** No identificada
+**Temas:** Arquitectura de 3 capas (frontend/backend/base de datos), hosting y dominios, herramientas de desarrollo web (HTML, CSS, Bootstrap, JavaScript, PHP, SQL), agentes de IA para generación de código (OpenCode, Codex), FileZilla, InfinityFree, MySQL/phpMyAdmin
+**Resumen:** La clase aborda la arquitectura de 3 capas aplicada al desarrollo web, explicando el rol del frontend (HTML, CSS, JS), backend (PHP) y base de datos (MariaDB/MySQL). Se muestra cómo contratar y configurar un hosting gratuito (InfinityFree), transferir archivos con FileZilla y registrar dominios. El núcleo de la clase es una demostración práctica donde se utiliza un agente de IA (Codex/OpenCode) para generar automáticamente una aplicación web completa —un directorio de fuentes de datos climáticos con ABM— conectada a una base de datos MySQL gestionada desde phpMyAdmin.
+
 ## Unidad 0
 **Archivo:** Unidad 0/Apunte de Bases de datos.md
 **Fecha:** No identificada
@@ -95,6 +100,12 @@ _Última actualización: 20/10/26_
 **Fecha:** No identificada
 **Temas:** Introducción a SQL y bases de datos relacionales, tipos de datos, comandos DDL y DML, consultas SELECT, JOINs, relaciones entre tablas, conceptos avanzados (índices, triggers, vistas, procedimientos almacenados, transacciones, seguridad)
 **Resumen:** Transcripción de un curso completo de SQL y bases de datos relacionales orientado a principiantes, impartido por Brais Moure (MoureDev). El curso abarca desde los fundamentos teóricos (qué es SQL, diferencia entre bases de datos relacionales y no relacionales, motores como MySQL y PostgreSQL) hasta la práctica con comandos de lectura (SELECT, WHERE, JOIN, GROUP BY, etc.) y escritura (INSERT, UPDATE, DELETE), pasando por la creación y modificación de tablas, tipos de relaciones (1:1, 1:N, N:M), y conceptos avanzados como índices, triggers, vistas, procedimientos almacenados y seguridad (SQL Injection). Incluye también una introducción al despliegue de bases de datos en entornos remotos y la conexión desde código Python mediante conectores.
+
+## Unidad 5
+**Archivo:** Unidad 5/ORM explicado por EdTeam (desde 6'10'').txt
+**Fecha:** No identificada
+**Temas:** ORM (Object-Relational Mapping), bases de datos relacionales, SQL, CRUD, programación orientada a objetos, ventajas y desventajas de los ORM, principales ORM por lenguaje
+**Resumen:** El video explica qué es un ORM (Object-Relational Mapper) y cómo funciona, partiendo de conceptos previos necesarios como bases de datos relacionales, SQL, CRUD y programación orientada a objetos. Se describe cómo un ORM mapea tablas a clases, registros a objetos y campos a propiedades, permitiendo interactuar con la base de datos usando el lenguaje de backend sin escribir SQL directamente. Se analizan ventajas (abstracción del SQL, mayor productividad) y desventajas (dependencia del ORM, dificultad para optimizar consultas complejas sin saber SQL). Finalmente, se recomienda aprender SQL como fundamento antes de adoptar un ORM, y se repasan los principales ORM para distintos lenguajes: Eloquent, Doctrine, Hibernate, Entity Framework, TypeORM, Active Record, GORM y SQLAlchemy/Django ORM.
 
 <!-- ESTADO_RESUMEN
 {
@@ -176,6 +187,12 @@ _Última actualización: 20/10/26_
           "fecha": "No identificada",
           "temas": "Exportación e importación de bases de datos, transacciones (COMMIT, ROLLBACK, SAVEPOINT), triggers, vistas, procedimientos almacenados, gestión de usuarios y permisos en SQL",
           "resumen": "La clase comienza mostrando cómo exportar e importar una base de datos en MariaDB/MySQL, explicando que el resultado es un archivo SQL que recrea estructuras y datos. Luego se trabaja el concepto de transacciones con START TRANSACTION, COMMIT y ROLLBACK (incluyendo SAVEPOINT), enfatizando su importancia para evitar errores irreversibles. Se crean un trigger para auditar eliminaciones en una tabla de pedidos, una vista para presentar datos filtrados a distintos usuarios, y un procedimiento almacenado parametrizado para insertar registros. Finalmente, se aborda la creación de usuarios con CREATE USER, la asignación de permisos con GRANT y su revocación con REVOKE."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 10 - SQL_ Construcción de Tablas,.txt",
+          "fecha": "No identificada",
+          "temas": "Arquitectura de 3 capas (frontend/backend/base de datos), hosting y dominios, herramientas de desarrollo web (HTML, CSS, Bootstrap, JavaScript, PHP, SQL), agentes de IA para generación de código (OpenCode, Codex), FileZilla, InfinityFree, MySQL/phpMyAdmin",
+          "resumen": "La clase aborda la arquitectura de 3 capas aplicada al desarrollo web, explicando el rol del frontend (HTML, CSS, JS), backend (PHP) y base de datos (MariaDB/MySQL). Se muestra cómo contratar y configurar un hosting gratuito (InfinityFree), transferir archivos con FileZilla y registrar dominios. El núcleo de la clase es una demostración práctica donde se utiliza un agente de IA (Codex/OpenCode) para generar automáticamente una aplicación web completa —un directorio de fuentes de datos climáticos con ABM— conectada a una base de datos MySQL gestionada desde phpMyAdmin."
         }
       ]
     ],
@@ -239,6 +256,19 @@ _Última actualización: 20/10/26_
           "fecha": "No identificada",
           "temas": "Introducción a SQL y bases de datos relacionales, tipos de datos, comandos DDL y DML, consultas SELECT, JOINs, relaciones entre tablas, conceptos avanzados (índices, triggers, vistas, procedimientos almacenados, transacciones, seguridad)",
           "resumen": "Transcripción de un curso completo de SQL y bases de datos relacionales orientado a principiantes, impartido por Brais Moure (MoureDev). El curso abarca desde los fundamentos teóricos (qué es SQL, diferencia entre bases de datos relacionales y no relacionales, motores como MySQL y PostgreSQL) hasta la práctica con comandos de lectura (SELECT, WHERE, JOIN, GROUP BY, etc.) y escritura (INSERT, UPDATE, DELETE), pasando por la creación y modificación de tablas, tipos de relaciones (1:1, 1:N, N:M), y conceptos avanzados como índices, triggers, vistas, procedimientos almacenados y seguridad (SQL Injection). Incluye también una introducción al despliegue de bases de datos en entornos remotos y la conexión desde código Python mediante conectores."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 5"
+      ],
+      [
+        {
+          "rel_path": "Unidad 5/ORM explicado por EdTeam (desde 6'10'').txt",
+          "fecha": "No identificada",
+          "temas": "ORM (Object-Relational Mapping), bases de datos relacionales, SQL, CRUD, programación orientada a objetos, ventajas y desventajas de los ORM, principales ORM por lenguaje",
+          "resumen": "El video explica qué es un ORM (Object-Relational Mapper) y cómo funciona, partiendo de conceptos previos necesarios como bases de datos relacionales, SQL, CRUD y programación orientada a objetos. Se describe cómo un ORM mapea tablas a clases, registros a objetos y campos a propiedades, permitiendo interactuar con la base de datos usando el lenguaje de backend sin escribir SQL directamente. Se analizan ventajas (abstracción del SQL, mayor productividad) y desventajas (dependencia del ORM, dificultad para optimizar consultas complejas sin saber SQL). Finalmente, se recomienda aprender SQL como fundamento antes de adoptar un ORM, y se repasan los principales ORM para distintos lenguajes: Eloquent, Doctrine, Hibernate, Entity Framework, TypeORM, Active Record, GORM y SQLAlchemy/Django ORM."
         }
       ]
     ]

@@ -1,0 +1,12 @@
+
+	Welch Two Sample t-test
+
+data:  sis_con and sis_sin
+t = 122.74, df = 62021, p-value < 2.2e-16
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 14.06124      Inf
+sample estimates:
+mean of x mean of y 
+ 133.8149  119.5627 
+

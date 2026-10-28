@@ -1,0 +1,50 @@
+=== Evaluacion 2 - Estadistica descriptiva ===
+Pacientes analizados (datos limpios): 68719 
+
+--- Estructura de las variables elegidas ---
+'data.frame':	68719 obs. of  4 variables:
+ $ edad_anios   : num  50.4 55.4 51.6 48.2 47.8 ...
+ $ weight       : num  62 85 64 82 56 67 93 95 71 68 ...
+ $ ap_hi        : int  110 140 130 150 100 120 130 130 110 110 ...
+ $ cholesterol_f: Ord.factor w/ 3 levels "Normal"<"Por encima de lo normal"<..: 1 3 3 1 1 2 3 3 1 1 ...
+
+--- describe(): posicion, dispersion y forma ---
+           vars     n   mean    sd median trimmed   mad   min    max  range
+edad_anios    1 68719  53.29  6.76  53.94   53.57  6.95 29.56  64.92  35.36
+weight        2 68719  74.12 14.30  72.00   73.04 11.86 30.00 200.00 170.00
+ap_hi         3 68719 126.62 16.76 120.00  125.31 14.83 60.00 240.00 180.00
+            skew kurtosis   se
+edad_anios -0.31    -0.83 0.03
+weight      0.99     2.42 0.05
+ap_hi       0.91     1.85 0.06
+
+--- Cuartiles y rango intercuartil ---
+    variable     n   media mediana  desvio      Q1      Q3    RIC minimo
+1 edad_anios 68719  53.291  53.938  6.7569  48.345  58.382 10.037 29.563
+2     weight 68719  74.119  72.000 14.2956  65.000  82.000 17.000 30.000
+3      ap_hi 68719 126.616 120.000 16.7609 120.000 140.000 20.000 60.000
+   maximo
+1  64.923
+2 200.000
+3 240.000
+
+--- Colesterol (cualitativa ordinal) ---
+
+                     Normal     Por encima de lo normal 
+                      51529                        9309 
+Muy por encima de lo normal 
+                       7881 
+
+Proporciones:
+
+                     Normal     Por encima de lo normal 
+                     0.7499                      0.1355 
+Muy por encima de lo normal 
+                     0.1147 
+
+Moda (categoria mas frecuente): Normal 
+Mediana (categoria que acumula el 50%): Normal 
+Proporcion acumulada hasta la categoria 1: 0.7499 
+Proporcion acumulada hasta la categoria 2: 0.8853 
+
+Proporcion de pacientes con sistolica exactamente 120: 0.4023 

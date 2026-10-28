@@ -1,0 +1,22 @@
+$`Sin enfermedad`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.85443, p-value < 2.2e-16
+
+
+$`Con enfermedad`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.94342, p-value < 2.2e-16
+
+
+
+	Bartlett test of homogeneity of variances
+
+data:  list(sis_sin, sis_con)
+Bartlett's K-squared = 3458.7, df = 1, p-value < 2.2e-16
+

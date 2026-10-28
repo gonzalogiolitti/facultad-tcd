@@ -1,0 +1,12 @@
+     ap_hi         edad_anios         IMC        
+ Min.   : 60.0   Min.   :29.56   Min.   : 10.73  
+ 1st Qu.:120.0   1st Qu.:48.34   1st Qu.: 23.88  
+ Median :120.0   Median :53.94   Median : 26.35  
+ Mean   :126.6   Mean   :53.29   Mean   : 27.46  
+ 3rd Qu.:140.0   3rd Qu.:58.38   3rd Qu.: 30.12  
+ Max.   :240.0   Max.   :64.92   Max.   :108.17  
+[1] "Categoría 1" "Categoría 2"
+               ap_hi edad_anios       IMC
+ap_hi      1.0000000  0.2087038 0.2651753
+edad_anios 0.2087038  1.0000000 0.1021144
+IMC        0.2651753  0.1021144 1.0000000

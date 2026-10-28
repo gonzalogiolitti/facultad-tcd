@@ -1,0 +1,16 @@
+Maximum likelihood estimation
+
+Call:
+mle(minuslogl = NLV_norm, start = list(mu = 165, sigma = 8), 
+    method = "L-BFGS-B", lower = c(-Inf, 0.01), control = list(factr = 10))
+
+Coefficients:
+        Estimate Std. Error
+mu    164.413641 0.03019175
+sigma   7.914559 0.02134879
+
+-2 log L: 479334.6 
+Profiling...
+         2.5 %     97.5 %
+mu    164.3545 164.472817
+sigma   7.8729   7.956587

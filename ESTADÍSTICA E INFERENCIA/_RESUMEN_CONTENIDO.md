@@ -1,5 +1,5 @@
 # ESTADÍSTICA E INFERENCIA - Resumen de contenido
-_Última actualización: 19/10/26_
+_Última actualización: 28/10/26_
 
 ## General
 **Archivo:** General/Presentación de la asignatura y modalidad de trabajo.txt
@@ -345,6 +345,34 @@ _Última actualización: 19/10/26_
 **Fecha:** No identificada
 **Temas:** Regresión no paramétrica, estimador de vecinos cercanos (KNN), librería caret en R, predicción con KNN, comparación de modelos con distintos valores de K
 **Resumen:** La clase aborda los métodos de regresión no paramétrica, específicamente el estimador de núcleo y el método de vecinos cercanos (KNN), en el marco del capítulo 5 de la materia. Se implementa en R el modelo KNN usando la librería `caret`, aplicándolo a un dataset de salarios para estimar la función de regresión del salario en función de la antigüedad. Se generan predicciones para secuencias de datos nuevos y se visualizan gráficamente, comparando modelos con distinto número de vecinos (3, 8 y otros valores) para analizar cómo varía el ajuste. Se concluye destacando que estos estimadores tienen amplia aplicación en modelos predictivos y de clasificación más avanzados.
+
+## Unidad 6
+### Clase 11
+**Archivo:** Unidad 6/Clase 11/Video teorico-practico MnL.txt
+**Fecha:** No identificada
+**Temas:** Modelos no lineales, librería EasyNonLinear (R), ajuste de modelos, comparación de modelos (AIC, R cuadrado), modelo lineal, cuadrático y exponencial
+**Resumen:** La clase muestra cómo utilizar el paquete de R para modelos no lineales (Easy Non Linear) aplicado al dataset de salarios trabajado en clases anteriores. Se demuestra el uso de la función `fit` para ajustar distintos tipos de modelos (lineal, cuadrático y exponencial) utilizando las variables edad y salario. Se comparan los resultados de cada ajuste mediante métricas como el R cuadrado, el p-valor y el AIC, concluyendo que el polinomio de grado 2 ofrece el mejor ajuste para estos datos. También se menciona la necesidad de proveer el argumento `start` para modelos como el exponencial, que requieren valores iniciales para las iteraciones.
+
+**Archivo:** Unidad 6/Clase 11/Video teórico-practico regularización (Lasso y Ridge).txt
+**Fecha:** No identificada
+**Temas:** Regularización, Ridge, Lasso, modelos lineales generalizados, variables predictoras, validación cruzada, RMSE, R cuadrado, coeficientes beta, variables dummy
+**Resumen:** La clase presenta los métodos de regularización Ridge y Lasso, utilizados cuando se trabaja con muchas variables predictoras para evitar el sobreajuste. Se implementan ambos modelos en R usando el paquete `glmnet`, con variables como edad, género y nivel educativo (previamente factorizadas y sin valores NA). Se generan predicciones aprovechando la validación cruzada incorporada en el paquete, y se comparan ambos modelos mediante las métricas RMSE y R cuadrado, definidas como funciones personalizadas. Finalmente, se concluye que Lasso ofrece mejor ajuste en este caso, con mayor R cuadrado y menor sumatoria de errores, y se explica la interpretación de los coeficientes beta y las variables dummy generadas a partir de variables cualitativas.
+
+**Archivo:** Unidad 6/Clase 11/Video teorico-practico validación cruzada (Lasso).txt
+**Fecha:** No identificada
+**Temas:** Validación cruzada, Regresión Lasso, Partición train/test, Predicción manual vs. iterativa, RMSE, Suma de cuadrados
+**Resumen:** La clase muestra en código cómo implementar validación cruzada con regresión Lasso, comenzando por la generación de índices para dividir los datos en conjuntos de entrenamiento (80%) y prueba (20%). Se construye un modelo Lasso "manual" usando la función correspondiente con alpha=1 sobre los datos de entrenamiento, y se realizan predicciones sobre el conjunto de prueba. Finalmente, se calculan métricas de error (RMSE y suma de cuadrados) comparando la predicción manual con la iterativa del paquete, concluyendo que el método iterativo incorporado al paquete arroja mejores resultados y es preferible para aplicar validación cruzada.
+
+### Clase 12
+**Archivo:** Unidad 6/Clase 12/Video teorico practico RLS.txt
+**Fecha:** No identificada
+**Temas:** Regresión logística binaria en R, modelo GLM, partición train/test, matriz de confusión, predicción de sobrevivencia en Titanic
+**Resumen:** La clase muestra paso a paso cómo implementar una regresión logística (GLM con familia binomial) en R para predecir una variable cualitativa dicotómica (sobrevivencia en el Titanic). Se trabaja con selección y transformación de variables (conversión a factores), partición del dataset en conjuntos de entrenamiento y prueba (80/20 con caret), ajuste e interpretación de dos modelos (con y sin variables no significativas), y evaluación mediante matriz de confusión. Finalmente se realiza la predicción de probabilidad de sobrevivencia para nuevos pasajeros hipotéticos, evidenciando la influencia del sexo y la clase social en el resultado.
+
+**Archivo:** Unidad 6/Clase 12/Video teorico practico LDA y QDA.txt
+**Fecha:** No identificada
+**Temas:** Análisis Discriminante Lineal (LDA), Análisis Discriminante Cuadrático (QDA), supuestos de normalidad, test de Shapiro, test de homogeneidad de covarianzas, clasificación multiclase, matriz de confusión
+**Resumen:** La clase aborda el análisis discriminante como técnica de clasificación cuando la variable de salida tiene más de dos categorías. Se explica cuándo usar LDA (covarianzas iguales), QDA (covarianzas desiguales) o KNN (sin normalidad), usando el dataset Iris como ejemplo práctico. Se aplica el test de Shapiro-Wilk para evaluar normalidad y el test de homogeneidad de covarianzas (biblioteca biotools) para decidir el modelo adecuado. Al no cumplirse la igualdad de covarianzas, se opta por QDA, se entrena el modelo y se evalúa su desempeño mediante una matriz de confusión, obteniendo resultados satisfactorios.
 
 <!-- ESTADO_RESUMEN
 {
@@ -834,6 +862,52 @@ _Última actualización: 19/10/26_
           "fecha": "No identificada",
           "temas": "Regresión no paramétrica, estimador de vecinos cercanos (KNN), librería caret en R, predicción con KNN, comparación de modelos con distintos valores de K",
           "resumen": "La clase aborda los métodos de regresión no paramétrica, específicamente el estimador de núcleo y el método de vecinos cercanos (KNN), en el marco del capítulo 5 de la materia. Se implementa en R el modelo KNN usando la librería `caret`, aplicándolo a un dataset de salarios para estimar la función de regresión del salario en función de la antigüedad. Se generan predicciones para secuencias de datos nuevos y se visualizan gráficamente, comparando modelos con distinto número de vecinos (3, 8 y otros valores) para analizar cómo varía el ajuste. Se concluye destacando que estos estimadores tienen amplia aplicación en modelos predictivos y de clasificación más avanzados."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 6",
+        "Clase 11"
+      ],
+      [
+        {
+          "rel_path": "Unidad 6/Clase 11/Video teorico-practico MnL.txt",
+          "fecha": "No identificada",
+          "temas": "Modelos no lineales, librería EasyNonLinear (R), ajuste de modelos, comparación de modelos (AIC, R cuadrado), modelo lineal, cuadrático y exponencial",
+          "resumen": "La clase muestra cómo utilizar el paquete de R para modelos no lineales (Easy Non Linear) aplicado al dataset de salarios trabajado en clases anteriores. Se demuestra el uso de la función `fit` para ajustar distintos tipos de modelos (lineal, cuadrático y exponencial) utilizando las variables edad y salario. Se comparan los resultados de cada ajuste mediante métricas como el R cuadrado, el p-valor y el AIC, concluyendo que el polinomio de grado 2 ofrece el mejor ajuste para estos datos. También se menciona la necesidad de proveer el argumento `start` para modelos como el exponencial, que requieren valores iniciales para las iteraciones."
+        },
+        {
+          "rel_path": "Unidad 6/Clase 11/Video teórico-practico regularización (Lasso y Ridge).txt",
+          "fecha": "No identificada",
+          "temas": "Regularización, Ridge, Lasso, modelos lineales generalizados, variables predictoras, validación cruzada, RMSE, R cuadrado, coeficientes beta, variables dummy",
+          "resumen": "La clase presenta los métodos de regularización Ridge y Lasso, utilizados cuando se trabaja con muchas variables predictoras para evitar el sobreajuste. Se implementan ambos modelos en R usando el paquete `glmnet`, con variables como edad, género y nivel educativo (previamente factorizadas y sin valores NA). Se generan predicciones aprovechando la validación cruzada incorporada en el paquete, y se comparan ambos modelos mediante las métricas RMSE y R cuadrado, definidas como funciones personalizadas. Finalmente, se concluye que Lasso ofrece mejor ajuste en este caso, con mayor R cuadrado y menor sumatoria de errores, y se explica la interpretación de los coeficientes beta y las variables dummy generadas a partir de variables cualitativas."
+        },
+        {
+          "rel_path": "Unidad 6/Clase 11/Video teorico-practico validación cruzada (Lasso).txt",
+          "fecha": "No identificada",
+          "temas": "Validación cruzada, Regresión Lasso, Partición train/test, Predicción manual vs. iterativa, RMSE, Suma de cuadrados",
+          "resumen": "La clase muestra en código cómo implementar validación cruzada con regresión Lasso, comenzando por la generación de índices para dividir los datos en conjuntos de entrenamiento (80%) y prueba (20%). Se construye un modelo Lasso \"manual\" usando la función correspondiente con alpha=1 sobre los datos de entrenamiento, y se realizan predicciones sobre el conjunto de prueba. Finalmente, se calculan métricas de error (RMSE y suma de cuadrados) comparando la predicción manual con la iterativa del paquete, concluyendo que el método iterativo incorporado al paquete arroja mejores resultados y es preferible para aplicar validación cruzada."
+        }
+      ]
+    ],
+    [
+      [
+        "Unidad 6",
+        "Clase 12"
+      ],
+      [
+        {
+          "rel_path": "Unidad 6/Clase 12/Video teorico practico RLS.txt",
+          "fecha": "No identificada",
+          "temas": "Regresión logística binaria en R, modelo GLM, partición train/test, matriz de confusión, predicción de sobrevivencia en Titanic",
+          "resumen": "La clase muestra paso a paso cómo implementar una regresión logística (GLM con familia binomial) en R para predecir una variable cualitativa dicotómica (sobrevivencia en el Titanic). Se trabaja con selección y transformación de variables (conversión a factores), partición del dataset en conjuntos de entrenamiento y prueba (80/20 con caret), ajuste e interpretación de dos modelos (con y sin variables no significativas), y evaluación mediante matriz de confusión. Finalmente se realiza la predicción de probabilidad de sobrevivencia para nuevos pasajeros hipotéticos, evidenciando la influencia del sexo y la clase social en el resultado."
+        },
+        {
+          "rel_path": "Unidad 6/Clase 12/Video teorico practico LDA y QDA.txt",
+          "fecha": "No identificada",
+          "temas": "Análisis Discriminante Lineal (LDA), Análisis Discriminante Cuadrático (QDA), supuestos de normalidad, test de Shapiro, test de homogeneidad de covarianzas, clasificación multiclase, matriz de confusión",
+          "resumen": "La clase aborda el análisis discriminante como técnica de clasificación cuando la variable de salida tiene más de dos categorías. Se explica cuándo usar LDA (covarianzas iguales), QDA (covarianzas desiguales) o KNN (sin normalidad), usando el dataset Iris como ejemplo práctico. Se aplica el test de Shapiro-Wilk para evaluar normalidad y el test de homogeneidad de covarianzas (biblioteca biotools) para decidir el modelo adecuado. Al no cumplirse la igualdad de covarianzas, se opta por QDA, se entrena el modelo y se evalúa su desempeño mediante una matriz de confusión, obteniendo resultados satisfactorios."
         }
       ]
     ]

@@ -1,0 +1,76 @@
+Hito Evaluable #4 – Actividad Obligatoria
+Estudio de Caso: Ingeniería Inversa
+Tomando en cuenta las siguientes tablas, realizar el modelo relacional correspondiente.
+a) Explicación del escenario: En la bolsa de valores también llamado mercado de capitales, se pueden comprar y vender activos (acciones de empresas cotizadas en la bolsa). Estos activos tienen una etiqueta o símbolo y su correspondiente descripción, así como un precio (el cual en realidad varía constantemente). Los inversores (en este caso simples ciudadanos) pueden comerciar dichos activos almacenándolos en un portafolio, es decir, una especie de lista personal donde se visualizarán todos los activos que dicho inversor posee en ese momento, la multiplicación del precio actual por las cantidades que se posee de cada activo se denominan activos valorizados. Sin embargo, para poseer un portafolio y activos valorizados, es necesario contar con una cuenta comitente (algo similar a una cuenta bancaria), donde cada inversor tendrá un saldo disponible en su correspondiente cuenta el cual aumentará o disminuirá acorde a la compra y venta de activos que vaya haciendo. Dichas compras y ventas se registran en Movimientos, los cuales contaran con todos los datos correspondientes a la transacción.
+Nombre de Tabla: INVERSOR
+Contenido: Datos básicos de una persona física que cumple el rol de un inversor en la bolsa de valores
+
+
+Nombre de Tabla: ACTIVO
+Contenido: Lista de activos financieros que un inversor puede comerciar.
+
+Nombre de Tabla: cuentaComitente
+Contenido: Datos de la cuenta del inversor en el Broker
+
+Nombre de Tabla: PORTAFOLIO
+Contenido: Detalle de los activos que los inversores poseen en su cuentaComitente
+
+Nombre de tabla: MOVIMIENTO
+Contenido: Fragmento de los movimientos que los inversores fueron realizando sobre su portafolios mediante la compra y venta de activos
+Construya el DER, el MR y las sentencias en SQL para poder crear las tablas del problema. Elabora un Manual de Usuario para explicar el trabajo.
+Adelanto de TP Integrador 
+Avance #3: Implementación de la BD al SGBD
+Construye los scripts para construir las tablas, dar los permisos para los perfiles que tenga tu sistema, los procedimientos, las consultas, triggers y la inserción de las semillas del sistema. Explica de manera resumida la importancia de dichas consultas, procedimientos, triggers, etc. Asístete con la IA para manejar errores y mantener las tablas de auditorías necesarias (obligatoria, sin puntuación asignada – 0pts)
+
+No copies y pegues explicaciones largas de la IA, por favor.
+
+
+--- TABLA ---
+DNI | NOMBRE | APELLIDO
+32742569 | Analia | Zaes
+29799614 | Jose Ignasio | Araujo
+36977004 | Luis Antonio | Florentin
+14158506 | Valeria Beatriz | Koche
+17415300 | Edmundo | Schulz
+40544311 | Gonzalo | Boher
+
+--- TABLA ---
+NRO_ACTIVO | SIMBOLO | DESCRIPCION | PRECIO
+1 | ALUA | Aluar Aluminio Argentino S.A | 88,30
+2 | BBAR | BBVA Argentina S.A. | 204,30
+3 | BMA | Banco Macro S.A. | 299,60
+4 | CEPU | Central Puerto S.A. | 73,05
+5 | COME | Sociedad Comercial del Plata | 8,96
+6 | CRES | Cresud S.A.C.I.F.Y.A. | 140,30
+7 | CVH | Cablevisión Holding S.A | 299,60
+8 | GGAL | Grupo Financiero Galicia S.A. | 182,40
+9 | LOMA | Loma Negra Compañia Industrial Argentina Sa | 233,25
+10 | PAMP | Pampa Energía S.A | 171,40
+11 | TECO2 | Telecom Argentina | 217,25
+
+--- TABLA ---
+NRO_CUENTA | SALDO_DISPONIBLE | ACTIVOS_VALORIZADOS | DNI_INVERSOR
+319 | 1759,50 | 55600,00 | 32742569
+215 | 0,00 | 12600,00 | 29799614
+217 | 520,00 | 75450,00 | 36977004
+978 | 3879,00 | 25000,00 | 14158506
+979 | 4500,00 | 168320,00 | 14158506
+155 | 0,50 | 600,00 | 40544311
+
+--- TABLA ---
+CANTIDAD | NRO_ACTIVO | NRO_CUENTA
+3 | 9 | 217
+3 | 14 | 217
+10 | 5 | 319
+4 | 3 | 319
+20 | 13 | 979
+
+--- TABLA ---
+NRO_MOVIMIENTO | FECHA_TRANSACCION | TIPO_TRANSACCION | CUENTA | ACTIVO | CANTIDAD | MONTO
+5 | 2022-01-12 | Compra | 217 | 9 | 3 | 699,75
+6 | 2022-01-12 | Compra | 217 | 14 | 5 | 4375,00
+7 | 2022-01-13 | Compra | 319 | 5 | 10 | 89,60
+8 | 2022-01-14 | Compra | 979 | 13 | 20 | 2340,00
+9 | 2022-01-14 | Compra | 319 | 3 | 8 | 2396,80
+10 | 2022-01-17 | Venta | 217 | 14 | 2 | 95,50
+11 | 2022-01-17 | Venta | 319 | 3 | 4 | 2500,00

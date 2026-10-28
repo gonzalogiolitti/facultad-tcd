@@ -1,0 +1,8 @@
+[1] 43
+                    completo sin_extremos
+(Intercept)           78.583       78.237
+edad_anios             0.458        0.458
+IMC                    0.818        0.832
+gender_fCategoría 2    3.301        3.315
+    R2_completo R2_sin_extremos 
+      0.1123565       0.1130244 

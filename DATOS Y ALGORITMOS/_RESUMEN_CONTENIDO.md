@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 19/10/26_
+_Última actualización: 28/10/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -31,6 +31,11 @@ _Última actualización: 19/10/26_
 **Fecha:** No identificada
 **Temas:** Arrays/arreglos, declaración y tipos, arreglos unidimensionales y bidimensionales, ordenamiento (burbuja y selección de mínimo), búsqueda secuencial, búsqueda dicotómica (binaria)
 **Resumen:** El archivo presenta el concepto de arrays como estructuras de datos que permiten agrupar múltiples valores del mismo tipo bajo un identificador, con tamaño fijo y acceso por índice. Se cubren arreglos unidimensionales (vectores) y bidimensionales (matrices), con problemas resueltos en pseudocódigo. Se desarrollan métodos de ordenamiento (intercambio/burbuja y selección del mínimo) y métodos de búsqueda (secuencial y dicotómica), incluyendo ejemplos ilustrativos y algoritmos completos para cada caso.
+
+**Archivo:** Contenido/Arreglos.md
+**Fecha:** No identificada
+**Temas:** Arreglos (arrays), declaración y tipos, ordenamiento (burbuja y selección), búsqueda secuencial y dicotómica, intercalación de arreglos, eficiencia de algoritmos
+**Resumen:** El archivo cubre el concepto de arreglos (arrays) como estructura de datos, sus características y declaración en una y dos dimensiones. Explica y ejemplifica los métodos de ordenamiento por intercambio (burbuja) y por selección del mínimo, así como búsqueda secuencial y binaria (dicotómica). También aborda la intercalación de dos arreglos clasificados en uno nuevo, analizando la eficiencia del algoritmo. Se incluyen múltiples problemas resueltos y ejercicios de práctica pre-parcial que integran todos los temas.
 
 ### Actividades
 **Archivo:** Contenido/Actividades/Práctica 1.md
@@ -149,6 +154,12 @@ _Última actualización: 19/10/26_
           "fecha": "No identificada",
           "temas": "Arrays/arreglos, declaración y tipos, arreglos unidimensionales y bidimensionales, ordenamiento (burbuja y selección de mínimo), búsqueda secuencial, búsqueda dicotómica (binaria)",
           "resumen": "El archivo presenta el concepto de arrays como estructuras de datos que permiten agrupar múltiples valores del mismo tipo bajo un identificador, con tamaño fijo y acceso por índice. Se cubren arreglos unidimensionales (vectores) y bidimensionales (matrices), con problemas resueltos en pseudocódigo. Se desarrollan métodos de ordenamiento (intercambio/burbuja y selección del mínimo) y métodos de búsqueda (secuencial y dicotómica), incluyendo ejemplos ilustrativos y algoritmos completos para cada caso."
+        },
+        {
+          "rel_path": "Contenido/Arreglos.md",
+          "fecha": "No identificada",
+          "temas": "Arreglos (arrays), declaración y tipos, ordenamiento (burbuja y selección), búsqueda secuencial y dicotómica, intercalación de arreglos, eficiencia de algoritmos",
+          "resumen": "El archivo cubre el concepto de arreglos (arrays) como estructura de datos, sus características y declaración en una y dos dimensiones. Explica y ejemplifica los métodos de ordenamiento por intercambio (burbuja) y por selección del mínimo, así como búsqueda secuencial y binaria (dicotómica). También aborda la intercalación de dos arreglos clasificados en uno nuevo, analizando la eficiencia del algoritmo. Se incluyen múltiples problemas resueltos y ejercicios de práctica pre-parcial que integran todos los temas."
         }
       ]
     ],

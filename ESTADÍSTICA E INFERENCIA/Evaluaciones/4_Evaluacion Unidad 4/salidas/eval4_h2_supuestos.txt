@@ -1,0 +1,30 @@
+$Normal
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.95578, p-value < 2.2e-16
+
+
+$`Por encima de lo normal`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.96873, p-value < 2.2e-16
+
+
+$`Muy por encima de lo normal`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.96554, p-value < 2.2e-16
+
+
+
+	Bartlett test of homogeneity of variances
+
+data:  weight by cholesterol_f
+Bartlett's K-squared = 462.14, df = 2, p-value < 2.2e-16
+

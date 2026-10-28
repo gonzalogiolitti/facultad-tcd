@@ -1,0 +1,21 @@
+
+Call:
+lm(formula = ap_hi ~ edad_anios + IMC + gender_f, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-73.422  -9.420  -2.833   7.930 113.014 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)         78.583496   0.555064  141.58   <2e-16 ***
+edad_anios           0.458092   0.008963   51.11   <2e-16 ***
+IMC                  0.818279   0.011588   70.61   <2e-16 ***
+gender_fCategoría 2  3.301205   0.127183   25.96   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 15.79 on 68715 degrees of freedom
+Multiple R-squared:  0.1124,	Adjusted R-squared:  0.1123 
+F-statistic:  2899 on 3 and 68715 DF,  p-value: < 2.2e-16
+

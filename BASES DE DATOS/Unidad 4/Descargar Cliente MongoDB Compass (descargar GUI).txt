@@ -1,0 +1,5 @@
+Descargar Cliente MongoDB Compass (descargar GUI)
+
+https://www.mongodb.com/try/download/compass
+
+(link externo (no es un archivo descargable))

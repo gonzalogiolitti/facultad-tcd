@@ -1,0 +1,35 @@
+Hito Evaluable #5 – Actividad Obligatoria
+Estudio de Caso: Trabajo Práctico Integrador
+Ahora te toca ser el profesor, ser el experto.
+
+En esta instancia vas a presentar en un pequeño documento:
+La situación a modelar en lenguaje coloquial
+El Diagrama Entidad – Relación
+El Modelo Relacional
+
+Además, en un archivo .sql, entregarás:
+El código SQL para la creación de tablas
+La inserción de semillas en las tablas
+La creación de los perfiles y los permisos que se le asignan a dichos perfiles
+
+¿Te animás a armar estas consultas?
+La aplicación de consultas con esos datos ingresados en el mismo sql anterior. Debes explicar para qué sirve la consulta en un comentario, y aplicarla. Podés asistirte de una IA.
+Una consulta simple con una función de agrupación
+Una consulta usando un INNER JOIN
+Una consulta usando un INNER LEFT o RIGHT
+Una consulta usando una subconsulta, o una consulta anidada
+Una consulta que use el modificador LIKE
+Una consulta que use el modificador HAVING
+Una consulta que use el modificador LIMIT 3
+
+Además, construye un procedimiento de inserción de datos donde debes considerar:
+Debe gestionarse con transacciones
+Debe gestionar errores
+Debe accionar un trigger
+Sí, debés ser creativo 
+
+Entregá lo que tengas para la regularidad. No importa si no está terminado.
+Luego, entregarás completo para la mesa de examen (si lo terminaste para la regularidad, entregarás lo mismo en la mesa, se habilitará una tarea para esos fines)
+
+Ah, y antes de que te vayas, ¿podrías completar esta encuesta? Es anónima y tiene 4 preguntas: https://forms.gle/VYPYz9Uqki6jr2yRA (no es obligatoria, pero me ayuda a seguir mejorando )
+

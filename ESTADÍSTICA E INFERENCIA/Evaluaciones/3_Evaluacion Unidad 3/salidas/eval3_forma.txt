@@ -1,0 +1,21 @@
+       vars     n   mean    sd median trimmed   mad min max range skew kurtosis
+height    1 68719 164.41  7.91    165  164.33  7.41 120 207    87 0.02     0.61
+weight    2 68719  74.12 14.30     72   73.04 11.86  30 200   170 0.99     2.42
+         se
+height 0.03
+weight 0.05
+
+	Shapiro-Wilk normality test
+
+data:  muestra_altura
+W = 0.99325, p-value = 1.203e-14
+
+[1] 73
+Categoría 1 Categoría 2 
+   161.4212    170.0019 
+fuma
+    0     1 
+62671  6048 
+fuma
+         0          1 
+0.91198941 0.08801059 

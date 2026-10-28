@@ -1,0 +1,5 @@
+        df      AIC
+modelo1  3 579405.0
+modelo2  3 577454.9
+modelo3  4 574947.6
+modelo4  5 574279.1

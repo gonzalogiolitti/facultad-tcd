@@ -448,28 +448,59 @@ Mapeo cardinalidad de la cátedra → ERDPlus:
 `(1,N)`→`Mandatory`/`Many`. **Qué valor va en cada bloque: ver la sección siguiente
 (regla de cardinalidades en ERDPlus, CRÍTICA).**
 
-## Regla de cardinalidades en ERDPlus (CRÍTICA)
+## Regla de cardinalidades en ERDPlus (CRÍTICA, OBLIGATORIA)
 
-Cuando editás "Edit cardinalities for: X" en ERDPlus, el valor que configurás
-describe a la OTRA entidad de la relación, no a X.
+> Esta sección reemplaza y anula cualquier versión anterior (incluida la
+> que hablaba de "for: X describe a la OTRA entidad" con el ejemplo
+> Cliente-Reserva, fechada 21/09/2026 — **esa versión estaba invertida** y
+> generó cardinalidades 1:N al revés en varios `.erdplus` ya corregidos
+> (HE2, HE4, HE5-TPI). Verificado y corregido el 25/10/2026 contra
+> `HE3_concesionaria.erdplus` (hecho/corregido a mano, referencia confiable).
 
-Para saber qué poner: preguntate "la entidad que NO elegí en el dropdown,
-¿cuántas hay por cada una de la que sí elegí?"
+**Regla de traducción:**
+Los valores guardados en el bloque de la entidad **Y** (`data.sourceEntityDetails`
+o `data.targetEntityDetails` cuyo `id` apunta a Y) salen del `(min,max)` **de
+la OTRA entidad X** tal como se lee en el DER de la cátedra junto a X:
 
-Ejemplo confirmado (Cliente-Reserva, ejercicio del profesor):
-- "Un cliente puede realizar 0 o varias reservas"
-  → for: CLIENTE = Optional / Many (describe cuántas RESERVAS hay por cliente)
-- "Una reserva la realiza un único cliente"
-  → for: RESERVA = Mandatory / One (describe cuántos CLIENTES hay por reserva)
+- `min`: `0` → `"Optional"`, `1` → `"Mandatory"`.
+- `max`: `1` → `"One"`, `N` → `"Many"`.
+- Símbolo que queda dibujado junto a Y:
+  `||` = Mandatory/One · `|<` = Mandatory/Many ·
+  `o|` = Optional/One · `o<` = Optional/Many (pata de gallo + círculo).
 
-Patrón general: para una relación A-B donde "un A tiene 1 o muchos B" y
-"un B pertenece a 1 solo A":
-- for: A = Mandatory / Many
-- for: B = Mandatory / One
+**Ejemplo canónico (1:N):** `CLIENTE (0,N) — tiene — VEHICULO (1,1)`
+- CLIENTE tiene (0,N): cada cliente tiene de 0 a N vehículos
+  → `VEHICULO.details = Optional / Many` (pata de gallo + círculo junto a VEHICULO)
+- VEHICULO tiene (1,1): cada vehículo es de exactamente 1 cliente
+  → `CLIENTE.details = Mandatory / One` (`||` junto a CLIENTE)
 
-Esta regla reemplaza cualquier versión anterior de esta sección que diga
-lo contrario (fue validada y corregida el 21/09/2026 tras verificar
-contra el ejercicio Cliente-Reserva del profesor).
+Patrón general para una relación 1:N entre el lado "uno" (padre/catálogo) y
+el lado "muchos" (hijo): el bloque del lado **"uno"** lleva `Mandatory/One`,
+el bloque del lado **"muchos"** lleva `Optional/Many` (o `Mandatory/Many` si
+ese lado también es obligatorio). En N:M, **ambos** lados llevan pata de
+gallo (`Optional/Many` o `Mandatory/Many`).
+
+**Prohibido:** copiar el `(min,max)` propio de X dentro del bloque de X.
+
+**Dónde se guarda (dos lugares, deben coincidir):**
+1. Nodo `Relationship` → `data.sourceEntityDetails` / `data.targetEntityDetails`
+   (`minCardinality`, `maxCardinality`).
+2. Las dos aristas `type:"Relationship"` que salen de ese rombo hacia cada
+   entidad → `data.minCardinality` / `data.maxCardinality` de la arista que
+   apunta a esa entidad (debe ser idéntico al bloque del punto 1 para esa
+   misma entidad).
+
+**Verificación obligatoria al terminar de generar o corregir un `.erdplus`:**
+1. Releer el archivo y, por relación, imprimir una tabla:
+   `relación | entidad | min/max guardado | símbolo visible junto a esa entidad`.
+2. Para toda relación 1:N: el lado "uno" debe mostrar `||` y el lado
+   "muchos" debe mostrar pata de gallo (+ círculo si es opcional). Si el
+   lado "muchos" muestra `||` o el lado "uno" muestra pata de gallo, está
+   invertido — corregir antes de entregar.
+3. En toda relación N:M, los dos lados deben mostrar pata de gallo.
+4. No dar por buena ninguna cardinalidad sin haber impreso y revisado esta
+   tabla. Referencia correcta conocida: `HE3_concesionaria.erdplus`
+   (`||` junto a MARCA, pata de gallo junto a CARROCERIA en `tiene_marca_carroceria`).
 
 Reglas al generar el `.erdplus`:
 - **N:M** = nodo `Relationship` (rombo). **No** convertir en entidad (salvo ternaria).

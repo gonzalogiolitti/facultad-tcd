@@ -1,0 +1,47 @@
+HITO EVALUABLE #1
+Temas Asignados
+
+
+
+--- TABLA ---
+Estudiante | Estudiante | Tema
+Maira | Ahumada | Visión de los Datos y Abstracción
+Carla | Albonico | Historia de las BBDD
+Mauricio | Antonilli | Arquitecturas de las BBDD
+Cecilia Anahi | Bermejo | Lenguajes de BBDD
+Tomas | Borghetto | Modelos de Datos
+Jeronimo Manuel | Clinaz | Gestión de Transacciones
+Regina | Costa | Visión de los Datos y Abstracción
+Cesar | Ezquer | Historia de las BBDD
+Federico David | Fello | Arquitecturas de las BBDD
+Federico Gabriel | Flores | Lenguajes de BBDD
+BIANCA | FRANCESIO | Modelos de Datos
+Emiliano | Franco | Gestión de Transacciones
+Silvina | Furfaro | Visión de los Datos y Abstracción
+Victoria | García | Historia de las BBDD
+Gonzalo | Giolitti | Arquitecturas de las BBDD
+Valentina | Gloriani | Lenguajes de BBDD
+Angel Luis | Golin | Modelos de Datos
+Ezequiel Leonardo | Gomez | Gestión de Transacciones
+Maximiliano Gabriel | Ibacache Gallegos | Visión de los Datos y Abstracción
+Luciano Hernan | Kovacevich | Historia de las BBDD
+Julieta | Laborde | Arquitecturas de las BBDD
+Tomás | Leguizamón | Lenguajes de BBDD
+Agustin | Lerer | Modelos de Datos
+Gabriela Liliana | Lingeri | Gestión de Transacciones
+Ricardo Andrés | Loyola Plua | Visión de los Datos y Abstracción
+Facundo Sebastián | Muñoz | Historia de las BBDD
+Maria Eva | Ortega Cor | Arquitecturas de las BBDD
+Nicolas | Palena | Lenguajes de BBDD
+Maximiliano | Putrino | Modelos de Datos
+Lisandro Francisco | Reta Ré | Gestión de Transacciones
+Yael | Reynoso | Visión de los Datos y Abstracción
+Matias | Riffo | Historia de las BBDD
+María Isabel | Rivadero | Arquitecturas de las BBDD
+Elias | Salgueiro | Lenguajes de BBDD
+Julieta | Scheffer | Modelos de Datos
+Alan | Schleider | Gestión de Transacciones
+Luis | Tiscornia | Visión de los Datos y Abstracción
+Hernán | Tolos | Historia de las BBDD
+Jesus | Tulliani | Arquitecturas de las BBDD
+Bianca | Valente | Lenguajes de BBDD

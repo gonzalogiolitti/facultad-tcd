@@ -1,0 +1,12 @@
+[1] -2.834556e-16
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-73.422  -9.420  -2.833   0.000   7.930 113.014 
+
+	Shapiro-Wilk normality test
+
+data:  muestra_res
+W = 0.95236, p-value < 2.2e-16
+
+      Q1       Q2       Q3       Q4 
+13.99277 15.24060 16.01206 17.68823 
+[1] 0.1569667

@@ -1,0 +1,5 @@
+Salary_Data
+
+https://www.kaggle.com/datasets/mohithsairamreddy/salary-data
+
+(link externo (no es un archivo descargable))
