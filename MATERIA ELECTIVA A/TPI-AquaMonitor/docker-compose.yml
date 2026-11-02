@@ -1,0 +1,57 @@
+# AquaMonitor: QuestDB + Node-RED + Grafana en local.
+#   docker compose up -d --build
+# Las credenciales se leen de .env (esta en .gitignore, plantilla en .env.example).
+# Los puertos se publican solo en 127.0.0.1 (no quedan expuestos en la red local).
+
+name: aquamonitor
+
+services:
+  questdb:
+    image: questdb/questdb:latest
+    container_name: questdb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9000:9000"   # consola web + API HTTP (ILP /write y /exec)
+      - "127.0.0.1:8812:8812"   # PostgreSQL wire (Grafana, analisis)
+      - "127.0.0.1:9009:9009"   # ILP sobre TCP
+    volumes:
+      - questdb-data:/var/lib/questdb
+
+  nodered:
+    build: ./nodered
+    container_name: nodered
+    restart: unless-stopped
+    depends_on:
+      - questdb
+    ports:
+      - "127.0.0.1:1880:1880"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      TZ: America/Argentina/Buenos_Aires
+      # Node-RED corre en la red de Docker: QuestDB se ve por nombre de servicio.
+      QUESTDB_HTTP_URL: http://questdb:9000
+    volumes:
+      - nodered-data:/data
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    depends_on:
+      - questdb
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      TZ: America/Argentina/Buenos_Aires
+      GF_DATE_FORMATS_DEFAULT_TIMEZONE: America/Argentina/Buenos_Aires
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  questdb-data:
+  nodered-data:
+  grafana-data:
