@@ -8,7 +8,7 @@ Si dos generan, se mezclan dos "plantas" en las mismas series y los indicadores 
 
 | Qué | Cómo | Dónde está |
 |---|---|---|
-| El código (flows, catálogo de umbrales, scripts, documentación) | `git clone` del repositorio, rama `stack-catedra` | repositorio |
+| El código (flows, catálogo de umbrales, scripts, documentación) | `git clone` del repositorio, rama `stack-catedra`. **La rama tiene que estar subida** (`git push -u origin stack-catedra`) porque el script de descargas de la facultad solo sube `main` | repositorio |
 | Los dos secretos (token de InfluxDB y contraseña de aplicación) y las direcciones de mail | el archivo **`.env`**, pasado **en privado** (ver 2) | **no** está en el repositorio |
 | Nada más | — | — |
 
@@ -17,8 +17,9 @@ El catálogo de variables y umbrales es `nodered/userdir/aqm/catalogo.js` (viaja
 Pasos en la PC nueva (todo en [`README.md`](../README.md), secciones 4 y 5):
 
 ```bash
-git clone <repo> && cd <repo>/.../TPI-AquaMonitor
+git clone <repo> && cd <repo>
 git checkout stack-catedra
+cd "MATERIA ELECTIVA A/TPI-AquaMonitor"
 cd nodered/userdir && npm install && cd ../..
 # poner el .env recibido en esta carpeta (junto a .env.example)
 node nodered/pruebas/probar.js              # las pruebas de la lógica deben dar "todo OK"

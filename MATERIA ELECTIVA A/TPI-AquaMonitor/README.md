@@ -70,10 +70,20 @@ TPI-AquaMonitor/
 
 ## 5. Instalación paso a paso
 
-### 5.1 Descargar e instalar Node-RED
+### 5.1 Conseguir el código e instalar Node-RED
+
+El proyecto vive en la carpeta `MATERIA ELECTIVA A/TPI-AquaMonitor` del repositorio de la facultad, en la rama **`stack-catedra`**:
 
 ```bash
-cd TPI-AquaMonitor/nodered/userdir
+git clone <URL del repositorio> && cd <repositorio>
+git checkout stack-catedra            # si la rama no aparece, quien la creó tiene que subirla antes: git push -u origin stack-catedra
+cd "MATERIA ELECTIVA A/TPI-AquaMonitor"
+```
+
+Después, instalar Node-RED:
+
+```bash
+cd nodered/userdir
 npm install            # instala Node-RED 5.0.9 y el nodo de mail con las versiones fijadas
 ```
 
@@ -104,7 +114,7 @@ cp .env.example .env   # y completar los valores con un editor de texto
 bash nodered/arrancar.sh                 # queda en esta terminal; Ctrl+C lo detiene
 ```
 
-Abrir <http://localhost:1880>. Se ven 8 pestañas (00 a 07). El generador empieza solo a los pocos segundos.
+Abrir <http://localhost:1880> (para usar otro puerto: `PORT=1881 bash nodered/arrancar.sh`). Se ven 8 pestañas (00 a 07). El generador empieza solo a los pocos segundos.
 Windows nativo: `powershell -ExecutionPolicy Bypass -File nodered\arrancar.ps1` (**no probado**: se desarrolló en WSL).
 
 Detener desde otra terminal, de forma segura (guarda el estado en disco): `bash nodered/parar.sh`.
