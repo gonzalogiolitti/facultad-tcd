@@ -1,15 +1,15 @@
 [
   {
-    "id": "f1_prueba",
+    "id": "t_prueba",
     "type": "tab",
-    "label": "00 Prueba de conexion (Fase 1)",
+    "label": "00 Prueba de conexión InfluxDB",
     "disabled": false,
-    "info": "Verifica la escritura en InfluxDB y el envio de mail. Escribe en el measurement 'prueba_conexion', NO en raw_variables."
+    "info": "Escribe 1 punto en el measurement prueba_conexion (NO en raw_variables). Sirve para verificar token, organización y bucket."
   },
   {
     "id": "inj_influx",
     "type": "inject",
-    "z": "f1_prueba",
+    "z": "t_prueba",
     "name": "Escribir dato de prueba en InfluxDB",
     "props": [
       {
@@ -34,27 +34,27 @@
   {
     "id": "fn_influx",
     "type": "function",
-    "z": "f1_prueba",
-    "name": "Armar linea de escritura",
+    "z": "t_prueba",
+    "name": "Armar línea de escritura",
     "outputs": 1,
     "timeout": 0,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "func": "// El token se lee del entorno (.env) y viaja SOLO en el encabezado: no queda en ningun archivo.\nconst url = env.get('INFLUX_URL'), org = env.get('INFLUX_ORG'),\n      bucket = env.get('INFLUX_BUCKET'), token = env.get('INFLUX_TOKEN');\nif (!url || !org || !bucket || !token) {\n    node.error('Faltan variables INFLUX_* en el entorno');\n    return null;\n}\nconst ahora = Date.now();   // milisegundos\nmsg.method = 'POST';\nmsg.url = url + '/api/v2/write?org=' + encodeURIComponent(org) +\n          '&bucket=' + encodeURIComponent(bucket) + '&precision=ms';\nmsg.headers = { 'Authorization': 'Token ' + token, 'Content-Type': 'text/plain; charset=utf-8' };\nmsg.payload = 'prueba_conexion,origen=nodered valor=1.5,contador=1i ' + ahora;\nmsg.hora_envio = new Date(ahora).toISOString();\nreturn msg;\n",
     "x": 470,
     "y": 80,
     "wires": [
       [
         "http_influx"
       ]
-    ]
+    ],
+    "func": "const url = env.get('INFLUX_URL'), org = env.get('INFLUX_ORG'), bucket = env.get('INFLUX_BUCKET'), token = env.get('INFLUX_TOKEN');\nif (!url || !org || !bucket || !token) { node.error('Faltan variables INFLUX_* en el entorno'); return null; }\nmsg.method = 'POST';\nmsg.url = url + '/api/v2/write?org=' + encodeURIComponent(org) + '&bucket=' + encodeURIComponent(bucket) + '&precision=ms';\nmsg.headers = { 'Authorization': 'Token ' + token, 'Content-Type': 'text/plain; charset=utf-8' };\nmsg.payload = 'prueba_conexion,origen=nodered valor=1.5,contador=1i ' + Date.now();\nreturn msg;\n"
   },
   {
     "id": "http_influx",
     "type": "http request",
-    "z": "f1_prueba",
+    "z": "t_prueba",
     "name": "POST InfluxDB /api/v2/write",
     "method": "use",
     "ret": "txt",
@@ -78,7 +78,7 @@
   {
     "id": "dbg_influx",
     "type": "debug",
-    "z": "f1_prueba",
+    "z": "t_prueba",
     "name": "Respuesta InfluxDB (204 = escrito)",
     "active": true,
     "tosidebar": true,
@@ -93,13 +93,118 @@
     "wires": []
   },
   {
-    "id": "inj_mail",
+    "id": "t_gen",
+    "type": "tab",
+    "label": "01 Generador de datos",
+    "disabled": false,
+    "info": "Simula los 3 equipos (15 variables). Reemplaza al simulador de Python y a MQTT."
+  },
+  {
+    "id": "c_gen1",
+    "type": "comment",
+    "z": "t_gen",
+    "name": "1) Cada 5 s se revisa si toca medir: modo normal = cada 120 s, modo demo = cada 15 s",
+    "info": "El intervalo normal (120 s) cumple la consigna (2 a 5 minutos). El modo demo (15 s) es solo para mostrar el sistema en vivo.",
+    "x": 330,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "gen_tick",
     "type": "inject",
-    "z": "f1_prueba",
-    "name": "Mandar mail [PRUEBA]",
+    "z": "t_gen",
+    "name": "revisar cada 5 s",
     "props": [
       {
         "p": "payload"
+      }
+    ],
+    "repeat": "5",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 3,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "gen_ciclo"
+      ]
+    ]
+  },
+  {
+    "id": "gen_ciclo",
+    "type": "function",
+    "z": "t_gen",
+    "name": "Generar ciclo de mediciones",
+    "func": "// GENERADOR DE DATOS: simula los 3 equipos (15 variables) y arma un \"ciclo\" de mediciones.\n// Es el reemplazo en Node-RED del simulador de Python (mismas formulas, mismos rangos).\n// Este nodo se ejecuta cada 5 s, pero solo genera un ciclo cuando toca segun el modo:\n//   normal = una medicion cada 120 s   |   demo = una cada 15 s\n// Salida 1 -> escritura en InfluxDB (medicion cruda + eventos de fallas provocadas)\n// Salida 2 -> lecturas del ciclo para los indicadores y las alertas\nconst A = global.get('aqm');\nconst C = A.CATALOGO;\nconst ahora = Date.now();\n\n// ---------- modo e intervalo ----------\nconst modo = global.get('gen_modo') || 'normal';\nconst intervaloS = modo === 'demo'\n    ? Number(env.get('GEN_INTERVALO_DEMO_S') || C.GENERADOR.intervalo_demo_s)\n    : Number(env.get('GEN_INTERVALO_S') || C.GENERADOR.intervalo_normal_s);\n\nif (global.get('gen_pausa') === true) {\n    node.status({ fill: 'yellow', shape: 'ring', text: 'PAUSADO' });\n    return null;\n}\n\n// ---------- ¿toca generar un ciclo? ----------\nconst ultimoTs = global.get('gen_ultimo_ts') || 0;\nlet ts = Math.floor(ahora / (intervaloS * 1000)) * intervaloS * 1000;   // alineado a la grilla (17:04:00, 17:06:00, ...)\nif (global.get('gen_forzar') === true) {                                  // al provocar una falla se mide enseguida\n    ts = Math.floor(ahora / 1000) * 1000;\n    if (ts <= ultimoTs) ts = ultimoTs + 1000;\n    global.set('gen_forzar', false);\n} else if (ts <= ultimoTs) {\n    return null;\n}\n\n// ---------- estado interno de los equipos (persistente) ----------\nfunction nuevoEstado() {\n    const fase = () => Math.random() * 2 * Math.PI;\n    return {\n        EQ01: { ciclo: 0, fase: fase(), anom: {}, enMarcha: true },\n        EQ02: { ciclo: 0, fase: fase(), anom: {}, colmatacion: 0 },\n        EQ03: { ciclo: 0, fase: fase(), anom: {}, phDesvio: 0, phDesvioCiclos: 0 }\n    };\n}\nconst st = global.get('gen_estado') || nuevoEstado();\n\n// ---------- fallas: las pedidas por botones y las aleatorias ----------\nconst inyectadas = [];\n(global.get('gen_cola_fallas') || []).forEach((t) => {\n    st[C.ANOMALIAS[t].equipo].anom[t] = C.ANOMALIAS[t].ciclos_default;\n    inyectadas.push({ tipo: t, origen: 'manual' });\n});\nglobal.set('gen_cola_fallas', []);\nif (global.get('gen_aleatorio') === true && Math.random() < C.GENERADOR.prob_falla_aleatoria) {\n    const tipos = Object.keys(C.ANOMALIAS);\n    const t = tipos[Math.floor(Math.random() * tipos.length)];\n    const eq = C.ANOMALIAS[t].equipo;\n    if (!((st[eq].anom[t] || 0) > 0)) {\n        st[eq].anom[t] = C.ANOMALIAS[t].ciclos_default;\n        inyectadas.push({ tipo: t, origen: 'aleatoria' });\n    }\n}\n\n// ---------- utilidades de senal ----------\nconst gauss = (sigma) => {\n    let u = 0;\n    while (u === 0) u = Math.random();\n    return sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * Math.random());\n};\nconst uni = (a, b) => a + (b - a) * Math.random();\nconst sinus = (e, amp, periodo, desf) => (periodo <= 0 ? 0 : amp * Math.sin((2 * Math.PI / periodo) * e.ciclo + e.fase + (desf || 0)));\nconst activa = (e, t) => (e.anom[t] || 0) > 0;\nconst clip = (v, lo, hi) => Math.max(lo, Math.min(hi, v));\nconst r3 = (v) => Math.round(v * 1000) / 1000;\n\n// Calidad del dato: 2 = bueno, 1 = dudoso (muy fuera del rango de operacion), 0 = inverosimil.\nfunction calidad(eq, variable, v) {\n    const cfg = C.EQUIPOS[eq].variables[variable];\n    const lo = cfg.min_op, hi = cfg.max_op;\n    const span = hi > lo ? hi - lo : 1;\n    if (v >= lo - 0.5 * span && v <= hi + 0.5 * span) return 2;\n    if (v >= lo - 1.5 * span && v <= hi + 1.5 * span) return 1;\n    return 0;\n}\n\n// ---------- EQ01: bomba de ingreso ----------\nfunction leerBomba(e) {\n    const n = C.EQUIPOS.EQ01.variables;\n    if (activa(e, 'PARADA_BOMBA')) e.enMarcha = false;                       // parada imprevista provocada\n    else if (activa(e, 'CAUDAL_DROP') && Math.random() < 0.10) e.enMarcha = false;   // a veces la proteccion para la bomba\n    else if (!activa(e, 'CAUDAL_DROP')) e.enMarcha = true;\n    if (!e.enMarcha) {                                                       // bomba parada: todo colapsa a ~0\n        return {\n            CAUDAL: [Math.abs(gauss(0.4)), 2], PRESION: [Math.abs(gauss(0.05)), 2],\n            CORRIENTE: [Math.abs(gauss(0.3)), 2], VIBRACION: [Math.abs(gauss(0.05)), 2], ESTADO: [0, 2]\n        };\n    }\n    let caudal = n.CAUDAL.normal + sinus(e, 6.0, 180) + gauss(1.8);\n    if (activa(e, 'CAUDAL_DROP')) caudal *= uni(0.45, 0.65);\n    const desv = (caudal - n.CAUDAL.normal) / n.CAUDAL.normal;\n    let presion = n.PRESION.normal - 1.2 * desv * n.PRESION.normal * 0.15 + sinus(e, 0.08, 90, 1.0) + gauss(0.06);\n    if (activa(e, 'CAUDAL_DROP')) presion *= uni(0.70, 0.85);\n    let corriente = n.CORRIENTE.normal * (0.55 + 0.45 * caudal / n.CAUDAL.normal) + gauss(0.7);\n    if (activa(e, 'CAUDAL_DROP')) { corriente *= uni(0.80, 0.92); corriente += gauss(2.5); }\n    let vib = n.VIBRACION.normal + sinus(e, 0.25, 60, 0.5) + Math.abs(gauss(0.30));\n    if (activa(e, 'VIB_HIGH')) {                                             // la falla avanza cuanto mas dura\n        const avance = 1 - e.anom.VIB_HIGH / Math.max(C.ANOMALIAS.VIB_HIGH.ciclos_default, 1);\n        vib += 4.5 + 4.0 * avance + Math.abs(gauss(0.6));\n    }\n    return {\n        CAUDAL: [Math.max(caudal, 0), calidad('EQ01', 'CAUDAL', caudal)],\n        PRESION: [Math.max(presion, 0), calidad('EQ01', 'PRESION', presion)],\n        CORRIENTE: [Math.max(corriente, 0), calidad('EQ01', 'CORRIENTE', corriente)],\n        VIBRACION: [Math.max(vib, 0), calidad('EQ01', 'VIBRACION', vib)],\n        ESTADO: [1, 2]\n    };\n}\n\n// ---------- EQ02: filtro de arena ----------\nfunction leerFiltro(e) {\n    const n = C.EQUIPOS.EQ02.variables;\n    const col = e.colmatacion;\n    const turbIn = n.TURB_IN.normal + sinus(e, 2.5, 200) + Math.abs(gauss(1.2));\n    let turbOut = n.TURB_OUT.normal + 0.9 * col * n.TURB_OUT.normal + 0.02 * (turbIn - n.TURB_IN.normal) + Math.abs(gauss(0.05));\n    if (activa(e, 'FILTER_SAT')) turbOut += 0.6 + Math.abs(gauss(0.15));\n    let presDif = n.PRES_DIF.normal + 520.0 * col + sinus(e, 12.0, 70) + gauss(8.0);\n    if (activa(e, 'FILTER_SAT')) presDif += 180.0;\n    const caudalFilt = n.CAUDAL_FILT.normal * (1.0 - 0.18 * Math.min(col, 1.2)) + sinus(e, 4.0, 150, 0.7) + gauss(1.5);\n    const ef = clip((turbIn - Math.max(turbOut, 1e-6)) / Math.max(turbIn, 1e-6) * 100 + gauss(0.6), 0, 100);\n    return {\n        TURB_IN: [Math.max(turbIn, 0), calidad('EQ02', 'TURB_IN', turbIn)],\n        TURB_OUT: [Math.max(turbOut, 0), calidad('EQ02', 'TURB_OUT', turbOut)],\n        PRES_DIF: [Math.max(presDif, 0), calidad('EQ02', 'PRES_DIF', presDif)],\n        CAUDAL_FILT: [Math.max(caudalFilt, 0), calidad('EQ02', 'CAUDAL_FILT', caudalFilt)],\n        EFICIENCIA: [ef, calidad('EQ02', 'EFICIENCIA', ef)]\n    };\n}\n\n// ---------- EQ03: reactor biologico ----------\nfunction leerReactor(e) {\n    const n = C.EQUIPOS.EQ03.variables;\n    const temp = n.TEMP.normal + sinus(e, 3.0, 720) + gauss(0.25);\n    let ph = n.PH.normal + sinus(e, 0.08, 110) + e.phDesvio + gauss(0.04);\n    if (activa(e, 'PH_SPIKE')) ph += (e.ciclo % 2 === 0 ? 1 : -1) * (1.4 + Math.abs(gauss(0.2)));\n    const od = n.OD.normal - 0.06 * (temp - n.TEMP.normal) + sinus(e, 0.35, 95, 1.3) + gauss(0.12);\n    const cond = n.CONDUCT.normal + sinus(e, 120.0, 260) + 0.05 * e.ciclo + gauss(25.0);\n    const nivel = clip(n.NIVEL.normal + sinus(e, 5.0, 130, 0.4) + gauss(0.8), 0, 100);\n    return {\n        PH: [ph, calidad('EQ03', 'PH', ph)],\n        OD: [Math.max(od, 0), calidad('EQ03', 'OD', od)],\n        TEMP: [temp, calidad('EQ03', 'TEMP', temp)],\n        CONDUCT: [Math.max(cond, 0), calidad('EQ03', 'CONDUCT', cond)],\n        NIVEL: [nivel, calidad('EQ03', 'NIVEL', nivel)]\n    };\n}\n\n// ---------- avanzar el estado un ciclo (igual que EquipoBase.paso del simulador) ----------\nfunction paso(e, extra) {\n    e.ciclo += 1;\n    Object.keys(e.anom).forEach((t) => { e.anom[t] -= 1; if (e.anom[t] <= 0) delete e.anom[t]; });\n    if (extra) extra(e);\n}\nconst pasoFiltro = (e) => {\n    e.colmatacion += (1.0 / 240) * (activa(e, 'FILTER_SAT') ? 6.0 : 1.0);   // retrolavado cada 240 ciclos\n    if (e.ciclo % 240 === 0) e.colmatacion = 0;\n};\nconst pasoReactor = (e) => {\n    if (e.phDesvioCiclos > 0) { e.phDesvioCiclos -= 1; if (e.phDesvioCiclos === 0) e.phDesvio = 0; }\n    else if (Math.random() < 0.03) { e.phDesvio = uni(-0.35, 0.35); e.phDesvioCiclos = 3 + Math.floor(Math.random() * 6); }\n};\n\n// ---------- ciclo ----------\nconst modelos = { EQ01: [leerBomba, null], EQ02: [leerFiltro, pasoFiltro], EQ03: [leerReactor, pasoReactor] };\nconst lecturas = [];\nconst fallasActivas = [];\nObject.keys(modelos).forEach((eq) => {\n    const e = st[eq];\n    Object.keys(e.anom).forEach((t) => fallasActivas.push(t));\n    const crudo = modelos[eq][0](e);\n    Object.keys(crudo).forEach((variable) => {\n        lecturas.push({\n            equipo: eq, area: C.EQUIPOS[eq].area, variable, unit: C.EQUIPOS[eq].variables[variable].unit,\n            value: r3(crudo[variable][0]), quality: crudo[variable][1], ts\n        });\n    });\n    paso(e, modelos[eq][1]);\n});\nglobal.set('gen_estado', st);\nglobal.set('gen_ultimo_ts', ts);\nglobal.set('gen_ciclos_total', (global.get('gen_ciclos_total') || 0) + 1);\n\n// ---------- escritura en InfluxDB (line protocol, precision ms) ----------\nconst lineas = lecturas.map((l) =>\n    'raw_variables,planta=' + C.PLANTA + ',area=' + l.area + ',equipo=' + l.equipo + ',variable=' + l.variable +\n    ',unit=' + A.escTag(l.unit) + ',tag=' + [C.EMPRESA, C.PLANTA, l.area, l.equipo, l.variable].join('-') +\n    ' value=' + l.value + ',quality=' + l.quality + 'i ' + l.ts);\ninyectadas.forEach((i) => {\n    const an = C.ANOMALIAS[i.tipo];\n    lineas.push('events,equipo=' + an.equipo + ',event_type=ANOMALIA_INYECTADA,severity=info,motivo=' + i.tipo +\n        ' value=' + an.ciclos_default + ',detalle=\"' + A.escStr(an.descripcion + ' (origen: ' + i.origen + ')') + '\" ' + ts);\n});\n\nnode.status({\n    fill: fallasActivas.length ? 'red' : 'green', shape: 'dot',\n    text: modo + ' ' + intervaloS + ' s | ciclo ' + global.get('gen_ciclos_total') + (fallasActivas.length ? ' | falla: ' + fallasActivas.join(',') : '') +\n        (global.get('gen_aleatorio') ? ' | aleatorias' : '')\n});\n\nreturn [\n    { payload: lineas.join('\\n'), medida: 'raw_variables', ts },\n    { lecturas, ts, modo, intervaloS, fallasActivas }\n];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": [
+      [
+        "lo_influx_gen"
+      ],
+      [
+        "lo_lecturas"
+      ]
+    ]
+  },
+  {
+    "id": "lo_influx_gen",
+    "type": "link out",
+    "z": "t_gen",
+    "name": "→ InfluxDB",
+    "mode": "link",
+    "links": [
+      "li_influx"
+    ],
+    "x": 650,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "lo_lecturas",
+    "type": "link out",
+    "z": "t_gen",
+    "name": "→ lecturas (KPIs y alertas)",
+    "mode": "link",
+    "links": [
+      "li_lect_kpi",
+      "li_lect_bomba",
+      "li_lect_umbral"
+    ],
+    "x": 650,
+    "y": 130,
+    "wires": []
+  },
+  {
+    "id": "c_gen2",
+    "type": "comment",
+    "z": "t_gen",
+    "name": "2) Botones de control (sin editar código)",
+    "info": "Cambiar de modo, pausar y activar las fallas aleatorias. Todo pasa por el nodo \"Controles del generador\".",
+    "x": 330,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "inj_modo_normal",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Modo NORMAL (120 s)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "modo_normal",
+        "vt": "str"
       }
     ],
     "repeat": "",
@@ -107,30 +212,990 @@
     "once": false,
     "onceDelay": 0.1,
     "topic": "",
-    "payload": "",
-    "payloadType": "date",
-    "x": 170,
-    "y": 200,
+    "x": 160,
+    "y": 240,
     "wires": [
       [
-        "fn_mail"
+        "gen_controles"
       ]
     ]
   },
   {
-    "id": "fn_mail",
+    "id": "inj_modo_demo",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Modo DEMO (15 s)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "modo_demo",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 280,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_pausa",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Pausar generador",
+    "props": [
+      {
+        "p": "accion",
+        "v": "pausa",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 320,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_reanudar",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Reanudar generador",
+    "props": [
+      {
+        "p": "accion",
+        "v": "reanudar",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 360,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_aleatorio_on",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Fallas aleatorias ON",
+    "props": [
+      {
+        "p": "accion",
+        "v": "aleatorio_on",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 400,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_aleatorio_off",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Fallas aleatorias OFF",
+    "props": [
+      {
+        "p": "accion",
+        "v": "aleatorio_off",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 150,
+    "y": 440,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_reiniciar",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Reiniciar estado de los equipos",
+    "props": [
+      {
+        "p": "accion",
+        "v": "reiniciar_estado",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 170,
+    "y": 480,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "c_gen3",
+    "type": "comment",
+    "z": "t_gen",
+    "name": "3) Provocar fallas (se ven en la próxima medición, que se hace al instante)",
+    "info": "VIB_HIGH: vibración > 7,1 mm/s | CAUDAL_DROP: cae el caudal | PARADA_BOMBA: ESTADO = 0 | PH_SPIKE: pH fuera de rango | FILTER_SAT: se tapa el filtro",
+    "x": 330,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "inj_f_vib",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Falla VIB_HIGH (vibración alta)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "falla:VIB_HIGH",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 180,
+    "y": 580,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_f_caudal",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Falla CAUDAL_DROP (cae el caudal)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "falla:CAUDAL_DROP",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 620,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_f_parada",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Falla PARADA_BOMBA (ESTADO = 0)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "falla:PARADA_BOMBA",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 660,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_f_ph",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Falla PH_SPIKE (pH fuera de rango)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "falla:PH_SPIKE",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 700,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "inj_f_filtro",
+    "type": "inject",
+    "z": "t_gen",
+    "name": "Falla FILTER_SAT (filtro saturado)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "falla:FILTER_SAT",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 740,
+    "wires": [
+      [
+        "gen_controles"
+      ]
+    ]
+  },
+  {
+    "id": "gen_controles",
     "type": "function",
-    "z": "f1_prueba",
-    "name": "Armar mail de prueba",
+    "z": "t_gen",
+    "name": "Controles del generador",
+    "func": "// CONTROLES DEL GENERADOR: todos los botones (inject) pasan por aca con msg.accion.\n//   modo_normal | modo_demo | pausa | reanudar | aleatorio_on | aleatorio_off | falla:<NOMBRE> | reiniciar_estado\n// Cambiar de modo NO requiere editar codigo ni reiniciar: se guarda en el contexto global.\nconst A = global.get('aqm');\nconst C = A.CATALOGO;\nconst accion = String(msg.accion || '');\n\nif (accion === 'modo_normal' || accion === 'modo_demo') {\n    global.set('gen_modo', accion === 'modo_demo' ? 'demo' : 'normal');\n    global.set('gen_forzar', true);             // mide enseguida con el nuevo intervalo\n    node.warn('Modo del generador: ' + global.get('gen_modo'));\n} else if (accion === 'pausa') {\n    global.set('gen_pausa', true);\n} else if (accion === 'reanudar') {\n    global.set('gen_pausa', false);\n} else if (accion === 'aleatorio_on') {\n    global.set('gen_aleatorio', true);\n} else if (accion === 'aleatorio_off') {\n    global.set('gen_aleatorio', false);\n} else if (accion === 'reiniciar_estado') {\n    global.set('gen_estado', null);\n} else if (accion.indexOf('falla:') === 0) {\n    const tipo = accion.slice(6);\n    if (!C.ANOMALIAS[tipo]) { node.error('Falla desconocida: ' + tipo); return null; }\n    const cola = global.get('gen_cola_fallas') || [];\n    cola.push(tipo);\n    global.set('gen_cola_fallas', cola);\n    global.set('gen_forzar', true);             // la falla se ve en la siguiente medicion (no hay que esperar 2 minutos)\n    node.warn('Falla provocada: ' + tipo + ' (' + C.ANOMALIAS[tipo].descripcion + ')');\n} else {\n    node.error('Accion desconocida: ' + accion);\n    return null;\n}\n\nconst modo = global.get('gen_modo') || 'normal';\nnode.status({\n    fill: 'blue', shape: 'dot',\n    text: 'modo ' + modo + (global.get('gen_pausa') ? ' | PAUSADO' : '') + (global.get('gen_aleatorio') ? ' | fallas aleatorias' : '')\n});\nreturn null;\n",
     "outputs": 1,
     "timeout": 0,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "func": "const to = env.get('ALERT_MAIL_TO');\nif (!to) { node.error('Falta ALERT_MAIL_TO'); return null; }\nmsg.to = to;\nmsg.topic = '[PRUEBA] AquaMonitor - prueba de conexion de mail';\nmsg.payload = '[PRUEBA] Este mail confirma que Node-RED puede enviar avisos. No hay ninguna falla real.\\nHora: ' +\n    new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });\nreturn msg;\n",
+    "x": 520,
+    "y": 400,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "t_kpi",
+    "type": "tab",
+    "label": "02 Indicadores (KPIs)",
+    "disabled": false,
+    "info": "6 indicadores (2 por equipo) por hora, turno, día y semana. Una fila por período en kpi_values."
+  },
+  {
+    "id": "c_kpi1",
+    "type": "comment",
+    "z": "t_kpi",
+    "name": "Por cada medición: acumula las muestras buenas (calidad 2) en los 4 períodos abiertos y escribe una fila por KPI y período",
+    "info": "ts = inicio del período en UTC (calculado en hora Argentina). Mientras el período está abierto la fila se pisa (cerrado=false); al empezar el siguiente se escribe por última vez con cerrado=true. Turnos: T1 06-14, T2 14-22, T3 22-06 (hora Argentina).",
+    "x": 400,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "li_lect_kpi",
+    "type": "link in",
+    "z": "t_kpi",
+    "name": "lecturas",
+    "links": [
+      "lo_lecturas"
+    ],
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "kpi_calcular"
+      ]
+    ]
+  },
+  {
+    "id": "kpi_calcular",
+    "type": "function",
+    "z": "t_kpi",
+    "name": "Acumular y calcular KPIs",
+    "func": "// INDICADORES (KPIs): por cada ciclo del generador acumula las muestras buenas (calidad 2) en\n// los 4 periodos abiertos (hora, turno, dia, semana) y escribe en InfluxDB una fila por\n// KPI y periodo.\n//  - La marca de tiempo de la fila es el INICIO del periodo (en UTC), calculado en hora Argentina.\n//  - Mientras el periodo esta abierto la fila se reescribe (misma clave = se pisa): queda UNA sola.\n//  - Cuando empieza el periodo siguiente, la fila del anterior se escribe por ultima vez con cerrado=true.\n// Los acumuladores se guardan en el contexto global (en disco), asi que sobreviven a un reinicio.\nconst A = global.get('aqm');\nconst lecturas = msg.lecturas, ts = msg.ts;\nif (!lecturas || !ts) return null;\n\nconst estado = global.get('kpi_estado') || {};\nconst cerrados = global.get('kpi_cerrados') || { dia: {} };   // KPIs de los dias ya cerrados (los usa el reporte diario)\nconst lineas = [];\nlet nCerrados = 0;\n\nA.GRANULARIDADES.forEach((g) => {\n    const inicio = A.inicioPeriodo(g, ts);\n    let p = estado[g];\n    if (p && p.inicio !== inicio) {                            // cambio de periodo: se cierra el anterior\n        const kpisFinal = A.calcularKpis(g, p.acc);\n        A.lineasKpi(g, p.inicio, kpisFinal, true).forEach((l) => lineas.push(l));\n        nCerrados += 1;\n        if (g === 'dia') {\n            cerrados.dia[p.inicio] = kpisFinal;\n            Object.keys(cerrados.dia).sort().slice(0, -10).forEach((k) => delete cerrados.dia[k]);   // guarda los ultimos 10 dias\n        }\n        p = null;\n    }\n    if (!p) p = estado[g] = { inicio, acc: {} };\n    lecturas.forEach((l) => A.acumular(p.acc, l));\n    A.lineasKpi(g, inicio, A.calcularKpis(g, p.acc), false).forEach((l) => lineas.push(l));   // periodo en curso\n});\n\nglobal.set('kpi_estado', estado);\nglobal.set('kpi_cerrados', cerrados);\nnode.status({ fill: 'green', shape: 'dot', text: lineas.length + ' filas' + (nCerrados ? ' | cerro ' + nCerrados + ' periodo(s)' : '') });\nreturn { payload: lineas.join('\\n'), medida: 'kpi_values' };\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": [
+      [
+        "lo_influx_kpi"
+      ]
+    ]
+  },
+  {
+    "id": "lo_influx_kpi",
+    "type": "link out",
+    "z": "t_kpi",
+    "name": "→ InfluxDB",
+    "mode": "link",
+    "links": [
+      "li_influx"
+    ],
+    "x": 650,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "t_bomba",
+    "type": "tab",
+    "label": "03 Alerta bomba EQ01",
+    "disabled": false,
+    "info": "Un mail cuando la bomba pasa de normal a falla y otro cuando se normaliza. Cada evento se guarda en events."
+  },
+  {
+    "id": "c_b1",
+    "type": "comment",
+    "z": "t_bomba",
+    "name": "Falla = vibración > 7,1 | caudal < 70 o > 175 | presión < 2,5 o > 6,5 | corriente > 65 | ESTADO < 0,5",
+    "info": "Los límites salen del catálogo (nodered/userdir/aqm/catalogo.js). Calidad 1 y 2 valen; la 0 se descarta. Sin cooldown: dos fallas seguidas (con la bomba normal al menos ALERTA_REARME_S entre medio) mandan dos mails.",
+    "x": 460,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "li_lect_bomba",
+    "type": "link in",
+    "z": "t_bomba",
+    "name": "lecturas",
+    "links": [
+      "lo_lecturas"
+    ],
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "bomba_detectar"
+      ]
+    ]
+  },
+  {
+    "id": "bomba_detectar",
+    "type": "function",
+    "z": "t_bomba",
+    "name": "Detectar falla de bomba",
+    "func": "// ALERTA DE BOMBA EQ01 - detector de \"normal -> falla\" y \"falla -> normal\".\n// Falla critica: vibracion > 7,1 | caudal < 70 o > 175 | presion < 2,5 o > 6,5 | corriente > 65 | ESTADO < 0,5\n// (los limites salen del catalogo). Se descartan solo las lecturas con calidad 0; calidad 1 y 2 valen.\n// Avisa UNA vez cuando empieza la falla y UNA vez cuando se normaliza: la falla se da por terminada cuando\n// la bomba estuvo ALERTA_REARME_S segundos seguidos en valores normales (por defecto 60).\n// NO hay cooldown en la bomba: una falla nueva, despues de normalizarse, siempre avisa.\nconst A = global.get('aqm');\nconst rearmeS = Number(env.get('ALERTA_REARME_S') || A.CATALOGO.ALERTAS.rearme_s);\nconst ts = msg.ts;\nconst r = A.motivosBomba(msg.lecturas || []);\n\nconst est = global.get('bomba_estado') || { enFalla: false, desde: null, okDesde: null, fallas: 0 };\nlet evento = null;\nif (r.motivos.length > 0) {\n    est.okDesde = null;\n    if (!est.enFalla) {                                         // paso de normal a falla: AVISAR\n        est.enFalla = true;\n        est.desde = ts;\n        est.fallas = (est.fallas || 0) + 1;\n        evento = { tipo: 'falla', ts, motivos: r.motivos, valores: r.valores };\n    }\n} else if (est.enFalla) {                                       // esta normal, pero venia en falla\n    if (est.okDesde === null) est.okDesde = ts;\n    if (ts - est.okDesde >= rearmeS * 1000) {                   // normal sostenido: cerrar la falla\n        evento = { tipo: 'normalizada', ts, duracionS: Math.round((est.okDesde - est.desde) / 1000), valores: r.valores };\n        est.enFalla = false;\n        est.desde = null;\n        est.okDesde = null;\n    }\n}\nglobal.set('bomba_estado', est);\nnode.status(est.enFalla ? { fill: 'red', shape: 'dot', text: 'EN FALLA' + (est.okDesde ? ' (normalizando)' : '') } : { fill: 'green', shape: 'dot', text: 'normal | fallas: ' + est.fallas });\nreturn evento ? { evento } : null;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": [
+      [
+        "bomba_avisos"
+      ]
+    ]
+  },
+  {
+    "id": "bomba_avisos",
+    "type": "function",
+    "z": "t_bomba",
+    "name": "Armar mail y evento",
+    "func": "// Convierte el evento de la bomba en: [1] mail, [2] fila en InfluxDB (measurement events).\n// Los eventos de PRUEBA (boton) solo mandan mail, no escriben en la base.\nconst A = global.get('aqm');\nconst e = msg.evento;\nif (!e) return null;\nconst marcar = e.prueba === true || global.get('marcar_prueba') !== false;   // por defecto los mails llevan [PRUEBA] mientras se desarrolla\nconst hora = A.fmtFecha(e.ts);\nconst quien = 'Bomba de ingreso EQ01 (planta PTEF, área CAPT)';\nconst v = e.valores || {};\nconst lectura = ['CAUDAL', 'PRESION', 'CORRIENTE', 'VIBRACION', 'ESTADO'].filter((k) => v[k] !== undefined).map((k) => k + ' ' + v[k]).join(' | ');\n\nlet asunto, texto, lineaEvento, clave;\nif (e.tipo === 'falla') {\n    const motivo = e.motivos[0].variable;\n    asunto = 'FALLA: Bomba de ingreso EQ01';\n    texto = 'FALLA DE BOMBA\\n' + quien + '\\nHora: ' + hora + '\\nMotivo:\\n' + e.motivos.map((m) => '- ' + m.texto).join('\\n') +\n        (lectura ? '\\nÚltimos valores: ' + lectura : '');\n    lineaEvento = 'events,equipo=EQ01,event_type=BOMBA_FALLA,severity=critical,motivo=' + A.escTag(motivo) +\n        ' value=' + Number(e.motivos[0].valor) + ',detalle=\"' + A.escStr(e.motivos.map((m) => m.texto).join('; ')) + '\" ' + e.ts;\n    clave = 'BOMBA_FALLA';\n} else {\n    const dur = e.duracionS + ' segundos (' + Math.floor(e.duracionS / 60) + ' min ' + (e.duracionS % 60) + ' s)';\n    asunto = 'NORMALIZADA: Bomba de ingreso EQ01';\n    texto = 'BOMBA NORMALIZADA\\n' + quien + '\\nHora: ' + hora + '\\nEstuvo en falla ' + dur + '.' + (lectura ? '\\nÚltimos valores: ' + lectura : '');\n    lineaEvento = 'events,equipo=EQ01,event_type=BOMBA_NORMALIZADA,severity=info value=' + Number(e.duracionS) +\n        ',duracion_s=' + Math.round(e.duracionS) + 'i,detalle=\"' + A.escStr('estuvo en falla ' + e.duracionS + ' s') + '\" ' + e.ts;\n    clave = 'BOMBA_NORMALIZADA';\n}\nif (marcar) { asunto = '[PRUEBA] ' + asunto; texto = '[PRUEBA] ' + texto; }\n\nlet salidaEvento = null;\nif (!e.prueba) {\n    salidaEvento = { payload: lineaEvento, medida: 'events' };\n    const porDia = global.get('eventos_dia') || {};\n    const dia = A.fmtDia(e.ts);\n    porDia[dia] = porDia[dia] || {};\n    porDia[dia][clave] = (porDia[dia][clave] || 0) + 1;\n    Object.keys(porDia).sort().slice(0, -10).forEach((k) => delete porDia[k]);\n    global.set('eventos_dia', porDia);\n}\nreturn [{ topic: asunto, payload: texto, tipo: 'alerta' }, salidaEvento];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 660,
+    "y": 100,
+    "wires": [
+      [
+        "lo_mail_bomba"
+      ],
+      [
+        "lo_influx_bomba"
+      ]
+    ]
+  },
+  {
+    "id": "lo_mail_bomba",
+    "type": "link out",
+    "z": "t_bomba",
+    "name": "→ Mail",
+    "mode": "link",
+    "links": [
+      "li_mail"
+    ],
+    "x": 890,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "lo_influx_bomba",
+    "type": "link out",
+    "z": "t_bomba",
+    "name": "→ InfluxDB (events)",
+    "mode": "link",
+    "links": [
+      "li_influx"
+    ],
+    "x": 900,
+    "y": 130,
+    "wires": []
+  },
+  {
+    "id": "c_b2",
+    "type": "comment",
+    "z": "t_bomba",
+    "name": "Botones de prueba: mandan un mail [PRUEBA] sin escribir nada en la base",
+    "info": "",
+    "x": 400,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "inj_prueba_falla",
+    "type": "inject",
+    "z": "t_bomba",
+    "name": "Probar mail de falla [PRUEBA]",
+    "props": [
+      {
+        "p": "accion",
+        "v": "prueba_falla",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 180,
+    "y": 260,
+    "wires": [
+      [
+        "bomba_prueba"
+      ]
+    ]
+  },
+  {
+    "id": "inj_prueba_norm",
+    "type": "inject",
+    "z": "t_bomba",
+    "name": "Probar mail de normalización [PRUEBA]",
+    "props": [
+      {
+        "p": "accion",
+        "v": "prueba_normalizada",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 200,
+    "y": 300,
+    "wires": [
+      [
+        "bomba_prueba_n"
+      ]
+    ]
+  },
+  {
+    "id": "bomba_prueba",
+    "type": "function",
+    "z": "t_bomba",
+    "name": "Armar falla de prueba",
+    "func": "// Boton de prueba: arma una falla de bomba FALSA para ver como llega el mail. No escribe nada en la base.\nreturn {\n    evento: {\n        tipo: msg.tipo_prueba === 'normalizada' ? 'normalizada' : 'falla', prueba: true, ts: Date.now(), duracionS: 125,\n        motivos: [{ variable: 'VIBRACION', valor: 8.2, texto: 'vibración 8.2 mm/s fuera del límite crítico [- a 7,1]' }],\n        valores: { CAUDAL: 118, PRESION: 4.6, CORRIENTE: 47, VIBRACION: 8.2, ESTADO: 1 }\n    }\n};\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 460,
+    "y": 260,
+    "wires": [
+      [
+        "bomba_avisos"
+      ]
+    ]
+  },
+  {
+    "id": "bomba_prueba_n",
+    "type": "function",
+    "z": "t_bomba",
+    "name": "Armar normalización de prueba",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 480,
+    "y": 300,
+    "wires": [
+      [
+        "bomba_avisos"
+      ]
+    ],
+    "func": "msg.tipo_prueba = 'normalizada';\n// Boton de prueba: arma una falla de bomba FALSA para ver como llega el mail. No escribe nada en la base.\nreturn {\n    evento: {\n        tipo: msg.tipo_prueba === 'normalizada' ? 'normalizada' : 'falla', prueba: true, ts: Date.now(), duracionS: 125,\n        motivos: [{ variable: 'VIBRACION', valor: 8.2, texto: 'vibración 8.2 mm/s fuera del límite crítico [- a 7,1]' }],\n        valores: { CAUDAL: 118, PRESION: 4.6, CORRIENTE: 47, VIBRACION: 8.2, ESTADO: 1 }\n    }\n};\n"
+  },
+  {
+    "id": "c_b3",
+    "type": "comment",
+    "z": "t_bomba",
+    "name": "Interruptor: mails marcados [PRUEBA] (valor por defecto) o sin marca (para la presentación)",
+    "info": "",
+    "x": 400,
+    "y": 360,
+    "wires": []
+  },
+  {
+    "id": "inj_marcar_on",
+    "type": "inject",
+    "z": "t_bomba",
+    "name": "Mails CON marca [PRUEBA]",
+    "props": [
+      {
+        "p": "accion",
+        "v": "marcar_on",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 170,
+    "y": 400,
+    "wires": [
+      [
+        "marcas"
+      ]
+    ]
+  },
+  {
+    "id": "inj_marcar_off",
+    "type": "inject",
+    "z": "t_bomba",
+    "name": "Mails SIN marca (presentación)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "marcar_off",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 180,
+    "y": 440,
+    "wires": [
+      [
+        "marcas"
+      ]
+    ]
+  },
+  {
+    "id": "marcas",
+    "type": "function",
+    "z": "t_bomba",
+    "name": "Marca [PRUEBA] on/off",
+    "func": "// Interruptor de los mails: con \"marcar [PRUEBA]\" activado (valor por defecto) todos los avisos y reportes\n// llevan [PRUEBA] en el asunto. Para la presentacion se desactiva con el boton correspondiente.\nglobal.set('marcar_prueba', msg.accion === 'marcar_on');\nnode.status({ fill: 'blue', shape: 'dot', text: 'mails ' + (global.get('marcar_prueba') ? 'marcados [PRUEBA]' : 'SIN marca [PRUEBA]') });\nreturn null;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 460,
+    "y": 420,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "t_umbral",
+    "type": "tab",
+    "label": "04 Alertas EQ02-EQ03",
+    "disabled": false,
+    "info": "Alertas críticas del filtro y el reactor, sin spam: solo al entrar en la zona crítica y con cooldown."
+  },
+  {
+    "id": "c_u1",
+    "type": "comment",
+    "z": "t_umbral",
+    "name": "Solo avisa cuando una variable ENTRA en crítico y respeta el cooldown (ALERTA_COOLDOWN_S; demo: 60 s)",
+    "info": "Los críticos nuevos de un mismo ciclo van juntos en un solo mail. La bomba EQ01 no pasa por acá.",
     "x": 420,
-    "y": 200,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "li_lect_umbral",
+    "type": "link in",
+    "z": "t_umbral",
+    "name": "lecturas",
+    "links": [
+      "lo_lecturas"
+    ],
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "umbrales_detectar"
+      ]
+    ]
+  },
+  {
+    "id": "umbrales_detectar",
+    "type": "function",
+    "z": "t_umbral",
+    "name": "Detectar umbrales EQ02/EQ03",
+    "func": "// ALERTAS DE EQ02 (filtro) y EQ03 (reactor). La bomba EQ01 NO pasa por aca (tiene su propio flow).\n// Anti-spam:\n//  - se registra/avisa solo cuando una variable ENTRA en critico o en advertencia (no en cada muestra);\n//  - ademas, un mail por variable como maximo cada ALERTA_COOLDOWN_S (modo demo: ALERTA_COOLDOWN_DEMO_S, 60 s);\n//  - todos los criticos nuevos de un mismo ciclo van juntos en UN solo mail.\n// Se aceptan lecturas de calidad 1 y 2; se descartan las de calidad 0.\n// Salida 1 -> mail | salida 2 -> filas de events en InfluxDB\nconst A = global.get('aqm');\nconst C = A.CATALOGO;\nconst demo = msg.modo === 'demo';\nconst cooldownS = demo\n    ? Number(env.get('ALERTA_COOLDOWN_DEMO_S') || C.ALERTAS.cooldown_demo_s)\n    : Number(env.get('ALERTA_COOLDOWN_S') || C.ALERTAS.cooldown_normal_s);\nconst ts = msg.ts;\nconst estado = global.get('umbral_estado') || {};\nconst criticosNuevos = [];\nconst lineas = [];\nconst porDia = global.get('eventos_dia') || {};\nconst dia = A.fmtDia(ts);\nporDia[dia] = porDia[dia] || {};\n\n(msg.lecturas || []).filter((l) => l.equipo !== 'EQ01' && l.quality !== 0).forEach((l) => {\n    const clave = l.equipo + '.' + l.variable;\n    const prev = estado[clave] || { sev: null, ultimoMail: 0 };\n    const sev = A.severidad(l.equipo, l.variable, l.value);\n    if (sev && sev !== prev.sev && !(prev.sev === 'critical' && sev === 'warning')) {   // entro en una zona peor\n        const cfg = C.EQUIPOS[l.equipo].variables[l.variable];\n        const rango = cfg[sev === 'critical' ? 'critical' : 'warning'];\n        const detalle = cfg.etiqueta + ' ' + l.value + ' ' + cfg.unit + ' fuera del límite ' + (sev === 'critical' ? 'crítico ' : 'de advertencia ') + A.rangoTexto(rango);\n        const tipo = sev === 'critical' ? 'UMBRAL_CRITICO' : 'UMBRAL_ADVERTENCIA';\n        lineas.push('events,equipo=' + l.equipo + ',event_type=' + tipo + ',severity=' + sev + ',motivo=' + l.variable +\n            ' value=' + l.value + ',detalle=\"' + A.escStr(detalle) + '\" ' + ts);\n        porDia[dia][tipo] = (porDia[dia][tipo] || 0) + 1;\n        if (sev === 'critical' && ts - prev.ultimoMail >= cooldownS * 1000) {\n            criticosNuevos.push({ equipo: l.equipo, variable: l.variable, detalle });\n            prev.ultimoMail = ts;\n        }\n    }\n    prev.sev = sev;\n    estado[clave] = prev;\n});\nglobal.set('umbral_estado', estado);\nglobal.set('eventos_dia', porDia);\n\nlet mail = null;\nif (criticosNuevos.length) {\n    const marcar = global.get('marcar_prueba') !== false;\n    const equipos = Array.from(new Set(criticosNuevos.map((c) => c.equipo))).join(', ');\n    mail = {\n        topic: (marcar ? '[PRUEBA] ' : '') + 'ALERTA CRÍTICA: ' + equipos + ' - ' + criticosNuevos.map((c) => c.variable).join(', '),\n        payload: (marcar ? '[PRUEBA] ' : '') + 'ALERTA CRÍTICA\\nHora: ' + A.fmtFecha(ts) + '\\n' +\n            criticosNuevos.map((c) => '- ' + c.equipo + '/' + c.variable + ': ' + c.detalle).join('\\n') +\n            '\\n\\n(Aviso único por variable; se vuelve a avisar como máximo cada ' + Math.round(cooldownS / 60 * 10) / 10 + ' min.)',\n        tipo: 'alerta'\n    };\n}\nnode.status({ fill: lineas.length ? 'yellow' : 'green', shape: 'dot', text: (lineas.length ? lineas.length + ' evento(s) | ' : 'sin eventos | ') + 'cooldown ' + cooldownS + ' s' });\nreturn [mail, lineas.length ? { payload: lineas.join('\\n'), medida: 'events' } : null];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 100,
+    "wires": [
+      [
+        "lo_mail_umbral"
+      ],
+      [
+        "lo_influx_umbral"
+      ]
+    ]
+  },
+  {
+    "id": "lo_mail_umbral",
+    "type": "link out",
+    "z": "t_umbral",
+    "name": "→ Mail",
+    "mode": "link",
+    "links": [
+      "li_mail"
+    ],
+    "x": 680,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "lo_influx_umbral",
+    "type": "link out",
+    "z": "t_umbral",
+    "name": "→ InfluxDB (events)",
+    "mode": "link",
+    "links": [
+      "li_influx"
+    ],
+    "x": 690,
+    "y": 130,
+    "wires": []
+  },
+  {
+    "id": "t_reporte",
+    "type": "tab",
+    "label": "05 Reporte diario",
+    "disabled": false,
+    "info": "Mail diario a las 06:00 (hora Argentina) con los KPIs del día anterior y el conteo de fallas."
+  },
+  {
+    "id": "inj_reporte_cron",
+    "type": "inject",
+    "z": "t_reporte",
+    "name": "06:00 todos los días",
+    "props": [
+      {
+        "p": "prueba",
+        "v": "false",
+        "vt": "bool"
+      }
+    ],
+    "repeat": "",
+    "crontab": "00 06 * * *",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 170,
+    "y": 100,
+    "wires": [
+      [
+        "reporte_armar"
+      ]
+    ]
+  },
+  {
+    "id": "inj_reporte_prueba",
+    "type": "inject",
+    "z": "t_reporte",
+    "name": "Enviar reporte de prueba AHORA [PRUEBA] (día en curso)",
+    "props": [
+      {
+        "p": "prueba",
+        "v": "true",
+        "vt": "bool"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 250,
+    "y": 160,
+    "wires": [
+      [
+        "reporte_armar"
+      ]
+    ]
+  },
+  {
+    "id": "reporte_armar",
+    "type": "function",
+    "z": "t_reporte",
+    "name": "Armar reporte HTML",
+    "func": "// REPORTE DIARIO (06:00 hora Argentina): KPIs del dia anterior y conteo de fallas, por mail.\n// Los datos salen de la memoria de Node-RED (KPIs de los dias cerrados y contador de eventos por dia).\n// Con msg.prueba = true arma el reporte con el DIA EN CURSO (para probar el formato) y lo marca [PRUEBA].\nconst A = global.get('aqm');\nconst ahora = Date.now();\nconst prueba = msg.prueba === true;\nconst marcar = prueba || global.get('marcar_prueba') !== false;\nconst diaIni = prueba ? A.inicioPeriodo('dia', ahora) : A.inicioPeriodo('dia', ahora) - 24 * 3600 * 1000;\nconst dia = A.fmtDia(diaIni);\nconst etiquetaDia = dia.split('-').reverse().join('/');\n\nlet kpis = ((global.get('kpi_cerrados') || { dia: {} }).dia || {})[diaIni];\nlet origenKpi = 'dia cerrado';\nif (!kpis && prueba) {\n    const p = (global.get('kpi_estado') || {}).dia;\n    kpis = p ? A.calcularKpis('dia', p.acc) : null;\n    origenKpi = 'dia en curso (parcial)';\n}\nkpis = kpis || [];\nconst ev = (global.get('eventos_dia') || {})[dia] || {};\nconst n = (k) => ev[k] || 0;\n\nconst filas = kpis.map((k) => '<tr><td>' + k.equipo + '</td><td>' + k.kpi + '</td><td style=\"text-align:right\">' + String(k.value).replace('.', ',') +\n    '</td><td>' + k.unit + '</td><td style=\"text-align:right\">' + k.muestras + '</td></tr>').join('');\nconst tabla = kpis.length\n    ? '<table border=\"1\" cellpadding=\"5\" cellspacing=\"0\" style=\"border-collapse:collapse\"><tr><th>Equipo</th><th>Indicador</th><th>Valor</th><th>Unidad</th><th>Muestras</th></tr>' + filas + '</table>'\n    : '<p><i>No hay indicadores guardados para este día (Node-RED no estuvo midiendo o el día todavía no cerró).</i></p>';\n\nconst html = '<h2>Reporte diario AquaMonitor - ' + etiquetaDia + (marcar ? ' [PRUEBA]' : '') + '</h2>' +\n    (prueba ? '<p><b>[PRUEBA]</b> Reporte armado con el día en curso (' + origenKpi + ').</p>' : '') +\n    '<h3>Indicadores del día (por equipo)</h3>' + tabla +\n    '<h3>Fallas y alertas del día</h3><ul>' +\n    '<li>Fallas de la bomba EQ01: <b>' + n('BOMBA_FALLA') + '</b> (normalizaciones: ' + n('BOMBA_NORMALIZADA') + ')</li>' +\n    '<li>Alertas críticas EQ02/EQ03: <b>' + n('UMBRAL_CRITICO') + '</b></li>' +\n    '<li>Advertencias EQ02/EQ03: ' + n('UMBRAL_ADVERTENCIA') + '</li></ul>' +\n    '<p style=\"color:#666\">Generado el ' + A.fmtFecha(ahora) + ' (hora Argentina).</p>';\nreturn { topic: (marcar ? '[PRUEBA] ' : '') + 'Reporte diario AquaMonitor - ' + etiquetaDia, payload: html, tipo: 'reporte' };\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 560,
+    "y": 120,
+    "wires": [
+      [
+        "lo_mail_reporte"
+      ]
+    ]
+  },
+  {
+    "id": "lo_mail_reporte",
+    "type": "link out",
+    "z": "t_reporte",
+    "name": "→ Mail",
+    "mode": "link",
+    "links": [
+      "li_mail"
+    ],
+    "x": 780,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "t_influx",
+    "type": "tab",
+    "label": "06 Escritura en InfluxDB",
+    "disabled": false,
+    "info": "Un solo lugar para escribir: arma la petición con el token del entorno, escribe y reintenta si falla."
+  },
+  {
+    "id": "li_influx",
+    "type": "link in",
+    "z": "t_influx",
+    "name": "filas a escribir",
+    "links": [
+      "lo_influx_gen",
+      "lo_influx_kpi",
+      "lo_influx_bomba",
+      "lo_influx_umbral"
+    ],
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "influx_armar"
+      ]
+    ]
+  },
+  {
+    "id": "influx_armar",
+    "type": "function",
+    "z": "t_influx",
+    "name": "Armar petición (token del entorno)",
+    "func": "// Prepara la peticion de escritura a InfluxDB Cloud (ruta compatible v2, precision ms).\n// El token se lee del entorno (.env) y viaja solo en el encabezado: no queda en ningun archivo.\nconst url = env.get('INFLUX_URL'), org = env.get('INFLUX_ORG'), bucket = env.get('INFLUX_BUCKET'), token = env.get('INFLUX_TOKEN');\nif (!url || !org || !bucket || !token) { node.error('Faltan variables INFLUX_* en el entorno'); return null; }\nconst cuerpo = String(msg.payload || '').trim();\nif (!cuerpo) return null;\nreturn {\n    method: 'POST',\n    url: url.replace(/\\/+$/, '') + '/api/v2/write?org=' + encodeURIComponent(org) + '&bucket=' + encodeURIComponent(bucket) + '&precision=ms',\n    headers: { 'Authorization': 'Token ' + token, 'Content-Type': 'text/plain; charset=utf-8' },\n    payload: cuerpo,\n    lp: cuerpo,\n    medida: msg.medida || '',\n    nLineas: cuerpo.split('\\n').length,\n    _reintento: msg._reintento || 0\n};\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 100,
+    "wires": [
+      [
+        "http_escritura"
+      ]
+    ]
+  },
+  {
+    "id": "http_escritura",
+    "type": "http request",
+    "z": "t_influx",
+    "name": "POST InfluxDB /api/v2/write",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 680,
+    "y": 100,
+    "wires": [
+      [
+        "influx_revisar"
+      ]
+    ]
+  },
+  {
+    "id": "influx_revisar",
+    "type": "function",
+    "z": "t_influx",
+    "name": "Revisar respuesta (204 = escrito)",
+    "func": "// Revisa la respuesta de InfluxDB: 204 = escrito. Si falla, reintenta hasta 2 veces (cada 10 s).\n// Salida 1 -> reintento | salida 2 -> nada (queda el estado del nodo)\nconst ok = msg.statusCode === 204 || msg.statusCode === 200;\nif (ok) {\n    const n = (context.get('escrituras') || 0) + 1;\n    context.set('escrituras', n);\n    node.status({ fill: 'green', shape: 'dot', text: msg.nLineas + ' filas (' + msg.medida + ') | total ' + n });\n    return [null, null];\n}\nnode.status({ fill: 'red', shape: 'ring', text: 'HTTP ' + msg.statusCode + ' (' + msg.medida + ')' });\nnode.error('InfluxDB respondio ' + msg.statusCode + ' al escribir ' + msg.medida + ': ' + String(msg.payload).slice(0, 300));\nif ((msg._reintento || 0) < 2 && msg.statusCode !== 400 && msg.statusCode !== 401 && msg.statusCode !== 403) {\n    return [{ payload: msg.lp, medida: msg.medida, _reintento: (msg._reintento || 0) + 1 }, null];\n}\nreturn [null, null];\n",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 930,
+    "y": 100,
+    "wires": [
+      [
+        "demora_influx"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "demora_influx",
+    "type": "delay",
+    "z": "t_influx",
+    "name": "esperar 10 s y reintentar",
+    "pauseType": "delay",
+    "timeout": "10",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 930,
+    "y": 180,
+    "wires": [
+      [
+        "influx_armar"
+      ]
+    ]
+  },
+  {
+    "id": "t_mail",
+    "type": "tab",
+    "label": "07 Envío de mail",
+    "disabled": false,
+    "info": "Un solo lugar para enviar: usuario y contraseña de aplicación salen del entorno (.env). Si falla la red, reintenta."
+  },
+  {
+    "id": "li_mail",
+    "type": "link in",
+    "z": "t_mail",
+    "name": "mails a enviar",
+    "links": [
+      "lo_mail_bomba",
+      "lo_mail_umbral",
+      "lo_mail_reporte"
+    ],
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "mail_preparar"
+      ]
+    ]
+  },
+  {
+    "id": "mail_preparar",
+    "type": "function",
+    "z": "t_mail",
+    "name": "Preparar mail (destinatarios del entorno)",
+    "func": "// Arma el mail con los datos del entorno (.env). Quien llama pone msg.topic (asunto), msg.payload (texto o\n// HTML) y msg.tipo ('alerta' o 'reporte'). Los destinatarios y el remitente salen del entorno.\nconst para = msg.tipo === 'reporte' ? (env.get('REPORTE_MAIL_TO') || env.get('ALERT_MAIL_TO')) : env.get('ALERT_MAIL_TO');\nif (!para) { node.error('Falta ALERT_MAIL_TO / REPORTE_MAIL_TO en el entorno'); return null; }\nconst n = (global.get('mails_enviados') || 0) + 1;\nglobal.set('mails_enviados', n);\nnode.status({ fill: 'blue', shape: 'dot', text: 'mails pedidos desde el arranque del contador: ' + n });\nreturn { to: para, from: env.get('ALERT_MAIL_FROM') || undefined, topic: msg.topic, payload: msg.payload, _reintento: msg._reintento || 0 };\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 100,
     "wires": [
       [
         "mail_node"
@@ -140,7 +1205,7 @@
   {
     "id": "mail_node",
     "type": "e-mail",
-    "z": "f1_prueba",
+    "z": "t_mail",
     "server": "${SMTP_HOST}",
     "port": "${SMTP_PORT}",
     "authtype": "BASIC",
@@ -149,9 +1214,71 @@
     "secure": false,
     "tls": true,
     "name": "",
-    "dname": "Mail (STARTTLS, usa SMTP_* del entorno)",
-    "x": 690,
-    "y": 200,
+    "dname": "Mail (STARTTLS, SMTP_* del entorno)",
+    "x": 740,
+    "y": 100,
     "wires": []
+  },
+  {
+    "id": "catch_mail",
+    "type": "catch",
+    "z": "t_mail",
+    "name": "errores de envío",
+    "scope": [
+      "mail_node"
+    ],
+    "uncaught": false,
+    "x": 160,
+    "y": 200,
+    "wires": [
+      [
+        "mail_reintento"
+      ]
+    ]
+  },
+  {
+    "id": "mail_reintento",
+    "type": "function",
+    "z": "t_mail",
+    "name": "Reintentar si es error de red",
+    "func": "// Si el envio falla por la red (por ejemplo ENETUNREACH al elegir una direccion IPv6 en WSL2), reintenta\n// hasta 2 veces; el nodo de mail vuelve a resolver la direccion y suele elegir IPv4. Salida 1 -> espera 5 s -> reenvio.\nconst texto = String((msg.error && msg.error.message) || '');\nif ((msg._reintento || 0) < 2 && /ENETUNREACH|ETIMEDOUT|ECONNRESET|ECONNREFUSED|EAI_AGAIN|EHOSTUNREACH/.test(texto)) {\n    node.warn('Mail no enviado (' + texto.slice(0, 80) + '). Reintento ' + ((msg._reintento || 0) + 1) + ' de 2');\n    return { to: msg.to, from: msg.from, topic: msg.topic, payload: msg.payload, _reintento: (msg._reintento || 0) + 1 };\n}\nnode.error('Mail NO enviado: ' + texto.slice(0, 200));\nreturn null;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 440,
+    "y": 200,
+    "wires": [
+      [
+        "demora_mail"
+      ]
+    ]
+  },
+  {
+    "id": "demora_mail",
+    "type": "delay",
+    "z": "t_mail",
+    "name": "esperar 5 s",
+    "pauseType": "delay",
+    "timeout": "5",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "outputs": 1,
+    "x": 700,
+    "y": 200,
+    "wires": [
+      [
+        "mail_node"
+      ]
+    ]
   }
 ]

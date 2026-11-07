@@ -21,7 +21,8 @@ module.exports = {
     },
 
     functionTimeout: 0,
-    functionGlobalContext: {},
+    // Catalogo y funciones compartidas: los nodos function los usan con  global.get('aqm')
+    functionGlobalContext: { aqm: require('./aqm/aqm.js') },
     exportGlobalContextKeys: false,
 
     logging: {
