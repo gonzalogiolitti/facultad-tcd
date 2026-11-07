@@ -1,0 +1,197 @@
+EVALUACIÓN 4 - CONTRASTE DE HIPÓTESIS
+Giolitti, Gonzalo - Estadística e Inferencia
+
+1) HIPÓTESIS A CONTRASTAR
+
+Uso el Cardiovascular Disease Dataset con una limpieza mínima (68.719 pacientes). Nivel de significación α = 0,05 en ambas hipótesis.
+
+Hipótesis 1 (dos muestras independientes)
+Variable en estudio: presión arterial sistólica (mmHg).
+Unidad elemental: el paciente.
+Factor y niveles: enfermedad cardiovascular; sin enfermedad (cardio = 0) y con enfermedad (cardio = 1).
+H0: μ(con) = μ(sin).
+H1: μ(con) > μ(sin). La alternativa tiene dirección porque la hipertensión es un factor de riesgo cardiovascular conocido.
+
+Hipótesis 2 (más de dos muestras)
+Variable en estudio: peso (kg).
+Unidad elemental: el paciente.
+Factor y niveles: nivel de colesterol; normal (1), por encima de lo normal (2) y muy por encima de lo normal (3).
+H0: μ1 = μ2 = μ3.
+H1: al menos un nivel tiene un peso medio distinto.
+
+2) TIPO DE ANÁLISIS ESTADÍSTICO
+
+Sigo el protocolo de la cátedra: Shapiro-Wilk por grupo y Bartlett para las variancias. Como shapiro.test admite hasta 5000 datos, lo aplico a una muestra aleatoria de 5000 pacientes por grupo; con tantos pacientes cualquier desvío pequeño da un p-value diminuto, así que lo tomo con cautela. Con normalidad y homocedasticidad corresponde un t-test o un ANOVA con comparaciones múltiples; si no, Wilcoxon o Kruskal-Wallis con comparaciones múltiples.
+
+H1 compara dos muestras independientes. Shapiro-Wilk rechaza la normalidad en los dos grupos y Bartlett rechaza la igualdad de variancias, así que uso el test de Wilcoxon con alternativa unilateral a la derecha.
+
+H2 compara tres muestras independientes. Shapiro-Wilk y Bartlett también rechazan, así que uso Kruskal-Wallis y, como da significativo, la comparación múltiple kruskalmc. No pude instalar el paquete pgirmess: usé una función kruskalmc equivalente a la de pgirmess, definida en el código con la misma fórmula.
+
+3) CÓDIGO Y SALIDAS DE R
+
+CÓDIGO (carga y limpieza mínima)
+set.seed(2026)
+datos <- read.csv("~/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/ESTADÍSTICA E INFERENCIA/Evaluaciones/1_Evaluacion Unidad 1/archive/cardio_train.csv", sep = ";")
+datos <- subset(datos, ap_hi >= 60 & ap_hi <= 250 & ap_lo >= 40 & ap_lo <= 200 &
+                       height >= 120 & height <= 220 & weight >= 30 & weight <= 200)
+datos$cardio_f <- factor(datos$cardio, levels = 0:1, labels = c("Sin enfermedad", "Con enfermedad"))
+datos$cholesterol_f <- factor(datos$cholesterol, levels = 1:3, ordered = TRUE,
+                              labels = c("Normal", "Por encima de lo normal", "Muy por encima de lo normal"))
+nrow(datos)
+----------------------------------------------------------------------
+SALIDA
+[1] 68719
+----------------------------------------------------------------------
+
+Hipótesis 1
+
+CÓDIGO (media y mediana por grupo)
+sis_sin <- datos$ap_hi[datos$cardio == 0]
+sis_con <- datos$ap_hi[datos$cardio == 1]
+sapply(split(datos$ap_hi, datos$cardio_f), function(x) c(media = mean(x), mediana = median(x)))
+----------------------------------------------------------------------
+SALIDA
+        Sin enfermedad Con enfermedad
+media         119.5627       133.8149
+mediana       120.0000       130.0000
+----------------------------------------------------------------------
+
+CÓDIGO (normalidad y homocedasticidad)
+muestras_h1 <- lapply(split(datos$ap_hi, datos$cardio_f), sample, size = 5000)
+lapply(muestras_h1, shapiro.test)
+bartlett.test(list(sis_sin, sis_con))
+----------------------------------------------------------------------
+SALIDA
+$`Sin enfermedad`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.85443, p-value < 2.2e-16
+
+
+$`Con enfermedad`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.94342, p-value < 2.2e-16
+
+
+
+	Bartlett test of homogeneity of variances
+
+data:  list(sis_sin, sis_con)
+Bartlett's K-squared = 3458.7, df = 1, p-value < 2.2e-16
+----------------------------------------------------------------------
+
+CÓDIGO (test de Wilcoxon y diferencias)
+w1 <- wilcox.test(sis_con, sis_sin, paired = FALSE, alternative = "greater", conf.level = 0.95)
+w1
+c(dif_medias = mean(sis_con) - mean(sis_sin), dif_medianas = median(sis_con) - median(sis_sin))
+unname(w1$statistic) / (length(sis_con) * length(sis_sin))
+----------------------------------------------------------------------
+SALIDA
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  sis_con and sis_sin
+W = 885627806, p-value < 2.2e-16
+alternative hypothesis: true location shift is greater than 0
+
+  dif_medias dif_medianas 
+    14.25224     10.00000 
+[1] 0.7502444
+----------------------------------------------------------------------
+
+Hipótesis 2
+
+CÓDIGO (media y mediana por nivel)
+sapply(split(datos$weight, datos$cholesterol_f), function(x) c(media = mean(x), mediana = median(x)))
+----------------------------------------------------------------------
+SALIDA
+          Normal Por encima de lo normal Muy por encima de lo normal
+media   72.98476                76.55906                    78.65305
+mediana 70.70000                75.00000                    77.00000
+----------------------------------------------------------------------
+
+CÓDIGO (normalidad y homocedasticidad)
+muestras_h2 <- lapply(split(datos$weight, datos$cholesterol_f), sample, size = 5000)
+lapply(muestras_h2, shapiro.test)
+bartlett.test(weight ~ cholesterol_f, data = datos)
+----------------------------------------------------------------------
+SALIDA
+$Normal
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.95578, p-value < 2.2e-16
+
+
+$`Por encima de lo normal`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.96873, p-value < 2.2e-16
+
+
+$`Muy por encima de lo normal`
+
+	Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.96554, p-value < 2.2e-16
+
+
+
+	Bartlett test of homogeneity of variances
+
+data:  weight by cholesterol_f
+Bartlett's K-squared = 462.14, df = 2, p-value < 2.2e-16
+----------------------------------------------------------------------
+
+CÓDIGO (Kruskal-Wallis y comparaciones múltiples)
+kruskalmc <- function(resp, categ, alpha = 0.05) {   # equivalente a pgirmess::kruskalmc
+  R <- tapply(rank(resp), categ, mean); n <- table(categ); N <- length(resp); k <- length(R)
+  p <- combn(names(R), 2)
+  dif <- as.numeric(abs(R[p[1, ]] - R[p[2, ]]))
+  lim <- as.numeric(qnorm(alpha / (k * (k - 1)), lower.tail = FALSE) *
+                    sqrt(N * (N + 1) / 12 * (1 / n[p[1, ]] + 1 / n[p[2, ]])))
+  names(dif) <- names(lim) <- paste(p[1, ], p[2, ], sep = "-")
+  cat("Multiple comparison test after Kruskal-Wallis", "\nalpha:", alpha, "\nComparisons\n")
+  print(data.frame(obs.dif = dif, critical.dif = lim, stat.signif = dif > lim))
+}
+kw <- kruskal.test(weight ~ cholesterol_f, data = datos)
+kw
+kruskalmc(datos$weight, datos$cholesterol_f, alpha = 0.05)
+k <- nlevels(datos$cholesterol_f); n <- nrow(datos)
+unname((kw$statistic - k + 1) / (n - k))
+----------------------------------------------------------------------
+SALIDA
+
+	Kruskal-Wallis rank sum test
+
+data:  weight by cholesterol_f
+Kruskal-Wallis chi-squared = 1300.3, df = 2, p-value < 2.2e-16
+
+Multiple comparison test after Kruskal-Wallis 
+alpha: 0.05 
+Comparisons
+                                                     obs.dif critical.dif
+Normal-Por encima de lo normal                      4847.209     534.8351
+Normal-Muy por encima de lo normal                  7577.211     574.4115
+Por encima de lo normal-Muy por encima de lo normal 2730.001     726.9518
+                                                    stat.signif
+Normal-Por encima de lo normal                             TRUE
+Normal-Muy por encima de lo normal                         TRUE
+Por encima de lo normal-Muy por encima de lo normal        TRUE
+[1] 0.01889299
+----------------------------------------------------------------------
+
+4) CONCLUSIÓN
+
+H1. Con un nivel de significación del 5% rechazo H0: la presión sistólica de los pacientes con enfermedad cardiovascular es mayor que la de los pacientes sin enfermedad (p-value menor que 2,2e-16). La diferencia no es solo significativa sino también relevante: 14,3 mmHg en la media (133,8 contra 119,6) y 10 mmHg en la mediana (130 contra 120). La probabilidad de que un paciente con enfermedad tenga más sistólica que uno sin enfermedad es de 75,0%. Es una asociación, no una relación causa-efecto.
+
+H2. Con un nivel de significación del 5% rechazo H0: el peso difiere según el nivel de colesterol y los tres pares de niveles difieren entre sí, con más peso a mayor colesterol. Con 68.719 pacientes casi todo es significativo, así que miro el tamaño: entre el nivel normal y el más alto hay 5,7 kg de diferencia en la media (73,0 contra 78,7) y 6,3 kg en la mediana (70,7 contra 77,0). Los pesos de los tres niveles se superponen mucho y el tamaño del efecto es chico (0,0189, cerca del 1,9% de la variabilidad de los rangos). La diferencia es real pero modesta, y también es una asociación observacional.

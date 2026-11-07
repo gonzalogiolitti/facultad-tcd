@@ -1,0 +1,15 @@
+# Datos de Olist (se bajan de Kaggle; licencia CC BY-NC-SA 4.0)
+01_python_etl/data/raw/
+01_python_etl/data/processed/
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+02_sql_server/.env
+.env
+# Power BI: material de la referencia y archivos locales de Desktop
+03_power_bi/inventario_referencia.md
+03_power_bi/herramientas/
+03_power_bi/referencia_copia/
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+03_power_bi/respaldo_esqueleto/

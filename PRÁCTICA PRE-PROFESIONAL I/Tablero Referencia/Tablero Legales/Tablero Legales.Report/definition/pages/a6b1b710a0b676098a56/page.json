@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "a6b1b710a0b676098a56",
+  "displayName": "Portada",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

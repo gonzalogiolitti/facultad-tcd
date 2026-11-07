@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "b9cbec2f8206708e4157",
+  "displayName": "Detalle y Tendencias",
+  "displayOption": "FitToPage",
+  "height": 810,
+  "width": 1440,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a430891f978b59613875",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_UnidadDeNegocio"
+              }
+            },
+            "Property": "UnidadDeNegocio"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "dac10f717b9e301db75c",
+      "target": "4c306882ec75655d03b1",
+      "type": "DataFilter"
+    }
+  ]
+}

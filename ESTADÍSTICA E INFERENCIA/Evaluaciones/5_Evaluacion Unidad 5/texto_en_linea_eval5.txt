@@ -1,0 +1,186 @@
+EVALUACIÓN 5 - MODELO LINEAL
+Giolitti, Gonzalo - Estadística e Inferencia
+
+1) HIPÓTESIS
+
+Uso el Cardiovascular Disease Dataset con una limpieza mínima (68.719 pacientes). Quiero saber si la presión arterial sistólica aumenta con la edad y con el índice de masa corporal (IMC).
+
+Variable respuesta: presión arterial sistólica (mmHg).
+Variables explicativas: edad (años), IMC (kg/m², peso en kg dividido por la altura en metros al cuadrado) y gender (variable categórica con las categorías 1 y 2; la categoría 1 es la de referencia).
+
+Hipótesis en palabras: la presión sistólica aumenta con la edad y con el IMC, también al tener en cuenta gender.
+
+Modelo: sistólica = β0 + β1 edad + β2 IMC + β3 (categoría 2) + error.
+Para cada coeficiente, H0: βj = 0 contra H1: βj ≠ 0, con α = 0,05. Para la edad y el IMC espero además que β sea positivo. El test que informa lm es bilateral; si el coeficiente resulta significativo y positivo, queda confirmada la dirección esperada.
+
+Un modelo lineal múltiple es el análisis adecuado porque la respuesta es cuantitativa, las explicativas son cuantitativas y una categórica, y permite estimar el efecto de cada variable manteniendo constantes las demás. Para elegir el modelo comparé cuatro alternativas con el criterio AIC: edad sola, IMC solo, edad e IMC, y edad, IMC y gender.
+
+2) CÓDIGO Y SALIDAS DE R
+
+CÓDIGO (carga, limpieza mínima, edad en años e IMC)
+set.seed(2026)
+datos <- read.csv("~/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/ESTADÍSTICA E INFERENCIA/Evaluaciones/1_Evaluacion Unidad 1/archive/cardio_train.csv", sep = ";")
+datos$edad_anios <- datos$age / 365.25
+datos$IMC <- datos$weight / (datos$height / 100)^2
+datos <- subset(datos, ap_hi >= 60 & ap_hi <= 250 & ap_lo >= 40 & ap_lo <= 200 &
+                       height >= 120 & height <= 220 & weight >= 30 & weight <= 200)
+datos$gender_f <- factor(datos$gender, levels = 1:2, labels = c("Categoría 1", "Categoría 2"))
+nrow(datos)
+----------------------------------------------------------------------
+SALIDA
+[1] 68719
+----------------------------------------------------------------------
+
+Modelo lineal simple con la edad:
+
+CÓDIGO (lm simple)
+modelo1 <- lm(ap_hi ~ edad_anios, data = datos)
+summary(modelo1)
+----------------------------------------------------------------------
+SALIDA
+Call:
+lm(formula = ap_hi ~ edad_anios, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-62.110  -9.895  -3.711   9.319 115.032 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 99.027232   0.497123  199.20   <2e-16 ***
+edad_anios   0.517700   0.009254   55.94   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 16.39 on 68717 degrees of freedom
+Multiple R-squared:  0.04356,	Adjusted R-squared:  0.04354 
+F-statistic:  3129 on 1 and 68717 DF,  p-value: < 2.2e-16
+----------------------------------------------------------------------
+
+Modelos múltiples y comparación con AIC (menor AIC es mejor), junto con el R² ajustado de cada modelo:
+
+CÓDIGO (modelos y AIC)
+modelo2 <- lm(ap_hi ~ IMC, data = datos)
+modelo3 <- lm(ap_hi ~ edad_anios + IMC, data = datos)
+modelo4 <- lm(ap_hi ~ edad_anios + IMC + gender_f, data = datos)
+AIC(modelo1, modelo2, modelo3, modelo4)
+sapply(list(modelo1, modelo2, modelo3, modelo4), function(m) summary(m)$adj.r.squared)
+----------------------------------------------------------------------
+SALIDA
+        df      AIC
+modelo1  3 579405.0
+modelo2  3 577454.9
+modelo3  4 574947.6
+modelo4  5 574279.1
+[1] 0.04354337 0.07030443 0.10362733 0.11231776
+----------------------------------------------------------------------
+
+El modelo 4 tiene el menor AIC, así que es el elegido. Su summary:
+
+CÓDIGO (modelo elegido)
+summary(modelo4)
+----------------------------------------------------------------------
+SALIDA
+Call:
+lm(formula = ap_hi ~ edad_anios + IMC + gender_f, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-73.422  -9.420  -2.833   7.930 113.014 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)         78.583496   0.555064  141.58   <2e-16 ***
+edad_anios           0.458092   0.008963   51.11   <2e-16 ***
+IMC                  0.818279   0.011588   70.61   <2e-16 ***
+gender_fCategoría 2  3.301205   0.127183   25.96   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 15.79 on 68715 degrees of freedom
+Multiple R-squared:  0.1124,	Adjusted R-squared:  0.1123 
+F-statistic:  2899 on 3 and 68715 DF,  p-value: < 2.2e-16
+----------------------------------------------------------------------
+
+CÓDIGO (intervalos de confianza del 95%)
+confint(modelo4)
+----------------------------------------------------------------------
+SALIDA
+                         2.5 %     97.5 %
+(Intercept)         77.4955711 79.6714199
+edad_anios           0.4405245  0.4756591
+IMC                  0.7955667  0.8409922
+gender_fCategoría 2  3.0519266  3.5504838
+----------------------------------------------------------------------
+
+CÓDIGO (coeficientes del modelo elegido)
+cbind(coef(summary(modelo4))[, c("Estimate", "Pr(>|t|)")], confint(modelo4))
+----------------------------------------------------------------------
+SALIDA
+                      Estimate     Pr(>|t|)      2.5 %     97.5 %
+(Intercept)         78.5834955  0.00000e+00 77.4955711 79.6714199
+edad_anios           0.4580918  0.00000e+00  0.4405245  0.4756591
+IMC                  0.8182794  0.00000e+00  0.7955667  0.8409922
+gender_fCategoría 2  3.3012052 7.99643e-148  3.0519266  3.5504838
+----------------------------------------------------------------------
+
+Ecuación estimada y ejemplo de predicción para un paciente de 55 años con IMC 27, en cada categoría de gender (intervalo de confianza para la media e intervalo de predicción para un paciente individual):
+
+CÓDIGO (ecuación estimada)
+b <- coef(modelo4)
+cat(sprintf("ap_hi = %.2f + %.3f * edad_anios + %.3f * IMC + %.2f * (gender: Categoria 2)\n", b[1], b[2], b[3], b[4]))
+----------------------------------------------------------------------
+SALIDA
+ap_hi = 78.58 + 0.458 * edad_anios + 0.818 * IMC + 3.30 * (gender: Categoria 2)
+----------------------------------------------------------------------
+
+CÓDIGO (predicción)
+nuevos <- data.frame(edad_anios = c(55, 55), IMC = c(27, 27),
+                     gender_f = factor(c("Categoría 1", "Categoría 2"), levels = levels(datos$gender_f)))
+cbind(nuevos, round(predict(modelo4, newdata = nuevos, interval = "confidence"), 1))
+cbind(nuevos, round(predict(modelo4, newdata = nuevos, interval = "prediction"), 1))
+----------------------------------------------------------------------
+SALIDA
+  edad_anios IMC    gender_f   fit   lwr   upr
+1         55  27 Categoría 1 125.9 125.7 126.0
+2         55  27 Categoría 2 129.2 129.0 129.4
+  edad_anios IMC    gender_f   fit  lwr   upr
+1         55  27 Categoría 1 125.9 94.9 156.8
+2         55  27 Categoría 2 129.2 98.2 160.1
+----------------------------------------------------------------------
+
+Verificación de los supuestos de los residuos. Shapiro-Wilk no admite más de 5000 datos, así que lo aplico a una muestra aleatoria de 5000 residuos. Para la variancia constante comparo el desvío de los residuos en cada cuartil de valores ajustados.
+
+CÓDIGO (supuestos de los residuos)
+res <- residuals(modelo4)
+muestra_res <- sample(res, 5000)
+shapiro.test(muestra_res)
+cuartil_aj <- cut(fitted(modelo4), breaks = quantile(fitted(modelo4), 0:4 / 4),
+                  include.lowest = TRUE, labels = c("Q1", "Q2", "Q3", "Q4"))
+tapply(res, cuartil_aj, sd)
+cor(fitted(modelo4), abs(res))
+----------------------------------------------------------------------
+SALIDA
+	Shapiro-Wilk normality test
+
+data:  muestra_res
+W = 0.95236, p-value < 2.2e-16
+
+      Q1       Q2       Q3       Q4 
+13.99277 15.24060 16.01206 17.68823 
+[1] 0.1569667
+----------------------------------------------------------------------
+
+3) CONCLUSIÓN
+
+La hipótesis se confirma: la presión sistólica aumenta con la edad y con el IMC, y los dos coeficientes son positivos y significativos (p-value menor que 2e-16). Como con 68.719 pacientes casi todo resulta significativo, me fijo sobre todo en la magnitud.
+
+Por cada año más de edad, la presión sistólica aumenta en promedio 0,46 mmHg, manteniendo constantes el IMC y gender (unos 4,6 mmHg cada diez años; intervalo de confianza de 0,44 a 0,48).
+Por cada punto más de IMC, la sistólica aumenta en promedio 0,82 mmHg, manteniendo constantes la edad y gender (unos 4,1 mmHg cada 5 puntos; intervalo de 0,80 a 0,84).
+Un paciente de la categoría 2 de gender tiene en promedio 3,3 mmHg más de sistólica que uno de la categoría 1 con la misma edad y el mismo IMC (intervalo de 3,1 a 3,6). No sé a qué sexo corresponde cada categoría, así que no lo interpreto.
+
+El R² es 0,112: el modelo explica solo alrededor del 11% de la variabilidad de la presión sistólica y deja sin explicar casi el 89%. El error residual es de 15,8 mmHg. Sirve para describir una tendencia, no para predecir la presión de un paciente individual; por eso el intervalo de predicción del ejemplo es tan ancho (de 94,9 a 156,8 mmHg para 55 años e IMC 27 en la categoría 1).
+
+Los supuestos de los residuos no se cumplen. La normalidad se rechaza (Shapiro-Wilk con W = 0,952 y p-value menor que 2,2e-16, con cola derecha pesada) y la variancia no es constante: el desvío de los residuos crece de 14,0 mmHg en el primer cuartil de valores ajustados a 17,7 mmHg en el cuarto. La correlación de 0,16 entre los valores ajustados y el tamaño de los residuos también indica que la dispersión crece con el valor predicho. Por eso los p-values y los intervalos de confianza son solo aproximados y los intervalos de predicción no son confiables. Las estimaciones de los coeficientes describen la tendencia media, pero no las tomo como exactas.
+
+Los datos son observacionales, así que lo encontrado es una asociación y no demuestra que la edad o el peso causen el aumento de la presión.

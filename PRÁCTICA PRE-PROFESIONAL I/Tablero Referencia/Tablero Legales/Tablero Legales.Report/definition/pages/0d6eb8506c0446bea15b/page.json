@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "0d6eb8506c0446bea15b",
+  "displayName": "SSS — Denuncias y Proyección",
+  "displayOption": "FitToPage",
+  "height": 810,
+  "width": 1440,
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "edee43273cc5d29a5a70",
+      "target": "5eecfa96b507431ca3de",
+      "type": "NoFilter"
+    },
+    {
+      "source": "edee43273cc5d29a5a70",
+      "target": "b46b0974dff74a86b9de",
+      "type": "NoFilter"
+    }
+  ]
+}

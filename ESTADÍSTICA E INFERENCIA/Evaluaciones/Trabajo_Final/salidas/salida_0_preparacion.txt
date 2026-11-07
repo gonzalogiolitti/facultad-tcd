@@ -1,0 +1,22 @@
+=== 0. Preparación de los datos ===
+Registros originales: 70000   Variables: 13 
+
+Registros fuera de rango por regla (pueden solaparse):
+                              regla registros porcentaje
+  Presión sistólica fuera de 60-250       228       0.33
+ Presión diastólica fuera de 40-200      1012       1.45
+         Altura fuera de 120-220 cm        53       0.08
+            Peso fuera de 30-200 kg         7       0.01
+
+Registros descartados: 1281 (1.83%)
+Registros que quedan (nrow): 68719 
+
+Categorías de gender:
+
+Categoría 1 Categoría 2 
+      44754       23965 
+
+Pacientes según enfermedad cardiovascular:
+
+Sin enfermedad Con enfermedad 
+         34710          34009 

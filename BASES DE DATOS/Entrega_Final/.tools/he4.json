@@ -1,0 +1,12 @@
+{
+ "md_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_Manual.md",
+ "out_docx": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_Manual.docx",
+ "titulo_hito": "Hito Evaluable 4 - Bolsa de Valores",
+ "titulo": "Bolsa de Valores (Ingenieria Inversa)",
+ "subtitulo": "DER, Modelo Relacional, SQL y Manual de Usuario",
+ "png_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_DER.png",
+ "png_expected_name": "UGR-BBDD26-HE4_Giolitti_DER.png",
+ "strip_lines": [
+  "Gonzalo Giolitti — Bases de Datos, UGR — Ingeniería Inversa\n\n"
+ ]
+}

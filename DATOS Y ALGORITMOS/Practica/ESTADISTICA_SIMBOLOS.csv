@@ -1,0 +1,52 @@
+﻿diagrama,grupo,tipo,Inicio/Fin,Ciclo,Cierre,Entrada,Salida,Decisión,Proceso,Total
+Parcial 2/Estudio/Ejercicio_01,Contado,Mientras,2,1,1,2,3,1,3,13
+Parcial 2/Estudio/Ejercicio_03,Contado,Para,2,1,1,1,2,1,3,11
+Parcial 2/Estudio/Ejercicio_04,Contado,Para,2,1,1,1,4,3,4,16
+Parcial 2/Estudio/Ejercicio_05/diagrama_buscar,Módulo,Mientras,2,1,1,1,2,1,4,12
+Parcial 2/Estudio/Ejercicio_05/diagrama_ordenar,Módulo,Para,2,3,3,0,2,1,1,12
+Parcial 2/Estudio/Ejercicio_05/diagrama_principal,Módulo,Para,2,2,2,1,1,0,1,9
+Parcial 2/Estudio/Ejercicio_06/diagrama_carga,Módulo,Sin ciclo,2,0,0,0,0,0,1,3
+Parcial 2/Estudio/Ejercicio_06/diagrama_intercalar,Módulo,Mixto,2,4,4,0,2,2,6,20
+Parcial 2/Estudio/Ejercicio_06/diagrama_principal,Módulo,Sin ciclo,2,0,0,0,0,0,1,3
+1_Practica_1/Ejercicio_01,Contado,Sin ciclo,2,0,0,1,2,0,1,6
+1_Practica_1/Ejercicio_02,Contado,Sin ciclo,2,0,0,1,1,0,1,5
+1_Practica_1/Ejercicio_03,Contado,Sin ciclo,2,0,0,1,1,0,1,5
+1_Practica_1/Ejercicio_04,Contado,Sin ciclo,2,0,0,1,1,0,2,6
+1_Practica_1/Ejercicio_05,Contado,Sin ciclo,2,0,0,1,5,0,2,10
+1_Practica_1/Ejercicio_06,Contado,Sin ciclo,2,0,0,1,2,1,0,6
+1_Practica_1/Ejercicio_07,Contado,Sin ciclo,2,0,0,1,8,7,0,18
+1_Practica_1/Ejercicio_08,Contado,Sin ciclo,2,0,0,1,5,4,0,12
+1_Practica_1/Ejercicio_09,Contado,Sin ciclo,2,0,0,1,2,1,0,6
+1_Practica_1/Ejercicio_10,Contado,Sin ciclo,2,0,0,1,1,5,6,15
+1_Practica_1/Ejercicio_11,Contado,Sin ciclo,2,0,0,1,1,5,6,15
+1_Practica_1/Ejercicio_12,Contado,Sin ciclo,2,0,0,1,1,4,6,14
+2_Repeticion_Para_Mientras/Ejercicio_01,Contado,Para,2,1,1,0,1,0,0,5
+2_Repeticion_Para_Mientras/Ejercicio_02,Contado,Para,2,1,1,0,1,0,2,7
+2_Repeticion_Para_Mientras/Ejercicio_03,Contado,Para,2,1,1,0,1,0,2,7
+2_Repeticion_Para_Mientras/Ejercicio_04,Contado,Para,2,1,1,0,1,1,0,6
+2_Repeticion_Para_Mientras/Ejercicio_05,Contado,Para,2,1,1,0,1,1,2,8
+2_Repeticion_Para_Mientras/Ejercicio_06,Contado,Para,2,1,1,0,1,1,0,6
+2_Repeticion_Para_Mientras/Ejercicio_07,Contado,Sin ciclo,2,0,0,1,3,2,0,8
+2_Repeticion_Para_Mientras/Ejercicio_08,Contado,Para,2,1,1,0,2,1,0,7
+2_Repeticion_Para_Mientras/Ejercicio_09,Contado,Mientras,2,1,1,0,1,0,2,7
+2_Repeticion_Para_Mientras/Ejercicio_10,Contado,Mientras,2,2,2,2,1,0,3,12
+2_Repeticion_Para_Mientras/Ejercicio_11,Contado,Mientras,2,1,1,2,1,0,2,9
+2_Repeticion_Para_Mientras/Ejercicio_12,Contado,Mientras,2,1,1,2,1,0,2,9
+2_Repeticion_Para_Mientras/Ejercicio_13,Contado,Mientras,2,1,1,2,1,0,2,9
+2_Repeticion_Para_Mientras/Ejercicio_14,Contado,Mientras,2,1,1,2,2,2,2,12
+Diagramacion Logica/Parte 1/Ejercicio_01,Contado,Sin ciclo,2,0,0,1,2,0,1,6
+Diagramacion Logica/Parte 1/Ejercicio_02,Contado,Sin ciclo,2,0,0,1,1,0,1,5
+Diagramacion Logica/Parte 1/Ejercicio_03,Contado,Sin ciclo,2,0,0,1,1,1,2,7
+Diagramacion Logica/Parte 1/Ejercicio_04,Contado,Sin ciclo,2,0,0,1,2,1,2,8
+Diagramacion Logica/Parte 1/Ejercicio_05,Contado,Sin ciclo,2,0,0,1,2,1,0,6
+Diagramacion Logica/Parte 1/Ejercicio_06,Contado,Sin ciclo,2,0,0,1,3,2,0,8
+Diagramacion Logica/Parte 1/Ejercicio_07,Contado,Sin ciclo,2,0,0,1,1,2,3,9
+Diagramacion Logica/Parte 1/Ejercicio_08,Contado,Sin ciclo,2,0,0,1,2,1,0,6
+Diagramacion Logica/Parte 1/Ejercicio_09,Contado,Sin ciclo,2,0,0,1,1,1,0,5
+Diagramacion Logica/Parte 1/Ejercicio_10,Contado,Sin ciclo,2,0,0,1,2,0,2,7
+Diagramacion Logica/Parte 1/Ejercicio_11,Contado,Sin ciclo,2,0,0,1,1,0,1,5
+Diagramacion Logica/Parte 1/Ejercicio_12,Contado,Sin ciclo,2,0,0,1,2,1,0,6
+Diagramacion Logica/Parte 1/Ejercicio_13,Contado,Sin ciclo,2,0,0,1,2,1,0,6
+Diagramacion Logica/Parte 1/Ejercicio_14,Contado,Sin ciclo,2,0,0,0,6,5,1,14
+Parcial_1/Ejercicio_01,Contado,Para,2,1,1,2,2,1,3,12
+Parcial_1/Ejercicio_02,Contado,Mientras,2,1,1,2,3,1,3,13

@@ -1,0 +1,36 @@
+=== 1. Análisis descriptivo ===
+
+--- describe(): posición, dispersión y forma ---
+           vars     n   mean    sd median trimmed   mad   min    max  range
+edad_anios    1 68719  53.29  6.76  53.94   53.57  6.95 29.56  64.92  35.36
+weight        2 68719  74.12 14.30  72.00   73.04 11.86 30.00 200.00 170.00
+ap_hi         3 68719 126.62 16.76 120.00  125.31 14.83 60.00 240.00 180.00
+            skew kurtosis   se
+edad_anios -0.31    -0.83 0.03
+weight      0.99     2.42 0.05
+ap_hi       0.91     1.85 0.06
+
+--- Edad (distribución casi simétrica): media y desvío estándar ---
+Media: 53.29124 
+Mediana: 53.9384 
+Desvío estándar: 6.75693 
+
+--- Presión sistólica (asimétrica a la derecha): mediana, cuartiles y rango intercuartil ---
+Mediana: 120 
+Cuartiles (Q1 y Q3): 120 140 
+Rango intercuartil: 20 
+Proporción de pacientes con sistólica exactamente 120: 0.4022614 
+Proporción de pacientes con sistólica múltiplo de 10: 0.9704303 
+
+--- Peso (asimétrico a la derecha): mediana, cuartiles y rango intercuartil ---
+Mediana: 72 
+Cuartiles (Q1 y Q3): 65 82 
+Rango intercuartil: 17 
+Pacientes que pesan más de 140 kg (quedan fuera del eje del gráfico): 86 
+Control de redondeo: proporción de pacientes con peso con decimales: 0.002735779  | con altura con decimales: 0 
+
+--- Enfermedad cardiovascular: proporción de pacientes ---
+
+Sin enfermedad Con enfermedad 
+         34710          34009 
+Proporción con enfermedad: 0.4948995 

@@ -1,0 +1,1319 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "116573509148d0b2438b",
+  "position": {
+    "x": 20.710851918984872,
+    "y": 574.68358420679328,
+    "z": 15000,
+    "height": 211.08046339349045,
+    "width": 1398.5782961620303,
+    "tabOrder": 15000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_PSAL_Legales_Juicios"
+                    }
+                  },
+                  "Property": "numero_tramite"
+                }
+              },
+              "queryRef": "Sum(FACT_PSAL_Legales_Juicios.numero_tramite)",
+              "nativeQueryRef": "Nro Tramite",
+              "displayName": "Nro Tramite"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_PSAL_Legales_Juicios"
+                    }
+                  },
+                  "Property": "numero_expediente"
+                }
+              },
+              "queryRef": "FACT_PSAL_Legales_Juicios.numero_expediente",
+              "nativeQueryRef": "Nro Expediente",
+              "displayName": "Nro Expediente"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_PSAL_Afiliados_2"
+                    }
+                  },
+                  "Property": "CUIL"
+                }
+              },
+              "queryRef": "DIM_PSAL_Afiliados_2.CUIL",
+              "nativeQueryRef": "CUIL"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_PSAL_Afiliados_2"
+                    }
+                  },
+                  "Property": "Apellido"
+                }
+              },
+              "queryRef": "DIM_PSAL_Afiliados_2.Apellido",
+              "nativeQueryRef": "Apellido"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_PSAL_Afiliados_2"
+                    }
+                  },
+                  "Property": "Nombre"
+                }
+              },
+              "queryRef": "DIM_PSAL_Afiliados_2.Nombre",
+              "nativeQueryRef": "Nombre"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_PSAL_Legales_Juicios"
+                    }
+                  },
+                  "Property": "Estado Juicio"
+                }
+              },
+              "queryRef": "FACT_PSAL_Legales_Juicios.Estado Juicio",
+              "nativeQueryRef": "Estado Juicio"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM Fecha Demanda"
+                    }
+                  },
+                  "Property": "Fecha Demanda"
+                }
+              },
+              "queryRef": "DIM Fecha Demanda.Fecha Demanda",
+              "nativeQueryRef": "Fecha Demanda"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_PSAL_Legales_TipoJuicio"
+                    }
+                  },
+                  "Property": "descripcion"
+                }
+              },
+              "queryRef": "DIM_PSAL_Legales_TipoJuicio.descripcion",
+              "nativeQueryRef": "Tipo Juicio",
+              "displayName": "Tipo Juicio"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_PSAL_Legales_TipoFormaEstimar"
+                    }
+                  },
+                  "Property": "descripcion_limpia"
+                }
+              },
+              "queryRef": "DIM_PSAL_Legales_TipoFormaEstimar.descripcion_limpia",
+              "nativeQueryRef": "Fundamento",
+              "displayName": "Fundamento"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_UnidadDeNegocio"
+                    }
+                  },
+                  "Property": "UnidadDeNegocio"
+                }
+              },
+              "queryRef": "DIM_UnidadDeNegocio.UnidadDeNegocio",
+              "nativeQueryRef": "Unidad De Negocio",
+              "displayName": "Unidad De Negocio"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_PSAL_Legales_MotivoBaja"
+                    }
+                  },
+                  "Property": "descripcion"
+                }
+              },
+              "queryRef": "DIM_PSAL_Legales_MotivoBaja.descripcion",
+              "nativeQueryRef": "Motivo Baja",
+              "displayName": "Motivo Baja"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM Fecha Baja Juicio"
+                    }
+                  },
+                  "Property": "Fecha Baja Juicio"
+                }
+              },
+              "queryRef": "DIM Fecha Baja Juicio.Fecha Baja Juicio",
+              "nativeQueryRef": "Fecha Baja Juicio"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "DIM Fecha Demanda"
+                  }
+                },
+                "Property": "Fecha Demanda"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "140D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_Facturacion_Ganancia_Mes"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "125D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_Facturacion_Ganancia_PA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "118D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_Facturacion_Ganancia_MPAA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Variacion Fact Mensual PA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "82D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Variacion Fact ganancia Mensual MPAA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "165D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Valor promedio Fact Mensual"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "68D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Valor promedio Fact PA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "61D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Valor promedio Fact MPAA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Variacion Valor Promedio Fact Mes Anterior"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "82D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Variacion Valor Promedio Fact MPAA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "116D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_AfiliadosConCoberturaFacturacion_MesActual"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "61D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_AfiliadosConCoberturaFacturacion_PA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "61D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_AfiliadosConCoberturaFacturacion_MPAA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Variacion Afiliados Mensual PA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "82D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._Variacion Afiliados Mensual MPAA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "126D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "D_Segment.Segmento Reporte"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "118D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas._FyC_Facturacion_Presup_Mes"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "117D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas.Diferencia_Facturacion_PPTO"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "107.99998953774792D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas.% Desvio PPTO Mes Txt"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "104.65497826405198D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Interfaz_Facturacion_Emitida.DiasAtrasoEnvio)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "152.3946359099161D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.Etapa_Pendiente"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "71.68909874811064D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.TipoComprobante"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "123.89857226462243D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.NroComprobante"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "114.94290589796643D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.FechaObtencionCAE"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "161.55633908985058D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.FechaDigitalizacion"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "125.92146298306672D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.FechaEnvio"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "134.25000348362877D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "GruposDeEmision.GrupoDeEmision"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "162.73115655749783D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "DIM_PSAL_Afiliados_2.Nombre"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "117.58873824677681D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "DIM_PSAL_Afiliados_2.Apellido"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "135.69098961189687D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "DIM_PSAL_Legales_TipoFormaEstimar.descripcion_limpia"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "110.38190508883976D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "FACT_PSAL_Legales_Juicios.numero_expediente"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Right'"
+                }
+              }
+            },
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(Interfaz_Facturacion_Emitida.DiasAtrasoEnvio)"
+          }
+        },
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            },
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Medidas.Etiq Icono Alerta"
+          }
+        },
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.NroComprobante"
+          }
+        },
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.TipoComprobante"
+          }
+        },
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Interfaz_Facturacion_Emitida.Etapa_Pendiente"
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E61E64'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Detalle de Juicios — Últimos 12 Meses'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "background": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'wf_standard-font, helvetica, arial, sans-serif'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E61E64'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "preset": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outer'"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E0E0E0'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "70D"
+                }
+              }
+            },
+            "shadowSpread": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "shadowBlur": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
+                }
+              }
+            },
+            "angle": {
+              "expr": {
+                "Literal": {
+                  "Value": "45D"
+                }
+              }
+            },
+            "shadowDistance": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualTooltip": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeaderTooltip": [
+        {
+          "properties": {
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Minimal'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a542370097ad80730e3e",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_PSAL_Afiliados_2"
+              }
+            },
+            "Property": "Apellido"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f920747228db74803823",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_PSAL_Afiliados_2"
+              }
+            },
+            "Property": "CUIL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7570b31eb1624ab74e00",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_PSAL_Legales_TipoJuicio"
+              }
+            },
+            "Property": "descripcion"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5897446ede49dc85c68c",
+        "ordinal": 3,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas_Legales"
+              }
+            },
+            "Property": "FiltroDetalle12M"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "_",
+              "Entity": "_Medidas_Legales",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 0,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "_"
+                        }
+                      },
+                      "Property": "FiltroDetalle12M"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "1L"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "572415656973c60303e0",
+        "ordinal": 4,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_PSAL_Legales_MotivoBaja"
+              }
+            },
+            "Property": "descripcion"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "33d048b6906dc5a50075",
+        "ordinal": 5,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_PSAL_Legales_TipoFormaEstimar"
+              }
+            },
+            "Property": "descripcion_limpia"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "99ac73301952000eb052",
+        "ordinal": 6,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM Fecha Baja Juicio"
+              }
+            },
+            "Property": "Fecha Baja Juicio"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "f23915d1647abd098680",
+        "ordinal": 7,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM Fecha Demanda"
+              }
+            },
+            "Property": "Fecha Demanda"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "1dcf13785217070b6a3e",
+        "ordinal": 8,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FACT_PSAL_Legales_Juicios"
+              }
+            },
+            "Property": "id_tramite_judicial"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "183fd4458c0a80493080",
+        "ordinal": 9,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_PSAL_Afiliados_2"
+              }
+            },
+            "Property": "Nombre"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8b7033cbe2c000079dcc",
+        "ordinal": 10,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FACT_PSAL_Legales_Juicios"
+              }
+            },
+            "Property": "numero_expediente"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c8713559c9bdbb032c79",
+        "ordinal": 11,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FACT_PSAL_Legales_Juicios"
+              }
+            },
+            "Property": "numero_tramite"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2aff352bba212415025b",
+        "ordinal": 12,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_UnidadDeNegocio"
+              }
+            },
+            "Property": "UnidadDeNegocio"
+          }
+        },
+        "type": "Categorical"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

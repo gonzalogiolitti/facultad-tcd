@@ -1,0 +1,379 @@
+# =============================================================================
+# TRABAJO FINAL - Estadística e Inferencia (Tecnicatura en Ciencia de Datos, UGR)
+# Alumno: Giolitti, Gonzalo - 2026
+# Base de datos: Cardiovascular Disease Dataset (Kaggle, Svetlana Ulianova)
+#
+# Contenido del script
+#   0. Preparación de los datos (limpieza mínima, variables derivadas, factores)
+#   1. Análisis descriptivo: medidas de posición, dispersión y forma + gráficos
+#   2. Situación problemática 1 (contraste de hipótesis):
+#      presión sistólica según presencia de enfermedad cardiovascular
+#   3. Situación problemática 2 (clasificación):
+#      árbol de decisión para predecir la presencia de enfermedad cardiovascular
+#
+# Cómo correrlo:  Rscript "Giolitti, Gonzalo - Trabajo Final (2026) - script.R"
+# El script se entrega como .txt; para correrlo, guardarlo con extensión .R.
+#
+# PAQUETES NECESARIOS (instalarlos una sola vez si no están instalados):
+#   install.packages(c("ggplot2", "psych", "dplyr", "rpart", "rpart.plot", "caret"))
+#   - ggplot2:    gráficos
+#   - psych:      describe(), asimetría y curtosis
+#   - dplyr:      sample_frac() y setdiff() para la partición 70/30
+#   - rpart:      árboles de decisión
+#   - rpart.plot: gráfico del árbol
+#   - caret:      matriz de confusión y métricas de clasificación
+#
+# CONFIGURACIÓN: lo único que hay que ajustar para correrlo en otra máquina es la línea
+# ruta_csv de más abajo: debe contener la ruta del archivo cardio_train.csv (separador ";")
+# en la carpeta donde esté guardado. Las salidas de R (carpeta "salidas") y los gráficos
+# (carpeta "figuras", PNG a 300 dpi) se guardan junto a este script y se crean si no existen.
+# =============================================================================
+
+# --- Configuración: ajustar solo ruta_csv ------------------------------------------
+ruta_csv <- "~/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/ESTADÍSTICA E INFERENCIA/Evaluaciones/1_Evaluacion Unidad 1/archive/cardio_train.csv"
+
+# Carpetas de salida (junto al script)
+args <- commandArgs(trailingOnly = FALSE)
+f <- sub("^--file=", "", args[grep("^--file=", args)])
+f <- gsub("~+~", " ", f, fixed = TRUE)          # Rscript codifica los espacios de la ruta
+dir_script <- if (length(f)) dirname(normalizePath(f[1])) else getwd()
+dir_salidas <- file.path(dir_script, "salidas")
+dir_figuras <- file.path(dir_script, "figuras")
+dir.create(dir_salidas, showWarnings = FALSE, recursive = TRUE)
+dir.create(dir_figuras, showWarnings = FALSE, recursive = TRUE)
+if (!file.exists(ruta_csv)) stop("No se encontró cardio_train.csv: ajustar la variable ruta_csv al comienzo del script.")
+
+set.seed(2026)
+
+library(ggplot2)     # gráficos (Unidad 2)
+library(psych)       # describe(): asimetría y curtosis (Unidad 2)
+library(dplyr)       # sample_frac() y setdiff() para la partición (Unidad 3, clase 7)
+library(rpart)       # árboles de decisión (Unidad 3, clase 7)
+library(rpart.plot)  # gráfico del árbol
+library(caret)       # matriz de confusión y métricas
+
+# Valores que luego se usan para armar el informe (se guardan al final)
+valores <- list()
+guardar_valor <- function(nombre, x) valores[[nombre]] <<- as.numeric(x)
+
+# Gráficos: tema común
+tema <- theme_bw(base_size = 12) +
+  theme(plot.title = element_text(hjust = 0.5), panel.grid.minor = element_blank())
+azul <- "#4C78A8"; rojo <- "#C0392B"; verde <- "#2E7D32"; naranja <- "#E08A2E"
+guardar_fig <- function(g, nombre, ancho = 6.5, alto = 4.3)
+  ggsave(file.path(dir_figuras, nombre), g, width = ancho, height = alto, dpi = 300, bg = "white")
+
+# =============================================================================
+# 0. PREPARACIÓN DE LOS DATOS
+# =============================================================================
+sink(file.path(dir_salidas, "salida_0_preparacion.txt"), split = TRUE)
+cat("=== 0. Preparación de los datos ===\n")
+
+# El archivo usa ";" como separador de campos
+cardio <- read.csv(ruta_csv, sep = ";", header = TRUE, stringsAsFactors = FALSE)
+n_original <- nrow(cardio)
+cat("Registros originales:", n_original, "  Variables:", ncol(cardio), "\n")
+
+# Variables derivadas: la edad está en días y el IMC se calcula con peso y altura
+cardio$edad_anios <- cardio$age / 365.25
+cardio$IMC <- cardio$weight / (cardio$height / 100)^2
+
+# Limpieza mínima: solo valores fisiológicamente imposibles
+reglas <- list(
+  "Presión sistólica fuera de 60-250"  = cardio$ap_hi < 60  | cardio$ap_hi > 250,
+  "Presión diastólica fuera de 40-200" = cardio$ap_lo < 40  | cardio$ap_lo > 200,
+  "Altura fuera de 120-220 cm"         = cardio$height < 120 | cardio$height > 220,
+  "Peso fuera de 30-200 kg"            = cardio$weight < 30  | cardio$weight > 200
+)
+descarte <- data.frame(regla = names(reglas), registros = sapply(reglas, sum),
+                       porcentaje = round(100 * sapply(reglas, mean), 2), row.names = NULL)
+cat("\nRegistros fuera de rango por regla (pueden solaparse):\n")
+print(descarte, row.names = FALSE)
+quitar <- Reduce(`|`, reglas)
+n_quitados <- sum(quitar)
+datos <- cardio[!quitar, ]
+rownames(datos) <- NULL
+cat("\nRegistros descartados:", n_quitados, sprintf("(%.2f%%)\n", 100 * n_quitados / n_original))
+cat("Registros que quedan (nrow):", nrow(datos), "\n")
+stopifnot(nrow(datos) == 68719)
+
+# Variables categóricas como factor (gender: categorías 1 y 2, la codificación no está documentada)
+niv3 <- c("Normal", "Por encima de lo normal", "Muy por encima de lo normal")
+datos$gender_f      <- factor(datos$gender, levels = 1:2, labels = c("Categoría 1", "Categoría 2"))
+datos$cholesterol_f <- factor(datos$cholesterol, levels = 1:3, labels = niv3, ordered = TRUE)
+datos$gluc_f        <- factor(datos$gluc, levels = 1:3, labels = niv3, ordered = TRUE)
+datos$smoke_f       <- factor(datos$smoke,  levels = 0:1, labels = c("No fuma", "Fuma"))
+datos$alco_f        <- factor(datos$alco,   levels = 0:1, labels = c("No consume alcohol", "Consume alcohol"))
+datos$active_f      <- factor(datos$active, levels = 0:1, labels = c("Sin actividad física", "Con actividad física"))
+datos$cardio_f      <- factor(datos$cardio, levels = 0:1, labels = c("Sin enfermedad", "Con enfermedad"))
+
+cat("\nCategorías de gender:\n"); print(table(datos$gender_f))
+cat("\nPacientes según enfermedad cardiovascular:\n"); print(table(datos$cardio_f))
+
+guardar_valor("n_original", n_original); guardar_valor("n_limpio", nrow(datos))
+guardar_valor("n_quitados", n_quitados); guardar_valor("pct_quitados", 100 * n_quitados / n_original)
+guardar_valor("n_sis", descarte$registros[1]); guardar_valor("n_dia", descarte$registros[2])
+guardar_valor("n_altura", descarte$registros[3]); guardar_valor("n_peso", descarte$registros[4])
+guardar_valor("n_cat1", sum(datos$gender == 1)); guardar_valor("n_cat2", sum(datos$gender == 2))
+guardar_valor("n_sin", sum(datos$cardio == 0)); guardar_valor("n_con", sum(datos$cardio == 1))
+guardar_valor("prop_con", mean(datos$cardio))
+sink()
+
+# =============================================================================
+# 1. ANÁLISIS DESCRIPTIVO
+# =============================================================================
+sink(file.path(dir_salidas, "salida_1_descriptivo.txt"), split = TRUE)
+cat("=== 1. Análisis descriptivo ===\n")
+
+# Forma de la distribución: asimetría y curtosis con describe() (psych)
+cuant <- datos[, c("edad_anios", "weight", "ap_hi")]
+cat("\n--- describe(): posición, dispersión y forma ---\n")
+print(describe(cuant))
+
+# Medidas de posición y dispersión
+cat("\n--- Edad (distribución casi simétrica): media y desvío estándar ---\n")
+cat("Media:", mean(datos$edad_anios), "\n")
+cat("Mediana:", median(datos$edad_anios), "\n")
+cat("Desvío estándar:", sd(datos$edad_anios), "\n")
+
+cat("\n--- Presión sistólica (asimétrica a la derecha): mediana, cuartiles y rango intercuartil ---\n")
+cat("Mediana:", median(datos$ap_hi), "\n")
+cat("Cuartiles (Q1 y Q3):", quantile(datos$ap_hi, probs = c(0.25, 0.75)), "\n")
+cat("Rango intercuartil:", IQR(datos$ap_hi), "\n")
+cat("Proporción de pacientes con sistólica exactamente 120:", mean(datos$ap_hi == 120), "\n")
+cat("Proporción de pacientes con sistólica múltiplo de 10:", mean(datos$ap_hi %% 10 == 0), "\n")
+
+cat("\n--- Peso (asimétrico a la derecha): mediana, cuartiles y rango intercuartil ---\n")
+cat("Mediana:", median(datos$weight), "\n")
+cat("Cuartiles (Q1 y Q3):", quantile(datos$weight, probs = c(0.25, 0.75)), "\n")
+cat("Rango intercuartil:", IQR(datos$weight), "\n")
+cat("Pacientes que pesan más de 140 kg (quedan fuera del eje del gráfico):", sum(datos$weight > 140), "\n")
+cat("Control de redondeo: proporción de pacientes con peso con decimales:", mean(datos$weight %% 1 != 0),
+    " | con altura con decimales:", mean(datos$height %% 1 != 0), "\n")
+
+cat("\n--- Enfermedad cardiovascular: proporción de pacientes ---\n")
+print(table(datos$cardio_f))
+cat("Proporción con enfermedad:", mean(datos$cardio == 1), "\n")
+
+asim <- describe(cuant)
+for (v in c("edad_anios", "weight", "ap_hi")) {
+  guardar_valor(paste0(v, "_asim"), asim[v, "skew"]); guardar_valor(paste0(v, "_curt"), asim[v, "kurtosis"])
+}
+guardar_valor("edad_media", mean(datos$edad_anios)); guardar_valor("edad_mediana", median(datos$edad_anios))
+guardar_valor("edad_sd", sd(datos$edad_anios)); guardar_valor("edad_min", min(datos$edad_anios)); guardar_valor("edad_max", max(datos$edad_anios))
+guardar_valor("edad_q1", quantile(datos$edad_anios, 0.25)); guardar_valor("edad_q3", quantile(datos$edad_anios, 0.75))
+guardar_valor("sis_mediana", median(datos$ap_hi)); guardar_valor("sis_q1", quantile(datos$ap_hi, 0.25))
+guardar_valor("sis_q3", quantile(datos$ap_hi, 0.75)); guardar_valor("sis_ric", IQR(datos$ap_hi))
+guardar_valor("sis_mult10", mean(datos$ap_hi %% 10 == 0)); guardar_valor("sis_p120", mean(datos$ap_hi == 120)); guardar_valor("sis_media", mean(datos$ap_hi))
+guardar_valor("peso_mediana", median(datos$weight)); guardar_valor("peso_q1", quantile(datos$weight, 0.25))
+guardar_valor("peso_q3", quantile(datos$weight, 0.75)); guardar_valor("peso_ric", IQR(datos$weight))
+guardar_valor("peso_media", mean(datos$weight)); guardar_valor("peso_mas140", sum(datos$weight > 140))
+sink()
+
+# --- Gráficos de la sección 1 (ggplot2) ------------------------------------------
+# Gráfico 1: presión sistólica, histograma con mediana y tercer cuartil
+g1 <- ggplot(datos, aes(x = ap_hi)) +
+  geom_histogram(breaks = seq(55, 245, 10), fill = azul, color = "white") +
+  geom_vline(aes(xintercept = median(ap_hi), color = "Mediana"), linewidth = 0.9) +
+  geom_vline(aes(xintercept = quantile(ap_hi, 0.75), color = "Tercer cuartil"), linewidth = 0.9, linetype = "dashed") +
+  scale_color_manual(NULL, values = c(Mediana = rojo, `Tercer cuartil` = verde)) +
+  scale_x_continuous(breaks = seq(60, 240, 20)) +
+  labs(title = "Distribución de la presión arterial sistólica",
+       x = "Presión sistólica (mmHg)", y = "Cantidad de pacientes") +
+  tema + theme(legend.position = "top")
+guardar_fig(g1, "fig_1_sistolica.png")
+
+# Gráfico 2: edad, histograma con media y mediana
+g2 <- ggplot(datos, aes(x = edad_anios)) +
+  geom_histogram(binwidth = 2, boundary = 28, fill = azul, color = "white") +
+  geom_vline(aes(xintercept = mean(edad_anios), color = "Media"), linewidth = 0.9) +
+  geom_vline(aes(xintercept = median(edad_anios), color = "Mediana"), linewidth = 0.9, linetype = "dashed") +
+  scale_color_manual(NULL, values = c(Media = rojo, Mediana = verde)) +
+  scale_x_continuous(breaks = seq(30, 65, 5)) +
+  labs(title = "Distribución de la edad de los pacientes",
+       x = "Edad (años)", y = "Cantidad de pacientes") +
+  tema + theme(legend.position = "top")
+guardar_fig(g2, "fig_2_edad.png")
+
+# Gráfico 3: peso, histograma con el eje X acotado a 30-140 kg (coord_cartesian)
+g3 <- ggplot(datos, aes(x = weight)) +
+  geom_histogram(binwidth = 5, boundary = 30, fill = azul, color = "white") +
+  geom_vline(aes(xintercept = median(weight), color = "Mediana"), linewidth = 0.9) +
+  geom_vline(aes(xintercept = quantile(weight, 0.75), color = "Tercer cuartil"), linewidth = 0.9, linetype = "dashed") +
+  scale_color_manual(NULL, values = c(Mediana = rojo, `Tercer cuartil` = verde)) +
+  scale_x_continuous(breaks = seq(30, 140, 10)) +
+  coord_cartesian(xlim = c(30, 140)) +
+  labs(title = "Distribución del peso de los pacientes",
+       x = "Peso (kg)", y = "Cantidad de pacientes") +
+  tema + theme(legend.position = "top")
+guardar_fig(g3, "fig_3_peso.png")
+
+# =============================================================================
+# 2. SITUACIÓN PROBLEMÁTICA 1: CONTRASTE DE HIPÓTESIS
+#    Variable en estudio: presión arterial sistólica (mmHg)
+#    Unidad elemental: paciente
+#    Factor: presencia de enfermedad cardiovascular; niveles: sin enfermedad (0) y con enfermedad (1)
+#    H0) mu_con = mu_sin     H1) mu_con > mu_sin     alfa = 0,05
+# =============================================================================
+sink(file.path(dir_salidas, "salida_2_contraste.txt"), split = TRUE)
+cat("=== 2. Contraste de hipótesis: presión sistólica según enfermedad cardiovascular ===\n")
+alfa <- 0.05
+sis_sin <- datos$ap_hi[datos$cardio == 0]
+sis_con <- datos$ap_hi[datos$cardio == 1]
+
+cat("\n--- Media, mediana y desvío por grupo ---\n")
+print(sapply(split(datos$ap_hi, datos$cardio_f),
+             function(x) c(n = length(x), media = mean(x), mediana = median(x),
+                           desvio = sd(x), Q1 = unname(quantile(x, 0.25)), Q3 = unname(quantile(x, 0.75)))))
+
+# Supuestos. shapiro.test admite como máximo 5000 datos: muestra aleatoria de 5000 por grupo
+set.seed(2026)
+muestras_h1 <- lapply(split(datos$ap_hi, datos$cardio_f), sample, size = 5000)
+cat("\n--- Normalidad: Shapiro-Wilk por grupo (muestra aleatoria de 5000) ---\n")
+print(lapply(muestras_h1, shapiro.test))
+cat("\n--- Homocedasticidad: test de Bartlett ---\n")
+print(bartlett.test(list(sis_sin, sis_con)))
+
+# No hay normalidad ni homocedasticidad -> test de Wilcoxon (suma de rangos), muestras independientes.
+# alternative = "greater": la sistólica del grupo con enfermedad (x) es mayor que la del grupo sin enfermedad (y)
+cat("\n--- Test de Wilcoxon (alternativa a la derecha) ---\n")
+w1 <- wilcox.test(sis_con, sis_sin, paired = FALSE, alternative = "greater", conf.level = 0.95)
+print(w1)
+cat("\n--- Diferencias entre grupos ---\n")
+print(c(dif_medias = mean(sis_con) - mean(sis_sin), dif_medianas = median(sis_con) - median(sis_sin)))
+sink()
+
+sh1 <- lapply(muestras_h1, shapiro.test); bt1 <- bartlett.test(list(sis_sin, sis_con))
+guardar_valor("h1_media_sin", mean(sis_sin)); guardar_valor("h1_media_con", mean(sis_con))
+guardar_valor("h1_med_sin", median(sis_sin)); guardar_valor("h1_med_con", median(sis_con))
+guardar_valor("h1_sd_sin", sd(sis_sin)); guardar_valor("h1_sd_con", sd(sis_con))
+guardar_valor("h1_q1_sin", quantile(sis_sin, 0.25)); guardar_valor("h1_q3_sin", quantile(sis_sin, 0.75))
+guardar_valor("h1_q1_con", quantile(sis_con, 0.25)); guardar_valor("h1_q3_con", quantile(sis_con, 0.75))
+guardar_valor("h1_W_sin", sh1[[1]]$statistic); guardar_valor("h1_W_con", sh1[[2]]$statistic)
+guardar_valor("h1_sh_p_sin", sh1[[1]]$p.value); guardar_valor("h1_sh_p_con", sh1[[2]]$p.value)
+guardar_valor("h1_bart_K", bt1$statistic); guardar_valor("h1_bart_gl", bt1$parameter); guardar_valor("h1_bart_p", bt1$p.value)
+guardar_valor("h1_wilcox_W", w1$statistic); guardar_valor("h1_wilcox_p", w1$p.value)
+guardar_valor("h1_dif_medias", mean(sis_con) - mean(sis_sin)); guardar_valor("h1_dif_medianas", median(sis_con) - median(sis_sin))
+
+# Gráfico 4: presión sistólica según enfermedad cardiovascular
+g4 <- ggplot(datos, aes(x = cardio_f, y = ap_hi, fill = cardio_f)) +
+  geom_boxplot(outlier.alpha = 0.15, outlier.size = 0.8, width = 0.55) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white") +
+  scale_fill_manual(values = c(azul, naranja), guide = "none") +
+  labs(title = "Presión sistólica según presencia de enfermedad cardiovascular",
+       x = NULL, y = "Presión sistólica (mmHg)") + tema
+guardar_fig(g4, "fig_4_sistolica_por_grupo.png")
+
+# =============================================================================
+# 3. SITUACIÓN PROBLEMÁTICA 2: CLASIFICACIÓN CON ÁRBOLES DE DECISIÓN
+#    Procedimiento de la Unidad 3, clase 7: variable objetivo como factor, partición 70/30
+#    (sample_frac y setdiff), rpart, rpart.plot, predict sobre la prueba y matriz de confusión (caret).
+#    Variable objetivo: cardio_f (sin enfermedad / con enfermedad).
+#    Predictores: edad_anios, gender, height, weight, ap_hi, ap_lo, cholesterol, gluc, smoke, alco, active.
+#    No se usan id, age (es la edad en días, duplicaría edad_anios) ni cardio en otra forma.
+# =============================================================================
+sink(file.path(dir_salidas, "salida_3_arboles.txt"), split = TRUE)
+cat("=== 3. Clasificación: árboles de decisión ===\n")
+
+set.seed(2026)
+datos_entrenamiento <- sample_frac(datos, .7)            # 70% para entrenar
+datos_prueba <- setdiff(datos, datos_entrenamiento)      # el 30% restante para probar
+cat("\nPacientes en entrenamiento:", nrow(datos_entrenamiento), " Pacientes en prueba:", nrow(datos_prueba), "\n")
+cat("Pacientes (id) que están en ambos conjuntos:", length(intersect(datos_entrenamiento$id, datos_prueba$id)), "\n")
+cat("\nClases en la prueba:\n"); print(table(datos_prueba$cardio_f))
+exactitud_base <- max(table(datos_prueba$cardio_f)) / nrow(datos_prueba)
+cat("Exactitud de predecir siempre la clase más frecuente:", exactitud_base, "\n")
+
+formula_arbol <- cardio_f ~ edad_anios + gender_f + height + weight + ap_hi + ap_lo +
+  cholesterol_f + gluc_f + smoke_f + alco_f + active_f
+
+# Cuatro árboles con los mismos datos de entrenamiento, de menor a mayor complejidad.
+# cp (parámetro de complejidad) más chico = el árbol se divide más veces.
+arbol_defecto <- rpart(formula = formula_arbol, data = datos_entrenamiento)      # cp = 0,01 (por defecto)
+arbol_mediano <- rpart(formula = formula_arbol, data = datos_entrenamiento,
+                       control = rpart.control(cp = 0.001))
+arbol_grande  <- rpart(formula = formula_arbol, data = datos_entrenamiento,
+                       control = rpart.control(cp = 0.0005))
+arbol_completo <- rpart(formula = formula_arbol, data = datos_entrenamiento,
+                        control = rpart.control(cp = 0))                         # sin poda
+arboles <- list("Árbol por defecto (cp = 0,01)" = arbol_defecto,
+                "Árbol mediano (cp = 0,001)" = arbol_mediano,
+                "Árbol grande (cp = 0,0005)" = arbol_grande,
+                "Árbol completo (cp = 0)" = arbol_completo)
+
+cat("\n--- Cantidad de hojas de cada árbol ---\n")
+hojas <- sapply(arboles, function(a) sum(a$frame$var == "<leaf>"))
+print(hojas)
+
+# Predicción sobre los datos de prueba y matriz de confusión (la clase positiva es "Con enfermedad")
+resultados <- data.frame()
+matrices <- list()
+for (i in seq_along(arboles)) {
+  a <- arboles[[i]]
+  pred_prueba <- predict(a, newdata = datos_prueba, type = "class")
+  pred_entren <- predict(a, newdata = datos_entrenamiento, type = "class")
+  cm <- confusionMatrix(pred_prueba, datos_prueba[["cardio_f"]], positive = "Con enfermedad")
+  cm_e <- confusionMatrix(pred_entren, datos_entrenamiento[["cardio_f"]], positive = "Con enfermedad")
+  matrices[[i]] <- cm
+  cat("\n=======================================================================\n")
+  cat(names(arboles)[i], "\n")
+  print(cm)
+  resultados <- rbind(resultados, data.frame(
+    arbol = names(arboles)[i], hojas = unname(hojas[i]),
+    exactitud_entrenamiento = unname(cm_e$overall["Accuracy"]),
+    exactitud_prueba = unname(cm$overall["Accuracy"]), kappa_prueba = unname(cm$overall["Kappa"]),
+    sensibilidad = unname(cm$byClass["Sensitivity"]), especificidad = unname(cm$byClass["Specificity"])))
+}
+cat("\n--- Comparación de los árboles ---\n")
+print(resultados, row.names = FALSE, digits = 4)
+
+# Árbol elegido: el más simple cuya exactitud en la prueba esté a menos de 0,001 de la mejor
+# (la diferencia es mínima y el árbol chico se puede graficar e interpretar)
+i_elegido <- which(resultados$exactitud_prueba >= max(resultados$exactitud_prueba) - 0.001)[1]
+arbol_elegido <- arboles[[i_elegido]]
+cat("\nÁrbol elegido:", names(arboles)[i_elegido], "\n")
+cat("\n--- Árbol elegido (reglas) ---\n")
+print(arbol_elegido)
+cat("\n--- Primera división del árbol elegido ---\n")
+print(arbol_elegido$splits[1, , drop = FALSE])
+cat("\nImportancia de las variables en el árbol elegido:\n")
+print(round(arbol_elegido$variable.importance, 1))
+sink()
+
+cm_el <- matrices[[i_elegido]]
+guardar_valor("n_entrenamiento", nrow(datos_entrenamiento)); guardar_valor("n_prueba", nrow(datos_prueba))
+guardar_valor("prueba_sin", sum(datos_prueba$cardio == 0)); guardar_valor("prueba_con", sum(datos_prueba$cardio == 1))
+guardar_valor("exactitud_base", exactitud_base); guardar_valor("i_elegido", i_elegido)
+for (i in seq_len(nrow(resultados))) {
+  for (campo in c("hojas", "exactitud_entrenamiento", "exactitud_prueba", "kappa_prueba", "sensibilidad", "especificidad"))
+    guardar_valor(paste0("arbol", i, "_", campo), resultados[i, campo])
+}
+guardar_valor("tn", cm_el$table[1, 1]); guardar_valor("fp", cm_el$table[2, 1])
+guardar_valor("fn", cm_el$table[1, 2]); guardar_valor("tp", cm_el$table[2, 2])
+guardar_valor("acc_lo", cm_el$overall["AccuracyLower"]); guardar_valor("acc_hi", cm_el$overall["AccuracyUpper"])
+guardar_valor("nir", cm_el$overall["AccuracyNull"]); guardar_valor("acc_p", cm_el$overall["AccuracyPValue"])
+guardar_valor("vpp", cm_el$byClass["Pos Pred Value"]); guardar_valor("vpn", cm_el$byClass["Neg Pred Value"])
+# Nodos del árbol elegido que se comentan en el informe: cantidad de pacientes y proporción con enfermedad
+fr <- arbol_elegido$frame
+for (k in c(2, 3, 4, 7, 8, 11)) {
+  i <- match(as.character(k), rownames(fr))
+  guardar_valor(paste0("nodo", k, "_n"), fr$n[i])
+  guardar_valor(paste0("nodo", k, "_pcon"), fr$yval2[i, 5])
+}
+sp <- arbol_elegido$splits[1, ]
+write.csv(data.frame(clave = c("raiz_variable", "raiz_corte"),
+                     valor = c(rownames(arbol_elegido$splits)[1], sp["index"])),
+          file.path(dir_salidas, "valores_arbol_raiz.csv"), row.names = FALSE)
+
+# Gráfico 5: árbol elegido (rpart.plot)
+png(file.path(dir_figuras, "fig_5_arbol.png"), width = 3000, height = 1750, res = 300)
+rpart.plot(arbol_elegido, mar = c(0, 0, 0, 0))
+dev.off()
+
+# =============================================================================
+# Valores para el informe
+# =============================================================================
+vals <- unlist(valores)
+write.csv(data.frame(clave = names(vals), valor = vals), file.path(dir_salidas, "valores_trabajo_final.csv"),
+          row.names = FALSE)
+cat("\nTrabajo final: salidas y figuras guardadas en", dir_script, "\n")

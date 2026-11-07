@@ -1,0 +1,20 @@
+{
+ "md_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_Documento.md",
+ "out_docx": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_Documento.docx",
+ "titulo_hito": "Hito Evaluable 5 – TPI Taller Mecánico",
+ "titulo": "Trabajo Práctico Integrador: Taller Mecánico",
+ "subtitulo": "Situación, DER, Modelo Relacional y SQL",
+ "png_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_DER.png",
+ "png_expected_name": "UGR-BBDD26-HE5_Giolitti_DER.png",
+ "image_after_heading": "2. Diagrama Entidad – Relación",
+ "extra_images": [
+  {
+   "mode": "before",
+   "heading": "4. Qué hace el procedimiento, el trigger y cada perfil",
+   "png_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_MR.png",
+   "caption": "Figura: Modelo Relacional exportado desde ERDPlus",
+   "kind": "fullwidth",
+   "note": "ERDPlus nombra las tablas de las relaciones N:M con el nombre de la relación: ASIGNA, INCLUYE y USA. En el SQL se llaman orden_tecnico, orden_servicio y orden_repuesto."
+  }
+ ]
+}

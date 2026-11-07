@@ -84,6 +84,8 @@ Texto libre del enunciado, bloques de texto, y flechas de unión **sin círculos
 ### Otra contradicción que conviene que veas
 Mis cambios previos usaron `shape=display` para salidas y `shape=parallelogram` (**Data**) para entradas, según tus instrucciones de ese momento. Este relevamiento muestra que la cátedra usa la forma de **teclado** (`Manual Input`, `shape=manualInput`) para la entrada, y que en la biblioteca Flowchart la salida es `mxgraph.flowchart.display`. Clase 2 dice textualmente que el paralelogramo **no** es lo que va para la lectura. Además, los `Para`/`MQ` hoy están dibujados en los `.drawio` con rectángulos, no con hexágonos + cápsulas. No toqué nada: queda para tu decisión.
 
+**Actualización (noviembre 2026):** ya resuelto. El generador y la plantilla usan `Manual Input` para la entrada, hexágonos + cápsulas para `Para`/`MQ` y, para la salida, el Display de la paleta "Diagrama de flujo" de draw.io (`strokeWidth=1;html=1;shape=mxgraph.flowchart.display;whiteSpace=wrap;`), **no** el `shape=display` de la paleta general. Los diagramas generados antes del cambio de Display siguen con la figura anterior y no hace falta rehacerlos.
+
 ---
 
 ## 4. PseInt: arreglos

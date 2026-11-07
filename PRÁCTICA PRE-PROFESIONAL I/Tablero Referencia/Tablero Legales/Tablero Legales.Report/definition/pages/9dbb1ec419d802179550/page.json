@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "9dbb1ec419d802179550",
+  "displayName": "Juicios Salud ",
+  "displayOption": "FitToPage",
+  "height": 810,
+  "width": 1440,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a430891f978b59613875",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DIM_UnidadDeNegocio"
+              }
+            },
+            "Property": "UnidadDeNegocio"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "4103f296c7c3282d1a89",
+      "target": "b1931ea9b570e9bd0be3",
+      "type": "DataFilter"
+    },
+    {
+      "source": "4103f296c7c3282d1a89",
+      "target": "9cdc75fbe94eb0807250",
+      "type": "DataFilter"
+    }
+  ]
+}

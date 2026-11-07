@@ -1,0 +1,19 @@
+{
+ "md_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE3_Concesionaria/Avance2_Integrador/UGR-BBDD26-HE3_Giolitti_Avance2.md",
+ "out_docx": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE3_Concesionaria/Avance2_Integrador/UGR-BBDD26-HE3_Giolitti_Avance2.docx",
+ "titulo_hito": "TPI - Avance 2 (Integrador)",
+ "titulo": "Avance 2: Modelo Relacional",
+ "subtitulo": "Taller Mecanico - DER, MR y verificacion 3FN",
+ "png_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_DER.png",
+ "png_expected_name": "UGR-BBDD26-HE5_Giolitti_DER.png",
+ "image_after_heading": "Diagrama Entidad – Relación",
+ "extra_images": [
+  {
+   "mode": "before",
+   "heading": "Verificación 1FN/2FN/3FN",
+   "png_path": "/home/gonza/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/BASES DE DATOS/Entrega_Final/HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_MR.png",
+   "caption": "Figura: Modelo Relacional exportado desde ERDPlus",
+   "kind": "fullwidth"
+  }
+ ]
+}

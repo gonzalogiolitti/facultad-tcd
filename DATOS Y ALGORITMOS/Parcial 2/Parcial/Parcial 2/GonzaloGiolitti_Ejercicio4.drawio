@@ -1,0 +1,116 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="Página-1" id="d1">
+    <mxGraphModel dx="1209" dy="719" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n2" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="272" y="50" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" value="recaudacion ← 0" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="170" width="145" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" value="cantidad" style="shape=manualInput;whiteSpace=wrap;html=1;size=15;" parent="1" vertex="1">
+          <mxGeometry x="237" y="260" width="150" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n7" value="MQ  cantidad != 0" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;size=25;" parent="1" vertex="1">
+          <mxGeometry x="202" y="355" width="220" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="n8" value="precio_unitario" style="shape=manualInput;whiteSpace=wrap;html=1;size=15;" parent="1" vertex="1">
+          <mxGeometry x="225" y="451" width="175" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n9" value="monto ← cantidad * precio_unitario" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="173" y="546" width="278" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n11" value="monto &gt; 15000" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="636" width="225" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="n14" value="totalCliente ← monto * 0.9" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="354" y="776" width="222" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n16" value="totalCliente ← monto" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="70" y="776" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n18" value="Sí" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="431" y="660" width="30" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="n19" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="164" y="660" width="30" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="n21" value="recaudacion ← recaudacion + totalCliente" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="152" y="866" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n24" value="&quot;Total cobrado al cliente: &quot;, totalCliente" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.display;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="115" y="956" width="394" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n26" value="Cantidad" style="shape=manualInput;whiteSpace=wrap;html=1;size=15;" parent="1" vertex="1">
+          <mxGeometry x="237" y="1056" width="150" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n29" value="Fin (MQ)" style="shape=mxgraph.flowchart.terminator;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="247" y="1151" width="130" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="n32" value="&quot;Recaudación general del día: &quot;, recaudacion" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.display;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="108" y="1235" width="408" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n34" value="Fin" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="272" y="1335" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n2" target="n3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n3" target="n5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n5" target="n7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n7" target="n8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n8" target="n9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n9" target="n11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" parent="1" source="n11" target="n14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;entryX=0.5;entryY=0;" parent="1" source="n11" target="n16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n14" target="n21" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="846" />
+              <mxPoint x="312" y="846" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e23" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n16" target="n21" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="846" />
+              <mxPoint x="312" y="846" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e25" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n21" target="n24" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n24" target="n26" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n26" target="n29" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e33" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n29" target="n32" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e35" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="n32" target="n34" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

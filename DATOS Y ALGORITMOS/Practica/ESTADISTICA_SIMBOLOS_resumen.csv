@@ -1,0 +1,25 @@
+﻿tipo,diagramas,figura,total,promedio,minimo,maximo,mediana,profesora_promedio,diferencia
+Para,10,Inicio/Fin,20,2.0,2,2,2.0,2.0,0.0
+Para,10,Ciclo,10,1.0,1,1,1.0,1.0,0.0
+Para,10,Cierre,10,1.0,1,1,1.0,1.0,0.0
+Para,10,Entrada,4,0.4,0,2,0.0,1.0,-0.6
+Para,10,Salida,16,1.6,1,4,1.0,1.1,0.5
+Para,10,Decisión,9,0.9,0,3,1.0,0.7,0.2
+Para,10,Proceso,16,1.6,0,4,2.0,2.6,-1.0
+Para,10,Total,85,8.5,5,16,7.0,9.4,-0.9
+Mientras,8,Inicio/Fin,16,2.0,2,2,2.0,2.0,0.0
+Mientras,8,Ciclo,9,1.125,1,2,1.0,1.25,-0.125
+Mientras,8,Cierre,9,1.125,1,2,1.0,1.25,-0.125
+Mientras,8,Entrada,14,1.75,0,2,2.0,2.0,-0.25
+Mientras,8,Salida,13,1.625,1,3,1.0,1.5,0.125
+Mientras,8,Decisión,4,0.5,0,2,0.0,0.5,0.0
+Mientras,8,Proceso,19,2.375,2,3,2.0,2.0,0.375
+Mientras,8,Total,84,10.5,7,13,10.5,10.5,0.0
+Sin ciclo,27,Inicio/Fin,54,2.0,2,2,2,,
+Sin ciclo,27,Ciclo,0,0.0,0,0,0,,
+Sin ciclo,27,Cierre,0,0.0,0,0,0,,
+Sin ciclo,27,Entrada,26,0.963,0,1,1,,
+Sin ciclo,27,Salida,61,2.259,1,8,2,,
+Sin ciclo,27,Decisión,45,1.667,0,7,1,,
+Sin ciclo,27,Proceso,38,1.407,0,6,1,,
+Sin ciclo,27,Total,224,8.296,5,18,6,,

@@ -1,103 +1,127 @@
 # LEEME — Entrega Final, Bases de Datos 2026 (Gonzalo Giolitti)
 
-## Estructura
+Entrega del recuperatorio de HE4 y del Trabajo Práctico Integrador
+(taller mecánico), con correcciones del profesor. Vencimiento: martes
+10 de noviembre, 12 h.
+
+## Estructura final
 
 ```
 Entrega_Final/
-├── LEEME.md                      este archivo
-├── verificar_todo.sh             corre HE4 y HE5 contra MariaDB, OK/ERROR por script
-├── .venv/                        entorno Python local (python-docx, reportlab)
-├── _entrada/                     consignas y material fuente que me pasaste (solo lectura)
-├── HE1_Arquitecturas/            PDF completo, copiado tal cual
-├── HE2_Gimnasio/                 DER (.erdplus) + resolución + validación + DOCX/PDF
-├── HE3_Concesionaria/            DER + MR (PNG) + resolución + SQL + DOCX/PDF
-├── HE4_Bolsa/                    DER + MR (PNG) + SQL + Manual + DOCX/PDF
-└── HE5_TPI_Taller/                documento + DER (PNG) + SQL final + avances 1/2/3 + DOCX/PDF
+├── LEEME.md
+├── verificar_todo.sh                        corre HE4 y HE5 contra MariaDB
+├── .tools/                                  generador de DOCX/PDF (uso interno)
+├── .venv/                                   entorno Python local
+├── _entrada/                                consignas y material fuente (solo lectura)
+├── HE1_Arquitecturas/                       PDF completo (sin cambios)
+├── HE2_Gimnasio/
+│   ├── UGR-BBDD26-HE2_Giolitti_*            DER, resolución, validación, DOCX/PDF
+│   └── Avance1_Integrador/                  Avance #1 del TPI (taller), PDF+DOCX
+├── HE3_Concesionaria/
+│   ├── UGR-BBDD26-HE3_Giolitti_*            DER, MR, resolución, SQL, DOCX/PDF
+│   └── Avance2_Integrador/                  Avance #2 del TPI (taller), PDF+DOCX
+├── HE4_Bolsa/                               ← RECUPERATORIO
+│   ├── UGR-BBDD26-HE4_Giolitti_*            DER, MR, SQL (con CHECK), Manual, DOCX/PDF
+│   ├── Recomendaciones_Profesor.md          restricciones de integridad (CHECK)
+│   └── Avance3_Integrador/                  Avance #3 del TPI (taller), PDF+DOCX+.sql
+└── HE5_TPI_Taller/                          ← INTEGRADOR
+    ├── UGR-BBDD26-HE5_Giolitti_*            documento, DER, MR, SQL final, DOCX/PDF
+    ├── Recomendaciones_Profesor.md          stock inicial / descuento una sola vez
+    ├── Cobertura_TPI.md
+    ├── avances/                             Avance #1/#2/#3 viejos (ver nota abajo)
+    └── Entrega_Avances/                     copia de los 3 PDF de avance + el .sql
 ```
 
-## Estado por hito
+## A) HE4 — Restricciones de integridad (CHECK) — ✔ hecho
 
-### HE1 — Arquitecturas de las BBDD — ✔ completo
-PDF de 7 páginas ya terminado, copiado sin tocar.
+El profesor recomendó agregar `CHECK` (antes los habíamos sacado por no
+verse en clase). Agregué 5, con nombre, sin `ENGINE` ni `CHARSET`:
+`chk_movimiento_tipo`, `chk_movimiento_cantidad`, `chk_portafolio_cantidad`,
+`chk_activo_precio`, `chk_cuenta_saldo`.
 
-### HE2 — Gimnasio — ✔ completo
-Cardinalidades corregidas (`dicta`, `tiene`), `edad` derivada +
-`fecha_nacimiento` en ALUMNO y PROFESOR, `telefono` sin multivaluado, sin
-`(O)(O)` duplicado. El primer PNG que habías dejado era una versión vieja
-(PK de ACTIVIDAD = `id_actividad` en vez de `nombre`, sin `edad`) — lo
-descarté y quedó guardado aparte como
-`UGR-BBDD26-HE2_Giolitti_DER.NO_USAR_version_vieja.png` (lo podés borrar
-cuando quieras). **El segundo PNG que dejaste sí coincide** con el
-`.erdplus` corregido — lo comparé punto por punto (PK de ACTIVIDAD =
-`nombre`, `edad` derivada en las dos entidades, `(O)` una sola vez,
-cardinalidades `dicta`/`tiene` correctas) y ya está insertado en el
-documento y el PDF.
+- Las semillas (incluidos los activos 13/14) siguen entrando sin error; los
+  `COUNT(*)` finales dan lo mismo de siempre.
+- Agregué la sección "Pruebas de restricciones" al final del `.sql`, con 2
+  `INSERT` comentados que tienen que fallar. Los probé aparte contra
+  MariaDB: los dos los rechaza (`chk_movimiento_cantidad` y
+  `chk_movimiento_tipo`).
+- Manual: sección nueva "Restricciones de integridad", DOCX/PDF
+  regenerados y revisados página por página (4 páginas).
+- Detalle completo en `HE4_Bolsa/Recomendaciones_Profesor.md`.
 
-### HE3 — Concesionaria — ✔ completo
-Sin cambios esta vuelta. DER y MR en PNG ya insertados, SQL probado.
+**Bug real encontrado y corregido en el generador de documentos** (afectaba
+HE2, HE3, HE4 y potencialmente cualquier lista): los renglones de
+continuación de una viñeta o de un ítem numerado se estaban separando en un
+párrafo aparte en vez de seguir pegados a su viñeta/número. También una
+itálica de un asterisco (`*texto*`) se comía por error el `*` de
+`SELECT * FROM ...` cuando había dos code-spans en el mismo párrafo.
+Corregidos los dos, y por eso regeneré y revisé de nuevo HE2, HE3, HE4 y
+HE5 completos (ver más abajo).
 
-### HE4 — Bolsa de valores — ✔ completo
-Sin cambios esta vuelta. DER y MR en PNG ya insertados, `.sql` probado
-(`verificar_todo.sh` → OK).
+## B) Integrador — Stock (descuento doble) — ✔ hecho
 
-### HE5 — TPI (taller mecánico) — ✔ completo, última pasada terminada
-- **PNG del DER**: lo comparé contra el `.erdplus` corregido (cardinalidades
-  de `tiene`/`genera`, `total_orden` derivado, `costo_aplicado` en
-  `incluye`, `precio_aplicado` en `usa`) — coincide en todo, lo inserté.
-- **Texto ajustado**: "en cada orden trabajan uno o más técnicos" →
-  "a cada orden se le asignan uno o más técnicos", en el documento final y
-  en el Avance #1 (el Avance #2 no tenía esa frase exacta, tenía otra
-  redacción distinta que no hacía falta tocar).
-- **Tabla de cardinalidades**: la sección 2 del documento tiene la tabla
-  de 10 filas (relación | entidad | (mín,máx) | justificación
-  explícita/inferida), más la nota de por qué `asigna`/`incluye`/`usa` son
-  relaciones N:M aparte y no atributos de ORDEN_TRABAJO.
-- **Documento reordenado y recortado** (última pasada):
-  - Orden final: encabezado/título → Alumno/Materia/Caso (como 3 líneas
-    separadas, no una sola corrida) → 1. Situación → 2. Diagrama (imagen +
-    tabla) → 3. Modelo Relacional → 4. Procedimiento/trigger/perfiles →
-    5. Cobertura por unidad.
-  - La imagen del DER ya no va pegada al título: está dentro de la
-    sección 2, sola en una página horizontal (landscape), recortada al
-    contenido sin márgenes en blanco y al tamaño máximo que entra en esa
-    página.
-  - Corregido un bug real del generador de documentos: cada renglón del
-    `.md` se estaba convirtiendo en un párrafo de Word separado (con
-    espacio extra entre cada uno), en vez de unirse en párrafos normales
-    con ajuste de línea automático. Ahora los renglones consecutivos de un
-    mismo párrafo se unen en uno solo.
-  - Sacada la sección "Entrega" completa (link de la encuesta, referencias
-    a `avances/` y nombres de archivo) y la referencia a
-    `avances/Avance2/` en la sección 3 (quedó solo "Avance #2", sin ruta).
-  - Tildes corregidas en título, subtítulo y encabezado de página.
-  - Resultado: **4 páginas**, revisadas una por una convertidas a imagen.
-- `.erdplus`: se borró el nodo `Label` suelto con el texto viejo de
-  "TPI ADELANTO..." (traía la regla de cardinalidades desactualizada). No
-  se tocó nada más del diagrama — cardinalidades re-verificadas, iguales
-  a antes (ver tabla abajo).
-- `.sql`: sacados los comentarios de las líneas 4–5 ("Version final...") y
-  cambiado "rompería" por "rompe" (solo ASCII). Vuelto a correr completo en
-  MariaDB: **mismos conteos finales que siempre** (cliente=5, tecnico=4,
-  servicio=6, repuesto=7, vehiculo=6, orden_trabajo=8, orden_tecnico=9,
-  orden_servicio=7, orden_repuesto=10, auditoria_stock=1,
-  auditoria_servicio_eliminado=1).
+El profesor preguntó si el stock inicial (que ya contemplaba lo usado) no
+se descontaría dos veces con el trigger. Tenía razón en sospecharlo: en la
+versión anterior el trigger se creaba **después** de las semillas, así que
+auditaba de menos. Reordené el script: ahora los triggers se crean
+**antes** de las semillas, y `repuesto.stock` se carga con el stock
+**inicial** real (31, 54, 14, 6, 9, 48, 7). Agregué al final una consulta
+de control (stock actual + usado = stock inicial).
 
-**Cardinalidades verificadas en `UGR-BBDD26-HE5_Giolitti_DER.erdplus` (sin cambios):**
-```
-tiene     CLIENTE          Mandatory  One   ||
-tiene     VEHICULO         Optional   Many  o<
-genera    VEHICULO         Mandatory  One   ||
-genera    ORDEN_TRABAJO    Optional   Many  o<
-asigna    ORDEN_TRABAJO    Optional   Many  o<
-asigna    TECNICO          Optional   Many  o<
-incluye   ORDEN_TRABAJO    Optional   Many  o<
-incluye   SERVICIO         Optional   Many  o<
-usa       ORDEN_TRABAJO    Optional   Many  o<
-usa       REPUESTO         Optional   Many  o<
-```
+Corrí el script completo en MariaDB y confirmé:
 
-## Verificación de SQL (`verificar_todo.sh`, corrida de esta vuelta)
+| Tabla | Filas |
+|---|---|
+| cliente | 5 |
+| tecnico | 4 |
+| servicio | 6 |
+| repuesto | 7 |
+| vehiculo | 6 |
+| orden_trabajo | 8 |
+| orden_tecnico | 9 |
+| orden_servicio | 7 |
+| orden_repuesto | 10 |
+| auditoria_stock | **10** (antes daba 1) |
+| auditoria_servicio_eliminado | 1 |
 
+Control de stock: los 7 repuestos reconstruyen exacto 31, 54, 14, 6, 9, 48, 7.
+
+Documento de HE5 (sección 4): agregadas las 2 líneas sobre stock inicial y
+la consulta de control. Sigue en **5 páginas**, revisado completo.
+
+Los 7 `.sql` de `avances/Avance3/` **no los actualicé uno por uno** —
+dejé una nota (`avances/Avance3/NOTA_version_reemplazada.md`) explicando
+que quedaron reemplazados por el `.sql` final, porque mantener dos
+versiones completas del mismo sistema en paralelo es más trabajo y más
+riesgo de desincronización. Decime si para la entrega te hace falta
+igual que los separe en 7 archivos a partir del final.
+
+Detalle completo en `HE5_TPI_Taller/Recomendaciones_Profesor.md`.
+
+## C) Avances del Integrador recuperados — ✔ hecho
+
+No existía ninguno en el formato y la carpeta que pedías (los de
+`HE5_TPI_Taller/avances/` son la versión vieja, en `.md` sin imágenes).
+Armé los 3 nuevos, con el mismo encabezado/estilo que el resto, usando el
+DER y MR finales (`UGR-BBDD26-HE5_Giolitti_DER.png` / `_MR.png`) para que
+diseño e implementación coincidan:
+
+- **Avance #1** → `HE2_Gimnasio/Avance1_Integrador/` — situación coloquial
+  + DER (imagen, página horizontal). 3 páginas.
+- **Avance #2** → `HE3_Concesionaria/Avance2_Integrador/` — problemática
+  ajustada, DER + MR (imágenes) con PK/FK, verificación 1FN/2FN/3FN tabla
+  por tabla, y la nota de que ERDPlus llama ASIGNA/INCLUYE/USA a lo que en
+  el SQL es orden_tecnico/orden_servicio/orden_repuesto. 4 páginas.
+- **Avance #3** → `HE4_Bolsa/Avance3_Integrador/` — el `.sql` final
+  copiado al lado, más una explicación de consultas/procedimientos/
+  triggers/vistas/permisos/auditoría en **1 página**.
+
+Los 3 PDF (y el `.sql` del Avance #3) están además reunidos en
+`HE5_TPI_Taller/Entrega_Avances/` para subir fácil.
+
+## D) Verificación
+
+**`verificar_todo.sh`:**
 ```
 === HE4 - Bolsa de valores ===
 OK - UGR-BBDD26-HE4_Giolitti_SQL.sql
@@ -105,36 +129,51 @@ OK - UGR-BBDD26-HE4_Giolitti_SQL.sql
 === HE5 - Taller mecanico (TPI) ===
 OK - UGR-BBDD26-HE5_Giolitti_SQL.sql
 ```
+Sin errores (los `GRANT`/`REVOKE`/`SHOW GRANTS` de HE5 también corrieron
+bien, con `GRANT OPTION` activo).
 
-Sin errores en ninguno de los dos (los `GRANT`/`REVOKE`/`SHOW GRANTS` de
-HE5 también corrieron bien, ya con `GRANT OPTION` activo).
+**Consistencia cruzada (MR del documento = tablas del `.sql` = atributos
+del `.erdplus`):** comparé columna por columna en HE4 y HE5 — **sin
+diferencias** en ninguno de los dos.
 
-## DOCX y PDF (HE2–HE5)
+**Revisión visual:** convertí a imagen y miré página por página los 4
+documentos principales (HE2, HE3, HE4, HE5) y los 3 Avances nuevos — 7
+documentos en total. Sin texto cortado, sin tablas partidas, sin
+páginas casi vacías.
 
-Regenerados los 4 con el estilo uniforme de siempre. Convertí las 25
-páginas resultantes a imagen y las revisé una por una: sin texto cortado,
-sin tablas partidas, encabezado y pie de página uniformes en las 4,
-imágenes del DER visibles en HE3/HE4/HE5, recuadro de placeholder en HE2
-(a propósito, por el PNG inválido).
+## E) Pendiente de tu parte
 
-## PNG — los 4 ya están insertados
+1. Ejecutar los `.sql` en DBeaver con **Alt+X** (completo, sin selección).
+   Si falla un bloque `DELIMITER $$`, seleccionalo entero y usá
+   **Ctrl+Enter**.
+2. Decidir si usás la nota de "versión reemplazada" para los 7 `.sql` del
+   Avance #3 viejo, o si preferís que los separe desde el `.sql` final.
+3. Una revisión tuya de los PDF antes de subirlos.
 
-| Hito | Estado |
-|---|---|
-| HE2 | ✔ insertado (segunda versión que dejaste, corregida) |
-| HE3 | ✔ insertado |
-| HE4 | ✔ insertado |
-| HE5 | ✔ insertado |
+**Nota sobre "las tres `Recomendaciones_Profesor.md`":** solo generé 2
+(HE4 y HE5-Integrador), porque las tareas A y B solo pedían una cada una.
+No encontré en el pedido una tercera recomendación del profesor para
+anotar — si hay una que no quedó registrada en este documento, decime
+cuál es y la agrego.
 
-## Pasos manuales que te quedan
+## Qué subir, por tarea de la plataforma
 
-1. Ejecutar los `.sql` en DBeaver con **Alt+X** (script completo, sin
-   selección). Si falla algún bloque con `DELIMITER $$`, seleccionalo
-   entero y usá **Ctrl+Enter**.
-2. Revisar los PDF finales vos también (yo los miré convertidos a imagen,
-   pero no está de más una pasada tuya antes de entregar).
-3. Podés borrar `UGR-BBDD26-HE2_Giolitti_DER.NO_USAR_version_vieja.png` de
-   `HE2_Gimnasio/` cuando quieras — ya no se usa para nada.
+**1. HE4 (recuperatorio):**
+- `HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_Manual.pdf` (documento)
+- `HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_SQL.sql`
+- `HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_DER.erdplus` y `_DER.png`
+- `HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_MR.png`
+- `HE4_Bolsa/UGR-BBDD26-HE4_Giolitti_Manual.docx` (si piden editable)
+
+**2. Avances #1, #2 y #3:**
+- `HE5_TPI_Taller/Entrega_Avances/UGR-BBDD26-HE2_Giolitti_Avance1.pdf`
+- `HE5_TPI_Taller/Entrega_Avances/UGR-BBDD26-HE3_Giolitti_Avance2.pdf`
+- `HE5_TPI_Taller/Entrega_Avances/UGR-BBDD26-HE4_Giolitti_Avance3.pdf`
+
+**3. HE5 (integrador):**
+- `HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_Documento.pdf`
+- `HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_Documento.docx` (si hace falta)
+- `HE5_TPI_Taller/UGR-BBDD26-HE5_Giolitti_SQL.sql`
 
 ## Encuesta del profesor (HE5, opcional)
 https://forms.gle/VYPYz9Uqki6jr2yRA

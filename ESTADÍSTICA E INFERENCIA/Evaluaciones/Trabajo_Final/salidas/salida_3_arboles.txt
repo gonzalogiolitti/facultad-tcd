@@ -1,0 +1,190 @@
+=== 3. Clasificación: árboles de decisión ===
+
+Pacientes en entrenamiento: 48103  Pacientes en prueba: 20616 
+Pacientes (id) que están en ambos conjuntos: 0 
+
+Clases en la prueba:
+
+Sin enfermedad Con enfermedad 
+         10443          10173 
+Exactitud de predecir siempre la clase más frecuente: 0.5065483 
+
+--- Cantidad de hojas de cada árbol ---
+Árbol por defecto (cp = 0,01)    Árbol mediano (cp = 0,001) 
+                            2                            12 
+   Árbol grande (cp = 0,0005)       Árbol completo (cp = 0) 
+                           28                          1931 
+
+=======================================================================
+Árbol por defecto (cp = 0,01) 
+Confusion Matrix and Statistics
+
+                Reference
+Prediction       Sin enfermedad Con enfermedad
+  Sin enfermedad           8379           3953
+  Con enfermedad           2064           6220
+                                          
+               Accuracy : 0.7081          
+                 95% CI : (0.7019, 0.7143)
+    No Information Rate : 0.5065          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.4148          
+                                          
+ Mcnemar's Test P-Value : < 2.2e-16       
+                                          
+            Sensitivity : 0.6114          
+            Specificity : 0.8024          
+         Pos Pred Value : 0.7508          
+         Neg Pred Value : 0.6795          
+             Prevalence : 0.4935          
+         Detection Rate : 0.3017          
+   Detection Prevalence : 0.4018          
+      Balanced Accuracy : 0.7069          
+                                          
+       'Positive' Class : Con enfermedad  
+                                          
+
+=======================================================================
+Árbol mediano (cp = 0,001) 
+Confusion Matrix and Statistics
+
+                Reference
+Prediction       Sin enfermedad Con enfermedad
+  Sin enfermedad           8182           3295
+  Con enfermedad           2261           6878
+                                          
+               Accuracy : 0.7305          
+                 95% CI : (0.7244, 0.7365)
+    No Information Rate : 0.5065          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.4602          
+                                          
+ Mcnemar's Test P-Value : < 2.2e-16       
+                                          
+            Sensitivity : 0.6761          
+            Specificity : 0.7835          
+         Pos Pred Value : 0.7526          
+         Neg Pred Value : 0.7129          
+             Prevalence : 0.4935          
+         Detection Rate : 0.3336          
+   Detection Prevalence : 0.4433          
+      Balanced Accuracy : 0.7298          
+                                          
+       'Positive' Class : Con enfermedad  
+                                          
+
+=======================================================================
+Árbol grande (cp = 0,0005) 
+Confusion Matrix and Statistics
+
+                Reference
+Prediction       Sin enfermedad Con enfermedad
+  Sin enfermedad           8171           3269
+  Con enfermedad           2272           6904
+                                          
+               Accuracy : 0.7312          
+                 95% CI : (0.7251, 0.7373)
+    No Information Rate : 0.5065          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.4617          
+                                          
+ Mcnemar's Test P-Value : < 2.2e-16       
+                                          
+            Sensitivity : 0.6787          
+            Specificity : 0.7824          
+         Pos Pred Value : 0.7524          
+         Neg Pred Value : 0.7142          
+             Prevalence : 0.4935          
+         Detection Rate : 0.3349          
+   Detection Prevalence : 0.4451          
+      Balanced Accuracy : 0.7305          
+                                          
+       'Positive' Class : Con enfermedad  
+                                          
+
+=======================================================================
+Árbol completo (cp = 0) 
+Confusion Matrix and Statistics
+
+                Reference
+Prediction       Sin enfermedad Con enfermedad
+  Sin enfermedad           7374           3362
+  Con enfermedad           3069           6811
+                                          
+               Accuracy : 0.6881          
+                 95% CI : (0.6817, 0.6944)
+    No Information Rate : 0.5065          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.3758          
+                                          
+ Mcnemar's Test P-Value : 0.0002714       
+                                          
+            Sensitivity : 0.6695          
+            Specificity : 0.7061          
+         Pos Pred Value : 0.6894          
+         Neg Pred Value : 0.6868          
+             Prevalence : 0.4935          
+         Detection Rate : 0.3304          
+   Detection Prevalence : 0.4792          
+      Balanced Accuracy : 0.6878          
+                                          
+       'Positive' Class : Con enfermedad  
+                                          
+
+--- Comparación de los árboles ---
+                         arbol hojas exactitud_entrenamiento exactitud_prueba
+ Árbol por defecto (cp = 0,01)     2                  0.7146           0.7081
+    Árbol mediano (cp = 0,001)    12                  0.7322           0.7305
+    Árbol grande (cp = 0,0005)    28                  0.7378           0.7312
+       Árbol completo (cp = 0)  1931                  0.8037           0.6881
+ kappa_prueba sensibilidad especificidad
+       0.4148       0.6114        0.8024
+       0.4602       0.6761        0.7835
+       0.4617       0.6787        0.7824
+       0.3758       0.6695        0.7061
+
+Árbol elegido: Árbol mediano (cp = 0,001) 
+
+--- Árbol elegido (reglas) ---
+n= 48103 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+ 1) root 48103 23836 Sin enfermedad (0.5044800 0.4955200)  
+   2) ap_hi< 129.5 28708  9086 Sin enfermedad (0.6835029 0.3164971)  
+     4) edad_anios< 55.11978 17759  4227 Sin enfermedad (0.7619798 0.2380202)  
+       8) cholesterol_f=Normal,Por encima de lo normal 16997  3791 Sin enfermedad (0.7769606 0.2230394) *
+       9) cholesterol_f=Muy por encima de lo normal 762   326 Con enfermedad (0.4278215 0.5721785)  
+        18) gluc_f=Muy por encima de lo normal 448   203 Sin enfermedad (0.5468750 0.4531250) *
+        19) gluc_f=Normal,Por encima de lo normal 314    81 Con enfermedad (0.2579618 0.7420382) *
+     5) edad_anios>=55.11978 10949  4859 Sin enfermedad (0.5562152 0.4437848)  
+      10) cholesterol_f=Normal,Por encima de lo normal 9822  4085 Sin enfermedad (0.5840969 0.4159031)  
+        20) edad_anios< 61.00479 7203  2723 Sin enfermedad (0.6219631 0.3780369) *
+        21) edad_anios>=61.00479 2619  1257 Con enfermedad (0.4799542 0.5200458)  
+          42) weight< 52.5 115    33 Sin enfermedad (0.7130435 0.2869565) *
+          43) weight>=52.5 2504  1175 Con enfermedad (0.4692492 0.5307508) *
+      11) cholesterol_f=Muy por encima de lo normal 1127   353 Con enfermedad (0.3132209 0.6867791) *
+   3) ap_hi>=129.5 19395  4645 Con enfermedad (0.2394947 0.7605053)  
+     6) ap_hi< 138.5 6431  2564 Con enfermedad (0.3986938 0.6013062)  
+      12) cholesterol_f=Normal,Por encima de lo normal 5216  2307 Con enfermedad (0.4422929 0.5577071)  
+        24) edad_anios< 57.32101 3160  1532 Con enfermedad (0.4848101 0.5151899)  
+          48) ap_lo< 88.5 1874   877 Sin enfermedad (0.5320171 0.4679829) *
+          49) ap_lo>=88.5 1286   535 Con enfermedad (0.4160187 0.5839813) *
+        25) edad_anios>=57.32101 2056   775 Con enfermedad (0.3769455 0.6230545) *
+      13) cholesterol_f=Muy por encima de lo normal 1215   257 Con enfermedad (0.2115226 0.7884774) *
+     7) ap_hi>=138.5 12964  2081 Con enfermedad (0.1605214 0.8394786) *
+
+--- Primera división del árbol elegido ---
+      count ncat  improve index adj
+ap_hi 48103   -1 4563.861 129.5   0
+
+Importancia de las variables en el árbol elegido:
+        ap_hi         ap_lo cholesterol_f    edad_anios        weight 
+       5051.5        2803.1         977.1         858.6         507.7 
+       gluc_f        height       smoke_f        alco_f 
+        220.1           1.2           0.4           0.3 

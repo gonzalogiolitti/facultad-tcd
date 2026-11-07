@@ -1,0 +1,321 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 735.73590635282051,
+        "y": 503.46892102823125
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1522.0176116797577,
+            "y": 597.84136371804811
+          },
+          "nodeIndex": "_Medidas_Legales",
+          "nodeLineageTag": "6a3de166-5586-4ab2-9630-1ea7182a0e59",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1109.1544347361864,
+            "y": 1100.270005330091
+          },
+          "nodeIndex": "DIM_PSAL_Afiliados_2",
+          "nodeLineageTag": "96fffd8e-d4cb-4d12-9847-8597348bbbb5",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 819.79958516696161,
+            "y": 164.18928246028167
+          },
+          "nodeIndex": "DIM_PSAL_Legales_Instancia",
+          "nodeLineageTag": "995e4a3e-d80f-4cba-b322-ac631c51c667",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 50.127632131210476,
+            "y": 270.49798971195173
+          },
+          "nodeIndex": "DIM_PSAL_Legales_Juzgado",
+          "nodeLineageTag": "64d1fe43-670b-43e8-8d8c-725090b89ea4",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 297.87237291029425,
+            "y": 1114.7652407223627
+          },
+          "nodeIndex": "DIM_PSAL_Legales_MotivoBaja",
+          "nodeLineageTag": "c0f06e2e-286e-4dee-9b54-a4ebf387ef83",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 50.036464762877586,
+            "y": 558.64262167559355
+          },
+          "nodeIndex": "DIM_PSAL_Legales_TipoFormaEstimar",
+          "nodeLineageTag": "54ffdf2d-eed4-4803-be07-2bb8f3a155c7",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 612.29062974013971,
+            "y": -50
+          },
+          "nodeIndex": "DIM_PSAL_Legales_TipoJuicio",
+          "nodeLineageTag": "f95f3ef0-4d9c-43e0-abe0-ad8eaadfb008",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 961.04030156491217,
+            "y": 681.41447913157549
+          },
+          "nodeIndex": "DIM_PSAL_Legales_TipoSentencia",
+          "nodeLineageTag": "2db3a061-c5ea-40d5-b205-7a123a4838cf",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 635.449998412305,
+            "y": 383.46304617079772
+          },
+          "nodeIndex": "FACT_PSAL_Legales_Juicios",
+          "nodeLineageTag": "c7c7517b-8e6f-4fc1-8597-9a1fee3a1fa1",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 670.8841659006514,
+            "y": 1247.0277931881458
+          },
+          "nodeIndex": "DIM Fecha Demanda",
+          "nodeLineageTag": "da0b616e-ad5d-4e26-bd0f-fe1bbb73459c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 495.33765027633422,
+            "y": 806.766069488727
+          },
+          "nodeIndex": "DIM Fecha Alta Juicio",
+          "nodeLineageTag": "a8d5406c-6bf4-4687-8cfe-55e9292efdd4",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1112.8287066108876,
+            "y": 359.74614291262338
+          },
+          "nodeIndex": "DIM Fecha Baja Juicio",
+          "nodeLineageTag": "0cd8a3d4-31d7-4a38-ada6-22864de04bc0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 299.38290680778596,
+            "y": 35.715825764865883
+          },
+          "nodeIndex": "DIM Fecha Contestacion",
+          "nodeLineageTag": "faee19f2-1bc4-4afb-afdb-ce543029d984",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 167.11043672355254,
+            "y": 784.06028100447452
+          },
+          "nodeIndex": "DIM Fecha Instancia",
+          "nodeLineageTag": "145a67df-85d6-4dbb-8acf-cb848330caa5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1136.3027301817524,
+            "y": 167.83060583785345
+          },
+          "nodeIndex": "Slicer Periodo",
+          "nodeLineageTag": "92105c7c-33c2-4cfe-b086-f82dc0af50d5",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 307.44529189750421,
+            "y": 1574.7316330895517
+          },
+          "nodeIndex": "F_Afiliaciones",
+          "nodeLineageTag": "40b85cf6-4215-40bf-af27-9b81cadaadbb",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 917.87320101389923,
+            "y": 1029.3622362722645
+          },
+          "nodeIndex": "DIM_UnidadDeNegocio",
+          "nodeLineageTag": "2c853f6a-92d3-4e13-be49-deaf526b2b92",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1386.7706048295106,
+            "y": 1022.3969254825467
+          },
+          "nodeIndex": "DIM_AbogadoDemndado",
+          "nodeLineageTag": "16154e1d-a4b1-4c53-b68d-ff1962237960",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1755.98114691688,
+            "y": 750.36581654477584
+          },
+          "nodeIndex": "F_FalseamientosCerrados",
+          "nodeLineageTag": "78025226-a1e9-40cc-b30d-4708f19f863c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1619.0559103298722,
+            "y": 1313.1469404655477
+          },
+          "nodeIndex": "F_Reclamos",
+          "nodeLineageTag": "3770005c-a79c-4d11-b36d-ca8c792af2d9",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2223.9082173911247,
+            "y": 836.36581654477584
+          },
+          "nodeIndex": "DIM_MotivoReclamo",
+          "nodeLineageTag": "29304152-6374-4859-a0b1-3c4d5e6f7081",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2435.7443387104117,
+            "y": 1220.4280344203178
+          },
+          "nodeIndex": "DIM_UnidadDeNegocio_Reclamos",
+          "nodeLineageTag": "f6071829-3041-4526-d7e8-091a2b3c4d5e",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1992.3995298258876,
+            "y": 1136.2641557396046
+          },
+          "nodeIndex": "F_DefensaConsumidor",
+          "nodeLineageTag": "2fbfcba3-b714-4f33-9b03-651f1cc9c986",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 59.586597597188714,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

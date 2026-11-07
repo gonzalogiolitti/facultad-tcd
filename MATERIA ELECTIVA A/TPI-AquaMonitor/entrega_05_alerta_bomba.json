@@ -1,0 +1,324 @@
+[
+  {
+    "id": "tab_alerta_bomba",
+    "type": "tab",
+    "label": "05 Alerta bomba EQ01",
+    "disabled": false,
+    "info": "Avisa por mail y Telegram cuando la bomba EQ01 pasa de normal a falla y registra el evento para Grafana."
+  },
+  {
+    "id": "tls_aqm",
+    "type": "tls-config",
+    "name": "TLS EMQX",
+    "cert": "",
+    "key": "",
+    "ca": "",
+    "certname": "",
+    "keyname": "",
+    "caname": "",
+    "servername": "",
+    "verifyservercert": true,
+    "alpnprotocol": ""
+  },
+  {
+    "id": "broker_aqm",
+    "type": "mqtt-broker",
+    "name": "EMQX AquaMonitor (completar)",
+    "broker": "COMPLETAR-host.emqxsl.com",
+    "port": "8883",
+    "tls": "tls_aqm",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": true,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthRetain": "false",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closeRetain": "false",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willRetain": "false",
+    "willPayload": "",
+    "willMsg": {},
+    "userProps": "",
+    "sessionExpiry": ""
+  },
+  {
+    "id": "c1",
+    "type": "comment",
+    "z": "tab_alerta_bomba",
+    "name": "1) Llegan los datos de la bomba por MQTT",
+    "info": "Un mensaje por variable: CAUDAL, PRESION, CORRIENTE, VIBRACION y ESTADO.",
+    "x": 190,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "mqtt_in",
+    "type": "mqtt in",
+    "z": "tab_alerta_bomba",
+    "name": "Bomba EQ01",
+    "topic": "AQM/PTEF/EQ01/#",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "broker_aqm",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 130,
+    "y": 100,
+    "wires": [
+      [
+        "f_detectar"
+      ]
+    ]
+  },
+  {
+    "id": "c2",
+    "type": "comment",
+    "z": "tab_alerta_bomba",
+    "name": "2) ¿Pasó de normal a falla? Solo avisa una vez por falla",
+    "info": "",
+    "x": 430,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "f_detectar",
+    "type": "function",
+    "z": "tab_alerta_bomba",
+    "name": "Detectar falla de bomba",
+    "func": "// DETECTAR FALLA DE LA BOMBA EQ01\n// Llega un mensaje MQTT por variable (CAUDAL, PRESION, CORRIENTE, VIBRACION, ESTADO).\n// Guardamos el último valor de cada una y vemos si alguna pasó el límite crítico.\n// Solo avisamos cuando la bomba PASA de normal a falla (no en cada muestra).\n\n// Límites críticos del catálogo de variables de AquaMonitor\nconst LIMITE = {\n    VIBRACION_MAX: 7.1,   // mm/s\n    CAUDAL_MIN: 70,       // m3/h\n    CAUDAL_MAX: 175,      // m3/h\n    PRESION_MIN: 2.5,     // bar\n    PRESION_MAX: 6.5,     // bar\n    CORRIENTE_MAX: 65     // A\n};\n// Segundos seguidos en normal antes de dar la falla por terminada\nconst REARME_S = Number(env.get('ALERTA_REARME_S') || 60);\n\nconst p = msg.payload;\nif (!p || typeof p !== 'object' || p.value === undefined || p.value === null) { return null; }\n\nconst variable = String(msg.topic || '').split('/').pop().toUpperCase();\nconst valor = Number(p.value);\nif (!variable || Number.isNaN(valor)) { return null; }\n\nconst ahora = Date.now();\nconst est = flow.get('bomba') || { valores: {}, enFalla: false, desde: null, okDesde: null };\nest.valores[variable] = valor;\nconst v = est.valores;\n\n// ¿Qué variables están hoy en estado crítico?\nconst motivos = [];\nif (v.ESTADO === 0) {\n    motivos.push({ variable: 'ESTADO', valor: 0, texto: 'la bomba está parada (parada imprevista)' });\n}\nif (v.VIBRACION > LIMITE.VIBRACION_MAX) {\n    motivos.push({ variable: 'VIBRACION', valor: v.VIBRACION, texto: 'vibración ' + v.VIBRACION + ' mm/s (límite crítico ' + LIMITE.VIBRACION_MAX + ')' });\n}\nif (v.CAUDAL < LIMITE.CAUDAL_MIN || v.CAUDAL > LIMITE.CAUDAL_MAX) {\n    motivos.push({ variable: 'CAUDAL', valor: v.CAUDAL, texto: 'caudal ' + v.CAUDAL + ' m3/h fuera de ' + LIMITE.CAUDAL_MIN + '-' + LIMITE.CAUDAL_MAX });\n}\nif (v.PRESION < LIMITE.PRESION_MIN || v.PRESION > LIMITE.PRESION_MAX) {\n    motivos.push({ variable: 'PRESION', valor: v.PRESION, texto: 'presión ' + v.PRESION + ' bar fuera de ' + LIMITE.PRESION_MIN + '-' + LIMITE.PRESION_MAX });\n}\nif (v.CORRIENTE > LIMITE.CORRIENTE_MAX) {\n    motivos.push({ variable: 'CORRIENTE', valor: v.CORRIENTE, texto: 'corriente ' + v.CORRIENTE + ' A (límite crítico ' + LIMITE.CORRIENTE_MAX + ')' });\n}\n\nlet evento = null;\nif (motivos.length > 0) {\n    est.okDesde = null;\n    if (!est.enFalla) {                       // pasó de normal a falla: AVISAR\n        est.enFalla = true;\n        est.desde = ahora;\n        evento = { tipo: 'falla', ts: ahora, motivos: motivos, valores: Object.assign({}, v) };\n    }\n} else if (est.enFalla) {                     // está normal, pero venía en falla\n    if (est.okDesde === null) { est.okDesde = ahora; }\n    if (ahora - est.okDesde >= REARME_S * 1000) {   // normal sostenido: cerrar la falla\n        est.enFalla = false;\n        evento = { tipo: 'recuperada', ts: ahora, duracionS: Math.round((ahora - est.desde) / 1000), valores: Object.assign({}, v) };\n    }\n}\n\nflow.set('bomba', est);\nnode.status(est.enFalla\n    ? { fill: 'red', shape: 'dot', text: 'EN FALLA' }\n    : { fill: 'green', shape: 'dot', text: 'normal' });\n\nif (!evento) { return null; }\nmsg.evento = evento;\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 100,
+    "wires": [
+      [
+        "f_avisos"
+      ]
+    ]
+  },
+  {
+    "id": "c3",
+    "type": "comment",
+    "z": "tab_alerta_bomba",
+    "name": "3) Arma el mensaje y lo manda por 3 caminos",
+    "info": "",
+    "x": 690,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "f_avisos",
+    "type": "function",
+    "z": "tab_alerta_bomba",
+    "name": "Armar avisos",
+    "func": "// ARMAR LOS AVISOS: un mismo evento sale por 3 caminos\n//   salida 1 -> mail (nodo e-mail)\n//   salida 2 -> Telegram (nodo http request, API de bots de Telegram)\n//   salida 3 -> historial en QuestDB (tabla eventos_bomba, para Grafana)\n// Los datos sensibles NO están en el flow: se leen de variables de entorno.\n\nconst e = msg.evento;\nif (!e) { return null; }\n\nconst hora = new Date(e.ts || Date.now()).toLocaleString('es-AR', {\n    timeZone: 'America/Argentina/Buenos_Aires', hourCycle: 'h23',\n    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'\n});\nconst quien = 'Bomba de ingreso EQ01 (planta PTEF, área CAPT)';\nconst v = e.valores || {};\nconst lectura = ['CAUDAL', 'PRESION', 'CORRIENTE', 'VIBRACION']\n    .filter(k => v[k] !== undefined)\n    .map(k => k + ' ' + v[k])\n    .join(' | ');\n\nlet asunto, texto, motivo, valorEvento, detalle;\nif (e.tipo === 'falla') {\n    const lista = (e.motivos || []).map(m => '- ' + m.texto).join('\\n');\n    asunto = 'FALLA: ' + quien;\n    texto = 'FALLA DE BOMBA\\n' + quien + '\\nHora: ' + hora + '\\nMotivo:\\n' + lista + (lectura ? '\\nÚltimos valores: ' + lectura : '');\n    motivo = (e.motivos && e.motivos[0] && e.motivos[0].variable) || 'DESCONOCIDO';\n    valorEvento = (e.motivos && e.motivos[0] && Number(e.motivos[0].valor)) || 0;\n    detalle = (e.motivos || []).map(m => m.texto).join('; ');\n} else {\n    asunto = 'Normalizada: ' + quien;\n    texto = 'BOMBA NORMALIZADA\\n' + quien + '\\nHora: ' + hora + '\\nEstuvo en falla ' + e.duracionS + ' segundos.';\n    motivo = 'NORMALIZADA';\n    valorEvento = Number(e.duracionS) || 0;\n    detalle = 'estuvo en falla ' + e.duracionS + ' s';\n}\nif (e.prueba) { texto = '[PRUEBA] ' + texto; asunto = '[PRUEBA] ' + asunto; }\n\n// ---- salida 1: mail\nconst to = env.get('ALERT_MAIL_TO');\nlet salidaMail = null;\nif (to) { salidaMail = { to: to, topic: asunto, payload: texto }; }\nelse { node.warn('Falta ALERT_MAIL_TO: no se envía el mail'); }\n\n// ---- salida 2: Telegram\nconst token = env.get('TELEGRAM_BOT_TOKEN');\nconst chat = env.get('TELEGRAM_CHAT_ID');\nconst base = env.get('TELEGRAM_API_BASE') || 'https://api.telegram.org';\nlet salidaTelegram = null;\nif (token && chat) {\n    salidaTelegram = {\n        method: 'POST',\n        url: base + '/bot' + token + '/sendMessage',\n        headers: { 'content-type': 'application/json' },\n        payload: { chat_id: chat, text: texto }\n    };\n} else { node.warn('Faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID: no se envía el mensaje'); }\n\n// ---- salida 3: historial en QuestDB (formato ILP, una línea por evento)\nconst qdb = env.get('QUESTDB_HTTP_URL');\nlet salidaQdb = null;\nif (qdb && !e.prueba) {\n    const limpio = String(detalle).replace(/[\\r\\n]+/g, ' ').replace(/\\\\/g, '/').replace(/\"/g, \"'\");\n    const linea = 'eventos_bomba,equipo=EQ01,tipo=' + (e.tipo === 'falla' ? 'falla' : 'recuperada') +\n        ',motivo=' + String(motivo).replace(/[^A-Za-z0-9_]/g, '_') +\n        ' valor=' + valorEvento + ',detalle=\"' + limpio + '\" ' + String(e.ts || Date.now()) + '000000\\n';\n    const headers = { 'content-type': 'text/plain' };\n    const tokenQ = env.get('QUESTDB_TOKEN');\n    if (tokenQ) { headers.authorization = 'Bearer ' + tokenQ; }\n    salidaQdb = { method: 'POST', url: qdb + '/write?precision=n', headers: headers, payload: linea };\n}\n\nreturn [salidaMail, salidaTelegram, salidaQdb];\n",
+    "outputs": 3,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 640,
+    "y": 100,
+    "wires": [
+      [
+        "mail",
+        "dbg_mail"
+      ],
+      [
+        "http_tg"
+      ],
+      [
+        "http_qdb"
+      ]
+    ]
+  },
+  {
+    "id": "mail",
+    "type": "e-mail",
+    "z": "tab_alerta_bomba",
+    "server": "smtp.gmail.com",
+    "port": "465",
+    "authtype": "BASIC",
+    "saslformat": true,
+    "token": "oauth2Response.access_token",
+    "secure": true,
+    "tls": true,
+    "name": "",
+    "dname": "Mail de aviso",
+    "x": 890,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "dbg_mail",
+    "type": "debug",
+    "z": "tab_alerta_bomba",
+    "name": "Texto del aviso",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 910,
+    "y": 110,
+    "wires": []
+  },
+  {
+    "id": "http_tg",
+    "type": "http request",
+    "z": "tab_alerta_bomba",
+    "name": "Telegram",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 880,
+    "y": 170,
+    "wires": [
+      [
+        "dbg_tg"
+      ]
+    ]
+  },
+  {
+    "id": "dbg_tg",
+    "type": "debug",
+    "z": "tab_alerta_bomba",
+    "name": "Respuesta Telegram (200 = enviado)",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "statusCode",
+    "targetType": "msg",
+    "statusVal": "statusCode",
+    "statusType": "msg",
+    "x": 1160,
+    "y": 170,
+    "wires": []
+  },
+  {
+    "id": "http_qdb",
+    "type": "http request",
+    "z": "tab_alerta_bomba",
+    "name": "Historial en QuestDB",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 900,
+    "y": 230,
+    "wires": [
+      [
+        "dbg_qdb"
+      ]
+    ]
+  },
+  {
+    "id": "dbg_qdb",
+    "type": "debug",
+    "z": "tab_alerta_bomba",
+    "name": "Respuesta QuestDB (200 o 204 = guardado)",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "statusCode",
+    "targetType": "msg",
+    "statusVal": "statusCode",
+    "statusType": "msg",
+    "x": 1180,
+    "y": 230,
+    "wires": []
+  },
+  {
+    "id": "c4",
+    "type": "comment",
+    "z": "tab_alerta_bomba",
+    "name": "Para probar mail y Telegram sin esperar una falla: tocar el botón de abajo",
+    "info": "",
+    "x": 270,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "inj_prueba",
+    "type": "inject",
+    "z": "tab_alerta_bomba",
+    "name": "Probar mail + Telegram",
+    "props": [
+      {
+        "p": "evento",
+        "v": "{\"tipo\":\"falla\",\"prueba\":true,\"ts\":0,\"motivos\":[{\"variable\":\"VIBRACION\",\"valor\":8.2,\"texto\":\"vibración 8.2 mm/s (límite crítico 7.1)\"}],\"valores\":{\"CAUDAL\":118,\"PRESION\":4.6,\"CORRIENTE\":47,\"VIBRACION\":8.2}}",
+        "vt": "json"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 160,
+    "y": 350,
+    "wires": [
+      [
+        "f_prueba_ts"
+      ]
+    ]
+  },
+  {
+    "id": "f_prueba_ts",
+    "type": "function",
+    "z": "tab_alerta_bomba",
+    "name": "Poner la hora de ahora",
+    "func": "msg.evento.ts = Date.now();\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 350,
+    "wires": [
+      [
+        "f_avisos"
+      ]
+    ]
+  }
+]

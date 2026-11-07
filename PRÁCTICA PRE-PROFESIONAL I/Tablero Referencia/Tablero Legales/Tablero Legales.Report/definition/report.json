@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.2.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY22SU09",
+      "reportVersionAtImport": {
+        "visual": "1.8.75",
+        "report": "2.0.75",
+        "page": "1.3.75"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "SancorPrev781192253681976.json",
+      "reportVersionAtImport": {
+        "visual": "1.8.75",
+        "report": "2.0.75",
+        "page": "1.3.75"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "resourcePackages": [
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "I_Info_fucsia04389276006346221.png",
+          "path": "I_Info_fucsia04389276006346221.png",
+          "type": "Image"
+        },
+        {
+          "name": "I_Info294574413689616.png",
+          "path": "I_Info294574413689616.png",
+          "type": "Image"
+        },
+        {
+          "name": "I_Logo_PS24800249172726951.png",
+          "path": "I_Logo_PS24800249172726951.png",
+          "type": "Image"
+        },
+        {
+          "name": "I_Logo_PS31427509384849706.png",
+          "path": "I_Logo_PS31427509384849706.png",
+          "type": "Image"
+        },
+        {
+          "name": "SancorPrev781192253681976.json",
+          "path": "SancorPrev781192253681976.json",
+          "type": "Image"
+        }
+      ]
+    },
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY22SU09",
+          "path": "BaseThemes/CY22SU09.json",
+          "type": "BaseTheme"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

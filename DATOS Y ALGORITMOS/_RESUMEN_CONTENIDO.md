@@ -1,5 +1,5 @@
 # DATOS Y ALGORITMOS - Resumen de contenido
-_Última actualización: 28/10/26_
+_Última actualización: 07/11/26_
 
 ## Contenido
 **Archivo:** Contenido/AyD-diagramacionlogica-parte1.md
@@ -110,6 +110,21 @@ _Última actualización: 28/10/26_
 **Fecha:** No identificada
 **Temas:** Arreglos unidimensionales y bidimensionales, método de ordenamiento por intercambio (burbuja), método de ordenamiento por selección del mínimo, prueba de escritorio de algoritmos de ordenamiento, ejercicios prácticos en PSeInt
 **Resumen:** La clase aborda operaciones con arreglos, repasando su definición, declaración y carga de datos. Se explican en detalle dos métodos de ordenamiento: el método de la burbuja (intercambio), donde el elemento menor "sube" progresivamente en cada recorrida, y el método de selección del mínimo, donde se busca el menor elemento y se lo intercambia con la posición correspondiente. Se realizan pruebas de escritorio paso a paso para ambos algoritmos y se resuelven ejercicios prácticos en PSeInt, incluyendo ordenamiento ascendente y descendente de números y palabras. Al cierre, se anticipa que la clase siguiente cubrirá búsqueda en arreglos, y se brindan indicaciones sobre el formato del parcial.
+
+**Archivo:** Grabaciones 2026/Clase 9 - Búsqueda.txt
+**Fecha:** 22/10/24
+**Temas:** Búsqueda secuencial, Búsqueda binaria (dicotómica), Intercalación de arreglos, Eficiencia de algoritmos, Anuncios y fechas de parcial
+**Resumen:** La clase aborda los algoritmos de búsqueda sobre arreglos: búsqueda secuencial (válida para arreglos ordenados o desordenados) y búsqueda binaria o dicotómica (exclusiva para arreglos ordenados, más eficiente). Se explica el uso de punteros mínimo, máximo y medio en la búsqueda binaria, y cómo detectar si un elemento no está presente. Luego se presenta la intercalación de dos arreglos ordenados para formar un tercero ordenado, destacando su mayor eficiencia respecto a copiar y reordenar. La clase incluye también resolución de ejercicios prácticos y anuncios sobre fechas de parcial (5/11), recuperatorio (12/11) y condiciones de promoción.
+
+**Archivo:** Grabaciones 2026/Clase 10 - Funciones y subprocesos.txt
+**Fecha:** No identificada
+**Temas:** Subalgorítmos, funciones, procedimientos, parámetros formales y actuales, variables locales, recursividad, paso por valor y por referencia, PSeInt
+**Resumen:** La clase aborda el tema de subalgorítmos (funciones y procedimientos) como herramienta para modularizar algoritmos complejos mediante refinamiento top-down. Se explica cómo declarar y llamar funciones en PSeInt, el rol de los parámetros formales y actuales, el concepto de variables locales y la recursividad (ilustrada con el factorial). Luego se introducen los procedimientos, destacando la diferencia con las funciones: no devuelven un valor directamente, sino que utilizan parámetros por referencia para retornar resultados. A lo largo de la clase se resuelven ejercicios prácticos (mínimo de tres números, promedio, validación de teléfonos, mayor de tres números) y se brindan indicaciones sobre el parcial y el examen final.
+
+**Archivo:** Grabaciones 2026/Nueva explicación de funciones y procedimientos.txt
+**Fecha:** No identificada
+**Temas:** Subalgoritmos, funciones, procedimientos, parámetros formales y reales, parámetros por valor y por referencia, variables locales, recursividad, arreglos como parámetros, combinación de funciones y procedimientos
+**Resumen:** La clase presenta el concepto de subalgoritmos como herramienta para modularizar algoritmos complejos, distinguiendo entre funciones (que devuelven un único valor a través de su nombre/variable de retorno) y procedimientos (que no devuelven valor por nombre sino a través de parámetros por referencia). Se explican los parámetros formales y reales, el alcance de las variables locales, y la recursividad ilustrada con el cálculo del factorial. A través de múltiples ejemplos en PSeInt —cálculo de mínimo, triple del promedio, promedio de notas con arreglos, validación de teléfonos y determinación de máximo— se muestra cómo declarar y llamar funciones y procedimientos, incluyendo casos con parámetros de entrada (por valor) y de salida (por referencia), así como algoritmos que combinan ambos tipos de subalgoritmos.
 
 <!-- ESTADO_RESUMEN
 {
@@ -274,6 +289,24 @@ _Última actualización: 28/10/26_
           "fecha": "No identificada",
           "temas": "Arreglos unidimensionales y bidimensionales, método de ordenamiento por intercambio (burbuja), método de ordenamiento por selección del mínimo, prueba de escritorio de algoritmos de ordenamiento, ejercicios prácticos en PSeInt",
           "resumen": "La clase aborda operaciones con arreglos, repasando su definición, declaración y carga de datos. Se explican en detalle dos métodos de ordenamiento: el método de la burbuja (intercambio), donde el elemento menor \"sube\" progresivamente en cada recorrida, y el método de selección del mínimo, donde se busca el menor elemento y se lo intercambia con la posición correspondiente. Se realizan pruebas de escritorio paso a paso para ambos algoritmos y se resuelven ejercicios prácticos en PSeInt, incluyendo ordenamiento ascendente y descendente de números y palabras. Al cierre, se anticipa que la clase siguiente cubrirá búsqueda en arreglos, y se brindan indicaciones sobre el formato del parcial."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 9 - Búsqueda.txt",
+          "fecha": "22/10/24",
+          "temas": "Búsqueda secuencial, Búsqueda binaria (dicotómica), Intercalación de arreglos, Eficiencia de algoritmos, Anuncios y fechas de parcial",
+          "resumen": "La clase aborda los algoritmos de búsqueda sobre arreglos: búsqueda secuencial (válida para arreglos ordenados o desordenados) y búsqueda binaria o dicotómica (exclusiva para arreglos ordenados, más eficiente). Se explica el uso de punteros mínimo, máximo y medio en la búsqueda binaria, y cómo detectar si un elemento no está presente. Luego se presenta la intercalación de dos arreglos ordenados para formar un tercero ordenado, destacando su mayor eficiencia respecto a copiar y reordenar. La clase incluye también resolución de ejercicios prácticos y anuncios sobre fechas de parcial (5/11), recuperatorio (12/11) y condiciones de promoción."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Clase 10 - Funciones y subprocesos.txt",
+          "fecha": "No identificada",
+          "temas": "Subalgorítmos, funciones, procedimientos, parámetros formales y actuales, variables locales, recursividad, paso por valor y por referencia, PSeInt",
+          "resumen": "La clase aborda el tema de subalgorítmos (funciones y procedimientos) como herramienta para modularizar algoritmos complejos mediante refinamiento top-down. Se explica cómo declarar y llamar funciones en PSeInt, el rol de los parámetros formales y actuales, el concepto de variables locales y la recursividad (ilustrada con el factorial). Luego se introducen los procedimientos, destacando la diferencia con las funciones: no devuelven un valor directamente, sino que utilizan parámetros por referencia para retornar resultados. A lo largo de la clase se resuelven ejercicios prácticos (mínimo de tres números, promedio, validación de teléfonos, mayor de tres números) y se brindan indicaciones sobre el parcial y el examen final."
+        },
+        {
+          "rel_path": "Grabaciones 2026/Nueva explicación de funciones y procedimientos.txt",
+          "fecha": "No identificada",
+          "temas": "Subalgoritmos, funciones, procedimientos, parámetros formales y reales, parámetros por valor y por referencia, variables locales, recursividad, arreglos como parámetros, combinación de funciones y procedimientos",
+          "resumen": "La clase presenta el concepto de subalgoritmos como herramienta para modularizar algoritmos complejos, distinguiendo entre funciones (que devuelven un único valor a través de su nombre/variable de retorno) y procedimientos (que no devuelven valor por nombre sino a través de parámetros por referencia). Se explican los parámetros formales y reales, el alcance de las variables locales, y la recursividad ilustrada con el cálculo del factorial. A través de múltiples ejemplos en PSeInt —cálculo de mínimo, triple del promedio, promedio de notas con arreglos, validación de teléfonos y determinación de máximo— se muestra cómo declarar y llamar funciones y procedimientos, incluyendo casos con parámetros de entrada (por valor) y de salida (por referencia), así como algoritmos que combinan ambos tipos de subalgoritmos."
         }
       ]
     ]

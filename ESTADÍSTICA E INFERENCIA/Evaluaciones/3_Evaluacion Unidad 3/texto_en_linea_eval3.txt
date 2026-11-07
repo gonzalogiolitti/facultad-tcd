@@ -1,0 +1,198 @@
+EVALUACIÓN 3 - ESTIMACIÓN DE PARÁMETROS
+Giolitti, Gonzalo - Estadística e Inferencia
+
+1) VARIABLES DE INTERÉS Y DISTRIBUCIÓN PROPUESTA
+
+Uso el Cardiovascular Disease Dataset de Kaggle con una limpieza mínima en un solo filtro (se descartan valores imposibles de presión, altura y peso). Quedan 68.719 pacientes de los 70.000 originales, es decir 1.281 descartados (1,83%); 53 de ellos tenían una altura fuera de 120 a 220 cm.
+
+CÓDIGO (carga y limpieza mínima)
+library(stats4)
+library(psych)
+set.seed(2026)
+datos <- read.csv("~/Facultad/Tecnicatura en Ciencia de Datos/2do Anio/ESTADÍSTICA E INFERENCIA/Evaluaciones/1_Evaluacion Unidad 1/archive/cardio_train.csv", sep = ";")
+nrow(datos)
+sum(datos$height < 120 | datos$height > 220)
+datos <- subset(datos, ap_hi >= 60 & ap_hi <= 250 & ap_lo >= 40 & ap_lo <= 200 &
+                       height >= 120 & height <= 220 & weight >= 30 & weight <= 200)
+datos$gender_f <- factor(datos$gender, levels = 1:2, labels = c("Categoría 1", "Categoría 2"))
+altura <- datos$height
+fuma   <- datos$smoke
+nrow(datos)
+----------------------------------------------------------------------
+SALIDA
+[1] 70000
+[1] 53
+[1] 68719
+----------------------------------------------------------------------
+
+Elegí dos variables.
+Altura (height, en cm): variable cuantitativa continua. Propongo una distribución normal porque es una característica biológica que resulta de muchos factores pequeños. La altura tiene asimetría 0,02 y curtosis 0,61, relativamente cerca de los valores de una normal; el peso, la otra variable cuantitativa, tiene asimetría 0,99 y curtosis 2,42, claramente asimétrico a la derecha, por eso elegí la altura.
+Fumar (smoke): vale 1 si el paciente fuma y 0 si no. Cada paciente es un ensayo con dos resultados, así que propongo una distribución de Bernoulli de parámetro p, que es una binomial con n = 1. Fuman 6.048 de 68.719 pacientes.
+
+Verificaciones sobre la altura. shapiro.test admite hasta 5000 datos, así que lo apliqué a una muestra aleatoria de 5000 pacientes:
+
+CÓDIGO (verificaciones)
+describe(datos[, c("height", "weight")])
+muestra_altura <- sample(altura, 5000)
+shapiro.test(muestra_altura)
+length(unique(altura))
+tapply(altura, datos$gender_f, mean)
+table(fuma)
+prop.table(table(fuma))
+table(datos$gender_f)
+----------------------------------------------------------------------
+SALIDA
+       vars     n   mean    sd median trimmed   mad min max range skew kurtosis
+height    1 68719 164.41  7.91    165  164.33  7.41 120 207    87 0.02     0.61
+weight    2 68719  74.12 14.30     72   73.04 11.86  30 200   170 0.99     2.42
+         se
+height 0.03
+weight 0.05
+
+	Shapiro-Wilk normality test
+
+data:  muestra_altura
+W = 0.99325, p-value = 1.203e-14
+
+[1] 73
+Categoría 1 Categoría 2 
+   161.4212    170.0019 
+fuma
+    0     1 
+62671  6048 
+fuma
+         0          1 
+0.91198941 0.08801059 
+
+Categoría 1 Categoría 2 
+      44754       23965 
+----------------------------------------------------------------------
+
+El test de Shapiro-Wilk da W = 0,9932 y un p-value de 1,203e-14, así que formalmente rechazo la normalidad. Con muestras tan grandes cualquier desvío pequeño da un p-value diminuto, por eso el ajuste normal es aproximado pero razonable. Además, la altura está registrada en centímetros enteros y toma solo 73 valores distintos. La altura media es de 161,4 cm en la categoría 1 de gender (n = 44.754) y de 170,0 cm en la categoría 2 (n = 23.965).
+
+2) ESTIMACIÓN DE LOS PARÁMETROS
+
+Método principal: máxima verosimilitud. Se obtiene minimizando el negativo de la log-verosimilitud con la función mle del paquete stats4. Uso el método L-BFGS-B, que admite límites, para que sigma sea positivo y p quede entre 0 y 1. Como control uso el método de momentos.
+
+Altura, normal con parámetros mu y sigma:
+
+CÓDIGO (máxima verosimilitud, normal)
+NLV_norm <- function(mu, sigma) {
+  -sum(dnorm(altura, mean = mu, sd = sigma, log = TRUE))
+}
+EMV_norm <- mle(NLV_norm,
+                start  = list(mu = 165, sigma = 8),
+                method = "L-BFGS-B",
+                lower  = c(-Inf, 0.01),
+                control = list(factr = 10))
+summary(EMV_norm)
+confint(EMV_norm)
+----------------------------------------------------------------------
+SALIDA
+Maximum likelihood estimation
+
+Call:
+mle(minuslogl = NLV_norm, start = list(mu = 165, sigma = 8), 
+    method = "L-BFGS-B", lower = c(-Inf, 0.01), control = list(factr = 10))
+
+Coefficients:
+        Estimate Std. Error
+mu    164.413641 0.03019175
+sigma   7.914559 0.02134879
+
+-2 log L: 479334.6 
+Profiling...
+         2.5 %     97.5 %
+mu    164.3545 164.472817
+sigma   7.8729   7.956587
+----------------------------------------------------------------------
+
+Estimo mu = 164,41 cm (intervalo de confianza del 95%: 164,35 a 164,47) y sigma = 7,91 cm (intervalo: 7,87 a 7,96). La altura promedio de los pacientes es de unos 164,4 cm y las alturas se alejan del promedio unos 7,9 cm.
+
+Fumar, Bernoulli con parámetro p:
+
+CÓDIGO (máxima verosimilitud, Bernoulli)
+NLV_ber <- function(p) {
+  -sum(dbinom(fuma, size = 1, prob = p, log = TRUE))
+}
+EMV_ber <- mle(NLV_ber,
+               start  = list(p = 0.5),
+               method = "L-BFGS-B",
+               lower  = 0.0001,
+               upper  = 0.9999,
+               control = list(parscale = 0.1, factr = 10))   # parscale: p es chico
+summary(EMV_ber)
+confint(EMV_ber)
+----------------------------------------------------------------------
+SALIDA
+Maximum likelihood estimation
+
+Call:
+mle(minuslogl = NLV_ber, start = list(p = 0.5), method = "L-BFGS-B", 
+    lower = 1e-04, upper = 0.9999, control = list(parscale = 0.1, 
+        factr = 10))
+
+Coefficients:
+    Estimate  Std. Error
+p 0.08801063 0.001080683
+
+-2 log L: 40944.26 
+Profiling...
+     2.5 %     97.5 % 
+0.08590773 0.09014418 
+----------------------------------------------------------------------
+
+Estimo p = 0,0880, con un intervalo de confianza del 95% de 0,0859 a 0,0901: alrededor del 8,8% de los pacientes fuma, con un intervalo de 8,6% a 9,0%.
+
+Método de momentos. Para la normal igualo la esperanza (mu) y el segundo momento (sigma al cuadrado más mu al cuadrado) con los momentos de la muestra; para la Bernoulli, la esperanza es p, así que p es la media muestral:
+
+CÓDIGO (método de momentos)
+n <- length(altura)
+m1 <- mean(altura)
+m2 <- mean(altura^2)
+mu_mom    <- m1
+sigma_mom <- sqrt(m2 - m1^2)
+c(mu = mu_mom, sigma = sigma_mom)
+p_mom <- mean(fuma)
+p_mom
+----------------------------------------------------------------------
+SALIDA
+        mu      sigma 
+164.413641   7.914559 
+[1] 0.08801059
+----------------------------------------------------------------------
+
+Resumen de las estimaciones:
+
+CÓDIGO (estimaciones)
+cbind(EMV = c(coef(EMV_norm), coef(EMV_ber)), Momentos = c(mu_mom, sigma_mom, p_mom),
+      rbind(confint(EMV_norm), p = confint(EMV_ber)))
+----------------------------------------------------------------------
+SALIDA
+Profiling...
+Profiling...
+               EMV     Momentos        2.5 %       97.5 %
+mu    164.41364103 164.41364106 164.35446548 164.47281664
+sigma   7.91455939   7.91455929   7.87290021   7.95658730
+p       0.08801063   0.08801059   0.08590773   0.09014418
+----------------------------------------------------------------------
+
+Los dos métodos dan lo mismo. Es lo esperable: para la normal, el estimador de máxima verosimilitud de mu es la media muestral y el de sigma divide por n, igual que el método de momentos; para la Bernoulli ambos dan la proporción observada. Las diferencias pequeñas que aparecen vienen de la precisión numérica del optimizador.
+
+3) LIMITACIONES DE LAS ESTIMACIONES
+
+Datos observacionales y de un solo origen. No tengo garantía de que sea una muestra aleatoria de una población definida. Los intervalos de confianza miden solo la incertidumbre de muestreo bajo un muestreo aleatorio y no corrigen un posible sesgo de selección; las estimaciones describen a estos pacientes (adultos de unos 30 a 65 años) y no puedo extenderlas sin más a otra población.
+
+Supuesto de independencia. La máxima verosimilitud supone observaciones independientes. No sé si hay pacientes del mismo centro o de la misma familia; si los hubiera, los intervalos serían más angostos de lo que corresponde.
+
+Ajuste normal solo aproximado. Shapiro-Wilk rechaza la normalidad de la altura. Además el conjunto mezcla dos grupos con alturas distintas (categoría 1: 161,4 cm; categoría 2: 170,0 cm), así que la normal única con mu = 164,4 cm no describe bien a ninguno por separado.
+
+Variable redondeada. La altura está en centímetros enteros, con solo 73 valores distintos, aunque la normal es continua. El efecto sobre la media es pequeño, pero la forma exacta de la distribución queda distorsionada.
+
+Variable autoinformada. El dato de fumar lo declara el paciente y es probable que algunos fumadores no lo declaren, por lo que p podría estar subestimado. Los intervalos no capturan ese error de medición.
+
+Intervalos aproximados. Los errores estándar de mle salen de la matriz hessiana, una aproximación asintótica. Con 68.719 observaciones es buena, pero no lo sería con una muestra pequeña.
+
+Recorte por limpieza. Descarté 1.281 registros (1,83%) con valores imposibles, 53 de ellos por la altura. Si esos errores no fueran aleatorios podrían afectar las estimaciones, aunque por su poca cantidad es probable que el efecto sea mínimo.
+
+Precisión y exactitud. Con 68.719 observaciones los intervalos son muy angostos. Eso indica precisión, pero no asegura que el modelo sea correcto ni que los datos representen a la población.

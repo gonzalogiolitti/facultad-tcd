@@ -1,5 +1,5 @@
 # BASES DE DATOS - Resumen de contenido
-_Última actualización: 28/10/26_
+_Última actualización: 07/11/26_
 
 ## General
 **Archivo:** General/ProgramaBBDD-TUCD_v00.md
@@ -63,6 +63,16 @@ _Última actualización: 28/10/26_
 **Temas:** Arquitectura de 3 capas (frontend/backend/base de datos), hosting y dominios, herramientas de desarrollo web (HTML, CSS, Bootstrap, JavaScript, PHP, SQL), agentes de IA para generación de código (OpenCode, Codex), FileZilla, InfinityFree, MySQL/phpMyAdmin
 **Resumen:** La clase aborda la arquitectura de 3 capas aplicada al desarrollo web, explicando el rol del frontend (HTML, CSS, JS), backend (PHP) y base de datos (MariaDB/MySQL). Se muestra cómo contratar y configurar un hosting gratuito (InfinityFree), transferir archivos con FileZilla y registrar dominios. El núcleo de la clase es una demostración práctica donde se utiliza un agente de IA (Codex/OpenCode) para generar automáticamente una aplicación web completa —un directorio de fuentes de datos climáticos con ABM— conectada a una base de datos MySQL gestionada desde phpMyAdmin.
 
+**Archivo:** Grabaciones sincrónicos/Clase 11.txt
+**Fecha:** No identificada
+**Temas:** Bases de datos NoSQL, MongoDB, colecciones y documentos, operaciones CRUD en MongoDB, comparación SQL vs NoSQL, data lake y data warehouse
+**Resumen:** La clase introduce las bases de datos NoSQL, explicando las diferencias con las relacionales y cuándo conviene usar cada paradigma. Se presenta MongoDB como sistema documental orientado a objetos, mostrando su instalación y conexión mediante MongoDB Compass. Se desarrollan operaciones CRUD (insert, find, update, delete) con ejemplos prácticos usando colecciones de estudiantes, incluyendo el uso de operadores como `$gt`, `$lt` y expresiones regulares. Finalmente, se muestra un proyecto de ejemplo en GitHub con arquitectura de dos capas usando Node.js y MongoDB, y se discute la relación entre data lake, data warehouse y el proceso de ORM.
+
+**Archivo:** Grabaciones sincrónicos/Clase 12 - Bases de Datos NoSQL - MongoDB.txt
+**Fecha:** 03/12/24
+**Temas:** Bases de datos NoSQL, MongoDB, Python, PyMongo, SQLAlchemy, ORM, ETL, conexión Python-MongoDB, conexión Python-MariaDB, mapeo objeto-relacional, data lake, data warehouse
+**Resumen:** La clase aborda la introducción a los ORM (Object-Relational Mapping) como concepto para conectar bases de datos con lenguajes de programación orientados a objetos. Se muestra cómo conectar Python con MongoDB usando PyMongo para extraer documentos, y con MariaDB usando SQLAlchemy para insertar datos, ilustrando un pipeline básico de transferencia de datos entre una base no relacional y una relacional. Se presentan conceptos como transacciones, commit, rollback y mapeo de clases Python a tablas SQL. La clase cierra con palabras de agradecimiento y coordinación de exámenes de promoción del trabajo final integrador.
+
 ## Unidad 0
 **Archivo:** Unidad 0/Apunte de Bases de datos.md
 **Fecha:** No identificada
@@ -106,6 +116,11 @@ _Última actualización: 28/10/26_
 **Fecha:** No identificada
 **Temas:** ORM (Object-Relational Mapping), bases de datos relacionales, SQL, CRUD, programación orientada a objetos, ventajas y desventajas de los ORM, principales ORM por lenguaje
 **Resumen:** El video explica qué es un ORM (Object-Relational Mapper) y cómo funciona, partiendo de conceptos previos necesarios como bases de datos relacionales, SQL, CRUD y programación orientada a objetos. Se describe cómo un ORM mapea tablas a clases, registros a objetos y campos a propiedades, permitiendo interactuar con la base de datos usando el lenguaje de backend sin escribir SQL directamente. Se analizan ventajas (abstracción del SQL, mayor productividad) y desventajas (dependencia del ORM, dificultad para optimizar consultas complejas sin saber SQL). Finalmente, se recomienda aprender SQL como fundamento antes de adoptar un ORM, y se repasan los principales ORM para distintos lenguajes: Eloquent, Doctrine, Hibernate, Entity Framework, TypeORM, Active Record, GORM y SQLAlchemy/Django ORM.
+
+**Archivo:** Unidad 5/Apunte_Clase_ORM_MongoDB_MariaDB.md
+**Fecha:** No identificada
+**Temas:** ORM, PyMongo, SQLAlchemy, MariaDB, MongoDB, mapeo objeto-relacional, transferencia de datos entre bases
+**Resumen:** El apunte introduce el concepto de ORM (Object-Relational Mapping) a través de un caso práctico que conecta MongoDB y MariaDB usando Python. Se explica cómo leer documentos de una colección MongoDB con PyMongo, cómo ejecutar SQL tradicional sobre MariaDB mediante SQLAlchemy, y cómo mapear una clase Python (`RegistroDato`) a una tabla relacional usando `registry` y `mapped_column`. El núcleo del material es la transferencia completa de documentos MongoDB a filas de MariaDB sin escribir sentencias INSERT manuales, utilizando una sesión ORM con `add()` y `commit()`. Se abordan también conceptos clave como transacciones, diferencias entre Engine, Connection y Session, y la distinción entre crear un objeto en memoria y persistirlo en la base de datos.
 
 <!-- ESTADO_RESUMEN
 {
@@ -193,6 +208,18 @@ _Última actualización: 28/10/26_
           "fecha": "No identificada",
           "temas": "Arquitectura de 3 capas (frontend/backend/base de datos), hosting y dominios, herramientas de desarrollo web (HTML, CSS, Bootstrap, JavaScript, PHP, SQL), agentes de IA para generación de código (OpenCode, Codex), FileZilla, InfinityFree, MySQL/phpMyAdmin",
           "resumen": "La clase aborda la arquitectura de 3 capas aplicada al desarrollo web, explicando el rol del frontend (HTML, CSS, JS), backend (PHP) y base de datos (MariaDB/MySQL). Se muestra cómo contratar y configurar un hosting gratuito (InfinityFree), transferir archivos con FileZilla y registrar dominios. El núcleo de la clase es una demostración práctica donde se utiliza un agente de IA (Codex/OpenCode) para generar automáticamente una aplicación web completa —un directorio de fuentes de datos climáticos con ABM— conectada a una base de datos MySQL gestionada desde phpMyAdmin."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 11.txt",
+          "fecha": "No identificada",
+          "temas": "Bases de datos NoSQL, MongoDB, colecciones y documentos, operaciones CRUD en MongoDB, comparación SQL vs NoSQL, data lake y data warehouse",
+          "resumen": "La clase introduce las bases de datos NoSQL, explicando las diferencias con las relacionales y cuándo conviene usar cada paradigma. Se presenta MongoDB como sistema documental orientado a objetos, mostrando su instalación y conexión mediante MongoDB Compass. Se desarrollan operaciones CRUD (insert, find, update, delete) con ejemplos prácticos usando colecciones de estudiantes, incluyendo el uso de operadores como `$gt`, `$lt` y expresiones regulares. Finalmente, se muestra un proyecto de ejemplo en GitHub con arquitectura de dos capas usando Node.js y MongoDB, y se discute la relación entre data lake, data warehouse y el proceso de ORM."
+        },
+        {
+          "rel_path": "Grabaciones sincrónicos/Clase 12 - Bases de Datos NoSQL - MongoDB.txt",
+          "fecha": "03/12/24",
+          "temas": "Bases de datos NoSQL, MongoDB, Python, PyMongo, SQLAlchemy, ORM, ETL, conexión Python-MongoDB, conexión Python-MariaDB, mapeo objeto-relacional, data lake, data warehouse",
+          "resumen": "La clase aborda la introducción a los ORM (Object-Relational Mapping) como concepto para conectar bases de datos con lenguajes de programación orientados a objetos. Se muestra cómo conectar Python con MongoDB usando PyMongo para extraer documentos, y con MariaDB usando SQLAlchemy para insertar datos, ilustrando un pipeline básico de transferencia de datos entre una base no relacional y una relacional. Se presentan conceptos como transacciones, commit, rollback y mapeo de clases Python a tablas SQL. La clase cierra con palabras de agradecimiento y coordinación de exámenes de promoción del trabajo final integrador."
         }
       ]
     ],
@@ -269,6 +296,12 @@ _Última actualización: 28/10/26_
           "fecha": "No identificada",
           "temas": "ORM (Object-Relational Mapping), bases de datos relacionales, SQL, CRUD, programación orientada a objetos, ventajas y desventajas de los ORM, principales ORM por lenguaje",
           "resumen": "El video explica qué es un ORM (Object-Relational Mapper) y cómo funciona, partiendo de conceptos previos necesarios como bases de datos relacionales, SQL, CRUD y programación orientada a objetos. Se describe cómo un ORM mapea tablas a clases, registros a objetos y campos a propiedades, permitiendo interactuar con la base de datos usando el lenguaje de backend sin escribir SQL directamente. Se analizan ventajas (abstracción del SQL, mayor productividad) y desventajas (dependencia del ORM, dificultad para optimizar consultas complejas sin saber SQL). Finalmente, se recomienda aprender SQL como fundamento antes de adoptar un ORM, y se repasan los principales ORM para distintos lenguajes: Eloquent, Doctrine, Hibernate, Entity Framework, TypeORM, Active Record, GORM y SQLAlchemy/Django ORM."
+        },
+        {
+          "rel_path": "Unidad 5/Apunte_Clase_ORM_MongoDB_MariaDB.md",
+          "fecha": "No identificada",
+          "temas": "ORM, PyMongo, SQLAlchemy, MariaDB, MongoDB, mapeo objeto-relacional, transferencia de datos entre bases",
+          "resumen": "El apunte introduce el concepto de ORM (Object-Relational Mapping) a través de un caso práctico que conecta MongoDB y MariaDB usando Python. Se explica cómo leer documentos de una colección MongoDB con PyMongo, cómo ejecutar SQL tradicional sobre MariaDB mediante SQLAlchemy, y cómo mapear una clase Python (`RegistroDato`) a una tabla relacional usando `registry` y `mapped_column`. El núcleo del material es la transferencia completa de documentos MongoDB a filas de MariaDB sin escribir sentencias INSERT manuales, utilizando una sesión ORM con `add()` y `commit()`. Se abordan también conceptos clave como transacciones, diferencias entre Engine, Connection y Session, y la distinción entre crear un objeto en memoria y persistirlo en la base de datos."
         }
       ]
     ]

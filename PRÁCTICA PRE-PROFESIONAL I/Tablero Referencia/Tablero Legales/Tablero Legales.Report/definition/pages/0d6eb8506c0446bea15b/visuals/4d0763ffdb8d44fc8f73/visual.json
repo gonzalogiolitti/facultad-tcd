@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "4d0763ffdb8d44fc8f73",
+  "position": {
+    "x": 730,
+    "y": 90,
+    "z": 7000,
+    "height": 140,
+    "width": 690,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "DRAFT — Proyección Reclamos SSS (Indicador 9)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Ratio total (no por Unidad de Negocio) y Cartera fija al último mes cerrado. Pendiente de confirmación de negocio."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

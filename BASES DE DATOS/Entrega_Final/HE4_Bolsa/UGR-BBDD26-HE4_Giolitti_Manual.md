@@ -123,6 +123,18 @@ ACT14, descripción "Activo no listado en el enunciado", precio 0.01), con un
 comentario en el SQL que explica por qué están. El activo 12 lo dejé sin
 crear porque ninguna otra tabla lo menciona.
 
+## Restricciones de integridad
+
+El profesor preguntó qué pasaría con un movimiento de cantidad negativa o de
+un tipo que no fuera Compra ni Venta, y recomendó agregar `CHECK`. Son 5 en
+total: `chk_movimiento_tipo` exige que `tipo_transaccion` sea 'Compra' o
+'Venta'; `chk_movimiento_cantidad` y `chk_portafolio_cantidad` exigen que la
+cantidad operada o en cartera sea mayor a cero; `chk_activo_precio` no deja
+guardar un precio negativo; `chk_cuenta_saldo` no deja que el saldo
+disponible quede en negativo. Ninguno rompe las semillas (los datos de
+ejemplo ya cumplían todo esto), y probé dos casos que tienen que fallar
+(cantidad -3, tipo 'Regalo') para confirmar que MariaDB los rechaza.
+
 ## Cómo ejecutar el SQL
 
 1. Abrir DBeaver y conectarme a mi servidor MariaDB (o MySQL 8).
@@ -138,5 +150,5 @@ crear porque ninguna otra tabla lo menciona.
 
 Probé este script contra una MariaDB 11.8.6 real (instancia local, base
 limpia) y corrió sin errores: se crean las 5 tablas, entran las 6+13+6+5+7
-filas de ejemplo, y las 5 FK y los 3 `CHECK` (tipo_transaccion, cantidad > 0,
-precio >= 0) rechazan datos inválidos cuando los probé a propósito.
+filas de ejemplo, y las 5 FK y los 5 `CHECK` rechazan datos inválidos cuando
+los probé a propósito.

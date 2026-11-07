@@ -97,6 +97,13 @@ perfiles (`admin_taller`, `recepcion`, `mecanico`, `consulta`) separan quién
 puede cargar datos de quién solo puede mirarlos; `consulta` en particular
 solo ve las tres vistas, no las tablas con los precios de costo.
 
+El `stock` de `repuesto` se carga como stock **inicial** del taller, no como
+el stock ya descontado. El trigger se crea antes de las semillas, así que
+descuenta una sola vez a medida que van entrando los repuestos usados — no
+hay descuento doble. Al final del script hay una consulta que lo comprueba:
+para cada repuesto, stock actual + total usado tiene que dar el stock
+inicial con el que se cargó.
+
 ## 5. Qué se aplicó de cada unidad
 
 | Unidad / hito | Dónde se aplica en el TPI |

@@ -1,0 +1,18 @@
+# Versiones con las que se obtuvieron los resultados del proyecto (Python 3.14).
+# Instalar con:  pip install -r 01_python_etl/requirements.txt
+pandas==3.1.0
+numpy==2.5.4
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0
+threadpoolctl==3.7.0
+matplotlib==3.11.2
+seaborn==0.13.2
+nbformat==5.11.1
+nbconvert==7.17.2
+ipykernel==7.4.0
+
+# Solo para la carga a SQL Server, que corre con el Python de WINDOWS (ya trae sqlalchemy y pyodbc); no se necesitan en WSL.
+# Requiere además el driver "ODBC Driver for SQL Server" instalado en el sistema.
+# sqlalchemy
+# pyodbc
