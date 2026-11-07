@@ -156,12 +156,16 @@ function calcularKpis(g, acc) {
     return out;
 }
 
-/** Lineas de line protocol de los KPIs de un periodo (una fila por KPI y periodo: la clave es el inicio). */
-function lineasKpi(g, inicio, kpis, cerrado) {
+/**
+ * Lineas de line protocol de los KPIs de UN periodo ya cerrado: una fila por KPI, con `time` = inicio del periodo.
+ * Cada fila se escribe UNA sola vez (al cerrar el periodo). No se reescribe nunca: InfluxDB puede devolver versiones
+ * viejas de una misma clave recien reescrita, asi que el periodo EN CURSO se calcula con SQL desde raw_variables.
+ */
+function lineasKpi(g, inicio, kpis) {
     const turno = g === 'turno' ? ',turno=' + turnoDe(inicio) : '';
     return kpis.map((k) =>
         'kpi_values,equipo=' + k.equipo + ',kpi=' + k.kpi + ',periodo=' + g + ',unit=' + escTag(k.unit) + turno +
-        ' value=' + k.value + ',muestras=' + k.muestras + 'i,cerrado=' + (cerrado ? 'true' : 'false') + ' ' + inicio);
+        ' value=' + k.value + ',muestras=' + k.muestras + 'i,cerrado=true ' + inicio);
 }
 
 module.exports = {

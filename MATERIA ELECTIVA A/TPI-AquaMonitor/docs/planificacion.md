@@ -73,6 +73,20 @@ Detalle de tags, unidades y umbrales en [`jerarquia_ISA95.md`](jerarquia_ISA95.m
 
 Granularidades: `hour` (SAMPLE BY 1h), `shift` (8h), `day`, `week`.
 
+> **Actualización stack de la cátedra:** en el stack final los indicadores los calcula Node-RED y se guardan en el measurement `kpi_values` de InfluxDB (campo `periodo` = `hora`, `turno`, `dia`, `semana`). Ver la sección 5b.
+
+## 5b. Turnos de la planta (hora Argentina)
+
+La planta trabaja 24 h con **3 turnos de 8 horas**, en hora de Argentina (America/Argentina/Buenos_Aires, UTC-3, sin horario de verano):
+
+| Turno | Desde | Hasta | En UTC |
+|---|---|---|---|
+| T1 | 06:00 | 14:00 | 09:00 a 17:00 |
+| T2 | 14:00 | 22:00 | 17:00 a 01:00 |
+| T3 | 22:00 | 06:00 (día siguiente) | 01:00 a 09:00 |
+
+Los otros períodos también se calculan en hora Argentina: la **hora** es en punto, el **día** va de 00:00 a 24:00 y la **semana** empieza el lunes a las 00:00. InfluxDB guarda todo en UTC: la marca de tiempo de cada indicador es el **inicio del período**, convertido a UTC (por ejemplo, el día 07/11 empieza a las 03:00 UTC). Los turnos están definidos en un solo lugar: `nodered/userdir/aqm/catalogo.js`.
+
 ## 6. Técnicas de análisis
 
 1. **Detección de anomalías** — Z-score con ventana deslizante de 20 puntos

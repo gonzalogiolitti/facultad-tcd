@@ -21,13 +21,16 @@ if (global.get('gen_pausa') === true) {
 
 // ---------- ¿toca generar un ciclo? ----------
 const ultimoTs = global.get('gen_ultimo_ts') || 0;
-let ts = Math.floor(ahora / (intervaloS * 1000)) * intervaloS * 1000;   // alineado a la grilla (17:04:00, 17:06:00, ...)
+const tramo = Math.floor(ahora / (intervaloS * 1000)) * intervaloS * 1000;   // inicio del tramo actual (17:04:00, 17:06:00, ...)
+let ts = tramo;
 if (global.get('gen_forzar') === true) {                                  // al provocar una falla se mide enseguida
     ts = Math.floor(ahora / 1000) * 1000;
     if (ts <= ultimoTs) ts = ultimoTs + 1000;
     global.set('gen_forzar', false);
-} else if (ts <= ultimoTs) {
+} else if (tramo <= ultimoTs) {                                           // ya se midio en este tramo
     return null;
+} else if (ahora - tramo > 15000) {                                       // tramo nuevo pero se llega tarde (recien arrancado): hora real
+    ts = Math.floor(ahora / 1000) * 1000;
 }
 
 // ---------- estado interno de los equipos (persistente) ----------

@@ -1,9 +1,10 @@
 // INDICADORES (KPIs): por cada ciclo del generador acumula las muestras buenas (calidad 2) en
-// los 4 periodos abiertos (hora, turno, dia, semana) y escribe en InfluxDB una fila por
-// KPI y periodo.
+// los 4 periodos abiertos (hora, turno, dia, semana) y, cuando un periodo TERMINA, escribe en InfluxDB
+// una fila por KPI con el resultado final.
 //  - La marca de tiempo de la fila es el INICIO del periodo (en UTC), calculado en hora Argentina.
-//  - Mientras el periodo esta abierto la fila se reescribe (misma clave = se pisa): queda UNA sola.
-//  - Cuando empieza el periodo siguiente, la fila del anterior se escribe por ultima vez con cerrado=true.
+//  - Cada fila se escribe UNA sola vez, al cerrar el periodo (no se reescribe): asi no hay filas repetidas que
+//    InfluxDB pueda devolver en versiones distintas.
+//  - El periodo EN CURSO no se escribe: el tablero lo calcula con SQL desde raw_variables.
 // Los acumuladores se guardan en el contexto global (en disco), asi que sobreviven a un reinicio.
 const A = global.get('aqm');
 const lecturas = msg.lecturas, ts = msg.ts;
@@ -19,7 +20,7 @@ A.GRANULARIDADES.forEach((g) => {
     let p = estado[g];
     if (p && p.inicio !== inicio) {                            // cambio de periodo: se cierra el anterior
         const kpisFinal = A.calcularKpis(g, p.acc);
-        A.lineasKpi(g, p.inicio, kpisFinal, true).forEach((l) => lineas.push(l));
+        A.lineasKpi(g, p.inicio, kpisFinal).forEach((l) => lineas.push(l));
         nCerrados += 1;
         if (g === 'dia') {
             cerrados.dia[p.inicio] = kpisFinal;
@@ -29,10 +30,11 @@ A.GRANULARIDADES.forEach((g) => {
     }
     if (!p) p = estado[g] = { inicio, acc: {} };
     lecturas.forEach((l) => A.acumular(p.acc, l));
-    A.lineasKpi(g, inicio, A.calcularKpis(g, p.acc), false).forEach((l) => lineas.push(l));   // periodo en curso
 });
 
 global.set('kpi_estado', estado);
 global.set('kpi_cerrados', cerrados);
-node.status({ fill: 'green', shape: 'dot', text: lineas.length + ' filas' + (nCerrados ? ' | cerro ' + nCerrados + ' periodo(s)' : '') });
-return { payload: lineas.join('\n'), medida: 'kpi_values' };
+const ultimo = global.get('kpi_filas_escritas') || 0;
+global.set('kpi_filas_escritas', ultimo + lineas.length);
+node.status({ fill: 'green', shape: 'dot', text: 'periodos abiertos: ' + A.GRANULARIDADES.map((g) => g + ' ' + A.fmtFecha(estado[g].inicio).slice(0, 16)).join(' | ').slice(0, 60) + ' | filas escritas: ' + (ultimo + lineas.length) });
+return lineas.length ? { payload: lineas.join('\n'), medida: 'kpi_values' } : null;

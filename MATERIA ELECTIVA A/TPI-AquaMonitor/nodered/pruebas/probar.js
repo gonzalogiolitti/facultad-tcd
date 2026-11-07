@@ -113,6 +113,11 @@ fijarReloj();
         ts.forEach((t) => assert.strictEqual(t % 120000, 0));
         assert.strictEqual(new Set(ts).size, ts.length);
     });
+    prueba('al arrancar tarde dentro del tramo (a las :40 de una grilla de 120 s) la marca es la hora real, no una hora pasada', () => {
+        const W = nuevoMundo({}); RELOJ.ahora = Date.UTC(2026, 10, 9, 12, 0, 40);
+        const r = W.run.gen_ciclo({});
+        assert.strictEqual(r[1].ts, RELOJ.ahora);
+    });
     prueba('line protocol de raw_variables: 15 lineas por ciclo con tags y campos del esquema', () => {
         RELOJ.ahora += 120000; const r = M.run.gen_ciclo({}); const ls = lineasDe(r[0]);
         assert.strictEqual(ls.length, 15);
@@ -191,8 +196,8 @@ console.log('\n[3] Indicadores (KPIs)');
     const M = nuevoMundo({});
     const inicio = Date.UTC(2026, 10, 2, 3, 0, 0);                 // lunes 02/11/2026 00:00 ART
     const dias = 9;
-    const filas = new Map();                                       // ultima escritura de cada clave
-    const crudas = [];                                             // para recalcular por fuera
+    const todas = [];                                              // TODAS las filas escritas (para detectar claves repetidas)
+    const crudas = [];                                             // lecturas, para recalcular por fuera
     const G = nuevoMundo({});
     RELOJ.ahora = inicio;
     for (let t = inicio; t < inicio + dias * 86400000; t += 120000) {
@@ -200,20 +205,24 @@ console.log('\n[3] Indicadores (KPIs)');
         const r = G.run.gen_ciclo({}); if (!r) continue;
         crudas.push(r[1]);
         const k = M.run.kpi_calcular({ lecturas: r[1].lecturas, ts: r[1].ts });
-        lineasDe(k).forEach((l) => { const p = parseLP(l); filas.set([p.tags.equipo, p.tags.kpi, p.tags.periodo, p.ts].join('|'), p); });
+        lineasDe(k).forEach((l) => todas.push(parseLP(l)));
     }
+    const clave = (p) => [p.tags.equipo, p.tags.kpi, p.tags.periodo, p.ts].join('|');
+    const filas = new Map(todas.map((p) => [clave(p), p]));
     const filasArr = Array.from(filas.values());
     prueba('hay filas de los 6 KPIs en las 4 granularidades', () => {
         const comb = new Set(filasArr.map((p) => p.tags.equipo + '/' + p.tags.kpi + '/' + p.tags.periodo));
         assert.strictEqual(comb.size, 6 * 4);
     });
-    prueba('UNA sola fila por periodo (la clave equipo+kpi+periodo+inicio no se repite)', () => {
-        // el Map ya pisa las repetidas; se comprueba que el nro de filas coincide con periodos x kpis
+    prueba('cada periodo se escribe UNA sola vez: ninguna clave (equipo+kpi+periodo+inicio) se repite en toda la corrida', () => {
+        assert.strictEqual(todas.length, filas.size, 'filas escritas: ' + todas.length + ', claves distintas: ' + filas.size);
+    });
+    prueba('se escriben solo periodos CERRADOS: 9 dias = 215 horas, 27 turnos, 8 dias y 1 semana (el ultimo de cada tipo sigue abierto)', () => {
         const porPeriodo = (g) => new Set(filasArr.filter((p) => p.tags.periodo === g).map((p) => p.ts)).size;
-        assert.strictEqual(porPeriodo('hora'), dias * 24);
-        assert.strictEqual(porPeriodo('turno'), dias * 3 + 1);          // +1: a las 00:00 del lunes se arranca dentro del T3 que empezo el domingo 22:00
-        assert.strictEqual(porPeriodo('dia'), dias);
-        assert.strictEqual(porPeriodo('semana'), 2);                 // lunes 02/11 y lunes 09/11
+        assert.strictEqual(porPeriodo('hora'), dias * 24 - 1);
+        assert.strictEqual(porPeriodo('turno'), dias * 3 + 1 - 1);   // +1: a las 00:00 del lunes se arranca dentro del T3 del domingo 22:00; -1: el ultimo sigue abierto
+        assert.strictEqual(porPeriodo('dia'), dias - 1);
+        assert.strictEqual(porPeriodo('semana'), 1);
     });
     prueba('el ts de cada fila es el INICIO del periodo (hora en punto; turnos 09/17/01 UTC; dias 03:00 UTC; semana lunes 03:00 UTC)', () => {
         filasArr.forEach((p) => {
@@ -224,16 +233,11 @@ console.log('\n[3] Indicadores (KPIs)');
             if (p.tags.periodo === 'semana') assert.ok(d.getUTCHours() === 3 && d.getUTCDay() === 1);
         });
     });
-    prueba('los periodos ya terminados quedan cerrado=true y el ultimo (en curso) cerrado=false', () => {
-        const porPer = (g) => filasArr.filter((p) => p.tags.periodo === g && p.tags.kpi === 'desviacion_ph');
-        ['hora', 'turno', 'dia', 'semana'].forEach((g) => {
-            const l = porPer(g).sort((a, b) => a.ts - b.ts);
-            l.slice(0, -1).forEach((p) => assert.strictEqual(p.campos.cerrado, 'true'));
-            assert.strictEqual(l[l.length - 1].campos.cerrado, 'false');
+    prueba('todas las filas llevan cerrado=true y muestras; los turnos llevan el tag turno (T1/T2/T3) y los demas periodos no', () => {
+        filasArr.forEach((p) => {
+            assert.strictEqual(p.campos.cerrado, 'true'); assert.ok(/^\d+i$/.test(p.campos.muestras));
+            if (p.tags.periodo === 'turno') assert.ok(/^T[123]$/.test(p.tags.turno)); else assert.strictEqual(p.tags.turno, undefined);
         });
-    });
-    prueba('los turnos llevan el tag turno (T1/T2/T3) y los demas periodos no', () => {
-        filasArr.forEach((p) => { if (p.tags.periodo === 'turno') assert.ok(/^T[123]$/.test(p.tags.turno)); else assert.strictEqual(p.tags.turno, undefined); });
     });
     // --- recalculo independiente sobre las lecturas crudas ---
     const media = (a) => a.reduce((x, y) => x + y, 0) / a.length;
@@ -261,22 +265,32 @@ console.log('\n[3] Indicadores (KPIs)');
         const cer = M.global.get('kpi_cerrados'); assert.strictEqual(Object.keys(cer.dia).length, dias - 1);
         Object.values(cer.dia).forEach((k) => assert.strictEqual(k.length, 6));
     });
-    prueba('cambio de periodo: la fila del anterior sale con cerrado=true JUNTO con la del nuevo con cerrado=false', () => {
-        const W = nuevoMundo({}); const t0 = Date.UTC(2026, 10, 7, 20, 58, 0);                  // 17:58 ART
+    prueba('reinicio a mitad de periodo: se recupera el estado guardado y el periodo cierra con TODAS las muestras', () => {
+        const W = nuevoMundo({}); const t0 = Date.UTC(2026, 10, 7, 20, 50, 0);
         const mk = (ts) => ({ ts, lecturas: crudas[0].lecturas.map((l) => Object.assign({}, l, { ts })) });
-        W.run.kpi_calcular(mk(t0)); W.run.kpi_calcular(mk(t0 + 60000));
-        const ls = lineasDe(W.run.kpi_calcular(mk(Date.UTC(2026, 10, 7, 21, 0, 0)))).map(parseLP).filter((p) => p.tags.periodo === 'hora' && p.tags.kpi === 'disponibilidad_bomba');
-        assert.deepStrictEqual(ls.map((p) => p.campos.cerrado).sort(), ['false', 'true']);
-        assert.strictEqual(ls.find((p) => p.campos.cerrado === 'true').ts, Date.UTC(2026, 10, 7, 20, 0, 0));
-        assert.strictEqual(ls.find((p) => p.campos.cerrado === 'false').ts, Date.UTC(2026, 10, 7, 21, 0, 0));
+        W.run.kpi_calcular(mk(t0)); W.run.kpi_calcular(mk(t0 + 120000));
+        const guardado = JSON.parse(JSON.stringify(W.global.get('kpi_estado')));     // lo que quedo en disco
+        const W2 = nuevoMundo({}); W2.global.set('kpi_estado', guardado);             // "Node-RED reinicia" y lo recupera
+        W2.run.kpi_calcular(mk(t0 + 240000));
+        const ls = lineasDe(W2.run.kpi_calcular(mk(Date.UTC(2026, 10, 7, 21, 0, 0)))).map(parseLP).filter((p) => p.tags.periodo === 'hora' && p.tags.kpi === 'disponibilidad_bomba');
+        assert.strictEqual(ls.length, 1); assert.strictEqual(ls[0].campos.muestras, '3i');
+    });
+    prueba('cambio de periodo: sale UNA fila por KPI con el inicio del periodo que termino', () => {
+        const W = nuevoMundo({}); const t0 = Date.UTC(2026, 10, 7, 20, 56, 0);                  // 17:56 ART
+        const mk = (ts) => ({ ts, lecturas: crudas[0].lecturas.map((l) => Object.assign({}, l, { ts })) });
+        assert.strictEqual(W.run.kpi_calcular(mk(t0)), null);                                   // nada se escribe mientras el periodo esta abierto
+        assert.strictEqual(W.run.kpi_calcular(mk(t0 + 120000)), null);
+        const ls = lineasDe(W.run.kpi_calcular(mk(Date.UTC(2026, 10, 7, 21, 0, 0)))).map(parseLP).filter((p) => p.tags.periodo === 'hora');
+        assert.strictEqual(ls.length, 6);
+        assert.ok(ls.every((p) => p.ts === Date.UTC(2026, 10, 7, 20, 0, 0) && p.campos.cerrado === 'true'));
     });
     prueba('solo cuentan las lecturas de calidad 2', () => {
         const W = nuevoMundo({}); const ts = Date.UTC(2026, 10, 7, 20, 10, 0);
         const L = (v, q) => [{ equipo: 'EQ03', variable: 'PH', value: v, quality: q, ts }];
         W.run.kpi_calcular({ ts, lecturas: L(7.0, 2) });
-        const ls = lineasDe(W.run.kpi_calcular({ ts: ts + 120000, lecturas: L(1.0, 1) })).map(parseLP).filter((p) => p.tags.periodo === 'hora' && p.tags.kpi === 'tiempo_fuera_rango_ph');
-        assert.strictEqual(ls[0].campos.value, '0');                                                // el pH 1,0 de calidad 1 no cuenta
-        assert.strictEqual(ls[0].campos.muestras, '1i');
+        W.run.kpi_calcular({ ts: ts + 120000, lecturas: L(1.0, 1) });                          // pH 1,0 de calidad 1: no cuenta
+        const ls = lineasDe(W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 7, 21, 0, 0), lecturas: L(7.0, 2) })).map(parseLP).filter((p) => p.tags.periodo === 'hora' && p.tags.kpi === 'tiempo_fuera_rango_ph');
+        assert.strictEqual(ls[0].campos.value, '0'); assert.strictEqual(ls[0].campos.muestras, '1i');
     });
 }
 

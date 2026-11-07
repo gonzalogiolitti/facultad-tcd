@@ -1,0 +1,2637 @@
+{
+  "title": "AquaMonitor - Planta de tratamiento",
+  "uid": "aquamonitor-planta",
+  "description": "Tablero de AquaMonitor: sensores en vivo, indicadores por hora/turno/día/semana, fallas de la bomba y análisis (SQL de InfluxDB).",
+  "tags": [
+    "aquamonitor",
+    "influxdb"
+  ],
+  "timezone": "America/Argentina/Buenos_Aires",
+  "refresh": "5s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "graphTooltip": 1,
+  "fiscalYearStartMonth": 0,
+  "liveNow": false,
+  "weekStart": "monday",
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "15s",
+      "30s",
+      "1m",
+      "5m"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "periodo",
+        "label": "Período de los indicadores",
+        "type": "custom",
+        "query": "hora,turno,dia,semana",
+        "current": {
+          "selected": true,
+          "text": "hora",
+          "value": "hora"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "hora",
+            "value": "hora"
+          },
+          {
+            "selected": false,
+            "text": "turno",
+            "value": "turno"
+          },
+          {
+            "selected": false,
+            "text": "dia",
+            "value": "dia"
+          },
+          {
+            "selected": false,
+            "text": "semana",
+            "value": "semana"
+          }
+        ],
+        "multi": false,
+        "includeAll": false,
+        "hide": 0
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Estado general",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Última medición",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT to_char(max(time) - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Última medición (hora Argentina)\" FROM raw_variables WHERE time > now() - INTERVAL '1 day'",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT to_char(max(time) - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Última medición (hora Argentina)\" FROM raw_variables WHERE time > now() - INTERVAL '1 day'",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Antigüedad del dato",
+      "description": "Segundos desde la última medición. En modo normal se mide cada 120 s; en demo, cada 15 s.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 1,
+        "w": 4,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT date_part('epoch', now()) - date_part('epoch', max(time)) AS \"Segundos desde la última medición\" FROM raw_variables WHERE time > now() - INTERVAL '1 day'",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT date_part('epoch', now()) - date_part('epoch', max(time)) AS \"Segundos desde la última medición\" FROM raw_variables WHERE time > now() - INTERVAL '1 day'",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 400
+              },
+              {
+                "color": "red",
+                "value": 900
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Fallas de la bomba en las últimas 12 h",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 10,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT count(*) AS \"Fallas de la bomba (últimas 12 h)\" FROM events WHERE event_type='BOMBA_FALLA' AND time > now() - INTERVAL '12 hours'",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT count(*) AS \"Fallas de la bomba (últimas 12 h)\" FROM events WHERE event_type='BOMBA_FALLA' AND time > now() - INTERVAL '12 hours'",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Última falla de la bomba",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 1,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT to_char(max(time) - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Última falla (hora Argentina)\" FROM events WHERE event_type='BOMBA_FALLA'",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT to_char(max(time) - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Última falla (hora Argentina)\" FROM events WHERE event_type='BOMBA_FALLA'",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 6,
+      "type": "row",
+      "title": "Sensores en vivo (actualiza cada 5 s)",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "EQ01 - Bomba de Ingreso: valores del último ciclo (color: verde normal, naranja advertencia, rojo crítico)",
+      "description": "Última medición de cada sensor. Los colores salen de los umbrales del catálogo (warning y critical).",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 24,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT\n  max(CASE WHEN variable='CAUDAL' THEN value END) AS \"Caudal (m3/h)\",\n  max(CASE WHEN variable='PRESION' THEN value END) AS \"Presión (bar)\",\n  max(CASE WHEN variable='CORRIENTE' THEN value END) AS \"Corriente (A)\",\n  max(CASE WHEN variable='VIBRACION' THEN value END) AS \"Vibración (mm/s)\",\n  max(CASE WHEN variable='ESTADO' THEN value END) AS \"Estado\"\nFROM raw_variables\nWHERE equipo='EQ01' AND time > now() - INTERVAL '1 day'\n  AND time = (SELECT max(time) FROM raw_variables WHERE equipo='EQ01' AND time > now() - INTERVAL '1 day')",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT\n  max(CASE WHEN variable='CAUDAL' THEN value END) AS \"Caudal (m3/h)\",\n  max(CASE WHEN variable='PRESION' THEN value END) AS \"Presión (bar)\",\n  max(CASE WHEN variable='CORRIENTE' THEN value END) AS \"Corriente (A)\",\n  max(CASE WHEN variable='VIBRACION' THEN value END) AS \"Vibración (mm/s)\",\n  max(CASE WHEN variable='ESTADO' THEN value END) AS \"Estado\"\nFROM raw_variables\nWHERE equipo='EQ01' AND time > now() - INTERVAL '1 day'\n  AND time = (SELECT max(time) FROM raw_variables WHERE equipo='EQ01' AND time > now() - INTERVAL '1 day')",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Caudal (m3/h)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: m3/h"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "green",
+                      "value": 90
+                    },
+                    {
+                      "color": "orange",
+                      "value": 155
+                    },
+                    {
+                      "color": "red",
+                      "value": 175
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Presión (bar)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: bar"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2.5
+                    },
+                    {
+                      "color": "green",
+                      "value": 3.5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 5.5
+                    },
+                    {
+                      "color": "red",
+                      "value": 6.5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Corriente (A)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: A"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 55
+                    },
+                    {
+                      "color": "red",
+                      "value": 65
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Vibración (mm/s)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: mm/s"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 4.5
+                    },
+                    {
+                      "color": "red",
+                      "value": 7.1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Estado"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "PARADA",
+                        "color": "red"
+                      },
+                      "1": {
+                        "text": "EN MARCHA",
+                        "color": "green"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0.5
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value_and_name",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Bomba: caudal y corriente",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='CAUDAL' THEN value END) AS \"Caudal (m3/h)\",\n  max(CASE WHEN variable='CORRIENTE' THEN value END) AS \"Corriente (A)\"\nFROM raw_variables\nWHERE equipo='EQ01' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='CAUDAL' THEN value END) AS \"Caudal (m3/h)\",\n  max(CASE WHEN variable='CORRIENTE' THEN value END) AS \"Corriente (A)\"\nFROM raw_variables\nWHERE equipo='EQ01' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Corriente (A)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "timeseries",
+      "title": "Bomba: presión",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 10,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='PRESION' THEN value END) AS \"Presión (bar)\",\n  6.5 AS \"Límite crítico alto\",\n  2.5 AS \"Límite crítico bajo\"\nFROM raw_variables\nWHERE equipo='EQ01' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='PRESION' THEN value END) AS \"Presión (bar)\",\n  6.5 AS \"Límite crítico alto\",\n  2.5 AS \"Límite crítico bajo\"\nFROM raw_variables\nWHERE equipo='EQ01' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Bomba: vibración (límite crítico 7,1 mm/s)",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 10,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='VIBRACION' THEN value END) AS \"Vibración (mm/s)\",\n  7.1 AS \"Límite crítico\",\n  4.5 AS \"Advertencia\"\nFROM raw_variables\nWHERE equipo='EQ01' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='VIBRACION' THEN value END) AS \"Vibración (mm/s)\",\n  7.1 AS \"Límite crítico\",\n  4.5 AS \"Advertencia\"\nFROM raw_variables\nWHERE equipo='EQ01' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "stat",
+      "title": "EQ02 - Filtro de Arena: valores del último ciclo (color: verde normal, naranja advertencia, rojo crítico)",
+      "description": "Última medición de cada sensor. Los colores salen de los umbrales del catálogo (warning y critical).",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 17,
+        "w": 24,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT\n  max(CASE WHEN variable='TURB_IN' THEN value END) AS \"Turbidez entrada (NTU)\",\n  max(CASE WHEN variable='TURB_OUT' THEN value END) AS \"Turbidez salida (NTU)\",\n  max(CASE WHEN variable='PRES_DIF' THEN value END) AS \"Presión diferencial (mbar)\",\n  max(CASE WHEN variable='CAUDAL_FILT' THEN value END) AS \"Caudal filtrado (m3/h)\",\n  max(CASE WHEN variable='EFICIENCIA' THEN value END) AS \"Eficiencia (%)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND time > now() - INTERVAL '1 day'\n  AND time = (SELECT max(time) FROM raw_variables WHERE equipo='EQ02' AND time > now() - INTERVAL '1 day')",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT\n  max(CASE WHEN variable='TURB_IN' THEN value END) AS \"Turbidez entrada (NTU)\",\n  max(CASE WHEN variable='TURB_OUT' THEN value END) AS \"Turbidez salida (NTU)\",\n  max(CASE WHEN variable='PRES_DIF' THEN value END) AS \"Presión diferencial (mbar)\",\n  max(CASE WHEN variable='CAUDAL_FILT' THEN value END) AS \"Caudal filtrado (m3/h)\",\n  max(CASE WHEN variable='EFICIENCIA' THEN value END) AS \"Eficiencia (%)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND time > now() - INTERVAL '1 day'\n  AND time = (SELECT max(time) FROM raw_variables WHERE equipo='EQ02' AND time > now() - INTERVAL '1 day')",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Turbidez entrada (NTU)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: NTU"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 15
+                    },
+                    {
+                      "color": "red",
+                      "value": 25
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Turbidez salida (NTU)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: NTU"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1.5
+                    },
+                    {
+                      "color": "red",
+                      "value": 2
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Presión diferencial (mbar)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: mbar"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 600
+                    },
+                    {
+                      "color": "red",
+                      "value": 800
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Caudal filtrado (m3/h)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: m3/h"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "green",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Eficiencia (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: %"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "green",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value_and_name",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "Filtro: turbidez de entrada y salida",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='TURB_IN' THEN value END) AS \"Turbidez entrada (NTU)\",\n  max(CASE WHEN variable='TURB_OUT' THEN value END) AS \"Turbidez salida (NTU)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='TURB_IN' THEN value END) AS \"Turbidez entrada (NTU)\",\n  max(CASE WHEN variable='TURB_OUT' THEN value END) AS \"Turbidez salida (NTU)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Turbidez salida (NTU)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "Filtro: presión diferencial (advertencia 600 mbar)",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 21,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='PRES_DIF' THEN value END) AS \"Presión diferencial (mbar)\",\n  600 AS \"Advertencia\",\n  800 AS \"Crítico\"\nFROM raw_variables\nWHERE equipo='EQ02' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='PRES_DIF' THEN value END) AS \"Presión diferencial (mbar)\",\n  600 AS \"Advertencia\",\n  800 AS \"Crítico\"\nFROM raw_variables\nWHERE equipo='EQ02' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": "timeseries",
+      "title": "Filtro: caudal filtrado y eficiencia",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 21,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='CAUDAL_FILT' THEN value END) AS \"Caudal filtrado (m3/h)\",\n  max(CASE WHEN variable='EFICIENCIA' THEN value END) AS \"Eficiencia (%)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='CAUDAL_FILT' THEN value END) AS \"Caudal filtrado (m3/h)\",\n  max(CASE WHEN variable='EFICIENCIA' THEN value END) AS \"Eficiencia (%)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Eficiencia (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "stat",
+      "title": "EQ03 - Reactor Biológico: valores del último ciclo (color: verde normal, naranja advertencia, rojo crítico)",
+      "description": "Última medición de cada sensor. Los colores salen de los umbrales del catálogo (warning y critical).",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 24,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT\n  max(CASE WHEN variable='PH' THEN value END) AS \"pH\",\n  max(CASE WHEN variable='OD' THEN value END) AS \"Oxígeno disuelto (mg/L)\",\n  max(CASE WHEN variable='TEMP' THEN value END) AS \"Temperatura (C)\",\n  max(CASE WHEN variable='CONDUCT' THEN value END) AS \"Conductividad (uS/cm)\",\n  max(CASE WHEN variable='NIVEL' THEN value END) AS \"Nivel (%)\"\nFROM raw_variables\nWHERE equipo='EQ03' AND time > now() - INTERVAL '1 day'\n  AND time = (SELECT max(time) FROM raw_variables WHERE equipo='EQ03' AND time > now() - INTERVAL '1 day')",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT\n  max(CASE WHEN variable='PH' THEN value END) AS \"pH\",\n  max(CASE WHEN variable='OD' THEN value END) AS \"Oxígeno disuelto (mg/L)\",\n  max(CASE WHEN variable='TEMP' THEN value END) AS \"Temperatura (C)\",\n  max(CASE WHEN variable='CONDUCT' THEN value END) AS \"Conductividad (uS/cm)\",\n  max(CASE WHEN variable='NIVEL' THEN value END) AS \"Nivel (%)\"\nFROM raw_variables\nWHERE equipo='EQ03' AND time > now() - INTERVAL '1 day'\n  AND time = (SELECT max(time) FROM raw_variables WHERE equipo='EQ03' AND time > now() - INTERVAL '1 day')",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pH"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: pH"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 6
+                    },
+                    {
+                      "color": "green",
+                      "value": 6.5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 8
+                    },
+                    {
+                      "color": "red",
+                      "value": 8.5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Oxígeno disuelto (mg/L)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: mg/L"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 1.5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 4
+                    },
+                    {
+                      "color": "red",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura (C)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: C"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 10
+                    },
+                    {
+                      "color": "green",
+                      "value": 15
+                    },
+                    {
+                      "color": "orange",
+                      "value": 30
+                    },
+                    {
+                      "color": "red",
+                      "value": 35
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Conductividad (uS/cm)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: uS/cm"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1800
+                    },
+                    {
+                      "color": "red",
+                      "value": 2200
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Nivel (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: %"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 20
+                    },
+                    {
+                      "color": "green",
+                      "value": 40
+                    },
+                    {
+                      "color": "orange",
+                      "value": 90
+                    },
+                    {
+                      "color": "red",
+                      "value": 95
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value_and_name",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 16,
+      "type": "timeseries",
+      "title": "Reactor: pH (normal 6,8 a 7,6)",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='PH' THEN value END) AS \"pH\",\n  8.5 AS \"Crítico alto\",\n  6.0 AS \"Crítico bajo\"\nFROM raw_variables\nWHERE equipo='EQ03' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='PH' THEN value END) AS \"pH\",\n  8.5 AS \"Crítico alto\",\n  6.0 AS \"Crítico bajo\"\nFROM raw_variables\nWHERE equipo='EQ03' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": "timeseries",
+      "title": "Reactor: oxígeno disuelto y temperatura",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 32,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='OD' THEN value END) AS \"Oxígeno disuelto (mg/L)\",\n  max(CASE WHEN variable='TEMP' THEN value END) AS \"Temperatura (C)\"\nFROM raw_variables\nWHERE equipo='EQ03' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='OD' THEN value END) AS \"Oxígeno disuelto (mg/L)\",\n  max(CASE WHEN variable='TEMP' THEN value END) AS \"Temperatura (C)\"\nFROM raw_variables\nWHERE equipo='EQ03' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperatura (C)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": "timeseries",
+      "title": "Reactor: conductividad y nivel",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 32,
+        "w": 8,
+        "h": 7
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN variable='CONDUCT' THEN value END) AS \"Conductividad (uS/cm)\",\n  max(CASE WHEN variable='NIVEL' THEN value END) AS \"Nivel (%)\"\nFROM raw_variables\nWHERE equipo='EQ03' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN variable='CONDUCT' THEN value END) AS \"Conductividad (uS/cm)\",\n  max(CASE WHEN variable='NIVEL' THEN value END) AS \"Nivel (%)\"\nFROM raw_variables\nWHERE equipo='EQ03' AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Nivel (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": "row",
+      "title": "Indicadores (KPIs) por hora, turno, día y semana",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 39,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 20,
+      "type": "timeseries",
+      "title": "Bomba EQ01 - indicadores [$periodo]",
+      "description": "Períodos CERRADOS. El selector 'Período de los indicadores' (arriba) elige hora, turno, día o semana. Cada punto es UN período (marca = inicio del período). Para turno/día/semana ampliar el rango de tiempo del tablero.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN kpi='eficiencia_energetica' THEN value END) AS \"Eficiencia energética (m3h/A)\",\n  max(CASE WHEN kpi='disponibilidad_bomba' THEN value END) AS \"Disponibilidad (%)\"\nFROM kpi_values\nWHERE equipo='EQ01' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN kpi='eficiencia_energetica' THEN value END) AS \"Eficiencia energética (m3h/A)\",\n  max(CASE WHEN kpi='disponibilidad_bomba' THEN value END) AS \"Disponibilidad (%)\"\nFROM kpi_values\nWHERE equipo='EQ01' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "points",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disponibilidad (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 21,
+      "type": "timeseries",
+      "title": "Filtro EQ02 - indicadores [$periodo]",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 40,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN kpi='eficiencia_filtracion' THEN value END) AS \"Eficiencia de filtración (%)\",\n  max(CASE WHEN kpi='presion_diferencial_media' THEN value END) AS \"Presión diferencial media (mbar)\"\nFROM kpi_values\nWHERE equipo='EQ02' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN kpi='eficiencia_filtracion' THEN value END) AS \"Eficiencia de filtración (%)\",\n  max(CASE WHEN kpi='presion_diferencial_media' THEN value END) AS \"Presión diferencial media (mbar)\"\nFROM kpi_values\nWHERE equipo='EQ02' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "points",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Presión diferencial media (mbar)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 22,
+      "type": "timeseries",
+      "title": "Reactor EQ03 - indicadores [$periodo]",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 40,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time,\n  max(CASE WHEN kpi='tiempo_fuera_rango_ph' THEN value END) AS \"Tiempo con pH fuera de rango (min)\",\n  max(CASE WHEN kpi='desviacion_ph' THEN value END) AS \"Desvío del pH\"\nFROM kpi_values\nWHERE equipo='EQ03' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time,\n  max(CASE WHEN kpi='tiempo_fuera_rango_ph' THEN value END) AS \"Tiempo con pH fuera de rango (min)\",\n  max(CASE WHEN kpi='desviacion_ph' THEN value END) AS \"Desvío del pH\"\nFROM kpi_values\nWHERE equipo='EQ03' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\nGROUP BY time\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "points",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Desvío del pH"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 23,
+      "type": "table",
+      "title": "Indicadores del período EN CURSO (parcial: se calcula con SQL sobre las mediciones)",
+      "description": "Una fila por período abierto. Hora = hora en punto; Turno = T1 06-14, T2 14-22, T3 22-06; Día = 00:00 a 24:00; Semana = lunes a domingo (hora Argentina). El valor cambia hasta que el período cierra.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 24,
+        "h": 6
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "WITH b AS (\n  SELECT 'hora' AS periodo, date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01T00:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '1 hour', now(), TIMESTAMP '1970-01-01T00:00:00Z')\n  UNION ALL\n  SELECT 'turno' AS periodo, date_bin(INTERVAL '8 hours', time, TIMESTAMP '1970-01-01T01:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '8 hours', now(), TIMESTAMP '1970-01-01T01:00:00Z')\n  UNION ALL\n  SELECT 'dia' AS periodo, date_bin(INTERVAL '1 day', time, TIMESTAMP '1970-01-01T03:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '1 day', now(), TIMESTAMP '1970-01-01T03:00:00Z')\n  UNION ALL\n  SELECT 'semana' AS periodo, date_bin(INTERVAL '7 days', time, TIMESTAMP '1970-01-05T03:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '7 days', now(), TIMESTAMP '1970-01-05T03:00:00Z')\n)\nSELECT periodo AS \"Período\", to_char(inicio - INTERVAL '3 hours', '%d/%m/%Y %H:%M') AS \"Inicio (hora Argentina)\",\n  round(avg(CASE WHEN equipo='EQ01' AND variable='CAUDAL' AND quality=2 THEN value END)\n        / nullif(avg(CASE WHEN equipo='EQ01' AND variable='CORRIENTE' AND quality=2 THEN value END), 0), 4) AS \"EQ01 Eficiencia energética (m3h/A)\",\n  round(100.0 * sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality=2 AND value >= 0.5 THEN 1 ELSE 0 END)\n        / nullif(sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality=2 THEN 1 ELSE 0 END), 0), 2) AS \"EQ01 Disponibilidad (%)\",\n  round((avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality=2 THEN value END)\n         - avg(CASE WHEN equipo='EQ02' AND variable='TURB_OUT' AND quality=2 THEN value END))\n        / nullif(avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality=2 THEN value END), 0) * 100, 3) AS \"EQ02 Eficiencia de filtración (%)\",\n  round(avg(CASE WHEN equipo='EQ02' AND variable='PRES_DIF' AND quality=2 THEN value END), 2) AS \"EQ02 Presión diferencial media (mbar)\",\n  round((CASE periodo WHEN 'hora' THEN 60 WHEN 'turno' THEN 480 WHEN 'dia' THEN 1440 ELSE 10080 END)\n        * sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 AND (value < 6.5 OR value > 8.0) THEN 1 ELSE 0 END)\n        / nullif(sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 THEN 1 ELSE 0 END), 0), 2) AS \"EQ03 Tiempo con pH fuera de rango (min)\",\n  round(stddev(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 THEN value END), 4) AS \"EQ03 Desvío del pH\"\nFROM b\nGROUP BY periodo, inicio\nORDER BY CASE periodo WHEN 'hora' THEN 1 WHEN 'turno' THEN 2 WHEN 'dia' THEN 3 ELSE 4 END",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "WITH b AS (\n  SELECT 'hora' AS periodo, date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01T00:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '1 hour', now(), TIMESTAMP '1970-01-01T00:00:00Z')\n  UNION ALL\n  SELECT 'turno' AS periodo, date_bin(INTERVAL '8 hours', time, TIMESTAMP '1970-01-01T01:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '8 hours', now(), TIMESTAMP '1970-01-01T01:00:00Z')\n  UNION ALL\n  SELECT 'dia' AS periodo, date_bin(INTERVAL '1 day', time, TIMESTAMP '1970-01-01T03:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '1 day', now(), TIMESTAMP '1970-01-01T03:00:00Z')\n  UNION ALL\n  SELECT 'semana' AS periodo, date_bin(INTERVAL '7 days', time, TIMESTAMP '1970-01-05T03:00:00Z') AS inicio, equipo, variable, value, quality\n  FROM raw_variables WHERE time >= date_bin(INTERVAL '7 days', now(), TIMESTAMP '1970-01-05T03:00:00Z')\n)\nSELECT periodo AS \"Período\", to_char(inicio - INTERVAL '3 hours', '%d/%m/%Y %H:%M') AS \"Inicio (hora Argentina)\",\n  round(avg(CASE WHEN equipo='EQ01' AND variable='CAUDAL' AND quality=2 THEN value END)\n        / nullif(avg(CASE WHEN equipo='EQ01' AND variable='CORRIENTE' AND quality=2 THEN value END), 0), 4) AS \"EQ01 Eficiencia energética (m3h/A)\",\n  round(100.0 * sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality=2 AND value >= 0.5 THEN 1 ELSE 0 END)\n        / nullif(sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality=2 THEN 1 ELSE 0 END), 0), 2) AS \"EQ01 Disponibilidad (%)\",\n  round((avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality=2 THEN value END)\n         - avg(CASE WHEN equipo='EQ02' AND variable='TURB_OUT' AND quality=2 THEN value END))\n        / nullif(avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality=2 THEN value END), 0) * 100, 3) AS \"EQ02 Eficiencia de filtración (%)\",\n  round(avg(CASE WHEN equipo='EQ02' AND variable='PRES_DIF' AND quality=2 THEN value END), 2) AS \"EQ02 Presión diferencial media (mbar)\",\n  round((CASE periodo WHEN 'hora' THEN 60 WHEN 'turno' THEN 480 WHEN 'dia' THEN 1440 ELSE 10080 END)\n        * sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 AND (value < 6.5 OR value > 8.0) THEN 1 ELSE 0 END)\n        / nullif(sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 THEN 1 ELSE 0 END), 0), 2) AS \"EQ03 Tiempo con pH fuera de rango (min)\",\n  round(stddev(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 THEN value END), 4) AS \"EQ03 Desvío del pH\"\nFROM b\nGROUP BY periodo, inicio\nORDER BY CASE periodo WHEN 'hora' THEN 1 WHEN 'turno' THEN 2 WHEN 'dia' THEN 3 ELSE 4 END",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      }
+    },
+    {
+      "id": 24,
+      "type": "table",
+      "title": "Indicadores del último período CERRADO (los guarda Node-RED al cerrar cada período)",
+      "description": "Cada período cerrado se guarda una sola vez en la base (measurement kpi_values), con la marca de tiempo del INICIO del período.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 54,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "WITH ult AS (\n  SELECT equipo, kpi, periodo, max(time) AS t FROM kpi_values WHERE cerrado = true GROUP BY equipo, kpi, periodo\n)\nSELECT k.equipo AS \"Equipo\", k.kpi AS \"Indicador\", max(k.unit) AS \"Unidad\",\n  max(CASE WHEN k.periodo='hora' THEN k.value END) AS \"Hora\",\n  max(CASE WHEN k.periodo='turno' THEN k.value END) AS \"Turno\",\n  max(CASE WHEN k.periodo='dia' THEN k.value END) AS \"Día\",\n  max(CASE WHEN k.periodo='semana' THEN k.value END) AS \"Semana\"\nFROM kpi_values k JOIN ult u ON k.equipo=u.equipo AND k.kpi=u.kpi AND k.periodo=u.periodo AND k.time=u.t\nWHERE k.cerrado = true\nGROUP BY k.equipo, k.kpi\nORDER BY k.equipo, k.kpi",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "WITH ult AS (\n  SELECT equipo, kpi, periodo, max(time) AS t FROM kpi_values WHERE cerrado = true GROUP BY equipo, kpi, periodo\n)\nSELECT k.equipo AS \"Equipo\", k.kpi AS \"Indicador\", max(k.unit) AS \"Unidad\",\n  max(CASE WHEN k.periodo='hora' THEN k.value END) AS \"Hora\",\n  max(CASE WHEN k.periodo='turno' THEN k.value END) AS \"Turno\",\n  max(CASE WHEN k.periodo='dia' THEN k.value END) AS \"Día\",\n  max(CASE WHEN k.periodo='semana' THEN k.value END) AS \"Semana\"\nFROM kpi_values k JOIN ult u ON k.equipo=u.equipo AND k.kpi=u.kpi AND k.periodo=u.periodo AND k.time=u.t\nWHERE k.cerrado = true\nGROUP BY k.equipo, k.kpi\nORDER BY k.equipo, k.kpi",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      }
+    },
+    {
+      "id": 25,
+      "type": "row",
+      "title": "Fallas de la bomba EQ01",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 62,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 26,
+      "type": "stat",
+      "title": "Fallas en el rango de tiempo elegido",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 63,
+        "w": 5,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT count(*) AS \"Fallas en el rango elegido\" FROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT count(*) AS \"Fallas en el rango elegido\" FROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 2,
+          "mappings": [],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "auto"
+      }
+    },
+    {
+      "id": 27,
+      "type": "barchart",
+      "title": "Fallas por hora",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 5,
+        "y": 63,
+        "w": 10,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01T00:00:00Z') AS time, count(*) AS \"Fallas\"\nFROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)\nGROUP BY 1\nORDER BY 1",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT date_bin(INTERVAL '1 hour', time, TIMESTAMP '1970-01-01T00:00:00Z') AS time, count(*) AS \"Fallas\"\nFROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)\nGROUP BY 1\nORDER BY 1",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          },
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "showValue": "auto",
+        "legend": {
+          "showLegend": false
+        }
+      }
+    },
+    {
+      "id": 28,
+      "type": "bargauge",
+      "title": "Fallas por motivo",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 15,
+        "y": 63,
+        "w": 9,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT motivo AS \"Motivo\", count(*) AS \"Fallas\" FROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)\nGROUP BY motivo\nORDER BY 2 DESC",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT motivo AS \"Motivo\", count(*) AS \"Fallas\" FROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)\nGROUP BY motivo\nORDER BY 2 DESC",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          },
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        }
+      }
+    },
+    {
+      "id": 29,
+      "type": "table",
+      "title": "Eventos (fallas, normalizaciones, alertas y fallas provocadas)",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 71,
+        "w": 24,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT to_char(time - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Hora (Argentina)\", event_type AS \"Evento\", severity AS \"Severidad\", equipo AS \"Equipo\",\n  motivo AS \"Motivo\", detalle AS \"Detalle\"\nFROM events WHERE $__timeFilter(time)\nORDER BY time DESC\nLIMIT 100",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT to_char(time - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Hora (Argentina)\", event_type AS \"Evento\", severity AS \"Severidad\", equipo AS \"Equipo\",\n  motivo AS \"Motivo\", detalle AS \"Detalle\"\nFROM events WHERE $__timeFilter(time)\nORDER BY time DESC\nLIMIT 100",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      }
+    },
+    {
+      "id": 30,
+      "type": "row",
+      "title": "Análisis (SQL): tendencia, anomalías y correlación",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 80,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 31,
+      "type": "timeseries",
+      "title": "Tendencia: vibración de la bomba con media móvil",
+      "description": "La media móvil (promedio de las últimas 10 muestras) suaviza el ruido y deja ver hacia dónde va la variable.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 81,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time, value AS \"Vibración (mm/s)\",\n  avg(value) OVER (ORDER BY time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS \"Media móvil (10 muestras)\"\nFROM raw_variables\nWHERE equipo='EQ01' AND variable='VIBRACION' AND quality IN (1,2) AND $__timeFilter(time)\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time, value AS \"Vibración (mm/s)\",\n  avg(value) OVER (ORDER BY time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS \"Media móvil (10 muestras)\"\nFROM raw_variables\nWHERE equipo='EQ01' AND variable='VIBRACION' AND quality IN (1,2) AND $__timeFilter(time)\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 32,
+      "type": "timeseries",
+      "title": "Tendencia: presión diferencial del filtro con media móvil",
+      "description": "En un filtro de arena, la presión diferencial sube a medida que el lecho se tapa.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 81,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT time, value AS \"Presión diferencial (mbar)\",\n  avg(value) OVER (ORDER BY time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS \"Media móvil (10 muestras)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND variable='PRES_DIF' AND quality IN (1,2) AND $__timeFilter(time)\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "SELECT time, value AS \"Presión diferencial (mbar)\",\n  avg(value) OVER (ORDER BY time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS \"Media móvil (10 muestras)\"\nFROM raw_variables\nWHERE equipo='EQ02' AND variable='PRES_DIF' AND quality IN (1,2) AND $__timeFilter(time)\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 33,
+      "type": "table",
+      "title": "Tendencia de todas las variables (pendiente en el rango elegido)",
+      "description": "Pendiente de la recta de ajuste (regresión lineal) por hora. Si el cambio relativo es menor al 2 % por hora se considera estable.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 81,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "WITH t AS (\n  SELECT equipo, variable, count(*) AS n, avg(value) AS media,\n         regr_slope(value, date_part('epoch', time)) * 3600 AS pendiente_h\n  FROM raw_variables\n  WHERE quality = 2 AND variable <> 'ESTADO' AND $__timeFilter(time)\n  GROUP BY equipo, variable\n)\nSELECT equipo AS \"Equipo\", variable AS \"Variable\", n AS \"Muestras\", round(media, 3) AS \"Media\",\n  round(pendiente_h, 4) AS \"Pendiente por hora\",\n  round(100 * pendiente_h / nullif(media, 0), 2) AS \"Cambio % por hora\",\n  CASE WHEN abs(100 * pendiente_h / nullif(media, 0)) < 2 THEN 'estable'\n       WHEN pendiente_h > 0 THEN 'ascendente' ELSE 'descendente' END AS \"Tendencia\"\nFROM t\nWHERE n >= 10\nORDER BY abs(100 * pendiente_h / nullif(media, 0)) DESC",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "WITH t AS (\n  SELECT equipo, variable, count(*) AS n, avg(value) AS media,\n         regr_slope(value, date_part('epoch', time)) * 3600 AS pendiente_h\n  FROM raw_variables\n  WHERE quality = 2 AND variable <> 'ESTADO' AND $__timeFilter(time)\n  GROUP BY equipo, variable\n)\nSELECT equipo AS \"Equipo\", variable AS \"Variable\", n AS \"Muestras\", round(media, 3) AS \"Media\",\n  round(pendiente_h, 4) AS \"Pendiente por hora\",\n  round(100 * pendiente_h / nullif(media, 0), 2) AS \"Cambio % por hora\",\n  CASE WHEN abs(100 * pendiente_h / nullif(media, 0)) < 2 THEN 'estable'\n       WHEN pendiente_h > 0 THEN 'ascendente' ELSE 'descendente' END AS \"Tendencia\"\nFROM t\nWHERE n >= 10\nORDER BY abs(100 * pendiente_h / nullif(media, 0)) DESC",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      }
+    },
+    {
+      "id": 34,
+      "type": "timeseries",
+      "title": "Anomalías: vibración con bandas de ±3 desvíos (ventana de 20 muestras)",
+      "description": "Cada valor se compara con la media y el desvío de las 20 muestras anteriores. Si se aleja más de 3 desvíos (|z| > 3) se marca como anomalía.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 89,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "WITH s AS (\n  SELECT time, value,\n         avg(value) OVER w AS mu, stddev(value) OVER w AS sd, count(value) OVER w AS n\n  FROM raw_variables\n  WHERE equipo='EQ01' AND variable='VIBRACION' AND quality IN (1,2) AND $__timeFilter(time)\n  WINDOW w AS (ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)\n)\nSELECT time, value AS \"Vibración (mm/s)\",\n  mu AS \"Media de la ventana\",\n  mu + 3 * sd AS \"Banda superior (+3σ)\",\n  mu - 3 * sd AS \"Banda inferior (-3σ)\",\n  CASE WHEN n >= 10 AND sd > 0 AND abs((value - mu) / sd) > 3 THEN value END AS \"Anomalía\"\nFROM s\nORDER BY time",
+          "rawQuery": true,
+          "resultFormat": "time_series",
+          "rawSql": "WITH s AS (\n  SELECT time, value,\n         avg(value) OVER w AS mu, stddev(value) OVER w AS sd, count(value) OVER w AS n\n  FROM raw_variables\n  WHERE equipo='EQ01' AND variable='VIBRACION' AND quality IN (1,2) AND $__timeFilter(time)\n  WINDOW w AS (ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)\n)\nSELECT time, value AS \"Vibración (mm/s)\",\n  mu AS \"Media de la ventana\",\n  mu + 3 * sd AS \"Banda superior (+3σ)\",\n  mu - 3 * sd AS \"Banda inferior (-3σ)\",\n  CASE WHEN n >= 10 AND sd > 0 AND abs((value - mu) / sd) > 3 THEN value END AS \"Anomalía\"\nFROM s\nORDER BY time",
+          "format": "time_series"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Anomalía"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "points"
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 10
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Banda.*"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "dash",
+                  "dash": [
+                    6,
+                    6
+                  ]
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 35,
+      "type": "table",
+      "title": "Anomalías detectadas (|z| > 3) en todas las variables",
+      "description": "",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 89,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "WITH s AS (\n  SELECT time, equipo, variable, value,\n         avg(value) OVER w AS mu, stddev(value) OVER w AS sd, count(value) OVER w AS n\n  FROM raw_variables\n  WHERE quality IN (1,2) AND variable <> 'ESTADO' AND $__timeFilter(time)\n  WINDOW w AS (PARTITION BY equipo, variable ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)\n)\nSELECT to_char(time - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Hora (Argentina)\", equipo AS \"Equipo\", variable AS \"Variable\",\n  value AS \"Valor\", round(mu, 3) AS \"Media de la ventana\", round((value - mu) / sd, 2) AS \"Z-score\"\nFROM s\nWHERE n >= 10 AND sd > 0 AND abs((value - mu) / sd) > 3\nORDER BY time DESC\nLIMIT 100",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "WITH s AS (\n  SELECT time, equipo, variable, value,\n         avg(value) OVER w AS mu, stddev(value) OVER w AS sd, count(value) OVER w AS n\n  FROM raw_variables\n  WHERE quality IN (1,2) AND variable <> 'ESTADO' AND $__timeFilter(time)\n  WINDOW w AS (PARTITION BY equipo, variable ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)\n)\nSELECT to_char(time - INTERVAL '3 hours', '%d/%m/%Y %H:%M:%S') AS \"Hora (Argentina)\", equipo AS \"Equipo\", variable AS \"Variable\",\n  value AS \"Valor\", round(mu, 3) AS \"Media de la ventana\", round((value - mu) / sd, 2) AS \"Z-score\"\nFROM s\nWHERE n >= 10 AND sd > 0 AND abs((value - mu) / sd) > 3\nORDER BY time DESC\nLIMIT 100",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      }
+    },
+    {
+      "id": 36,
+      "type": "table",
+      "title": "Correlación entre variables (r de Pearson)",
+      "description": "r va de -1 a 1. Cerca de 1: suben juntas; cerca de -1: una sube cuando la otra baja; cerca de 0: no hay relación lineal.",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 98,
+        "w": 14,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "WITH b AS (SELECT time, max(CASE WHEN variable='CAUDAL' THEN value END) AS caudal, max(CASE WHEN variable='CORRIENTE' THEN value END) AS corriente, max(CASE WHEN variable='PRESION' THEN value END) AS presion, max(CASE WHEN variable='VIBRACION' THEN value END) AS vibracion FROM raw_variables WHERE equipo='EQ01' AND quality IN (1,2) AND $__timeFilter(time) GROUP BY time),\nf AS (SELECT time, max(CASE WHEN variable='TURB_IN' THEN value END) AS turb_in, max(CASE WHEN variable='TURB_OUT' THEN value END) AS turb_out, max(CASE WHEN variable='PRES_DIF' THEN value END) AS pres_dif, max(CASE WHEN variable='EFICIENCIA' THEN value END) AS eficiencia FROM raw_variables WHERE equipo='EQ02' AND quality IN (1,2) AND $__timeFilter(time) GROUP BY time),\nr AS (SELECT time, max(CASE WHEN variable='PH' THEN value END) AS ph, max(CASE WHEN variable='OD' THEN value END) AS od, max(CASE WHEN variable='TEMP' THEN value END) AS temp FROM raw_variables WHERE equipo='EQ03' AND quality IN (1,2) AND $__timeFilter(time) GROUP BY time),\nc AS (\nSELECT 'EQ01' AS equipo, 'Caudal vs Corriente' AS par, corr(caudal, corriente) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ01' AS equipo, 'Caudal vs Vibración' AS par, corr(caudal, vibracion) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ01' AS equipo, 'Vibración vs Corriente' AS par, corr(vibracion, corriente) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ01' AS equipo, 'Caudal vs Presión' AS par, corr(caudal, presion) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ02' AS equipo, 'Turbidez entrada vs salida' AS par, corr(turb_in, turb_out) AS r, count(*) AS n FROM f\nUNION ALL\nSELECT 'EQ02' AS equipo, 'Presión diferencial vs Eficiencia' AS par, corr(pres_dif, eficiencia) AS r, count(*) AS n FROM f\nUNION ALL\nSELECT 'EQ03' AS equipo, 'pH vs Oxígeno disuelto' AS par, corr(ph, od) AS r, count(*) AS n FROM r\nUNION ALL\nSELECT 'EQ03' AS equipo, 'Temperatura vs Oxígeno disuelto' AS par, corr(temp, od) AS r, count(*) AS n FROM r\n)\nSELECT equipo AS \"Equipo\", par AS \"Par de variables\", round(r, 3) AS \"Correlación (r)\", n AS \"Muestras\",\n  CASE WHEN r IS NULL THEN 'sin datos'\n       WHEN abs(r) >= 0.7 THEN 'fuerte' WHEN abs(r) >= 0.4 THEN 'moderada' ELSE 'débil o nula' END AS \"Intensidad\",\n  CASE WHEN r IS NULL THEN '' WHEN r > 0 THEN 'positiva (suben juntas)' ELSE 'negativa (una sube, la otra baja)' END AS \"Sentido\"\nFROM c\nORDER BY equipo, par",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "WITH b AS (SELECT time, max(CASE WHEN variable='CAUDAL' THEN value END) AS caudal, max(CASE WHEN variable='CORRIENTE' THEN value END) AS corriente, max(CASE WHEN variable='PRESION' THEN value END) AS presion, max(CASE WHEN variable='VIBRACION' THEN value END) AS vibracion FROM raw_variables WHERE equipo='EQ01' AND quality IN (1,2) AND $__timeFilter(time) GROUP BY time),\nf AS (SELECT time, max(CASE WHEN variable='TURB_IN' THEN value END) AS turb_in, max(CASE WHEN variable='TURB_OUT' THEN value END) AS turb_out, max(CASE WHEN variable='PRES_DIF' THEN value END) AS pres_dif, max(CASE WHEN variable='EFICIENCIA' THEN value END) AS eficiencia FROM raw_variables WHERE equipo='EQ02' AND quality IN (1,2) AND $__timeFilter(time) GROUP BY time),\nr AS (SELECT time, max(CASE WHEN variable='PH' THEN value END) AS ph, max(CASE WHEN variable='OD' THEN value END) AS od, max(CASE WHEN variable='TEMP' THEN value END) AS temp FROM raw_variables WHERE equipo='EQ03' AND quality IN (1,2) AND $__timeFilter(time) GROUP BY time),\nc AS (\nSELECT 'EQ01' AS equipo, 'Caudal vs Corriente' AS par, corr(caudal, corriente) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ01' AS equipo, 'Caudal vs Vibración' AS par, corr(caudal, vibracion) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ01' AS equipo, 'Vibración vs Corriente' AS par, corr(vibracion, corriente) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ01' AS equipo, 'Caudal vs Presión' AS par, corr(caudal, presion) AS r, count(*) AS n FROM b\nUNION ALL\nSELECT 'EQ02' AS equipo, 'Turbidez entrada vs salida' AS par, corr(turb_in, turb_out) AS r, count(*) AS n FROM f\nUNION ALL\nSELECT 'EQ02' AS equipo, 'Presión diferencial vs Eficiencia' AS par, corr(pres_dif, eficiencia) AS r, count(*) AS n FROM f\nUNION ALL\nSELECT 'EQ03' AS equipo, 'pH vs Oxígeno disuelto' AS par, corr(ph, od) AS r, count(*) AS n FROM r\nUNION ALL\nSELECT 'EQ03' AS equipo, 'Temperatura vs Oxígeno disuelto' AS par, corr(temp, od) AS r, count(*) AS n FROM r\n)\nSELECT equipo AS \"Equipo\", par AS \"Par de variables\", round(r, 3) AS \"Correlación (r)\", n AS \"Muestras\",\n  CASE WHEN r IS NULL THEN 'sin datos'\n       WHEN abs(r) >= 0.7 THEN 'fuerte' WHEN abs(r) >= 0.4 THEN 'moderada' ELSE 'débil o nula' END AS \"Intensidad\",\n  CASE WHEN r IS NULL THEN '' WHEN r > 0 THEN 'positiva (suben juntas)' ELSE 'negativa (una sube, la otra baja)' END AS \"Sentido\"\nFROM c\nORDER BY equipo, par",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      }
+    },
+    {
+      "id": 37,
+      "type": "xychart",
+      "title": "Dispersión: caudal vs corriente de la bomba",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fg3ly9z1iz668b"
+      },
+      "gridPos": {
+        "x": 14,
+        "y": 98,
+        "w": 10,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fg3ly9z1iz668b"
+          },
+          "refId": "A",
+          "query": "SELECT max(CASE WHEN variable='CAUDAL' THEN value END) AS \"Caudal (m3/h)\",\n       max(CASE WHEN variable='CORRIENTE' THEN value END) AS \"Corriente (A)\"\nFROM raw_variables\nWHERE equipo='EQ01' AND quality IN (1,2) AND $__timeFilter(time)\nGROUP BY time",
+          "rawQuery": true,
+          "resultFormat": "table",
+          "rawSql": "SELECT max(CASE WHEN variable='CAUDAL' THEN value END) AS \"Caudal (m3/h)\",\n       max(CASE WHEN variable='CORRIENTE' THEN value END) AS \"Corriente (A)\"\nFROM raw_variables\nWHERE equipo='EQ01' AND quality IN (1,2) AND $__timeFilter(time)\nGROUP BY time",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "show": "points",
+            "pointSize": {
+              "fixed": 6
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "mapping": "auto",
+        "series": [
+          {}
+        ],
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "description": "Cada punto es una medición. Si forman una línea inclinada, caudal y corriente están correlacionados."
+    }
+  ]
+}
