@@ -29,6 +29,10 @@ Thumbs.db
 # --- Node-RED (datos locales de runtime) ---
 nodered/.node-red-data/
 *_cred.json
+nodered/userdir/node_modules/
+nodered/userdir/context/
+nodered/userdir/.sessions.json
+nodered/userdir/lib/
 .config.*.json
 
 # --- El .gitignore de la raiz del repo solo deja pasar md/txt/csv/json/xlsx:
@@ -38,3 +42,5 @@ nodered/.node-red-data/
 !*.yml
 !*.yaml
 !Dockerfile
+!*.js
+!*.sh

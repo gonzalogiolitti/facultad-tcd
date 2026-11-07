@@ -1,0 +1,11 @@
+{
+  "name": "aquamonitor-nodered",
+  "description": "Node-RED local de AquaMonitor (stack de la catedra: Node-RED + InfluxDB Cloud + Grafana Cloud + mail)",
+  "version": "1.0.0",
+  "private": true,
+  "engines": { "node": ">=22.9" },
+  "dependencies": {
+    "node-red": "5.0.9",
+    "node-red-node-email": "5.2.5"
+  }
+}

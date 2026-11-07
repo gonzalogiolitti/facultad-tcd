@@ -1,0 +1,157 @@
+[
+  {
+    "id": "f1_prueba",
+    "type": "tab",
+    "label": "00 Prueba de conexion (Fase 1)",
+    "disabled": false,
+    "info": "Verifica la escritura en InfluxDB y el envio de mail. Escribe en el measurement 'prueba_conexion', NO en raw_variables."
+  },
+  {
+    "id": "inj_influx",
+    "type": "inject",
+    "z": "f1_prueba",
+    "name": "Escribir dato de prueba en InfluxDB",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 210,
+    "y": 80,
+    "wires": [
+      [
+        "fn_influx"
+      ]
+    ]
+  },
+  {
+    "id": "fn_influx",
+    "type": "function",
+    "z": "f1_prueba",
+    "name": "Armar linea de escritura",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "func": "// El token se lee del entorno (.env) y viaja SOLO en el encabezado: no queda en ningun archivo.\nconst url = env.get('INFLUX_URL'), org = env.get('INFLUX_ORG'),\n      bucket = env.get('INFLUX_BUCKET'), token = env.get('INFLUX_TOKEN');\nif (!url || !org || !bucket || !token) {\n    node.error('Faltan variables INFLUX_* en el entorno');\n    return null;\n}\nconst ahora = Date.now();   // milisegundos\nmsg.method = 'POST';\nmsg.url = url + '/api/v2/write?org=' + encodeURIComponent(org) +\n          '&bucket=' + encodeURIComponent(bucket) + '&precision=ms';\nmsg.headers = { 'Authorization': 'Token ' + token, 'Content-Type': 'text/plain; charset=utf-8' };\nmsg.payload = 'prueba_conexion,origen=nodered valor=1.5,contador=1i ' + ahora;\nmsg.hora_envio = new Date(ahora).toISOString();\nreturn msg;\n",
+    "x": 470,
+    "y": 80,
+    "wires": [
+      [
+        "http_influx"
+      ]
+    ]
+  },
+  {
+    "id": "http_influx",
+    "type": "http request",
+    "z": "f1_prueba",
+    "name": "POST InfluxDB /api/v2/write",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 740,
+    "y": 80,
+    "wires": [
+      [
+        "dbg_influx"
+      ]
+    ]
+  },
+  {
+    "id": "dbg_influx",
+    "type": "debug",
+    "z": "f1_prueba",
+    "name": "Respuesta InfluxDB (204 = escrito)",
+    "active": true,
+    "tosidebar": true,
+    "console": true,
+    "tostatus": true,
+    "complete": "statusCode",
+    "targetType": "msg",
+    "statusVal": "statusCode",
+    "statusType": "auto",
+    "x": 1010,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "inj_mail",
+    "type": "inject",
+    "z": "f1_prueba",
+    "name": "Mandar mail [PRUEBA]",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 170,
+    "y": 200,
+    "wires": [
+      [
+        "fn_mail"
+      ]
+    ]
+  },
+  {
+    "id": "fn_mail",
+    "type": "function",
+    "z": "f1_prueba",
+    "name": "Armar mail de prueba",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "func": "const to = env.get('ALERT_MAIL_TO');\nif (!to) { node.error('Falta ALERT_MAIL_TO'); return null; }\nmsg.to = to;\nmsg.topic = '[PRUEBA] AquaMonitor - prueba de conexion de mail';\nmsg.payload = '[PRUEBA] Este mail confirma que Node-RED puede enviar avisos. No hay ninguna falla real.\\nHora: ' +\n    new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });\nreturn msg;\n",
+    "x": 420,
+    "y": 200,
+    "wires": [
+      [
+        "mail_node"
+      ]
+    ]
+  },
+  {
+    "id": "mail_node",
+    "type": "e-mail",
+    "z": "f1_prueba",
+    "server": "${SMTP_HOST}",
+    "port": "${SMTP_PORT}",
+    "authtype": "BASIC",
+    "saslformat": true,
+    "token": "oauth2Response.access_token",
+    "secure": false,
+    "tls": true,
+    "name": "",
+    "dname": "Mail (STARTTLS, usa SMTP_* del entorno)",
+    "x": 690,
+    "y": 200,
+    "wires": []
+  }
+]
