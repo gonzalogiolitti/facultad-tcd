@@ -1,5 +1,9 @@
 # Planificación del TPI — AquaMonitor
 
+> **Stack vigente (el de la cátedra):** Node-RED (npm, local) → InfluxDB Cloud (SQL) → Grafana Cloud, con avisos por mail.
+> El stack del primer diseño (simulador de Python, MQTT/EMQX, QuestDB, Docker, Telegram) quedó como **respaldo**, sin borrar:
+> ver [`respaldo_stack_anterior.md`](respaldo_stack_anterior.md). Donde este documento nombra esas piezas, se indica que son respaldo.
+
 **Materia:** Ciencia de Datos en Sistemas Industriales
 **Trabajo Práctico Integrador** — sistema IIoT end-to-end para monitoreo de una
 planta de tratamiento de aguas industriales bajo norma ISA-95.
@@ -10,8 +14,8 @@ planta de tratamiento de aguas industriales bajo norma ISA-95.
 
 Diseñar e implementar una cadena completa de datos industrial:
 
-> instrumentación (simulada) → MQTT → orquestación → base de datos de series
-> temporales → analítica → visualización → alertas y reportes.
+> instrumentación (simulada por Node-RED) → orquestación (Node-RED) → base de datos de series
+> temporales (InfluxDB Cloud) → analítica (SQL) → visualización (Grafana Cloud) → alertas y reportes por mail.
 
 demostrando la aplicación de la pirámide de automatización ISA-95 y de técnicas
 de análisis de datos (KPIs, detección de anomalías, tendencia, correlación).
@@ -19,36 +23,33 @@ de análisis de datos (KPIs, detección de anomalías, tendencia, correlación).
 ## 2. Arquitectura
 
 ```
-┌───────────────┐   MQTT/TLS    ┌───────────────┐   ILP/HTTP   ┌───────────────┐
-│  Simulador    │──────────────▶│   EMQX Cloud  │─────────────▶│   Node-RED    │
-│  Python       │  AQM/PTEF/#   │   (broker)    │              │ (4 flows)     │
-│  3 equipos    │               └───────────────┘              └──────┬────────┘
-│  15 variables │                                                     │ ILP/SQL
-└───────────────┘                                                     ▼
-        ▲                                                     ┌───────────────┐
-        │ inyección de anomalías                              │  QuestDB      │
-        │ (VIB_HIGH, PH_SPIKE, ...)                           │  Cloud        │
-        │                                                     │  raw_variables│
-┌───────────────┐        SQL (pg wire)        ┌───────────────┤  kpi_values   │
-│  Análisis     │◀───────────────────────────▶│  Grafana Cloud│  events       │
-│  Python       │   Z-score, tendencia,       │  3 dashboards │               │
-│  (batch)      │   correlación               └───────────────┴───────────────┘
-└───────────────┘
+ Node-RED (local)                                              nube
+ ┌───────────────────────────────────────────┐
+ │ 01 Generador (3 equipos, 15 variables)    │       ┌───────────────────┐        ┌────────────────┐
+ │ 02 Indicadores (6 KPIs x 4 períodos)      │ HTTPS │ InfluxDB Cloud    │  SQL   │ Grafana Cloud  │
+ │ 03 Alerta bomba EQ01   ── mail ──▶ Gmail  │──────▶│ raw_variables     │◀───────│ tablero (5 s)  │
+ │ 04 Alertas EQ02/EQ03   ── mail ──▶ Gmail  │escribe│ kpi_values        │consulta└────────────────┘
+ │ 05 Reporte diario      ── mail ──▶ Gmail  │       │ events            │
+ └───────────────────────────────────────────┘       └───────────────────┘
 ```
+
+Node-RED genera los datos simulados, calcula los indicadores, detecta las fallas y escribe en InfluxDB (no lee de la base).
+Grafana consulta con SQL. **Respaldo del primer diseño:** simulador de Python → MQTT/TLS (EMQX) → Node-RED → QuestDB → Grafana, con análisis en Python.
 
 ## 3. Alcance por componente
 
 | Componente | Entregable | Estado |
 |---|---|---|
-| Estructura del repo | Árbol de carpetas + archivos base | ✔ |
-| Simulador | `simulador/` — 3 modelos, inyector, `simulator.py` (MQTT/TLS) | ✔ |
-| Esquema QuestDB | `questdb/schema.sql` (3 tablas, WAL, particionado DAY) | ✔ |
-| Queries analíticas | `questdb/queries/` — 6 archivos SQL comentados | ✔ |
-| Node-RED | `nodered/flows/` — 4 flows + `flows.json` combinado | ✔ |
-| Análisis Python | `analisis/` — anomalías, tendencia, correlación | ✔ |
-| Grafana | `grafana/dashboards/` — 3 dashboards JSON | ✔ |
-| Documentación | `docs/` + `README.md` + `.env.example` | ✔ |
-| Presentación | `presentacion/README.md` — guion de defensa | ✔ |
+| Generador de datos | `nodered/` — flow 01 (3 equipos, 15 variables, 5 fallas provocables, modo normal 120 s y demo 15 s) | ✔ |
+| Catálogo único de variables y umbrales | `nodered/userdir/aqm/catalogo.js` | ✔ |
+| Indicadores | flow 02 — 6 KPIs en hora, turno, día y semana | ✔ |
+| Avisos por mail | flows 03, 04 y 05 — bomba EQ01, EQ02/EQ03 y reporte diario | ✔ |
+| Base de datos | InfluxDB Cloud: `raw_variables`, `kpi_values`, `events` | ✔ |
+| Análisis | SQL en Grafana: tendencia, anomalías (Z-score), correlación | ✔ |
+| Tablero | `grafana/aquamonitor_dashboard.json` | ✔ (consultas probadas; importación sin probar) |
+| Documentación | `README.md`, `docs/`, `PROGRESO.md` | ✔ |
+| Presentación | `presentacion/README.md` — guion y checklist | ✔ |
+| *(respaldo)* Simulador, QuestDB, análisis en Python, Docker | `simulador/`, `questdb/`, `analisis/`, `docker-compose.yml` | conservado |
 
 ## 4. Equipos y variables (resumen)
 
@@ -89,42 +90,50 @@ Los otros períodos también se calculan en hora Argentina: la **hora** es en pu
 
 ## 6. Técnicas de análisis
 
-1. **Detección de anomalías** — Z-score con ventana deslizante de 20 puntos
-   (umbral 3σ) y Bandas de Bollinger (2σ). Ver
-   [`metodologia_anomalias.md`](metodologia_anomalias.md).
-2. **Tendencia** — regresión lineal (`numpy.polyfit`, grado 1) sobre 24 h para
-   vibración EQ01 y presión diferencial EQ02, con proyección a 24 h.
-3. **Correlación** — matriz de Pearson entre variables re-muestreadas a 5 min;
-   pares clave: caudal↔corriente, pH↔OD, presión diferencial↔eficiencia.
+Se resuelven con **consultas SQL en Grafana** (ver [`metodologia_anomalias.md`](metodologia_anomalias.md)):
 
-## 7. Anomalías inyectables (demo)
+1. **Detección de anomalías** — Z-score con ventana deslizante de 20 muestras previas (umbral 3σ) y bandas de ±3σ sobre la vibración.
+2. **Tendencia** — media móvil de 10 muestras y pendiente de una regresión lineal (`regr_slope`) por hora.
+3. **Correlación** — `corr` (r de Pearson) entre pares de variables; pares clave: caudal↔corriente, caudal↔vibración,
+   pH↔OD, presión diferencial↔eficiencia.
+
+*(Respaldo: la versión en Python con Bollinger, `numpy.polyfit` y matriz de correlación está en `analisis/`.)*
+
+## 7. Fallas que se pueden provocar (demo)
+
+Botones de la pestaña *01 Generador de datos* de Node-RED:
 
 | Nombre | Equipo | Efecto | Duración por defecto |
 |---|---|---|---|
-| `VIB_HIGH` | EQ01 | Vibración crítica creciente (>7.1 mm/s) | 15 ciclos |
-| `CAUDAL_DROP` | EQ01 | Caída brusca de caudal / cavitación | 10 ciclos |
-| `PH_SPIKE` | EQ03 | Excursión de pH fuera de rango | 8 ciclos |
-| `FILTER_SAT` | EQ02 | Colmatación acelerada del filtro | 20 ciclos |
+| `VIB_HIGH` | EQ01 | Vibración crítica creciente (> 7,1 mm/s) | 15 mediciones |
+| `CAUDAL_DROP` | EQ01 | Caída brusca de caudal / cavitación (a veces la protección para la bomba) | 10 mediciones |
+| `PARADA_BOMBA` | EQ01 | Parada imprevista: `ESTADO = 0` y las demás variables de la bomba a ~0 | 8 mediciones |
+| `PH_SPIKE` | EQ03 | Excursión de pH fuera de rango | 8 mediciones |
+| `FILTER_SAT` | EQ02 | Colmatación acelerada del filtro | 20 mediciones |
 
-## 8. Cronograma sugerido de implementación
+## 8. Cronograma de implementación
 
-| Fase | Tareas | Duración |
+| Fase | Tareas | Estado |
 |---|---|---|
-| 1 | Repo, `config.py`, modelos, simulador en `--dry-run` | 1 día |
-| 2 | Alta de EMQX Cloud + QuestDB Cloud, `schema.sql`, publicación MQTT real | 1 día |
-| 3 | Import de flows Node-RED, ingesta a `raw_variables`, verificación | 1 día |
-| 4 | Queries de KPIs, flow 02, tabla `kpi_values` | 1 día |
-| 5 | Flow 03 (alertas + email) y flow 04 (reporte diario) | 1 día |
-| 6 | Scripts de análisis Python, tabla `events` | 1 día |
-| 7 | Datasource + 3 dashboards Grafana, ajuste de umbrales | 1 día |
-| 8 | Documentación final y ensayo de presentación | 1 día |
+| 0 | Auditoría del diseño anterior, plan y esquema de datos de InfluxDB | hecho |
+| 1 | Entorno: Node-RED con npm, escritura en InfluxDB, mail de prueba | hecho |
+| 2 | Generador de datos en Node-RED (15 variables, fallas provocables, modos normal/demo) | hecho |
+| 3 | Indicadores (6 KPIs x 4 períodos) | hecho |
+| 4 | Avisos por mail y registro de eventos | hecho |
+| 5 | Análisis en SQL | hecho |
+| 6 | Tablero de Grafana Cloud | consultas probadas; importación a cargo del usuario |
+| 7 | Documentación, prueba desde cero y guía de migración | hecho |
+
+El detalle y la evidencia de cada fase están en [`PROGRESO.md`](../PROGRESO.md).
 
 ## 9. Riesgos y mitigaciones
 
 | Riesgo | Mitigación |
 |---|---|
-| Límites del free tier (mensajes/almacenamiento) | Intervalo de 120 s, retención corta, particionado por día |
-| Credenciales expuestas | Todo por `.env` + `.gitignore`; `.env.example` sin secretos |
-| Diferencias de dialecto SQL en QuestDB | Uso de `SAMPLE BY`, `ALIGN TO CALENDAR`, funciones de ventana probadas |
-| Node-RED sin nodo email | `node-red-node-email` documentado como dependencia a instalar |
-| Falsos positivos de anomalías | Umbral 3σ + severidad escalonada + complemento con tendencia |
+| Límites del plan gratuito de InfluxDB / Grafana (escritura, consulta, retención) | Una medición cada 120 s; los indicadores se escriben una vez por período; consultas acotadas |
+| Credenciales expuestas | Todo por `.env` + `.gitignore`; `.env.example` sin secretos; guía de rotación en `docs/migracion_otra_pc.md` |
+| InfluxDB puede devolver una versión vieja de una fila reescrita | Cada indicador se escribe **una sola vez**, al cerrar el período; el período en curso se calcula por SQL |
+| Gmail puede bloquear la cuenta si se mandan muchos mails | Anti-spam (un mail por falla, cooldown por equipo), interruptor para silenciar, y pocos mails en pruebas |
+| La PC se suspende y el historial queda con huecos | Dejar la PC encendida; la corrida continua está pensada para eso |
+| Dos computadoras generando datos a la vez | Procedimiento de migración: detener una antes de arrancar la otra |
+| Falsos positivos de anomalías | Umbral 3σ sobre ventana de 20 muestras, más la media móvil y la tendencia como contexto |

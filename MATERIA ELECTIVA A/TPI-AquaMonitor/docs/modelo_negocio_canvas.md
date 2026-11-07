@@ -17,8 +17,8 @@ plantas de tratamiento de aguas industriales, basada en la norma ISA-95.
   ambientales.
 - **KPIs operativos automáticos** (eficiencia energética, eficiencia de
   filtración, tiempo fuera de rango de pH) por hora / turno / día / semana.
-- **Despliegue en días, no meses**: arquitectura estándar (MQTT + Node-RED +
-  QuestDB + Grafana) sobre free/low tiers, escalable a producción.
+- **Despliegue en días, no meses**: arquitectura estándar (Node-RED +
+  InfluxDB Cloud + Grafana Cloud, con avisos por mail) sobre free/low tiers, escalable a producción.
 
 ## 2. Segmentos de clientes
 
@@ -61,7 +61,7 @@ plantas de tratamiento de aguas industriales, basada en la norma ISA-95.
 
 ## 6. Recursos clave
 
-- Plataforma cloud multi-tenant (broker MQTT gestionado, QuestDB, Grafana).
+- Plataforma cloud multi-tenant (InfluxDB Cloud, Grafana Cloud; en un despliegue real, broker MQTT gestionado para los equipos de campo).
 - Biblioteca de modelos analíticos y de umbrales por tipo de equipo.
 - Equipo de ingeniería de datos + especialistas en tratamiento de aguas.
 - Marca, documentación y catálogo de conectores/flows.

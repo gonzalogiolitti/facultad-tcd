@@ -33,6 +33,8 @@ nodered/userdir/node_modules/
 nodered/userdir/context/
 nodered/userdir/.sessions.json
 nodered/userdir/lib/
+nodered/userdir/.nodered.pid
+nodered/userdir/nodered.log
 .config.*.json
 
 # --- El .gitignore de la raiz del repo solo deja pasar md/txt/csv/json/xlsx:
@@ -44,3 +46,4 @@ nodered/userdir/lib/
 !Dockerfile
 !*.js
 !*.sh
+!*.ps1

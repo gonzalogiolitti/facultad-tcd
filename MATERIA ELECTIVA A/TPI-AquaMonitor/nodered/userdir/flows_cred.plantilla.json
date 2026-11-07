@@ -1,0 +1,6 @@
+{
+  "mail_node": {
+    "userid": "${SMTP_USER}",
+    "password": "${SMTP_PASSWORD}"
+  }
+}

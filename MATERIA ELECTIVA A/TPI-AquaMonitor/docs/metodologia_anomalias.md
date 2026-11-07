@@ -1,10 +1,35 @@
 # Metodología de detección de anomalías — TPI-AquaMonitor
 
-Este documento describe los dos métodos estadísticos usados para detectar
-comportamientos atípicos en las series de proceso: **Z-score con ventana
-deslizante** y **Bandas de Bollinger**. Ambos están implementados en
-[`analisis/anomaly_detection.py`](../analisis/anomaly_detection.py) y su versión
-SQL en [`questdb/queries/anomaly_detection.sql`](../questdb/queries/anomaly_detection.sql).
+Este documento describe los métodos de análisis del TPI: **tendencia**, **detección de anomalías** (Z-score con ventana
+deslizante) y **correlación**.
+
+> **Stack vigente:** los tres métodos se resuelven con **consultas SQL en InfluxDB, dentro de los paneles de Grafana**
+> (sección "Análisis" del tablero; las consultas están en [`herramientas/construir_dashboard.py`](../herramientas/construir_dashboard.py)).
+> La versión en Python (Z-score y Bandas de Bollinger en [`analisis/anomaly_detection.py`](../analisis/anomaly_detection.py)) y la de QuestDB
+> ([`questdb/queries/anomaly_detection.sql`](../questdb/queries/anomaly_detection.sql)) quedaron como **respaldo**.
+
+## 0. Los tres métodos explicados simple (stack vigente)
+
+**Tendencia: "¿hacia dónde va la variable?"**
+- *Media móvil*: en cada punto se promedian las últimas 10 muestras. El promedio "alisa" el ruido y deja ver la dirección.
+- *Pendiente*: se ajusta una recta a los puntos del rango elegido (regresión lineal). Si la pendiente es positiva sube, si es negativa baja.
+  Se la expresa como "cambio por hora" y, si es menor al 2 % de la media por hora, se la considera *estable*.
+  Ejemplo: en el filtro, la presión diferencial sube a medida que el lecho se tapa; la pendiente positiva avisa que se acerca el momento de retrolavar.
+- En SQL: `avg(value) OVER (ORDER BY time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW)` y `regr_slope(value, date_part('epoch', time))`.
+
+**Anomalías (Z-score): "¿este valor es raro comparado con lo que venía pasando?"**
+- Para cada valor se toma la media y el desvío de las **20 muestras anteriores**. El *z-score* dice a cuántos desvíos de esa media está el valor.
+- Si |z| > 3 se marca como anomalía (en una distribución normal, solo ~0,3 % de los valores cae tan lejos por azar).
+- Las bandas del gráfico son media ± 3 desvíos. Un corte de la bomba da z de −50 o más; un pH forzado, z de −4.
+- Limitación: con una ventana corta puede marcar de vez en cuando un punto normal (falsos positivos); por eso se exigen al menos 10 muestras previas.
+- En SQL: `avg(value) OVER w`, `stddev(value) OVER w` con `WINDOW w AS (PARTITION BY equipo, variable ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)`.
+
+**Correlación: "¿dos variables se mueven juntas?"**
+- El *r de Pearson* va de −1 a 1: cerca de 1, suben y bajan juntas; cerca de −1, una sube cuando la otra baja; cerca de 0, no hay relación lineal.
+- En la bomba, caudal y corriente dan r ≈ 0,99 (a más caudal, más corriente: la curva de la bomba). Un r que de golpe se desarma sería una señal de problema.
+- Ojo: correlación no es causalidad, y las fallas (la bomba parada baja todo a la vez) inflan la correlación.
+- En SQL: `corr(caudal, corriente)` sobre una tabla con una columna por variable (se arma con `max(CASE WHEN variable = ...)` agrupando por instante).
+
 
 ---
 

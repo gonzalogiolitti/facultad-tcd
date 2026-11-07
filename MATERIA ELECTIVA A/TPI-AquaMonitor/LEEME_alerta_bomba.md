@@ -1,3 +1,8 @@
+> **REEMPLAZADO (queda como respaldo).** Esta alerta (mail + Telegram + QuestDB) se rehízo en el stack de la cátedra:
+> el flow vigente es la pestaña *03 Alerta bomba EQ01* de Node-RED, **solo con mail** (sin Telegram) y guardando los eventos en el
+> measurement `events` de InfluxDB. Ver el [README](README.md), sección 10. Este documento y `entrega_05_alerta_bomba.json`
+> describen la versión anterior.
+
 # Alerta de bomba EQ01 (Node-RED -> mail / Telegram -> Grafana)
 
 ## Qué hace

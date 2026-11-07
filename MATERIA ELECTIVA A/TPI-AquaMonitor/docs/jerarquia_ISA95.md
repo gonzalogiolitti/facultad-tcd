@@ -1,5 +1,8 @@
 # Jerarquía ISA-95 y catálogo de variables — TPI-AquaMonitor
 
+> **Stack vigente:** Node-RED → InfluxDB Cloud → Grafana Cloud (ver [`README.md`](../README.md)). Donde este documento nombra MQTT,
+> QuestDB o el simulador de Python se trata del **respaldo** del primer diseño ([`respaldo_stack_anterior.md`](respaldo_stack_anterior.md)).
+
 ## 1. Jerarquía de equipamiento (ISA-95 / IEC 62264)
 
 | Nivel ISA-95 | Elemento | Código | Descripción |
@@ -11,8 +14,8 @@
 | Property | Variable de proceso | ver tabla §3 | 15 variables instrumentadas |
 
 **Tag jerárquico:** `AQM.PTEF.<AREA>.<EQ>.<VARIABLE>`
-**Tag plano (payload / base de datos):** `AQM-PTEF-<AREA>-<EQ>-<VARIABLE>`
-**Topic MQTT:** `AQM/PTEF/<EQ>/<VARIABLE>` (suscripción global: `AQM/PTEF/#`)
+**Tag plano (columna `tag` de la base):** `AQM-PTEF-<AREA>-<EQ>-<VARIABLE>`
+*(Respaldo, stack con MQTT: topic `AQM/PTEF/<EQ>/<VARIABLE>`, suscripción global `AQM/PTEF/#`.)*
 
 ## 2. Niveles de la pirámide de automatización
 
@@ -20,9 +23,9 @@
 |---|---|---|
 | Nivel 0 | Campo (instrumentación: sensores y actuadores) | 13 variables medidas directamente por instrumento |
 | Nivel 1 | Control (PLC / DCS) | `ESTADO` (comando/estado lógico) y `EFICIENCIA` (variable calculada en el control) |
-| Nivel 2 | SCADA / HMI | Node-RED (orquestación e ingesta) |
-| Nivel 3 | MES / Operaciones | QuestDB + KPIs + reportes |
-| Nivel 4 | ERP / Negocio | Grafana (tableros de gestión) + modelo de negocio SaaS |
+| Nivel 2 | SCADA / HMI | Node-RED (genera y orquesta los datos, calcula los indicadores, avisa las fallas) |
+| Nivel 3 | MES / Operaciones | InfluxDB Cloud (historiza) + indicadores + reportes por mail |
+| Nivel 4 | ERP / Negocio | Grafana Cloud (tableros de gestión) + modelo de negocio SaaS |
 
 ## 3. Catálogo completo de las 15 variables
 
@@ -44,28 +47,37 @@
 | 14 | EQ03 | REAC | CONDUCT | `AQM-PTEF-REAC-EQ03-CONDUCT` | 0 | µS/cm | 800 – 1800 | >1800 | >2200 |
 | 15 | EQ03 | REAC | NIVEL | `AQM-PTEF-REAC-EQ03-NIVEL` | 0 | % | 45 – 88 | <40 ó >90 | <20 ó >95 |
 
-> Los umbrales están codificados en [`simulador/config.py`](../simulador/config.py) (`EQUIPOS[...]["variables"]`) y replicados en el flow [`nodered/flows/03_alertas.json`](../nodered/flows/03_alertas.json). Cualquier cambio debe hacerse en ambos lugares.
+> **Fuente única:** estos valores están definidos en [`nodered/userdir/aqm/catalogo.js`](../nodered/userdir/aqm/catalogo.js); el generador, los indicadores, las alertas y los colores del tablero leen ese archivo. Un cambio se hace ahí y se reinicia Node-RED.
+> *(Respaldo: en el primer diseño estaban copiados en `simulador/config.py`, `nodered/flows/03_alertas.json` y el flow de la bomba.)*
 
 ## 4. Calidad del dato (`quality`)
 
-| Código | Significado | Criterio en el simulador |
+| Código | Significado | Criterio en el generador |
 |---|---|---|
 | 2 | GOOD | Valor dentro de tolerancia física plausible |
 | 1 | UNCERTAIN | Valor entre 50 % y 150 % fuera del rango de operación |
 | 0 | BAD | Valor físicamente inverosímil (sensor en falla) |
 
-## 5. Estructura del payload MQTT
+## 5. Cómo se guarda cada medición (InfluxDB)
+
+Cada medición es una fila del measurement `raw_variables`: una por variable y por ciclo (15 por ciclo).
+
+| Columna | Tipo | Ejemplo |
+|---|---|---|
+| `time` | marca de tiempo (UTC) | `2026-11-07 23:00:00` |
+| `planta`, `area`, `equipo`, `variable` | tags | `PTEF`, `CAPT`, `EQ01`, `CAUDAL` |
+| `unit` | tag | `m3/h` |
+| `tag` | tag (tag plano ISA-95) | `AQM-PTEF-CAPT-EQ01-CAUDAL` |
+| `value` | campo decimal | `117.068` |
+| `quality` | campo entero (0/1/2) | `2` |
+
+Los indicadores van en `kpi_values` y los eventos en `events` (esquema completo en el [`README.md`](../README.md), sección 8).
+
+### Respaldo: payload MQTT del primer diseño
 
 ```json
-{
-  "tag": "AQM-PTEF-CAPT-EQ01-CAUDAL",
-  "value": 118.42,
-  "ts": 1717171717123,
-  "equipo": "EQ01",
-  "unit": "m3/h",
-  "quality": 2
-}
+{ "tag": "AQM-PTEF-CAPT-EQ01-CAUDAL", "value": 118.42, "ts": 1717171717123, "equipo": "EQ01", "unit": "m3/h", "quality": 2 }
 ```
 
-Node-RED (flow 01) enriquece este payload con `planta`, `area`, `variable` y una
-`firma` (hash djb2 del payload original) antes de escribir en `raw_variables`.
+En ese diseño, Node-RED (flow 01) enriquecía el payload con `planta`, `area`, `variable` y una `firma` (hash djb2) antes de escribir en `raw_variables` de QuestDB.
+En el diseño vigente la `firma` se eliminó: un valor distinto en cada fila como tag es un error clásico en InfluxDB (cardinalidad alta).

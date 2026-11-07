@@ -1,3 +1,5 @@
+-- RESPALDO (QuestDB): estas consultas son del stack anterior. Las equivalentes en SQL de InfluxDB (events, BOMBA_FALLA)
+-- estan en herramientas/construir_dashboard.py y en grafana/aquamonitor_dashboard.json.
 -- Historial de fallas de la bomba EQ01 en Grafana (datasource PostgreSQL apuntando a QuestDB, puerto 8812)
 -- La tabla eventos_bomba la crea sola QuestDB cuando llega el primer evento desde Node-RED (flow "05 Alerta bomba EQ01").
 -- Si preferís crearla antes (para que los paneles no den error con la base vacía):
