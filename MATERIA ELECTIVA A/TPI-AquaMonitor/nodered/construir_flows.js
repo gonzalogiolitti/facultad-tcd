@@ -93,6 +93,9 @@ comentario('t_kpi', 'c_kpi1', 'Por cada medición: acumula las muestras buenas (
 linkIn('t_kpi', 'li_lect_kpi', 'lecturas', ['lo_lecturas'], 140, 100, ['kpi_calcular']);
 fn('t_kpi', 'kpi_calcular', 'Acumular y calcular KPIs', 'kpi_calcular', 1, 400, 100, [['lo_influx_kpi']]);
 linkOut('t_kpi', 'lo_influx_kpi', '→ InfluxDB', ['li_influx'], 650, 100);
+comentario('t_kpi', 'c_kpi2', 'PRUEBA: calcula ahora los 4 períodos abiertos y los escribe en kpi_values_prueba (no toca kpi_values)', 'Sirve para ver las 4 granularidades sin esperar a que cierre un turno, un día o una semana.', 330, 200);
+add({ id: 'inj_kpi_prueba', type: 'inject', z: 't_kpi', name: 'Calcular KPIs de PRUEBA ahora', props: [{ p: 'accion', v: 'kpi_prueba', vt: 'str' }], repeat: '', crontab: '', once: false, onceDelay: 0.1, topic: '', x: 190, y: 250, wires: [['kpi_prueba']] });
+fn('t_kpi', 'kpi_prueba', 'KPIs de prueba (períodos abiertos)', 'kpi_prueba', 1, 460, 250, [['lo_influx_kpi']]);
 
 // =====================================================================================
 //  03  Alerta de la bomba EQ01
@@ -113,10 +116,12 @@ add({
     id: 'bomba_prueba_n', type: 'function', z: 't_bomba', name: 'Armar normalización de prueba', outputs: 1, timeout: 0, noerr: 0, initialize: '', finalize: '', libs: [], x: 480, y: 300, wires: [['bomba_avisos']],
     func: "msg.tipo_prueba = 'normalizada';\n" + codigo('bomba_prueba')
 });
-comentario('t_bomba', 'c_b3', 'Interruptor: mails marcados [PRUEBA] (valor por defecto) o sin marca (para la presentación)', '', 400, 360);
+comentario('t_bomba', 'c_b3', 'Interruptores: mails marcados [PRUEBA] (valor por defecto) o sin marca (presentación); y silenciar mails (solo pruebas)', '', 400, 360);
 boton('t_bomba', 'inj_marcar_on', 'Mails CON marca [PRUEBA]', 'marcar_on', 170, 400, ['marcas']);
 boton('t_bomba', 'inj_marcar_off', 'Mails SIN marca (presentación)', 'marcar_off', 180, 440, ['marcas']);
-fn('t_bomba', 'marcas', 'Marca [PRUEBA] on/off', 'marcas', 1, 460, 420);
+boton('t_bomba', 'inj_silenciar_on', 'SILENCIAR mails (solo para pruebas)', 'silenciar_on', 190, 480, ['marcas']);
+boton('t_bomba', 'inj_silenciar_off', 'ACTIVAR mails (quitar silencio)', 'silenciar_off', 190, 520, ['marcas']);
+fn('t_bomba', 'marcas', 'Interruptores de mail', 'marcas', 1, 460, 460);
 
 // =====================================================================================
 //  04  Alertas EQ02 / EQ03

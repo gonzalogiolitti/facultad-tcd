@@ -2,6 +2,11 @@
 // HTML) y msg.tipo ('alerta' o 'reporte'). Los destinatarios y el remitente salen del entorno.
 const para = msg.tipo === 'reporte' ? (env.get('REPORTE_MAIL_TO') || env.get('ALERT_MAIL_TO')) : env.get('ALERT_MAIL_TO');
 if (!para) { node.error('Falta ALERT_MAIL_TO / REPORTE_MAIL_TO en el entorno'); return null; }
+if (global.get('mail_silenciado') === true) {                 // modo pruebas sin mails (boton "Silenciar mails")
+    node.warn('Mail SILENCIADO (no se envia): ' + msg.topic);
+    node.status({ fill: 'yellow', shape: 'ring', text: 'mails SILENCIADOS' });
+    return null;
+}
 const n = (global.get('mails_enviados') || 0) + 1;
 global.set('mails_enviados', n);
 node.status({ fill: 'blue', shape: 'dot', text: 'mails pedidos desde el arranque del contador: ' + n });

@@ -590,6 +590,61 @@
     "wires": []
   },
   {
+    "id": "c_kpi2",
+    "type": "comment",
+    "z": "t_kpi",
+    "name": "PRUEBA: calcula ahora los 4 períodos abiertos y los escribe en kpi_values_prueba (no toca kpi_values)",
+    "info": "Sirve para ver las 4 granularidades sin esperar a que cierre un turno, un día o una semana.",
+    "x": 330,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "inj_kpi_prueba",
+    "type": "inject",
+    "z": "t_kpi",
+    "name": "Calcular KPIs de PRUEBA ahora",
+    "props": [
+      {
+        "p": "accion",
+        "v": "kpi_prueba",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 250,
+    "wires": [
+      [
+        "kpi_prueba"
+      ]
+    ]
+  },
+  {
+    "id": "kpi_prueba",
+    "type": "function",
+    "z": "t_kpi",
+    "name": "KPIs de prueba (períodos abiertos)",
+    "func": "// PRUEBA: calcula los KPIs de los 4 periodos que estan ABIERTOS ahora (con los acumuladores de Node-RED) y los escribe en\n// otro measurement, kpi_values_prueba, para no contaminar el historial real (kpi_values).\n// Sirve para ver las 4 granularidades sin esperar a que cierre un turno, un dia o una semana, y para comparar\n// el calculo de Node-RED contra el de SQL (que usa el tablero para el periodo en curso).\n// Cada pulsacion lleva su propio tag `corrida` para no pisar las anteriores.\nconst A = global.get('aqm');\nconst estado = global.get('kpi_estado') || {};\nconst ahora = Date.now();\nconst lineas = [];\nA.GRANULARIDADES.forEach((g) => {\n    const p = estado[g];\n    if (!p) return;\n    A.lineasKpi(g, p.inicio, A.calcularKpis(g, p.acc)).forEach((l) =>\n        lineas.push(l.replace(/^kpi_values,/, 'kpi_values_prueba,corrida=' + ahora + ',').replace(/cerrado=true /, 'cerrado=false,calculado_en=' + ahora + 'i ')));\n});\nnode.warn('KPIs de PRUEBA: ' + lineas.length + ' filas -> kpi_values_prueba');\nreturn lineas.length ? { payload: lineas.join('\\n'), medida: 'kpi_values_prueba' } : null;\n",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 460,
+    "y": 250,
+    "wires": [
+      [
+        "lo_influx_kpi"
+      ]
+    ]
+  },
+  {
     "id": "t_bomba",
     "type": "tab",
     "label": "03 Alerta bomba EQ01",
@@ -795,7 +850,7 @@
     "id": "c_b3",
     "type": "comment",
     "z": "t_bomba",
-    "name": "Interruptor: mails marcados [PRUEBA] (valor por defecto) o sin marca (para la presentación)",
+    "name": "Interruptores: mails marcados [PRUEBA] (valor por defecto) o sin marca (presentación); y silenciar mails (solo pruebas)",
     "info": "",
     "x": 400,
     "y": 360,
@@ -852,11 +907,61 @@
     ]
   },
   {
+    "id": "inj_silenciar_on",
+    "type": "inject",
+    "z": "t_bomba",
+    "name": "SILENCIAR mails (solo para pruebas)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "silenciar_on",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 480,
+    "wires": [
+      [
+        "marcas"
+      ]
+    ]
+  },
+  {
+    "id": "inj_silenciar_off",
+    "type": "inject",
+    "z": "t_bomba",
+    "name": "ACTIVAR mails (quitar silencio)",
+    "props": [
+      {
+        "p": "accion",
+        "v": "silenciar_off",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 190,
+    "y": 520,
+    "wires": [
+      [
+        "marcas"
+      ]
+    ]
+  },
+  {
     "id": "marcas",
     "type": "function",
     "z": "t_bomba",
-    "name": "Marca [PRUEBA] on/off",
-    "func": "// Interruptor de los mails: con \"marcar [PRUEBA]\" activado (valor por defecto) todos los avisos y reportes\n// llevan [PRUEBA] en el asunto. Para la presentacion se desactiva con el boton correspondiente.\nglobal.set('marcar_prueba', msg.accion === 'marcar_on');\nnode.status({ fill: 'blue', shape: 'dot', text: 'mails ' + (global.get('marcar_prueba') ? 'marcados [PRUEBA]' : 'SIN marca [PRUEBA]') });\nreturn null;\n",
+    "name": "Interruptores de mail",
+    "func": "// Interruptores de los mails:\n//  - marcar_on / marcar_off : con la marca activada (valor por defecto) todos los avisos y reportes llevan [PRUEBA]\n//    en el asunto. Para la presentacion se desactiva.\n//  - silenciar_on / silenciar_off : con \"silenciar\" NO se manda ningun mail (queda un aviso en el log). Sirve para\n//    probar fallas sin llenar la bandeja. Despues de usarlo hay que volver a \"silenciar_off\".\nif (msg.accion === 'marcar_on' || msg.accion === 'marcar_off') global.set('marcar_prueba', msg.accion === 'marcar_on');\nif (msg.accion === 'silenciar_on' || msg.accion === 'silenciar_off') global.set('mail_silenciado', msg.accion === 'silenciar_on');\nnode.status({ fill: global.get('mail_silenciado') ? 'yellow' : 'blue', shape: 'dot',\n    text: 'mails ' + (global.get('marcar_prueba') === false ? 'SIN marca' : 'marcados [PRUEBA]') + (global.get('mail_silenciado') ? ' | SILENCIADOS' : '') });\nreturn null;\n",
     "outputs": 1,
     "timeout": 0,
     "noerr": 0,
@@ -864,7 +969,7 @@
     "finalize": "",
     "libs": [],
     "x": 460,
-    "y": 420,
+    "y": 460,
     "wires": [
       []
     ]
@@ -907,7 +1012,7 @@
     "type": "function",
     "z": "t_umbral",
     "name": "Detectar umbrales EQ02/EQ03",
-    "func": "// ALERTAS DE EQ02 (filtro) y EQ03 (reactor). La bomba EQ01 NO pasa por aca (tiene su propio flow).\n// Anti-spam:\n//  - se registra/avisa solo cuando una variable ENTRA en critico o en advertencia (no en cada muestra);\n//  - ademas, un mail por variable como maximo cada ALERTA_COOLDOWN_S (modo demo: ALERTA_COOLDOWN_DEMO_S, 60 s);\n//  - todos los criticos nuevos de un mismo ciclo van juntos en UN solo mail.\n// Se aceptan lecturas de calidad 1 y 2; se descartan las de calidad 0.\n// Salida 1 -> mail | salida 2 -> filas de events en InfluxDB\nconst A = global.get('aqm');\nconst C = A.CATALOGO;\nconst demo = msg.modo === 'demo';\nconst cooldownS = demo\n    ? Number(env.get('ALERTA_COOLDOWN_DEMO_S') || C.ALERTAS.cooldown_demo_s)\n    : Number(env.get('ALERTA_COOLDOWN_S') || C.ALERTAS.cooldown_normal_s);\nconst ts = msg.ts;\nconst estado = global.get('umbral_estado') || {};\nconst criticosNuevos = [];\nconst lineas = [];\nconst porDia = global.get('eventos_dia') || {};\nconst dia = A.fmtDia(ts);\nporDia[dia] = porDia[dia] || {};\n\n(msg.lecturas || []).filter((l) => l.equipo !== 'EQ01' && l.quality !== 0).forEach((l) => {\n    const clave = l.equipo + '.' + l.variable;\n    const prev = estado[clave] || { sev: null, ultimoMail: 0 };\n    const sev = A.severidad(l.equipo, l.variable, l.value);\n    if (sev && sev !== prev.sev && !(prev.sev === 'critical' && sev === 'warning')) {   // entro en una zona peor\n        const cfg = C.EQUIPOS[l.equipo].variables[l.variable];\n        const rango = cfg[sev === 'critical' ? 'critical' : 'warning'];\n        const detalle = cfg.etiqueta + ' ' + l.value + ' ' + cfg.unit + ' fuera del límite ' + (sev === 'critical' ? 'crítico ' : 'de advertencia ') + A.rangoTexto(rango);\n        const tipo = sev === 'critical' ? 'UMBRAL_CRITICO' : 'UMBRAL_ADVERTENCIA';\n        lineas.push('events,equipo=' + l.equipo + ',event_type=' + tipo + ',severity=' + sev + ',motivo=' + l.variable +\n            ' value=' + l.value + ',detalle=\"' + A.escStr(detalle) + '\" ' + ts);\n        porDia[dia][tipo] = (porDia[dia][tipo] || 0) + 1;\n        if (sev === 'critical' && ts - prev.ultimoMail >= cooldownS * 1000) {\n            criticosNuevos.push({ equipo: l.equipo, variable: l.variable, detalle });\n            prev.ultimoMail = ts;\n        }\n    }\n    prev.sev = sev;\n    estado[clave] = prev;\n});\nglobal.set('umbral_estado', estado);\nglobal.set('eventos_dia', porDia);\n\nlet mail = null;\nif (criticosNuevos.length) {\n    const marcar = global.get('marcar_prueba') !== false;\n    const equipos = Array.from(new Set(criticosNuevos.map((c) => c.equipo))).join(', ');\n    mail = {\n        topic: (marcar ? '[PRUEBA] ' : '') + 'ALERTA CRÍTICA: ' + equipos + ' - ' + criticosNuevos.map((c) => c.variable).join(', '),\n        payload: (marcar ? '[PRUEBA] ' : '') + 'ALERTA CRÍTICA\\nHora: ' + A.fmtFecha(ts) + '\\n' +\n            criticosNuevos.map((c) => '- ' + c.equipo + '/' + c.variable + ': ' + c.detalle).join('\\n') +\n            '\\n\\n(Aviso único por variable; se vuelve a avisar como máximo cada ' + Math.round(cooldownS / 60 * 10) / 10 + ' min.)',\n        tipo: 'alerta'\n    };\n}\nnode.status({ fill: lineas.length ? 'yellow' : 'green', shape: 'dot', text: (lineas.length ? lineas.length + ' evento(s) | ' : 'sin eventos | ') + 'cooldown ' + cooldownS + ' s' });\nreturn [mail, lineas.length ? { payload: lineas.join('\\n'), medida: 'events' } : null];\n",
+    "func": "// ALERTAS DE EQ02 (filtro) y EQ03 (reactor). La bomba EQ01 NO pasa por aca (tiene su propio flow).\n// Anti-spam:\n//  - se registra/avisa solo cuando una variable ENTRA en critico o en advertencia (no en cada muestra);\n//  - ademas, UN mail por equipo como maximo cada ALERTA_COOLDOWN_S (modo demo: ALERTA_COOLDOWN_DEMO_S, 60 s):\n//    si otra variable del mismo equipo se pone critica dentro de ese lapso, igual queda registrada en events\n//    (y se ve en el tablero) pero no genera otro mail;\n//  - todos los criticos nuevos de un mismo ciclo van juntos en UN solo mail.\n// Se aceptan lecturas de calidad 1 y 2; se descartan las de calidad 0.\n// Salida 1 -> mail | salida 2 -> filas de events en InfluxDB\nconst A = global.get('aqm');\nconst C = A.CATALOGO;\nconst demo = msg.modo === 'demo';\nconst cooldownS = demo\n    ? Number(env.get('ALERTA_COOLDOWN_DEMO_S') || C.ALERTAS.cooldown_demo_s)\n    : Number(env.get('ALERTA_COOLDOWN_S') || C.ALERTAS.cooldown_normal_s);\nconst ts = msg.ts;\nconst estado = global.get('umbral_estado') || {};\nconst criticosNuevos = [];\nconst mailPorEquipo = global.get('umbral_ultimo_mail') || {};   // ultimo mail de cada equipo (para el cooldown)\nconst lineas = [];\nconst porDia = global.get('eventos_dia') || {};\nconst dia = A.fmtDia(ts);\nporDia[dia] = porDia[dia] || {};\n\n(msg.lecturas || []).filter((l) => l.equipo !== 'EQ01' && l.quality !== 0).forEach((l) => {\n    const clave = l.equipo + '.' + l.variable;\n    const prev = estado[clave] || { sev: null };\n    const sev = A.severidad(l.equipo, l.variable, l.value);\n    if (sev && sev !== prev.sev && !(prev.sev === 'critical' && sev === 'warning')) {   // entro en una zona peor\n        const cfg = C.EQUIPOS[l.equipo].variables[l.variable];\n        const rango = cfg[sev === 'critical' ? 'critical' : 'warning'];\n        const detalle = cfg.etiqueta + ' ' + l.value + (cfg.unit === 'pH' ? '' : ' ' + cfg.unit) + ' fuera del límite ' + (sev === 'critical' ? 'crítico ' : 'de advertencia ') + A.rangoTexto(rango);\n        const tipo = sev === 'critical' ? 'UMBRAL_CRITICO' : 'UMBRAL_ADVERTENCIA';\n        lineas.push('events,equipo=' + l.equipo + ',event_type=' + tipo + ',severity=' + sev + ',motivo=' + l.variable +\n            ' value=' + l.value + ',detalle=\"' + A.escStr(detalle) + '\" ' + ts);\n        porDia[dia][tipo] = (porDia[dia][tipo] || 0) + 1;\n        if (sev === 'critical') criticosNuevos.push({ equipo: l.equipo, variable: l.variable, detalle });\n    }\n    prev.sev = sev;\n    estado[clave] = prev;\n});\nglobal.set('umbral_estado', estado);\nglobal.set('eventos_dia', porDia);\n\n// cooldown por equipo: los criticos de un equipo que ya recibio mail hace menos de cooldownS solo se registran\nconst paraMail = criticosNuevos.filter((c) => ts - (mailPorEquipo[c.equipo] || 0) >= cooldownS * 1000);\nparaMail.forEach((c) => { mailPorEquipo[c.equipo] = ts; });\nglobal.set('umbral_ultimo_mail', mailPorEquipo);\n\nlet mail = null;\nif (paraMail.length) {\n    const marcar = global.get('marcar_prueba') !== false;\n    const equipos = Array.from(new Set(paraMail.map((c) => c.equipo))).join(', ');\n    mail = {\n        topic: (marcar ? '[PRUEBA] ' : '') + 'ALERTA CRÍTICA: ' + equipos + ' - ' + paraMail.map((c) => c.variable).join(', '),\n        payload: (marcar ? '[PRUEBA] ' : '') + 'ALERTA CRÍTICA\\nHora: ' + A.fmtFecha(ts) + '\\n' +\n            paraMail.map((c) => '- ' + c.equipo + '/' + c.variable + ': ' + c.detalle).join('\\n') +\n            '\\n\\n(Un solo aviso por equipo; otras variables que se pongan críticas en los próximos ' + Math.round(cooldownS / 60 * 10) / 10 + ' min quedan registradas en el tablero pero no mandan otro mail.)',\n        tipo: 'alerta'\n    };\n}\nnode.status({ fill: lineas.length ? 'yellow' : 'green', shape: 'dot', text: (lineas.length ? lineas.length + ' evento(s) | ' : 'sin eventos | ') + 'cooldown ' + cooldownS + ' s' });\nreturn [mail, lineas.length ? { payload: lineas.join('\\n'), medida: 'events' } : null];\n",
     "outputs": 2,
     "timeout": 0,
     "noerr": 0,
@@ -1187,7 +1292,7 @@
     "type": "function",
     "z": "t_mail",
     "name": "Preparar mail (destinatarios del entorno)",
-    "func": "// Arma el mail con los datos del entorno (.env). Quien llama pone msg.topic (asunto), msg.payload (texto o\n// HTML) y msg.tipo ('alerta' o 'reporte'). Los destinatarios y el remitente salen del entorno.\nconst para = msg.tipo === 'reporte' ? (env.get('REPORTE_MAIL_TO') || env.get('ALERT_MAIL_TO')) : env.get('ALERT_MAIL_TO');\nif (!para) { node.error('Falta ALERT_MAIL_TO / REPORTE_MAIL_TO en el entorno'); return null; }\nconst n = (global.get('mails_enviados') || 0) + 1;\nglobal.set('mails_enviados', n);\nnode.status({ fill: 'blue', shape: 'dot', text: 'mails pedidos desde el arranque del contador: ' + n });\nreturn { to: para, from: env.get('ALERT_MAIL_FROM') || undefined, topic: msg.topic, payload: msg.payload, _reintento: msg._reintento || 0 };\n",
+    "func": "// Arma el mail con los datos del entorno (.env). Quien llama pone msg.topic (asunto), msg.payload (texto o\n// HTML) y msg.tipo ('alerta' o 'reporte'). Los destinatarios y el remitente salen del entorno.\nconst para = msg.tipo === 'reporte' ? (env.get('REPORTE_MAIL_TO') || env.get('ALERT_MAIL_TO')) : env.get('ALERT_MAIL_TO');\nif (!para) { node.error('Falta ALERT_MAIL_TO / REPORTE_MAIL_TO en el entorno'); return null; }\nif (global.get('mail_silenciado') === true) {                 // modo pruebas sin mails (boton \"Silenciar mails\")\n    node.warn('Mail SILENCIADO (no se envia): ' + msg.topic);\n    node.status({ fill: 'yellow', shape: 'ring', text: 'mails SILENCIADOS' });\n    return null;\n}\nconst n = (global.get('mails_enviados') || 0) + 1;\nglobal.set('mails_enviados', n);\nnode.status({ fill: 'blue', shape: 'dot', text: 'mails pedidos desde el arranque del contador: ' + n });\nreturn { to: para, from: env.get('ALERT_MAIL_FROM') || undefined, topic: msg.topic, payload: msg.payload, _reintento: msg._reintento || 0 };\n",
     "outputs": 1,
     "timeout": 0,
     "noerr": 0,

@@ -400,6 +400,15 @@ console.log('\n[5] Alertas EQ02 / EQ03 (deduplicacion y cooldown)');
         const r = paso(M, T0, 9.0, 'normal', ex);
         assert.ok(r[0] && /PRES_DIF/.test(r[0].payload) && /TURB_OUT/.test(r[0].payload) && /PH/.test(r[0].payload));
     });
+    prueba('cooldown POR EQUIPO: otra variable del mismo equipo que se pone critica en un ciclo posterior se registra pero NO manda otro mail; otro equipo si', () => {
+        const M = nuevoMundo({}); const L = (ts, o) => Object.keys(o).map((k) => ({ equipo: k.split('.')[0], variable: k.split('.')[1], value: o[k], quality: 2, ts }));
+        const r1 = M.run.umbrales_detectar({ lecturas: L(T0, { 'EQ02.TURB_OUT': 2.5 }), ts: T0, modo: 'normal' });
+        const r2 = M.run.umbrales_detectar({ lecturas: L(T0 + 15000, { 'EQ02.TURB_OUT': 2.5, 'EQ02.PRES_DIF': 900 }), ts: T0 + 15000, modo: 'normal' });
+        const r3 = M.run.umbrales_detectar({ lecturas: L(T0 + 30000, { 'EQ02.TURB_OUT': 2.5, 'EQ02.PRES_DIF': 900, 'EQ03.PH': 9.0 }), ts: T0 + 30000, modo: 'normal' });
+        assert.ok(r1[0], 'el primer critico manda mail');
+        assert.ok(r2[0] === null && /UMBRAL_CRITICO/.test(r2[1].payload) && /PRES_DIF/.test(r2[1].payload), 'el segundo se registra pero no manda mail');
+        assert.ok(r3[0] && /EQ03/.test(r3[0].topic) && !/EQ02/.test(r3[0].topic), 'otro equipo si manda mail');
+    });
     prueba('calidad 0 se descarta y calidad 1 cuenta', () => {
         const M = nuevoMundo({});
         const r0 = M.run.umbrales_detectar({ lecturas: [{ equipo: 'EQ03', variable: 'PH', value: 9.0, quality: 0, ts: T0 }], ts: T0, modo: 'normal' });
@@ -410,6 +419,20 @@ console.log('\n[5] Alertas EQ02 / EQ03 (deduplicacion y cooldown)');
 }
 
 // =====================================================================================
+console.log('\n[5b] Interruptor de silencio de mails');
+prueba('con "silenciar" el mail no se envia; al activar vuelve a enviarse', () => {
+    const M = nuevoMundo({ ALERT_MAIL_TO: 'x@y.z' });
+    M.run.marcas({ accion: 'silenciar_on' });
+    assert.strictEqual(M.run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'alerta' }), null);
+    M.run.marcas({ accion: 'silenciar_off' });
+    assert.strictEqual(M.run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'alerta' }).to, 'x@y.z');
+});
+prueba('el reporte va a REPORTE_MAIL_TO y las alertas a ALERT_MAIL_TO', () => {
+    const M = nuevoMundo({ ALERT_MAIL_TO: 'alerta@x', REPORTE_MAIL_TO: 'reporte@x', ALERT_MAIL_FROM: 'de@x' });
+    assert.strictEqual(M.run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'alerta' }).to, 'alerta@x');
+    assert.strictEqual(M.run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'reporte' }).to, 'reporte@x');
+});
+
 console.log('\n[6] Reporte diario');
 {
     const M = nuevoMundo({});
