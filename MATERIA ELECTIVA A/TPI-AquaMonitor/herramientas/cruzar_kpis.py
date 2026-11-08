@@ -12,6 +12,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from consulta_sql import ejecutar  # noqa: E402
 
+import json
+import subprocess
+RAIZ = Path(__file__).resolve().parent.parent
+CALIDAD_MIN = json.loads(subprocess.check_output(
+    ["node", "-e", "console.log(JSON.stringify(require('./nodered/userdir/aqm/catalogo.js').KPI))"], cwd=RAIZ, text=True))["calidad_minima"]
 DURACION_MIN = {"hora": 60, "turno": 480, "dia": 1440, "semana": 10080}
 
 
@@ -29,8 +34,8 @@ def main() -> int:
     todo_ok = True
     for g in ("hora", "turno", "dia", "semana"):
         ini = [f["time"] for f in filas if f["periodo"] == g][0].strftime("%Y-%m-%dT%H:%M:%SZ")
-        raw = ejecutar("SELECT equipo, variable, value, quality FROM raw_variables WHERE time >= '%s' AND time <= '%s'" % (ini, corte_iso)).to_pylist()
-        v = lambda e, va: [r["value"] for r in raw if r["equipo"] == e and r["variable"] == va and r["quality"] == 2]
+        raw = ejecutar("SELECT equipo, variable, value, quality FROM raw_variables WHERE time >= '%s' AND time <= '%s' AND quality >= %d" % (ini, corte_iso, CALIDAD_MIN)).to_pylist()
+        v = lambda e, va: [r["value"] for r in raw if r["equipo"] == e and r["variable"] == va]
         m = statistics.mean
         esperado = {
             ("EQ01", "eficiencia_energetica"): m(v("EQ01", "CAUDAL")) / m(v("EQ01", "CORRIENTE")),

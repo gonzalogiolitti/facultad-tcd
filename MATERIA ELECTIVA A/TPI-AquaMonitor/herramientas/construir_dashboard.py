@@ -69,7 +69,7 @@ def panel_fila(titulo, y):
     return {"id": nuevo_id(), "type": "row", "title": titulo, "collapsed": False, "gridPos": grid(0, y, 24, 1), "panels": []}
 
 
-def panel_stat(titulo, sql, pos, unidad=None, umbrales=None, texto="value", overrides=None, mapeos=None, descripcion="", color_modo="background"):
+def panel_stat(titulo, sql, pos, unidad=None, umbrales=None, texto="value", overrides=None, mapeos=None, descripcion="", color_modo="background", campos="", sin_datos=None):
     CONSULTAS.append((titulo, sql))
     return {
         "id": nuevo_id(), "type": "stat", "title": titulo, "description": descripcion, "datasource": DS, "gridPos": pos,
@@ -78,18 +78,23 @@ def panel_stat(titulo, sql, pos, unidad=None, umbrales=None, texto="value", over
             "unit": unidad or "none", "decimals": 2, "mappings": mapeos or [],
             "color": {"mode": "thresholds"},
             "thresholds": {"mode": "absolute", "steps": umbrales or [{"color": "blue", "value": None}]},
+            **({"noValue": sin_datos} if sin_datos else {}),
         }, "overrides": overrides or []},
-        "options": {"reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": False}, "colorMode": color_modo,
+        # `campos` = expresion regular de los campos a mostrar. Un Stat solo muestra por defecto los campos NUMERICOS:
+        # para un texto (fecha en hora Argentina) hay que pedirlo con "/.*/".
+        "options": {"reduceOptions": {"calcs": ["lastNotNull"], "fields": campos, "values": False}, "colorMode": color_modo,
                     "graphMode": "none", "textMode": texto, "justifyMode": "center", "orientation": "auto"},
     }
 
 
-def panel_serie(titulo, sql, pos, unidad="none", overrides=None, descripcion="", estilo="line", minimo=None):
+def panel_serie(titulo, sql, pos, unidad="none", overrides=None, descripcion="", estilo="line", minimo=None, relleno=8, decimales=None):
     CONSULTAS.append((titulo, sql))
-    defaults = {"unit": unidad, "custom": {"drawStyle": estilo, "lineWidth": 2, "fillOpacity": 8, "showPoints": "auto", "spanNulls": True},
+    defaults = {"unit": unidad, "custom": {"drawStyle": estilo, "lineWidth": 2, "fillOpacity": relleno, "showPoints": "auto", "spanNulls": True},
                 "color": {"mode": "palette-classic"}}
     if minimo is not None:
         defaults["min"] = minimo
+    if decimales is not None:
+        defaults["decimals"] = decimales
     return {
         "id": nuevo_id(), "type": "timeseries", "title": titulo, "description": descripcion, "datasource": DS, "gridPos": pos,
         "targets": objetivo(sql, "time_series"),
@@ -98,12 +103,14 @@ def panel_serie(titulo, sql, pos, unidad="none", overrides=None, descripcion="",
     }
 
 
-def panel_tabla(titulo, sql, pos, descripcion="", overrides=None):
+def panel_tabla(titulo, sql, pos, descripcion="", overrides=None, anchos=None):
+    """anchos = {columna: pixeles}: evita que los titulos y valores largos se vean cortados."""
     CONSULTAS.append((titulo, sql))
+    overrides = list(overrides or []) + [{"matcher": {"id": "byName", "options": c}, "properties": [{"id": "custom.width", "value": w}]} for c, w in (anchos or {}).items()]
     return {
         "id": nuevo_id(), "type": "table", "title": titulo, "description": descripcion, "datasource": DS, "gridPos": pos,
         "targets": objetivo(sql, "table"),
-        "fieldConfig": {"defaults": {"custom": {"align": "auto", "cellOptions": {"type": "auto"}}}, "overrides": overrides or []},
+        "fieldConfig": {"defaults": {"custom": {"align": "auto", "minWidth": 90, "cellOptions": {"type": "auto", "wrapText": True}}}, "overrides": overrides},
         "options": {"showHeader": True, "cellHeight": "sm"},
     }
 
@@ -169,6 +176,7 @@ ORDER BY k.equipo, k.kpi"""
 # Periodo EN CURSO: se calcula con SQL desde raw_variables (misma formula que el flow de Node-RED).
 # date_bin con origen en hora Argentina: hora en punto | turno = 01:00/09:00/17:00 UTC (22/06/14 ART) |
 # dia = 03:00 UTC (00:00 ART) | semana = lunes 03:00 UTC (1970-01-05 fue lunes).
+CALIDAD_MIN = CAT["KPI"]["calidad_minima"]   # misma regla que usa Node-RED para los indicadores
 _ARMS = [("hora", "1 hour", "1970-01-01T00:00:00Z"), ("turno", "8 hours", "1970-01-01T01:00:00Z"),
          ("dia", "1 day", "1970-01-01T03:00:00Z"), ("semana", "7 days", "1970-01-05T03:00:00Z")]
 SQL_KPI_EN_CURSO = ("WITH b AS (\n" + "\n  UNION ALL\n".join(
@@ -176,26 +184,28 @@ SQL_KPI_EN_CURSO = ("WITH b AS (\n" + "\n  UNION ALL\n".join(
     "  FROM raw_variables WHERE time >= date_bin(INTERVAL '%s', now(), TIMESTAMP '%s')" % (n, i, o, i, o) for n, i, o in _ARMS) + """
 )
 SELECT periodo AS "Período", to_char(inicio - INTERVAL '3 hours', '%d/%m/%Y %H:%M') AS "Inicio (hora Argentina)",
-  round(avg(CASE WHEN equipo='EQ01' AND variable='CAUDAL' AND quality=2 THEN value END)
-        / nullif(avg(CASE WHEN equipo='EQ01' AND variable='CORRIENTE' AND quality=2 THEN value END), 0), 4) AS "EQ01 Eficiencia energética (m3h/A)",
-  round(100.0 * sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality=2 AND value >= 0.5 THEN 1 ELSE 0 END)
-        / nullif(sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality=2 THEN 1 ELSE 0 END), 0), 2) AS "EQ01 Disponibilidad (%)",
-  round((avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality=2 THEN value END)
-         - avg(CASE WHEN equipo='EQ02' AND variable='TURB_OUT' AND quality=2 THEN value END))
-        / nullif(avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality=2 THEN value END), 0) * 100, 3) AS "EQ02 Eficiencia de filtración (%)",
-  round(avg(CASE WHEN equipo='EQ02' AND variable='PRES_DIF' AND quality=2 THEN value END), 2) AS "EQ02 Presión diferencial media (mbar)",
+  round(avg(CASE WHEN equipo='EQ01' AND variable='CAUDAL' AND quality >= @Q@ THEN value END)
+        / nullif(avg(CASE WHEN equipo='EQ01' AND variable='CORRIENTE' AND quality >= @Q@ THEN value END), 0), 4) AS "EQ01 Efic. energética (m3h/A)",
+  round(100.0 * sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality >= @Q@ AND value >= 0.5 THEN 1 ELSE 0 END)
+        / nullif(sum(CASE WHEN equipo='EQ01' AND variable='ESTADO' AND quality >= @Q@ THEN 1 ELSE 0 END), 0), 2) AS "EQ01 Disponibilidad (%)",
+  round((avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality >= @Q@ THEN value END)
+         - avg(CASE WHEN equipo='EQ02' AND variable='TURB_OUT' AND quality >= @Q@ THEN value END))
+        / nullif(avg(CASE WHEN equipo='EQ02' AND variable='TURB_IN' AND quality >= @Q@ THEN value END), 0) * 100, 3) AS "EQ02 Efic. filtración (%)",
+  round(avg(CASE WHEN equipo='EQ02' AND variable='PRES_DIF' AND quality >= @Q@ THEN value END), 2) AS "EQ02 Pres. dif. media (mbar)",
   round((CASE periodo WHEN 'hora' THEN 60 WHEN 'turno' THEN 480 WHEN 'dia' THEN 1440 ELSE 10080 END)
-        * sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 AND (value < 6.5 OR value > 8.0) THEN 1 ELSE 0 END)
-        / nullif(sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 THEN 1 ELSE 0 END), 0), 2) AS "EQ03 Tiempo con pH fuera de rango (min)",
-  round(stddev(CASE WHEN equipo='EQ03' AND variable='PH' AND quality=2 THEN value END), 4) AS "EQ03 Desvío del pH"
+        * sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality >= @Q@ AND (value < 6.5 OR value > 8.0) THEN 1 ELSE 0 END)
+        / nullif(sum(CASE WHEN equipo='EQ03' AND variable='PH' AND quality >= @Q@ THEN 1 ELSE 0 END), 0), 2) AS "EQ03 Tiempo pH fuera (min)",
+  round(stddev(CASE WHEN equipo='EQ03' AND variable='PH' AND quality >= @Q@ THEN value END), 4) AS "EQ03 Desvío pH"
 FROM b
 GROUP BY periodo, inicio
 ORDER BY CASE periodo WHEN 'hora' THEN 1 WHEN 'turno' THEN 2 WHEN 'dia' THEN 3 ELSE 4 END""")
+SQL_KPI_EN_CURSO = SQL_KPI_EN_CURSO.replace("@Q@", str(CALIDAD_MIN))
 
 
 SQL_FALLAS_12H = "SELECT count(*) AS \"Fallas de la bomba (últimas 12 h)\" FROM events WHERE event_type='BOMBA_FALLA' AND time > now() - INTERVAL '12 hours'"
 SQL_FALLAS_RANGO = "SELECT count(*) AS \"Fallas en el rango elegido\" FROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)"
-SQL_ULTIMA_FALLA = "SELECT to_char(max(time) - %s, %s) AS \"Última falla (hora Argentina)\" FROM events WHERE event_type='BOMBA_FALLA'" % (ART, FMT_ART)
+SQL_ULTIMA_FALLA = ("SELECT COALESCE(to_char(max(time) - %s, %s), 'Sin fallas') AS \"Última falla (hora Argentina)\"\n"
+                    "FROM events WHERE event_type='BOMBA_FALLA' AND $__timeFilter(time)") % (ART, FMT_ART)
 SQL_ULTIMA_MEDICION = ("SELECT to_char(max(time) - %s, %s) AS \"Última medición (hora Argentina)\" FROM raw_variables "
                        "WHERE time > now() - INTERVAL '1 day'") % (ART, FMT_ART)
 SQL_EDAD = ("SELECT date_part('epoch', now()) - date_part('epoch', max(time)) AS \"Segundos desde la última medición\" FROM raw_variables "
@@ -309,13 +319,13 @@ def construir():
     P = []
     y = 0
     P.append(panel_fila("Estado general", y)); y += 1
-    P.append(panel_stat("Última medición", SQL_ULTIMA_MEDICION, grid(0, y, 6, 4), texto="value", color_modo="value"))
+    P.append(panel_stat("Última medición (hora Argentina)", SQL_ULTIMA_MEDICION, grid(0, y, 6, 4), texto="value", color_modo="value", campos="/.*/", sin_datos="Sin datos"))
     P.append(panel_stat("Antigüedad del dato", SQL_EDAD, grid(6, y, 4, 4), unidad="s",
                         umbrales=[{"color": VERDE, "value": None}, {"color": NARANJA, "value": 400}, {"color": ROJO, "value": 900}],
                         descripcion="Segundos desde la última medición. En modo normal se mide cada 120 s; en demo, cada 15 s."))
     P.append(panel_stat("Fallas de la bomba en las últimas 12 h", SQL_FALLAS_12H, grid(10, y, 6, 4),
                         umbrales=[{"color": VERDE, "value": None}, {"color": ROJO, "value": 1}]))
-    P.append(panel_stat("Última falla de la bomba", SQL_ULTIMA_FALLA, grid(16, y, 8, 4), texto="value", color_modo="value")); y += 4
+    P.append(panel_stat("Última falla de la bomba (en el rango elegido)", SQL_ULTIMA_FALLA, grid(16, y, 8, 4), texto="value", color_modo="value", campos="/.*/", sin_datos="Sin fallas")); y += 4
 
     P.append(panel_fila("Sensores en vivo (actualiza cada 5 s)", y)); y += 1
     for eq in ("EQ01", "EQ02", "EQ03"):
@@ -348,35 +358,43 @@ def construir():
     P.append(panel_serie("Reactor EQ03 - indicadores [$periodo]", sql_kpi("EQ03", [("tiempo_fuera_rango_ph", "Tiempo con pH fuera de rango (min)"), ("desviacion_ph", "Desvío del pH")]),
                          grid(16, y, 8, 8), overrides=r_der("Desvío del pH"), estilo="points")); y += 8
     P.append(panel_tabla("Indicadores del período EN CURSO (parcial: se calcula con SQL sobre las mediciones)", SQL_KPI_EN_CURSO, grid(0, y, 24, 6),
+                         anchos={"Período": 90, "Inicio (hora Argentina)": 190, "EQ01 Efic. energética (m3h/A)": 220, "EQ01 Disponibilidad (%)": 190, "EQ02 Efic. filtración (%)": 190, "EQ02 Pres. dif. media (mbar)": 220, "EQ03 Tiempo pH fuera (min)": 200, "EQ03 Desvío pH": 140},
                          descripcion="Una fila por período abierto. Hora = hora en punto; Turno = T1 06-14, T2 14-22, T3 22-06; Día = 00:00 a 24:00; Semana = lunes a domingo (hora Argentina). El valor cambia hasta que el período cierra."))
     y += 6
     P.append(panel_tabla("Indicadores del último período CERRADO (los guarda Node-RED al cerrar cada período)", SQL_KPI_CERRADOS, grid(0, y, 24, 8),
+                         anchos={"Equipo": 90, "Indicador": 260, "Unidad": 110, "Hora": 120, "Turno": 120, "Día": 120, "Semana": 120},
                          descripcion="Cada período cerrado se guarda una sola vez en la base (measurement kpi_values), con la marca de tiempo del INICIO del período.")); y += 8
 
     P.append(panel_fila("Fallas de la bomba EQ01", y)); y += 1
     P.append(panel_stat("Fallas en el rango de tiempo elegido", SQL_FALLAS_RANGO, grid(0, y, 5, 8), umbrales=[{"color": VERDE, "value": None}, {"color": ROJO, "value": 1}]))
-    P.append(panel_barras("Fallas por hora", SQL_FALLAS_POR_HORA, grid(5, y, 10, 8)))
+    P.append(panel_serie("Fallas por hora", SQL_FALLAS_POR_HORA, grid(5, y, 10, 8), estilo="bars", relleno=80, minimo=0, decimales=0,
+                         overrides=[{"matcher": {"id": "byName", "options": "Fallas"}, "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": ROJO}}]}],
+                         descripcion="Cada barra es una hora (hora Argentina) con la cantidad de fallas de la bomba."))
     P.append(panel_barras("Fallas por motivo", SQL_FALLAS_POR_MOTIVO, grid(15, y, 9, 8), tipo="bargauge")); y += 8
-    P.append(panel_tabla("Eventos (fallas, normalizaciones, alertas y fallas provocadas)", SQL_EVENTOS, grid(0, y, 24, 9))); y += 9
+    P.append(panel_tabla("Eventos (fallas, normalizaciones, alertas y fallas provocadas)", SQL_EVENTOS, grid(0, y, 24, 9),
+                         anchos={"Hora (Argentina)": 180, "Evento": 200, "Severidad": 110, "Equipo": 90, "Motivo": 130})); y += 9
 
     P.append(panel_fila("Análisis (SQL): tendencia, anomalías y correlación", y)); y += 1
-    P.append(panel_serie("Tendencia: vibración de la bomba con media móvil", sql_media_movil("EQ01", "VIBRACION", "Vibración (mm/s)"), grid(0, y, 8, 8),
+    P.append(panel_serie("Tendencia: vibración de la bomba con media móvil", sql_media_movil("EQ01", "VIBRACION", "Vibración (mm/s)"), grid(0, y, 12, 8),
                          descripcion="La media móvil (promedio de las últimas 10 muestras) suaviza el ruido y deja ver hacia dónde va la variable."))
-    P.append(panel_serie("Tendencia: presión diferencial del filtro con media móvil", sql_media_movil("EQ02", "PRES_DIF", "Presión diferencial (mbar)"), grid(8, y, 8, 8),
-                         descripcion="En un filtro de arena, la presión diferencial sube a medida que el lecho se tapa."))
-    P.append(panel_tabla("Tendencia de todas las variables (pendiente en el rango elegido)", SQL_TENDENCIA, grid(16, y, 8, 8),
-                         descripcion="Pendiente de la recta de ajuste (regresión lineal) por hora. Si el cambio relativo es menor al 2 % por hora se considera estable.")); y += 8
+    P.append(panel_serie("Tendencia: presión diferencial del filtro con media móvil", sql_media_movil("EQ02", "PRES_DIF", "Presión diferencial (mbar)"), grid(12, y, 12, 8),
+                         descripcion="En un filtro de arena, la presión diferencial sube a medida que el lecho se tapa.")); y += 8
+    P.append(panel_tabla("Tendencia de todas las variables (pendiente en el rango elegido)", SQL_TENDENCIA, grid(0, y, 24, 9),
+                         anchos={"Equipo": 90, "Variable": 140, "Muestras": 110, "Media": 110, "Pendiente por hora": 170, "Cambio % por hora": 170, "Tendencia": 140},
+                         descripcion="Pendiente de la recta de ajuste (regresión lineal) por hora, con las muestras de calidad 2. Si el cambio relativo es menor al 2 % por hora se considera estable.")); y += 9
     P.append(panel_serie("Anomalías: vibración con bandas de ±3 desvíos (ventana de 20 muestras)", SQL_ZSCORE_SERIE, grid(0, y, 12, 9),
                          overrides=[{"matcher": {"id": "byName", "options": "Anomalía"}, "properties": [{"id": "custom.drawStyle", "value": "points"},
                                     {"id": "custom.pointSize", "value": 10}, {"id": "color", "value": {"mode": "fixed", "fixedColor": ROJO}}]},
                                     {"matcher": {"id": "byRegexp", "options": "Banda.*"}, "properties": [{"id": "custom.lineStyle", "value": {"fill": "dash", "dash": [6, 6]}},
                                     {"id": "custom.fillOpacity", "value": 0}]}],
                          descripcion="Cada valor se compara con la media y el desvío de las 20 muestras anteriores. Si se aleja más de 3 desvíos (|z| > 3) se marca como anomalía."))
-    P.append(panel_tabla("Anomalías detectadas (|z| > 3) en todas las variables", SQL_ZSCORE_TABLA, grid(12, y, 12, 9))); y += 9
-    P.append(panel_tabla("Correlación entre variables (r de Pearson)", SQL_CORRELACION, grid(0, y, 14, 9),
-                         descripcion="r va de -1 a 1. Cerca de 1: suben juntas; cerca de -1: una sube cuando la otra baja; cerca de 0: no hay relación lineal."))
+    P.append(panel_tabla("Anomalías detectadas (|z| > 3) en todas las variables", SQL_ZSCORE_TABLA, grid(12, y, 12, 9),
+                         anchos={"Hora (Argentina)": 180, "Equipo": 90, "Variable": 130, "Valor": 100, "Media de la ventana": 170, "Z-score": 100})); y += 9
+    P.append(panel_tabla("Correlación entre variables (r de Pearson)", SQL_CORRELACION, grid(0, y, 24, 8),
+                         anchos={"Equipo": 90, "Par de variables": 290, "Correlación (r)": 150, "Muestras": 110, "Intensidad": 150, "Sentido": 290},
+                         descripcion="r va de -1 a 1. Cerca de 1: suben juntas; cerca de -1: una sube cuando la otra baja; cerca de 0: no hay relación lineal.")); y += 8
     CONSULTAS.append(("Dispersión caudal vs corriente", SQL_DISPERSION))
-    P.append({"id": nuevo_id(), "type": "xychart", "title": "Dispersión: caudal vs corriente de la bomba", "datasource": DS, "gridPos": grid(14, y, 10, 9),
+    P.append({"id": nuevo_id(), "type": "xychart", "title": "Dispersión: caudal vs corriente de la bomba", "datasource": DS, "gridPos": grid(0, y, 12, 9),
               "targets": objetivo(SQL_DISPERSION, "table"),
               "fieldConfig": {"defaults": {"custom": {"show": "points", "pointSize": {"fixed": 6}}}, "overrides": []},
               "options": {"mapping": "auto", "series": [{}], "legend": {"showLegend": False}},

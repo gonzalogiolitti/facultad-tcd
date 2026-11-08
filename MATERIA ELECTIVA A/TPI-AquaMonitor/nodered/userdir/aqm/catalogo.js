@@ -36,6 +36,13 @@ module.exports = {
         prob_falla_aleatoria: 0.03      // por ciclo, cuando las fallas aleatorias estan activas
     },
 
+    // Que muestras entran en los indicadores (KPIs): las de calidad >= calidad_minima.
+    //   2 = solo calidad 2 (valor actual, el que se definio en la Fase 3)
+    //   1 = calidad 1 y 2 (igual que las alertas) | 0 = todas las muestras
+    // Ojo: con el modelo de calidad del generador, los valores en zona de alarma salen con calidad 1 o 0
+    // (ver docs/jerarquia_ISA95.md, seccion 4), asi que con 2 los indicadores no ven las excursiones.
+    KPI: { calidad_minima: 2 },
+
     ALERTAS: {
         rearme_s: 60,                   // segundos seguidos en normal para dar la falla de la bomba por terminada
         cooldown_normal_s: 1800,        // minimo entre dos mails por la misma variable de EQ02/EQ03

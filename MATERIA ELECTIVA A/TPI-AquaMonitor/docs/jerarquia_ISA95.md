@@ -58,6 +58,9 @@
 | 1 | UNCERTAIN | Valor entre 50 % y 150 % fuera del rango de operación |
 | 0 | BAD | Valor físicamente inverosímil (sensor en falla) |
 
+> **Consecuencia para los indicadores:** los valores en zona de alarma salen con calidad 1 o 0 (el pH 9,2 de una excursión es calidad 0), y los indicadores
+> aceptan solo las muestras con calidad >= `KPI.calidad_minima` del catálogo (hoy 2). Con ese valor no ven las excursiones; ver `PROGRESO.md`, «Revisión del tablero», punto 2.
+
 ## 5. Cómo se guarda cada medición (InfluxDB)
 
 Cada medición es una fila del measurement `raw_variables`: una por variable y por ciclo (15 por ciclo).

@@ -118,9 +118,9 @@ function motivosBomba(lecturas) {
 //  INDICADORES (KPIs). Se acumulan las muestras de calidad 2 de cada variable y se
 //  calculan las formulas con esos acumuladores (sin volver a leer la base).
 // ---------------------------------------------------------------------------
-/** Suma una lectura al acumulador de un periodo (solo calidad 2). Usa el metodo de Welford para el desvio. */
+/** Suma una lectura al acumulador de un periodo (solo calidad >= KPI.calidad_minima). Usa el metodo de Welford para el desvio. */
 function acumular(acc, l) {
-    if (l.quality !== 2) return;
+    if (l.quality < CATALOGO.KPI.calidad_minima) return;
     const k = l.equipo + '.' + l.variable;
     const a = acc[k] || (acc[k] = { n: 0, sum: 0, mean: 0, m2: 0, nOn: 0, nOut: 0 });
     a.n += 1;

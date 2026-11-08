@@ -176,7 +176,7 @@ SELECT count(*) FROM events WHERE event_type = 'BOMBA_FALLA' AND time > now() - 
 
 ## 9. Indicadores (KPIs)
 
-Dos por equipo, calculados por Node-RED con las muestras de calidad 2:
+Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.calidad_minima` (hoy 2, en `nodered/userdir/aqm/catalogo.js`; ver `PROGRESO.md`):
 
 | Equipo | Indicador | Fórmula | Unidad |
 |---|---|---|---|

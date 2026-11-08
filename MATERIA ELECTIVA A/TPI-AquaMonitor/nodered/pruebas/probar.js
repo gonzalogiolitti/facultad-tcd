@@ -284,6 +284,34 @@ console.log('\n[3] Indicadores (KPIs)');
         assert.strictEqual(ls.length, 6);
         assert.ok(ls.every((p) => p.ts === Date.UTC(2026, 10, 7, 20, 0, 0) && p.campos.cerrado === 'true'));
     });
+    // Secuencia REAL de pH del 07/11/2026 (hora UTC 23:14:35 a 23:17:30), con su calidad tal como quedo en InfluxDB (PH_SPIKE provocado)
+    const PH_REAL = [[35, 7.241, 2], [45, 7.322, 2], [55, 5.799, 1], [60, 8.988, 0], [75, 5.484, 0], [90, 8.825, 0], [105, 5.55, 0], [120, 9.199, 0],
+                     [135, 5.712, 1], [150, 9.047, 0], [165, 7.257, 2], [180, 7.28, 2], [195, 7.305, 2], [210, 7.198, 2]];
+    const cerrarConPhReal = (calidadMinima) => {
+        const previa = C.KPI.calidad_minima; C.KPI.calidad_minima = calidadMinima;
+        try {
+            const W = nuevoMundo({}); const base = Date.UTC(2026, 10, 7, 23, 14, 0);
+            PH_REAL.forEach(([s, v, q]) => { const ts = base + s * 1000; W.run.kpi_calcular({ ts, lecturas: [{ equipo: 'EQ03', variable: 'PH', value: v, quality: q, ts }] }); });
+            const cierre = Date.UTC(2026, 10, 8, 0, 0, 0);       // cruza la hora: cierra el periodo 23:00 UTC
+            const filas = lineasDe(W.run.kpi_calcular({ ts: cierre, lecturas: [{ equipo: 'EQ03', variable: 'PH', value: 7.2, quality: 2, ts: cierre }] })).map(parseLP)
+                .filter((p) => p.tags.periodo === 'hora');
+            const g = (k) => filas.find((p) => p.tags.kpi === k).campos;
+            return { fuera: Number(g('tiempo_fuera_rango_ph').value), sd: Number(g('desviacion_ph').value), n: Number(g('desviacion_ph').muestras.replace('i', '')) };
+        } finally { C.KPI.calidad_minima = previa; }
+    };
+    prueba('pH real con la regla actual (solo calidad 2): las 8 muestras de la excursion se descartan -> tiempo fuera de rango = 0 (no es un bug del cierre)', () => {
+        const r = cerrarConPhReal(2);
+        assert.strictEqual(r.n, 6); assert.strictEqual(r.fuera, 0);
+    });
+    prueba('pH real con calidad_minima = 0 (todas las muestras): cuentan las 8 de la excursion -> 60 * 8 / 14 = 34,29 min', () => {
+        const r = cerrarConPhReal(0);
+        assert.strictEqual(r.n, 14); assert.ok(Math.abs(r.fuera - 60 * 8 / 14) < 0.01, 'tiempo fuera = ' + r.fuera);
+        assert.ok(r.sd > 1, 'el desvio refleja la excursion: ' + r.sd);
+    });
+    prueba('pH real con calidad_minima = 1: entran solo las 2 de calidad 1 -> 60 * 2 / 8 = 15 min', () => {
+        const r = cerrarConPhReal(1);
+        assert.strictEqual(r.n, 8); assert.ok(Math.abs(r.fuera - 15) < 0.01, 'tiempo fuera = ' + r.fuera);
+    });
     prueba('solo cuentan las lecturas de calidad 2', () => {
         const W = nuevoMundo({}); const ts = Date.UTC(2026, 10, 7, 20, 10, 0);
         const L = (v, q) => [{ equipo: 'EQ03', variable: 'PH', value: v, quality: q, ts }];
