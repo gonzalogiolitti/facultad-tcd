@@ -160,11 +160,13 @@ function calcularKpis(g, acc) {
  * Lineas de line protocol de los KPIs de UN periodo ya cerrado: una fila por KPI, con `time` = inicio del periodo.
  * Cada fila se escribe UNA sola vez (al cerrar el periodo). No se reescribe nunca: InfluxDB puede devolver versiones
  * viejas de una misma clave recien reescrita, asi que el periodo EN CURSO se calcula con SQL desde raw_variables.
+ * El tag `regla` (q0/q1/q2) dice con que calidad minima se calculo la fila. Ademas cambia la clave: asi estas filas no
+ * pueden chocar con las filas viejas del diseño anterior (periodos abiertos reescritos) que tienen otra clave.
  */
 function lineasKpi(g, inicio, kpis) {
     const turno = g === 'turno' ? ',turno=' + turnoDe(inicio) : '';
     return kpis.map((k) =>
-        'kpi_values,equipo=' + k.equipo + ',kpi=' + k.kpi + ',periodo=' + g + ',unit=' + escTag(k.unit) + turno +
+        'kpi_values,equipo=' + k.equipo + ',kpi=' + k.kpi + ',periodo=' + g + ',regla=q' + CATALOGO.KPI.calidad_minima + ',unit=' + escTag(k.unit) + turno +
         ' value=' + k.value + ',muestras=' + k.muestras + 'i,cerrado=true ' + inicio);
 }
 

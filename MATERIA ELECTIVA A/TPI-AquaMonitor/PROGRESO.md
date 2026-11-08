@@ -4,7 +4,7 @@ Registro de lo que se hizo, cómo se probó y qué falta. No contiene secretos.
 Stack de la cátedra: **Node-RED (npm, local) → InfluxDB Cloud (SQL) → Grafana Cloud + mail (Gmail)**.
 Lo anterior (simulador de Python, EMQX/MQTT, QuestDB, Docker, Telegram) quedó como **respaldo**, sin borrar.
 
-Última actualización: 07/11/2026 (≈ 21:10, hora Argentina). Presentación: 12/11/2026.
+Última actualización: 08/11/2026 (≈ 20:40, hora Argentina). Presentación: 12/11/2026.
 
 ## Estado de las fases
 
@@ -13,7 +13,7 @@ Lo anterior (simulador de Python, EMQX/MQTT, QuestDB, Docker, Telegram) quedó c
 | 0. Auditoría y plan | hecho | aprobada |
 | 1. Entorno | hecho | aprobada (SELECT y mail verificados por el usuario) |
 | 2. Generador de datos | **hecho** | 15 variables, 5 fallas provocables, modo normal 120 s / demo 15 s |
-| 3. Indicadores (KPIs) | **hecho con reservas** | cambió una decisión de diseño aprobada (ver abajo); **los 2 KPIs de pH quedan ciegos a las excursiones con la regla de calidad actual: espera tu decisión** (ver «Revisión del tablero»); ya cerró la primera hora real |
+| 3. Indicadores (KPIs) | **hecho con reservas** | cambió una decisión de diseño aprobada (ver abajo); regla de calidad = 0 desde el 08/11; ya cerraron períodos reales (hora, turno y día, parciales por el corte); falta ver una semana cerrar |
 | 4. Avisos por mail y eventos | **hecho con reservas** | los 9 mails los tenés que confirmar vos; el reporte de las 06:00 todavía no corrió solo |
 | 5. Análisis en SQL | **hecho** | tendencia, anomalías y correlación con datos reales |
 | 6. Tablero de Grafana | **hecho con reservas** | importado por el usuario; corregidos los paneles de texto, las columnas y el eje de «Fallas por hora» (hay que **reimportar** el JSON); 32 consultas probadas contra la base |
@@ -45,7 +45,7 @@ Para el turno T2 (14:00 ART en adelante), mismas lecturas de pH, según la regla
 | B) calidad 1 y 2 (como las alertas) | 102 | 2 | 9,41 min | 0,2262 |
 | C) todas (0, 1 y 2) | 108 | 8 | 35,56 min | 0,4747 |
 
-**Decisión pendiente (es tuya, porque la regla «calidad 2» la definiste vos):** dejé un único parámetro en el catálogo, `KPI.calidad_minima` (hoy `2`, sin cambio de comportamiento). El tablero (período en curso) y Node-RED leen el mismo parámetro. Recomiendo `0`, porque este generador no simula sensores fallados: su calidad 0/1 marca excursiones del proceso, justo lo que los indicadores deben medir. Diff mínimo:
+**Decisión (resuelta el 08/11: se aplicó `calidad_minima = 0`, ver «Decisiones aplicadas el 08/11»).** Planteo original: dejé un único parámetro en el catálogo, `KPI.calidad_minima` (hoy `2`, sin cambio de comportamiento). El tablero (período en curso) y Node-RED leen el mismo parámetro. Recomiendo `0`, porque este generador no simula sensores fallados: su calidad 0/1 marca excursiones del proceso, justo lo que los indicadores deben medir. Diff mínimo:
 ```diff
 --- nodered/userdir/aqm/catalogo.js
 -    KPI: { calidad_minima: 2 },
@@ -58,17 +58,63 @@ Después: reiniciar Node-RED, `python3 herramientas/construir_dashboard.py` y re
 
 **4. Cosmético (aplicado).** «Tendencia de todas las variables» pasó a ancho completo (la columna *Pendiente por hora* estaba cortada); correlación, KPIs, anomalías y eventos tienen anchos de columna fijos y nombres de columna más cortos; «Fallas por hora» ahora es un gráfico de barras con eje de tiempo (se veía «2026» porque el gráfico de barras trataba la hora como categoría). Sin probar en Grafana.
 
-**5. Falsos positivos del Z-score: propuesta, NO aplicada** (a la espera de tu OK). Con datos de las últimas 6 h: la regla actual marca 4 anomalías en el pH, 2 de ellas por desvíos de ~0,11 unidades (pH 7,028 y 7,29 contra una media de ~7,15 y un desvío de 0,035). Propuesta: usar como desvío `max(sd de la ventana, 1 % de la media de la ventana)`. Resultado real: elimina exactamente esas 2 y **conserva todas las fallas reales** (presión diferencial del filtro z = 12, turbidez z = 22, caudal de la bomba z = 57, vibración z = 21, pH forzado z = 10); con un piso del 2 % empieza a descartar anomalías dudosas (nivel y temperatura), por eso se propone 1 %. El diff está en el chat y el archivo con la propuesta quedó en el scratchpad de la sesión; el repositorio no se tocó.
+**5. Falsos positivos del Z-score: propuesta (aplicada el 08/11, ver abajo).** Con datos de las últimas 6 h: la regla actual marca 4 anomalías en el pH, 2 de ellas por desvíos de ~0,11 unidades (pH 7,028 y 7,29 contra una media de ~7,15 y un desvío de 0,035). Propuesta: usar como desvío `max(sd de la ventana, 1 % de la media de la ventana)`. Resultado real: elimina exactamente esas 2 y **conserva todas las fallas reales** (presión diferencial del filtro z = 12, turbidez z = 22, caudal de la bomba z = 57, vibración z = 21, pH forzado z = 10); con un piso del 2 % empieza a descartar anomalías dudosas (nivel y temperatura), por eso se propone 1 %. El diff está en el chat y el archivo con la propuesta quedó en el scratchpad de la sesión; el repositorio no se tocó.
 
 **Períodos cerrados reales (verificado después de las 21:03 ART).** `kpi_values` ya tiene la primera hora real: **hora 20:00–21:00 ART, 6 filas (una por KPI), `cerrado = true`**, escritas una sola vez: disponibilidad de la bomba 82,0 %, eficiencia energética 2,6353 m³h/A, eficiencia de filtración 86,268 %, presión diferencial media 674,1 mbar, desvío del pH 0,0723, tiempo fuera de rango del pH 0,0 min. Los paneles «Indicadores del último período CERRADO» y «[hora] indicadores» devuelven esas filas (consultas ejecutadas). Turno, día y semana todavía no cerraron: el turno T2 cierra a las 22:00 ART.
 
 Pruebas automáticas: 59/59 (se agregaron 3 con la secuencia real de pH). Consultas del tablero: 32/32 sin error.
+
+## Decisiones aplicadas el 08/11 (noche)
+
+**1. `KPI.calidad_minima = 0`** (catálogo). Los indicadores usan todas las muestras. Cada fila nueva de `kpi_values` lleva el tag **`regla`** (`q0`) con la regla con la que se calculó.
+- **Las alertas siguen descartando calidad 0** (la regla aprobada en la Fase 4 no cambia). Por qué no es una contradicción: un **aviso** se dispara con **una sola lectura**, y una lectura de calidad 0 («inverosímil») podría ser un sensor fallado: un mail por un dato basura es un falso aviso. Un **indicador**, en cambio, resume muchas lecturas (hasta 4.200 en una semana) y existe justamente para reflejar cuánto tiempo estuvo el proceso fuera de rango; con este generador la calidad 0/1 no marca sensores fallados sino **cuán lejos del rango de operación** está el valor, así que descartarla vuelve ciego al indicador (el pH 9,2 es calidad 0).
+- **Limitación a conocer:** una lectura que «salta» directo a calidad 0 no dispara el aviso de EQ02/EQ03; el aviso sale en la primera lectura de calidad 1 o 2 de la misma excursión (como mucho un ciclo después). En las pruebas reales el `PH_SPIKE` avisó en el primer ciclo (5,799, calidad 1).
+- Efecto medido en la **misma hora (20:00–21:00 ART del 07/11, pH forzado)**:
+
+| Regla | Muestras | `tiempo_fuera_rango_ph` | `desviacion_ph` |
+|---|---|---|---|
+| vieja (calidad 2, sin tag) | 92 | 0,0 min | 0,0723 |
+| nueva (`regla = q0`) | 100 | 4,8 min (8/100 × 60) | 0,488 |
+
+- Probado: 67 pruebas automáticas (incluye la secuencia real de pH y el tag `regla`).
+
+**2. Piso del 1 % en el Z-score** (`herramientas/construir_dashboard.py`): el desvío efectivo es `max(sd de la ventana, 1 % de la media de la ventana)`. Verificado con datos reales (40 h): el panel de anomalías pasa a **2 anomalías de pH** (antes aparecían las de desvíos de centésimas) y conserva las fallas reales.
+
+**3. Filas de `kpi_values` con la regla vieja y cómo no ensucian el tablero.** Hay **30 filas sin tag `regla`** (todas de la etapa de desarrollo o de la regla vieja):
+| Período (hora ART) | Estado | Filas | Muestras | Origen |
+|---|---|---|---|---|
+| hora 07/11 19:00 | abierto | 6 | 6–7 | diseño anterior (reescritura), con versiones mezcladas |
+| turno 07/11 14:00 | abierto | 6 | 13–14 | ídem |
+| día 07/11 | abierto | 6 | 14 | ídem |
+| semana 02/11 | abierto | 6 | 14 | ídem |
+| hora 07/11 20:00 | **cerrado** | 6 | 92–100 | **regla vieja** (calidad 2) |
+- **Cómo se evita:** (a) las consultas del tablero que leen `kpi_values` filtran `regla = 'q0'` (la regla vigente, tomada del catálogo; si algún día cambia, el tablero muestra solo las filas de la regla nueva); (b) como el tag cambia la **clave**, las filas nuevas **no pueden chocar** con las viejas. Esto importaba: las filas viejas del turno 14:00, día 07/11 y semana 02/11 tenían exactamente la misma clave que las filas definitivas que Node-RED escribe al cerrar esos períodos, y con claves repetidas vuelve el problema de lecturas inestables. No se borró nada; la alternativa, si se quiere la tabla limpia, es borrarlas desde InfluxDB (filas sin `regla`).
+- Se eligió el **tag** en vez de una fecha de corte porque una fecha no sirve para turno, día y semana (sus filas nuevas tienen marcas de tiempo anteriores a cualquier corte razonable) y además no evita el choque de claves.
+
+**4. Reconstrucción de acumuladores (`herramientas/reconstruir_kpis.py`).** Al cambiar la regla, los períodos que estaban abiertos tenían acumuladores calculados con la regla vieja. Con Node-RED detenido, la herramienta los reconstruyó desde `raw_variables` con el **mismo código de Node-RED** (`aqm.js`) y escribió la fila de la hora 20:00 con la regla nueva. Coincidencia de muestras al reconstruir: hora 23, turno 130, día 130, semana 130 (igual a lo guardado). Copia de seguridad del estado en `nodered/userdir/context/global/global.json.respaldo-*`.
+
+## Verificaciones pedidas
+
+**(1) `ALERT_MAIL_TO` con varias direcciones.** Resuelto y probado (sin enviar mails, con el parser real de `nodemailer` y direcciones de ejemplo): **coma funciona** (`a@x, b@y` → 2 destinatarios en el sobre SMTP), también `;` y nombres (`Ana <a@x>`). **Con solo espacios se pierde la segunda dirección sin avisar** (`nodemailer` se queda con la primera). Se blindó: `mail_preparar` normaliza `;` y espacios a comas (prueba automática). Aplica igual a `REPORTE_MAIL_TO`. El `.env` actual tiene una sola dirección en `ALERT_MAIL_TO` (se comprobó solo la presencia de coma, no el valor).
+
+**(2) Período que cierra con Node-RED apagado o PC suspendida.** Ocurrió de verdad: Node-RED murió el **07/11 21:42** (al terminar la sesión) y volvió el **08/11 20:30** (**22 h 48 min** sin medir). Qué pasó y qué hace el sistema:
+- **Períodos abiertos:** cierran **al primer ciclo después del corte**, con **las muestras que tenían** (se ve en `muestras`): día 07/11 con 130, turno T2 con 130 (le faltaron las 21:42–22:00), hora 21:00 con 23. Los períodos **sin ningún dato** (todas las horas entre el corte y la vuelta) **no generan filas**: no hay filas inventadas ni en cero. La semana siguió abierta (corta lunes).
+- **Aviso al usuario de los indicadores parciales:** `tiempo_fuera_rango_ph` se **extrapola** a la duración completa del período (fórmula definida), así que un día con 130 muestras da 88,6 min; hay que leerlo junto con `muestras`.
+- **Bomba en falla al apagarse (corregido hoy):** el detector habría informado «normalizada, estuvo en falla 23,5 horas». Ahora, si pasan más de 30 min entre dos mediciones (`ALERTAS.corte_medicion_s`), la falla abierta se cierra con la **duración observada** (20 min en el caso real) marcada «fin no observado» y un aviso `SIN DATOS: se cortó la medición con la bomba EQ01 en falla`; si la bomba sigue en falla al volver, avisa una falla nueva. Evidencia real en `events` (`08/11 20:30`, `duracion_s = 1200`, «corte de 82080 s»). Tres pruebas automáticas.
+- **Reporte de las 06:00:** si Node-RED está apagado a esa hora, **ese reporte no se manda después** (lo dispara solo el cron; no hay recuperación). Si vuelve más tarde, el día anterior cierra parcial y el reporte del día siguiente lo incluye (probado).
+- **El generador:** el primer ciclo tras el corte usa la hora real (regla de «llegué tarde»); no se rellenan los ciclos perdidos (**quedan huecos en `raw_variables`**).
+- **Para no depender de esto en la demo:** dejar la PC sin suspenderse y usar `corrida_continua.sh` (ver README).
+
+**(3) ¿El tablero filtraba las filas de desarrollo?** **No lo hacía** (solo excluía los períodos abiertos con `cerrado = true`, y una hora de desarrollo con `cerrado = true` podía aparecer). **Ahora sí para `kpi_values`**, con `regla = 'q0'` (punto 3 de arriba). **Para `raw_variables` y `events` no se filtra**: los datos del 07/11 (4 ciclos fuera de grilla a las 19:57, fallas provocadas y mails de prueba) son datos simulados que solo se ven si el rango incluye esa tarde; con el rango por defecto (6 h) y el conteo de 12 h ya no aparecen el 12/11.
+
+**Corrida continua:** la instancia que dejé corriendo el 07/11 **no sobrevivió** al fin de la sesión (murió a las 21:42). Se relanzó el 08/11 a las 20:30 con `corrida_continua.sh` (modo normal, fallas aleatorias, mails silenciados). Para el 12/11 hay que dejarla corriendo en la PC de la presentación y sin suspender.
 
 ## Herramientas de verificación (sin mostrar secretos)
 
 - `herramientas/consulta_sql.py`: SQL contra InfluxDB (Flight SQL) con el token de `.env`. `.venv/bin/python herramientas/consulta_sql.py "SELECT ..."`. `.venv/` está dentro del proyecto (ignorado por git). Se eligió la opción (a) pedida: **funcionó**, no hizo falta DBRP/InfluxQL.
 - `herramientas/construir_dashboard.py --probar N`: regenera el dashboard y **ejecuta cada consulta contra la base real**.
 - `herramientas/cruzar_kpis.py`: cruza los KPIs de Node-RED contra un recálculo independiente sobre `raw_variables`.
+- `herramientas/reconstruir_kpis.py`: reconstruye los acumuladores de los períodos abiertos y escribe las filas de los cerrados desde `raw_variables` (con Node-RED detenido; sin `--aplicar` solo muestra el plan).
 - `nodered/pruebas/probar.js`: 56 pruebas de la lógica con reloj simulado (sin red): generador, KPIs en 9 días simulados, bomba, EQ02/EQ03, reporte, interruptores.
 
 ## Hallazgos técnicos que conviene saber (comprobados contra la base real)
@@ -189,6 +235,6 @@ Una instancia de Node-RED arrancada con `corrida_continua.sh` (modo normal 120 s
 4. **Probar en la PC del compañero** con `docs/migracion_otra_pc.md` (y detener ésta antes).
 5. **Dejar la corrida continua ≥ 12 h antes del 12/11** (`bash nodered/corrida_continua.sh --con-mails` si querés mails en el historial) y, el día de la defensa, apretar *Mails SIN marca (presentación)*.
 6. **Revisar la decisión de diseño de los KPIs** (arriba) y decirme si la aceptás.
-7. **Decidir `KPI.calidad_minima`** (pH ciego a las excursiones: tabla y diff en «Revisión del tablero», punto 2) y **si aplico el piso del Z-score** (punto 5). Y **reimportar el JSON** del tablero (mismo UID: Grafana ofrece reemplazarlo).
+7. **Reimportar el JSON** del tablero (mismo UID: Grafana ofrece reemplazarlo) después de los cambios del 08/11.
 8. **Después de la presentación:** revocar el token de InfluxDB y la contraseña de aplicación de Gmail (`docs/migracion_otra_pc.md`, sección 5).
 9. Un archivo suelto: hay un `.txt` versionado en esta carpeta (copia del `.env.example` viejo, sin secretos, que subió el script de descargas). No lo toqué; podés borrarlo.

@@ -37,13 +37,17 @@ module.exports = {
     },
 
     // Que muestras entran en los indicadores (KPIs): las de calidad >= calidad_minima.
-    //   2 = solo calidad 2 (valor actual, el que se definio en la Fase 3)
-    //   1 = calidad 1 y 2 (igual que las alertas) | 0 = todas las muestras
-    // Ojo: con el modelo de calidad del generador, los valores en zona de alarma salen con calidad 1 o 0
+    //   0 = todas las muestras (VALOR ACTUAL, decidido el 08/11/2026)
+    //   1 = calidad 1 y 2 (igual que las alertas) | 2 = solo calidad 2 (regla original de la Fase 3)
+    // Las ALERTAS siguen descartando la calidad 0 (ver PROGRESO.md): un aviso se dispara con UNA lectura, y una lectura
+    // inverosimil podria ser un sensor fallado; un indicador resume muchas lecturas y debe reflejar las excursiones del proceso.
+    // Motivo: con el modelo de calidad del generador, los valores en zona de alarma salen con calidad 1 o 0
     // (ver docs/jerarquia_ISA95.md, seccion 4), asi que con 2 los indicadores no ven las excursiones.
-    KPI: { calidad_minima: 2 },
+    // Cada fila de kpi_values lleva el tag `regla` (q0, q1 o q2) con la regla con la que se calculo.
+    KPI: { calidad_minima: 0 },
 
     ALERTAS: {
+        corte_medicion_s: 1800,         // si pasan mas de 30 min entre dos mediciones (Node-RED apagado, PC suspendida) se considera un CORTE
         rearme_s: 60,                   // segundos seguidos en normal para dar la falla de la bomba por terminada
         cooldown_normal_s: 1800,        // minimo entre dos mails por la misma variable de EQ02/EQ03
         cooldown_demo_s: 60

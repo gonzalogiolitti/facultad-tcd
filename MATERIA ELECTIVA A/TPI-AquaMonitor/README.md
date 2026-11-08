@@ -103,7 +103,7 @@ cp .env.example .env   # y completar los valores con un editor de texto
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_SECURE` | `smtp.gmail.com` / `587` / `false` (STARTTLS). El nodo de mail está configurado para el 587 |
 | `SMTP_USER` | tu cuenta de Gmail que envía los avisos |
 | `SMTP_PASSWORD` | **secreto**: contraseña de aplicación de 16 letras |
-| `ALERT_MAIL_FROM` / `ALERT_MAIL_TO` / `REPORTE_MAIL_TO` | remitente, destinatario de las alertas y del reporte |
+| `ALERT_MAIL_FROM` / `ALERT_MAIL_TO` / `REPORTE_MAIL_TO` | remitente, destinatario(s) de las alertas y del reporte. **Varias direcciones: separadas por coma** (`a@x.com, b@y.com`) |
 | `GEN_INTERVALO_S`, `GEN_INTERVALO_DEMO_S`, `ALERTA_REARME_S`, `ALERTA_COOLDOWN_S`, `ALERTA_COOLDOWN_DEMO_S` | opcionales (valores por defecto: 120, 15, 60, 1800, 60) |
 
 `.env` está en `.gitignore`: **nunca** se sube a GitHub. Los dos secretos solo viven ahí.
@@ -160,7 +160,7 @@ Corre en segundo plano (log en `nodered/userdir/nodered.log`). Hay que dejar la 
 | Measurement | Qué es | Tags | Campos | `time` |
 |---|---|---|---|---|
 | `raw_variables` | una fila por variable y por medición (15 por ciclo) | `planta`, `area`, `equipo`, `variable`, `unit`, `tag` | `value` (decimal), `quality` (entero 0/1/2) | instante de la medición |
-| `kpi_values` | un indicador de un período **ya cerrado** | `equipo`, `kpi`, `periodo` (hora/turno/dia/semana), `unit`, `turno` (T1/T2/T3, solo en turnos) | `value`, `muestras`, `cerrado` | **inicio del período** |
+| `kpi_values` | un indicador de un período **ya cerrado** | `equipo`, `kpi`, `periodo` (hora/turno/dia/semana), `regla` (q0/q1/q2: calidad mínima usada), `unit`, `turno` (T1/T2/T3, solo en turnos) | `value`, `muestras`, `cerrado` | **inicio del período** |
 | `events` | fallas, normalizaciones, alertas y fallas provocadas | `equipo`, `event_type`, `severity`, `motivo` | `value`, `detalle`, `duracion_s` | instante del evento |
 
 `event_type`: `BOMBA_FALLA`, `BOMBA_NORMALIZADA`, `UMBRAL_CRITICO`, `UMBRAL_ADVERTENCIA`, `ANOMALIA_INYECTADA`.
@@ -176,7 +176,7 @@ SELECT count(*) FROM events WHERE event_type = 'BOMBA_FALLA' AND time > now() - 
 
 ## 9. Indicadores (KPIs)
 
-Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.calidad_minima` (hoy 2, en `nodered/userdir/aqm/catalogo.js`; ver `PROGRESO.md`):
+Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.calidad_minima` (hoy **0**, es decir todas, en `nodered/userdir/aqm/catalogo.js`; las **alertas** siguen descartando la calidad 0; motivo en `PROGRESO.md`):
 
 | Equipo | Indicador | Fórmula | Unidad |
 |---|---|---|---|
@@ -189,6 +189,7 @@ Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.cali
 
 **Períodos (hora Argentina):** hora en punto · turno (T1 06-14, T2 14-22, T3 22-06) · día (00:00 a 24:00) · semana (lunes a domingo).
 **Cómo se guardan:** Node-RED va acumulando las muestras de cada período abierto (el acumulador se guarda en disco: sobrevive a un reinicio) y, **cuando el período termina, escribe una fila por indicador, una sola vez**, con la hora de *inicio* del período. El **período en curso** lo calcula el tablero con SQL directamente sobre `raw_variables` (con `date_bin`).
+**Si Node-RED está apagado (o la PC suspendida):** los períodos abiertos cierran al primer ciclo después de volver, con las muestras que tenían (ver la columna `muestras`); los períodos sin datos no generan filas; el reporte de las 06:00 de ese día no se manda; y una falla de la bomba abierta se cierra con la duración observada como `SIN DATOS`. Quedan huecos en `raw_variables`.
 *Por qué así:* InfluxDB no permite reescribir una fila de forma confiable; al leer datos recién reescritos puede devolver una versión vieja. Escribir cada período una sola vez evita el problema (ver `PROGRESO.md`).
 
 ## 10. Avisos por mail
@@ -230,6 +231,7 @@ python3 -m venv .venv && .venv/bin/pip install influxdb3-python
 .venv/bin/python herramientas/consulta_sql.py "SELECT count(*) FROM raw_variables"      # SQL contra InfluxDB (lee el token de .env)
 .venv/bin/python herramientas/construir_dashboard.py --probar 6                         # regenera el dashboard y prueba sus 32 consultas
 .venv/bin/python herramientas/cruzar_kpis.py                                             # cruza los KPIs de Node-RED con un recálculo independiente
+.venv/bin/python herramientas/reconstruir_kpis.py [--aplicar]                            # reconstruye acumuladores y períodos cerrados desde raw_variables (Node-RED detenido)
 ```
 
 ## 14. Pasar el sistema a otra computadora

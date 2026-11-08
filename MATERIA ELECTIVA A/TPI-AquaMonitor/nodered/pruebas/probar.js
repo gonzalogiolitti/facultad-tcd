@@ -242,7 +242,7 @@ console.log('\n[3] Indicadores (KPIs)');
     // --- recalculo independiente sobre las lecturas crudas ---
     const media = (a) => a.reduce((x, y) => x + y, 0) / a.length;
     const dsm = (a) => { const m = media(a); return Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / (a.length - 1)); };
-    const buenas = (g, ini, eq, va) => crudas.filter((c) => A.inicioPeriodo(g, c.ts) === ini).map((c) => c.lecturas.find((l) => l.equipo === eq && l.variable === va)).filter((l) => l.quality === 2).map((l) => l.value);
+    const buenas = (g, ini, eq, va) => crudas.filter((c) => A.inicioPeriodo(g, c.ts) === ini).map((c) => c.lecturas.find((l) => l.equipo === eq && l.variable === va)).filter((l) => l.quality >= C.KPI.calidad_minima).map((l) => l.value);
     const valorFila = (g, ini, eq, kpi) => Number(filas.get([eq, kpi, g, ini].join('|')).campos.value);
     ['hora', 'turno', 'dia'].forEach((g) => {
         const ini = A.inicioPeriodo(g, inicio + 3 * 86400000 + 5 * 3600000 + 37 * 60000);   // un periodo ya cerrado, lejos de los bordes
@@ -312,13 +312,54 @@ console.log('\n[3] Indicadores (KPIs)');
         const r = cerrarConPhReal(1);
         assert.strictEqual(r.n, 8); assert.ok(Math.abs(r.fuera - 15) < 0.01, 'tiempo fuera = ' + r.fuera);
     });
-    prueba('solo cuentan las lecturas de calidad 2', () => {
+    prueba('con calidad_minima = 2 solo cuentan las lecturas de calidad 2 (regla original)', () => {
+        const previa = C.KPI.calidad_minima; C.KPI.calidad_minima = 2;
+        try {
         const W = nuevoMundo({}); const ts = Date.UTC(2026, 10, 7, 20, 10, 0);
         const L = (v, q) => [{ equipo: 'EQ03', variable: 'PH', value: v, quality: q, ts }];
         W.run.kpi_calcular({ ts, lecturas: L(7.0, 2) });
         W.run.kpi_calcular({ ts: ts + 120000, lecturas: L(1.0, 1) });                          // pH 1,0 de calidad 1: no cuenta
         const ls = lineasDe(W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 7, 21, 0, 0), lecturas: L(7.0, 2) })).map(parseLP).filter((p) => p.tags.periodo === 'hora' && p.tags.kpi === 'tiempo_fuera_rango_ph');
         assert.strictEqual(ls[0].campos.value, '0'); assert.strictEqual(ls[0].campos.muestras, '1i');
+        } finally { C.KPI.calidad_minima = previa; }
+    });
+    prueba('la regla vigente del catalogo es calidad_minima = 0 y cada fila de KPI lleva el tag regla=q0', () => {
+        assert.strictEqual(C.KPI.calidad_minima, 0);
+        const W = nuevoMundo({}); const t0 = Date.UTC(2026, 10, 7, 20, 56, 0);
+        const mk = (ts, q) => ({ ts, lecturas: [{ equipo: 'EQ03', variable: 'PH', value: 9.0, quality: q, ts }] });
+        W.run.kpi_calcular(mk(t0, 0)); W.run.kpi_calcular(mk(t0 + 120000, 0));
+        const ls = lineasDe(W.run.kpi_calcular(mk(Date.UTC(2026, 10, 7, 21, 0, 0), 2))).map(parseLP).filter((p) => p.tags.periodo === 'hora');
+        assert.ok(ls.length === 2 && ls.every((p) => p.tags.regla === 'q0'));
+        assert.strictEqual(ls.find((p) => p.tags.kpi === 'tiempo_fuera_rango_ph').campos.muestras, '2i');   // las 2 muestras de calidad 0 SI cuentan
+    });
+    // ---- Node-RED apagado (o PC suspendida) mientras un periodo cierra ----
+    const lectOk = (ts) => { const L = []; Object.keys(C.EQUIPOS).forEach((eq) => Object.keys(C.EQUIPOS[eq].variables).forEach((va) => L.push({ equipo: eq, variable: va, value: C.EQUIPOS[eq].variables[va].normal, quality: 2, ts }))); return L; };
+    prueba('apagado varias horas: el periodo abierto cierra CON LAS MUESTRAS QUE TENIA al primer ciclo despues; los periodos sin ningun dato no generan filas', () => {
+        const W = nuevoMundo({});
+        W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 7, 23, 56, 0), lecturas: lectOk(0) });                    // 20:56 ART
+        W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 7, 23, 58, 0), lecturas: lectOk(0) });                    // 20:58 ART
+        // ... Node-RED apagado de 21:00 a 23:09 ART (se saltean las horas 21:00 y 22:00 enteras) ...
+        const ls = lineasDe(W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 8, 2, 10, 0), lecturas: lectOk(0) })).map(parseLP);   // 23:10 ART
+        const hora = ls.filter((p) => p.tags.periodo === 'hora');
+        assert.strictEqual(new Set(hora.map((p) => p.ts)).size, 1, 'solo cierra la hora 20:00 (las horas 21:00 y 22:00 no tienen datos)');
+        assert.strictEqual(hora[0].ts, Date.UTC(2026, 10, 7, 23, 0, 0));
+        assert.ok(hora.every((p) => p.campos.muestras === '2i'), 'cierra con las 2 muestras que tenia');
+        const turno = ls.filter((p) => p.tags.periodo === 'turno');                                            // T2 (14-22) cierra; T3 (22-06) en curso
+        assert.ok(turno.length === 6 && turno.every((p) => p.tags.turno === 'T2'));
+        assert.strictEqual(W.global.get('kpi_estado').hora.inicio, Date.UTC(2026, 10, 8, 2, 0, 0));          // la hora 23:00 ART queda abierta
+    });
+    prueba('apagado a traves de la medianoche: el dia anterior cierra parcial al volver y el reporte de las 06:00 lo usa', () => {
+        const W = nuevoMundo({ REPORTE_MAIL_TO: 'r@x' });
+        W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 8, 2, 50, 0), lecturas: lectOk(0) });                     // 07/11 23:50 ART
+        W.run.kpi_calcular({ ts: Date.UTC(2026, 10, 8, 8, 0, 0), lecturas: lectOk(0) });                      // vuelve a las 05:00 ART del 08/11
+        RELOJ.ahora = Date.UTC(2026, 10, 8, 9, 0, 0);                                                          // 06:00 ART: corre el reporte
+        const r = W.run.reporte_armar({ prueba: false });
+        assert.ok(/07\/11\/2026/.test(r.topic) && /eficiencia_energetica/.test(r.payload), 'el reporte del 07/11 trae KPIs (parciales)');
+    });
+    prueba('si Node-RED esta apagado a las 06:00 el reporte de ese dia NO se manda despues (no hay recuperacion automatica)', () => {
+        // el reporte lo dispara solo el cron de las 06:00: la funcion no tiene memoria de "pendientes"
+        const src = flows.find((n) => n.id === 'reporte_armar').func;
+        assert.ok(!/pendiente|reintento|ultimo_reporte/i.test(src));
     });
 }
 
@@ -333,7 +374,7 @@ console.log('\n[4] Alerta de la bomba EQ01');
     // secuencia de ciclos: cada paso = [valores, repeticiones]
     const correr = (M, pasos, dt) => {
         const eventos = []; let ts = Date.UTC(2026, 10, 7, 20, 0, 0);
-        pasos.forEach(([o, n]) => { for (let i = 0; i < n; i++) { ts += (dt || 120) * 1000; const r = M.run.bomba_detectar({ lecturas: mkLect(ts, o), ts }); if (r) { const av = M.run.bomba_avisos(r); eventos.push({ tipo: r.evento.tipo, ts, mail: av[0], evento: av[1] }); } } });
+        pasos.forEach(([o, n]) => { for (let i = 0; i < n; i++) { ts += (dt || 120) * 1000; const r = M.run.bomba_detectar({ lecturas: mkLect(ts, o), ts }); if (r) r[0].forEach((m) => { const av = M.run.bomba_avisos(m); eventos.push({ tipo: m.evento.tipo, ts, mail: av[0], evento: av[1] }); }); } });
         return eventos;
     };
     const VIB = { v: { VIBRACION: 8.4 } }, OK = {}, PARADA = { v: { CAUDAL: 0.3, PRESION: 0.04, CORRIENTE: 0.2, VIBRACION: 0.03, ESTADO: 0 } };
@@ -380,6 +421,32 @@ console.log('\n[4] Alerta de la bomba EQ01');
         assert.ok(/Hora: \d\d\/\d\d\/\d{4} \d\d:\d\d:\d\d/.test(ev[0].mail.payload), ev[0].mail.payload);
         assert.ok(/^\[PRUEBA\] FALLA/.test(ev[0].mail.topic));
     });
+    prueba('CORTE de la medicion con la bomba en falla (Node-RED apagado 23,5 h): se cierra con la duracion OBSERVADA, no con 23,5 h', () => {
+        const M = nuevoMundo({}); const T = Date.UTC(2026, 10, 7, 23, 0, 0);
+        const paso = (ts, o) => { const r = M.run.bomba_detectar({ lecturas: mkLect(ts, o), ts }); return r ? r[0].map((m) => ({ ev: m.evento, av: M.run.bomba_avisos(m) })) : []; };
+        const e0 = paso(T, VIB); paso(T + 120000, VIB);                                    // falla 2 ciclos (240 s observados)
+        const vuelta = T + 23.5 * 3600 * 1000;                                              // ... Node-RED apagado ...
+        const e1 = paso(vuelta, OK);
+        assert.strictEqual(e0.length, 1); assert.strictEqual(e1.length, 1);
+        assert.ok(e1[0].ev.interrumpido && e1[0].ev.duracionS === 120, 'duracion observada: ' + e1[0].ev.duracionS + ' s');
+        assert.ok(/SIN DATOS/.test(e1[0].av[0].topic) && /no se pudo observar/.test(e1[0].av[0].payload));
+        assert.ok(/duracion_s=120i/.test(e1[0].av[1].payload) && /fin no observado/.test(e1[0].av[1].payload));
+        // despues del corte la bomba esta normal y sin falla abierta: no hay otro aviso
+        assert.strictEqual(paso(vuelta + 120000, OK).length, 0);
+    });
+    prueba('CORTE con la bomba que SIGUE en falla al volver: cierra la anterior (interrumpida) y avisa una falla NUEVA', () => {
+        const M = nuevoMundo({}); const T = Date.UTC(2026, 10, 7, 23, 0, 0);
+        const paso = (ts, o) => { const r = M.run.bomba_detectar({ lecturas: mkLect(ts, o), ts }); return r ? r[0].map((m) => m.evento) : []; };
+        paso(T, VIB);
+        const ev = paso(T + 5 * 3600 * 1000, VIB);
+        assert.deepStrictEqual(ev.map((e) => e.tipo + (e.interrumpido ? '*' : '')), ['normalizada*', 'falla']);
+    });
+    prueba('un corte corto (menos de 30 min) NO cierra la falla: es el funcionamiento normal', () => {
+        const M = nuevoMundo({}); const T = Date.UTC(2026, 10, 7, 23, 0, 0);
+        const paso = (ts, o) => { const r = M.run.bomba_detectar({ lecturas: mkLect(ts, o), ts }); return r ? r[0].map((m) => m.evento.tipo) : []; };
+        paso(T, VIB);
+        assert.deepStrictEqual(paso(T + 20 * 60000, VIB), []);
+    });
     prueba('el boton de prueba manda mail marcado [PRUEBA] y NO escribe en la base', () => {
         const M = nuevoMundo({}); RELOJ.ahora = Date.UTC(2026, 10, 7, 20, 5, 22);
         const av = M.run.bomba_avisos(M.run.bomba_prueba({}));
@@ -388,7 +455,7 @@ console.log('\n[4] Alerta de la bomba EQ01');
     });
     prueba('interruptor: sin marca [PRUEBA] el asunto queda limpio', () => {
         const M = nuevoMundo({}); M.run.marcas({ accion: 'marcar_off' });
-        const r = M.run.bomba_detectar({ lecturas: mkLect(1e12, VIB), ts: 1e12 }); const av = M.run.bomba_avisos(r);
+        const r = M.run.bomba_detectar({ lecturas: mkLect(1e12, VIB), ts: 1e12 }); const av = M.run.bomba_avisos(r[0][0]);
         assert.strictEqual(av[0].topic, 'FALLA: Bomba de ingreso EQ01');
     });
 }
@@ -454,6 +521,15 @@ prueba('con "silenciar" el mail no se envia; al activar vuelve a enviarse', () =
     assert.strictEqual(M.run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'alerta' }), null);
     M.run.marcas({ accion: 'silenciar_off' });
     assert.strictEqual(M.run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'alerta' }).to, 'x@y.z');
+});
+prueba('varios destinatarios: coma, punto y coma, solo espacios y nombres se normalizan a una lista separada por comas', () => {
+    const para = (v) => nuevoMundo({ ALERT_MAIL_TO: v }).run.mail_preparar({ topic: 'a', payload: 'b', tipo: 'alerta' }).to;
+    assert.strictEqual(para('uno@x.com,dos@y.org'), 'uno@x.com, dos@y.org');
+    assert.strictEqual(para('uno@x.com; dos@y.org'), 'uno@x.com, dos@y.org');
+    assert.strictEqual(para('uno@x.com dos@y.org'), 'uno@x.com, dos@y.org');       // antes: se perdia la segunda
+    assert.strictEqual(para(' uno@x.com , dos@y.org , '), 'uno@x.com, dos@y.org');
+    assert.strictEqual(para('Ana Perez <uno@x.com>, dos@y.org'), 'Ana Perez <uno@x.com>, dos@y.org');
+    assert.strictEqual(para('solo@x.com'), 'solo@x.com');
 });
 prueba('el reporte va a REPORTE_MAIL_TO y las alertas a ALERT_MAIL_TO', () => {
     const M = nuevoMundo({ ALERT_MAIL_TO: 'alerta@x', REPORTE_MAIL_TO: 'reporte@x', ALERT_MAIL_FROM: 'de@x' });

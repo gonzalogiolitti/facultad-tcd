@@ -45,6 +45,7 @@ Node-RED guarda su memoria de trabajo en `nodered/userdir/context/` (ignorada po
 | Modo del generador, fallas aleatorias, mails silenciados / marcados | vuelven a los valores por defecto: modo normal, fallas aleatorias apagadas, **mails activos** y marcados `[PRUEBA]` |
 
 Qué hacer:
+0. Si ya pasó un corte o se cambió la regla de calidad, `herramientas/reconstruir_kpis.py` (con Node-RED detenido) reconstruye los acumuladores de los períodos abiertos desde `raw_variables`.
 1. **Lo más simple:** hacer el cambio justo después de un cambio de turno (06:00, 14:00 o 22:00) o de un cambio de hora, así casi no hay períodos largos a medio acumular.
 2. Si se quiere conservar todo: detener la PC vieja con `bash nodered/parar.sh` (guarda el estado) y **copiar la carpeta `nodered/userdir/context/`** a la PC nueva antes de arrancar. No contiene secretos.
 3. En la PC nueva, después de arrancar, volver a poner los modos que se quieran (botones de la pestaña *01 Generador de datos* y de *03 Alerta bomba EQ01*), o usar `bash nodered/corrida_continua.sh`.

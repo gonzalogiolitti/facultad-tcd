@@ -21,7 +21,7 @@ deslizante) y **correlación**.
 - Para cada valor se toma la media y el desvío de las **20 muestras anteriores**. El *z-score* dice a cuántos desvíos de esa media está el valor.
 - Si |z| > 3 se marca como anomalía (en una distribución normal, solo ~0,3 % de los valores cae tan lejos por azar).
 - Las bandas del gráfico son media ± 3 desvíos. Un corte de la bomba da z de −50 o más; un pH forzado, z de −4.
-- Limitación: con una ventana corta puede marcar de vez en cuando un punto normal (falsos positivos); por eso se exigen al menos 10 muestras previas.
+- Limitación: con una ventana corta puede marcar de vez en cuando un punto normal (falsos positivos); por eso se exigen al menos 10 muestras previas y el desvío tiene un **piso del 1 % de la media** (en variables de muy poco ruido, como el pH, un desvío de 0,1 con desvío típico de 0,035 daba z = 3 sin ser una falla).
 - En SQL: `avg(value) OVER w`, `stddev(value) OVER w` con `WINDOW w AS (PARTITION BY equipo, variable ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)`.
 
 **Correlación: "¿dos variables se mueven juntas?"**

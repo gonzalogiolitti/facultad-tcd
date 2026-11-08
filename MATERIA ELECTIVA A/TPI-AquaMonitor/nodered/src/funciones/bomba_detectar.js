@@ -10,6 +10,19 @@ const ts = msg.ts;
 const r = A.motivosBomba(msg.lecturas || []);
 
 const est = global.get('bomba_estado') || { enFalla: false, desde: null, okDesde: null, fallas: 0 };
+const eventos = [];
+
+// CORTE DE LA MEDICION: si pasaron mas de corte_medicion_s entre dos mediciones (Node-RED apagado o PC suspendida) y la bomba
+// estaba en falla, no se sabe cuando termino. Se cierra con la duracion REALMENTE observada (hasta la ultima medicion antes
+// del corte) y se marca como "interrumpido"; asi no se informa una falla de 23 horas que en realidad no se observo.
+const corteS = A.CATALOGO.ALERTAS.corte_medicion_s;
+if (est.enFalla && est.ultimoTs && ts - est.ultimoTs > corteS * 1000) {
+    eventos.push({ tipo: 'normalizada', ts: est.ultimoTs, duracionS: Math.round((est.ultimoTs - est.desde) / 1000), interrumpido: true,
+                   corteS: Math.round((ts - est.ultimoTs) / 1000), valores: {} });
+    est.enFalla = false; est.desde = null; est.okDesde = null;
+}
+est.ultimoTs = ts;
+
 let evento = null;
 if (r.motivos.length > 0) {
     est.okDesde = null;
@@ -28,6 +41,8 @@ if (r.motivos.length > 0) {
         est.okDesde = null;
     }
 }
+if (evento) eventos.push(evento);
 global.set('bomba_estado', est);
 node.status(est.enFalla ? { fill: 'red', shape: 'dot', text: 'EN FALLA' + (est.okDesde ? ' (normalizando)' : '') } : { fill: 'green', shape: 'dot', text: 'normal | fallas: ' + est.fallas });
-return evento ? { evento } : null;
+if (!eventos.length) return null;
+return [eventos.map((e) => ({ evento: e }))];     // uno o dos mensajes (cierre por corte + falla nueva si sigue fallando)

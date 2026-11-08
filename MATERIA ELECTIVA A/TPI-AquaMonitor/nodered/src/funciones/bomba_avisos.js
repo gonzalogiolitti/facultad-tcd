@@ -18,6 +18,14 @@ if (e.tipo === 'falla') {
     lineaEvento = 'events,equipo=EQ01,event_type=BOMBA_FALLA,severity=critical,motivo=' + A.escTag(motivo) +
         ' value=' + Number(e.motivos[0].valor) + ',detalle="' + A.escStr(e.motivos.map((m) => m.texto).join('; ')) + '" ' + e.ts;
     clave = 'BOMBA_FALLA';
+} else if (e.interrumpido) {
+    const horas = (s) => (s >= 3600 ? (s / 3600).toFixed(1).replace('.', ',') + ' h' : Math.round(s / 60) + ' min');
+    asunto = 'SIN DATOS: se cortó la medición con la bomba EQ01 en falla';
+    texto = 'SE CORTÓ LA MEDICIÓN CON LA BOMBA EN FALLA\n' + quien + '\nÚltima medición antes del corte: ' + hora + '\nLa medición estuvo cortada ' + horas(e.corteS) +
+        ' (Node-RED apagado o PC suspendida).\nLa falla duró al menos ' + horas(e.duracionS) + '; no se pudo observar cuándo terminó.';
+    lineaEvento = 'events,equipo=EQ01,event_type=BOMBA_NORMALIZADA,severity=info value=' + Number(e.duracionS) +
+        ',duracion_s=' + Math.round(e.duracionS) + 'i,detalle="' + A.escStr('falla cerrada por corte de la medicion (fin no observado); corte de ' + e.corteS + ' s') + '" ' + e.ts;
+    clave = 'BOMBA_NORMALIZADA';
 } else {
     const dur = e.duracionS + ' segundos (' + Math.floor(e.duracionS / 60) + ' min ' + (e.duracionS % 60) + ' s)';
     asunto = 'NORMALIZADA: Bomba de ingreso EQ01';

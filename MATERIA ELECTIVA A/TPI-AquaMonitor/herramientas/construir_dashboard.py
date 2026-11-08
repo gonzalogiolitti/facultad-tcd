@@ -25,6 +25,8 @@ ART = "INTERVAL '3 hours'"
 CAT = json.loads(subprocess.check_output(
     ["node", "-e", "console.log(JSON.stringify(require('./nodered/userdir/aqm/catalogo.js')))"], cwd=RAIZ, text=True))
 
+CALIDAD_MIN = CAT["KPI"]["calidad_minima"]   # misma regla que usa Node-RED para los indicadores
+REGLA = "q%d" % CALIDAD_MIN                  # tag `regla` de las filas de kpi_values calculadas con la regla vigente
 CONSULTAS = []   # (titulo, sql) para --probar
 _id = [0]
 VERDE, NARANJA, ROJO = "green", "orange", "red"
@@ -156,12 +158,12 @@ def sql_serie(eq, variables, limites=None):
 def sql_kpi(eq, kpis):
     """Indicadores CERRADOS (filas de kpi_values, una por periodo) del equipo, para el periodo elegido en $periodo."""
     cols = ["max(CASE WHEN kpi='%s' THEN value END) AS \"%s\"" % (k, n) for k, n in kpis]
-    return ("SELECT time,\n  " + ",\n  ".join(cols) + "\nFROM kpi_values\nWHERE equipo='@EQ@' AND periodo='$periodo' AND cerrado = true AND $__timeFilter(time)\n"
-            "GROUP BY time\nORDER BY time").replace("@EQ@", eq)
+    return ("SELECT time,\n  " + ",\n  ".join(cols) + "\nFROM kpi_values\nWHERE equipo='@EQ@' AND periodo='$periodo' AND cerrado = true AND regla = '@REGLA@' AND $__timeFilter(time)\n"
+            "GROUP BY time\nORDER BY time").replace("@EQ@", eq).replace("@REGLA@", REGLA)
 
 
 SQL_KPI_CERRADOS = """WITH ult AS (
-  SELECT equipo, kpi, periodo, max(time) AS t FROM kpi_values WHERE cerrado = true GROUP BY equipo, kpi, periodo
+  SELECT equipo, kpi, periodo, max(time) AS t FROM kpi_values WHERE cerrado = true AND regla = '@REGLA@' GROUP BY equipo, kpi, periodo
 )
 SELECT k.equipo AS "Equipo", k.kpi AS "Indicador", max(k.unit) AS "Unidad",
   max(CASE WHEN k.periodo='hora' THEN k.value END) AS "Hora",
@@ -169,14 +171,13 @@ SELECT k.equipo AS "Equipo", k.kpi AS "Indicador", max(k.unit) AS "Unidad",
   max(CASE WHEN k.periodo='dia' THEN k.value END) AS "Día",
   max(CASE WHEN k.periodo='semana' THEN k.value END) AS "Semana"
 FROM kpi_values k JOIN ult u ON k.equipo=u.equipo AND k.kpi=u.kpi AND k.periodo=u.periodo AND k.time=u.t
-WHERE k.cerrado = true
+WHERE k.cerrado = true AND k.regla = '@REGLA@'
 GROUP BY k.equipo, k.kpi
-ORDER BY k.equipo, k.kpi"""
+ORDER BY k.equipo, k.kpi""".replace("@REGLA@", REGLA)
 
 # Periodo EN CURSO: se calcula con SQL desde raw_variables (misma formula que el flow de Node-RED).
 # date_bin con origen en hora Argentina: hora en punto | turno = 01:00/09:00/17:00 UTC (22/06/14 ART) |
 # dia = 03:00 UTC (00:00 ART) | semana = lunes 03:00 UTC (1970-01-05 fue lunes).
-CALIDAD_MIN = CAT["KPI"]["calidad_minima"]   # misma regla que usa Node-RED para los indicadores
 _ARMS = [("hora", "1 hour", "1970-01-01T00:00:00Z"), ("turno", "8 hours", "1970-01-01T01:00:00Z"),
          ("dia", "1 day", "1970-01-01T03:00:00Z"), ("semana", "7 days", "1970-01-05T03:00:00Z")]
 SQL_KPI_EN_CURSO = ("WITH b AS (\n" + "\n  UNION ALL\n".join(
@@ -239,6 +240,8 @@ FROM t
 WHERE n >= 10
 ORDER BY abs(100 * pendiente_h / nullif(media, 0)) DESC"""
 
+# Piso del desvio: se usa max(sd de la ventana, 1 % de la media de la ventana) en vez del sd a secas, para que variables de muy
+# poco ruido (por ejemplo el pH) no se marquen como anomalia por desvios de centesimas.
 SQL_ZSCORE_SERIE = """WITH s AS (
   SELECT time, value,
          avg(value) OVER w AS mu, stddev(value) OVER w AS sd, count(value) OVER w AS n
@@ -248,9 +251,9 @@ SQL_ZSCORE_SERIE = """WITH s AS (
 )
 SELECT time, value AS "Vibración (mm/s)",
   mu AS "Media de la ventana",
-  mu + 3 * sd AS "Banda superior (+3σ)",
-  mu - 3 * sd AS "Banda inferior (-3σ)",
-  CASE WHEN n >= 10 AND sd > 0 AND abs((value - mu) / sd) > 3 THEN value END AS "Anomalía"
+  mu + 3 * greatest(sd, 0.01 * abs(mu)) AS "Banda superior (+3σ)",
+  mu - 3 * greatest(sd, 0.01 * abs(mu)) AS "Banda inferior (-3σ)",
+  CASE WHEN n >= 10 AND sd > 0 AND abs(value - mu) > 3 * greatest(sd, 0.01 * abs(mu)) THEN value END AS "Anomalía"
 FROM s
 ORDER BY time"""
 
@@ -262,9 +265,9 @@ SQL_ZSCORE_TABLA = ("""WITH s AS (
   WINDOW w AS (PARTITION BY equipo, variable ORDER BY time ROWS BETWEEN 20 PRECEDING AND 1 PRECEDING)
 )
 SELECT to_char(time - %s, %s) AS "Hora (Argentina)", equipo AS "Equipo", variable AS "Variable",
-  value AS "Valor", round(mu, 3) AS "Media de la ventana", round((value - mu) / sd, 2) AS "Z-score"
+  value AS "Valor", round(mu, 3) AS "Media de la ventana", round((value - mu) / greatest(sd, 0.01 * abs(mu)), 2) AS "Z-score"
 FROM s
-WHERE n >= 10 AND sd > 0 AND abs((value - mu) / sd) > 3
+WHERE n >= 10 AND sd > 0 AND abs(value - mu) > 3 * greatest(sd, 0.01 * abs(mu))
 ORDER BY time DESC
 LIMIT 100""") % (ART, FMT_ART)
 
@@ -387,7 +390,7 @@ def construir():
                                     {"id": "custom.pointSize", "value": 10}, {"id": "color", "value": {"mode": "fixed", "fixedColor": ROJO}}]},
                                     {"matcher": {"id": "byRegexp", "options": "Banda.*"}, "properties": [{"id": "custom.lineStyle", "value": {"fill": "dash", "dash": [6, 6]}},
                                     {"id": "custom.fillOpacity", "value": 0}]}],
-                         descripcion="Cada valor se compara con la media y el desvío de las 20 muestras anteriores. Si se aleja más de 3 desvíos (|z| > 3) se marca como anomalía."))
+                         descripcion="Cada valor se compara con la media y el desvío de las 20 muestras anteriores. Si se aleja más de 3 desvíos (|z| > 3) se marca como anomalía. El desvío tiene un piso del 1 % de la media (en variables de muy poco ruido, como el pH, evita marcar desvíos de centésimas)."))
     P.append(panel_tabla("Anomalías detectadas (|z| > 3) en todas las variables", SQL_ZSCORE_TABLA, grid(12, y, 12, 9),
                          anchos={"Hora (Argentina)": 180, "Equipo": 90, "Variable": 130, "Valor": 100, "Media de la ventana": 170, "Z-score": 100})); y += 9
     P.append(panel_tabla("Correlación entre variables (r de Pearson)", SQL_CORRELACION, grid(0, y, 24, 8),
