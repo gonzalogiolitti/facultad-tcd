@@ -3,7 +3,7 @@
  * Arma nodered/userdir/flows.json a partir del codigo de nodered/src/funciones/*.js.
  *   node nodered/construir_flows.js
  * Asi el codigo de cada nodo "function" vive en un archivo normal (se puede leer, versionar
- * y probar con nodered/pruebas/probar.js) y el flows.json siempre sale igual.
+ * y probar con pruebas/probar.js) y el flows.json siempre sale igual.
  * Despues de regenerarlo hay que reiniciar Node-RED (o hacer Deploy si se importa).
  */
 const fs = require('fs');

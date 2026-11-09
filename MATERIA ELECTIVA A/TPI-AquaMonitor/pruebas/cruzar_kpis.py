@@ -2,14 +2,14 @@
 hecho en Python sobre las mediciones crudas (raw_variables) guardadas en InfluxDB, hasta el mismo instante.
 
     1) En Node-RED, boton "Calcular KPIs de PRUEBA ahora" (pestaña 02 Indicadores)
-    2) .venv/bin/python herramientas/cruzar_kpis.py
+    2) .venv/bin/python pruebas/cruzar_kpis.py
 """
 import datetime
 import statistics
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from consulta_sql import ejecutar  # noqa: E402
 
 import json

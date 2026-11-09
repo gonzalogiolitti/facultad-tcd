@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Detiene Node-RED de forma segura y ordenada:   bash nodered/parar.sh
+# Detiene Node-RED de forma segura y ordenada:   bash scripts/parar.sh
 # Usa el PID guardado por arrancar.sh (no mata procesos por nombre) y le pide a Node-RED que se cierre:
 # asi guarda en disco los acumuladores de los indicadores y el estado de las alertas.
 set -uo pipefail
 AQUI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PIDFILE="$AQUI/userdir/.nodered.pid"
+RAIZ="$(dirname "$AQUI")"
+PIDFILE="$RAIZ/nodered/userdir/.nodered.pid"
 
 if [ ! -f "$PIDFILE" ]; then
     echo "No hay PID guardado: Node-RED no fue arrancado con arrancar.sh (o ya se detuvo)."

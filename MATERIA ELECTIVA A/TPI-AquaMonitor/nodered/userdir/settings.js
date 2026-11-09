@@ -1,7 +1,7 @@
 /**
  * Configuracion de Node-RED para AquaMonitor.
  * Los secretos (token de InfluxDB, contrasena del mail) NO estan aca:
- * se leen de las variables de entorno que carga nodered/arrancar.sh desde .env.
+ * se leen de las variables de entorno que carga scripts/arrancar.sh desde .env.
  */
 module.exports = {
     flowFile: 'flows.json',

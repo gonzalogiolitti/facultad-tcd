@@ -4,9 +4,9 @@ Este documento describe los métodos de análisis del TPI: **tendencia**, **dete
 deslizante) y **correlación**.
 
 > **Stack vigente:** los tres métodos se resuelven con **consultas SQL en InfluxDB, dentro de los paneles de Grafana**
-> (sección "Análisis" del tablero; las consultas están en [`herramientas/construir_dashboard.py`](../herramientas/construir_dashboard.py)).
-> La versión en Python (Z-score y Bandas de Bollinger en [`analisis/anomaly_detection.py`](../analisis/anomaly_detection.py)) y la de QuestDB
-> ([`questdb/queries/anomaly_detection.sql`](../questdb/queries/anomaly_detection.sql)) quedaron como **respaldo**.
+> (sección "Análisis" del tablero; las consultas están en [`scripts/construir_dashboard.py`](../scripts/construir_dashboard.py)).
+> La versión en Python (Z-score y Bandas de Bollinger en [`analisis/anomaly_detection.py`](../_archivo/stack_anterior/analisis/anomaly_detection.py)) y la de QuestDB
+> ([`questdb/queries/anomaly_detection.sql`](../_archivo/stack_anterior/questdb/queries/anomaly_detection.sql)) quedaron como **respaldo**.
 
 ## 0. Los tres métodos explicados simple (stack vigente)
 

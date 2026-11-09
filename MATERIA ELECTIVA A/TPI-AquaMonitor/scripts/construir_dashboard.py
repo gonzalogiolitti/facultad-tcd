@@ -1,12 +1,12 @@
 """Genera grafana/aquamonitor_dashboard.json (dashboard importable en Grafana Cloud).
 
-    python3 herramientas/construir_dashboard.py            # solo genera el JSON
-    .venv/bin/python herramientas/construir_dashboard.py --probar [HORAS]
+    python3 scripts/construir_dashboard.py            # solo genera el JSON
+    .venv/bin/python scripts/construir_dashboard.py --probar [HORAS]
                                                            # genera el JSON y ejecuta CADA consulta contra InfluxDB
 
 Todas las consultas son SQL de InfluxDB 3 y estan definidas aca, en un solo lugar.
 Los umbrales de colores salen de nodered/userdir/aqm/catalogo.js (fuente unica).
-Reglas que se comprobaron contra la base real (ver PROGRESO.md):
+Reglas que se comprobaron contra la base real (ver docs/PROGRESO.md):
   - hora Argentina = time - INTERVAL '3 hours' (AT TIME ZONE NO convierte en InfluxDB 3);
   - los macros de Grafana usados son solo $__timeFilter(time) y la variable $periodo.
 No lleva credenciales: solo el UID de la fuente de datos (fg3ly9z1iz668b, "influxdb").
@@ -423,7 +423,7 @@ def construir():
 
 
 def probar(horas):
-    sys.path.insert(0, str(RAIZ / "herramientas"))
+    sys.path.insert(0, str(RAIZ / "scripts"))
     from consulta_sql import ejecutar  # noqa: E402
     malas = 0
     for titulo, sql in CONSULTAS:

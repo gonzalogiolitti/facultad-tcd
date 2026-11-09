@@ -1,7 +1,9 @@
 > **RESPALDO - stack anterior (no es el que se presenta).**
 > Este documento es el README original del TPI, que usaba simulador de Python + MQTT (EMQX) + QuestDB + Docker.
 > Se conserva sin cambios de contenido por si hay que volver a ese camino (el código sigue en `simulador/`, `questdb/`,
-> `analisis/`, `docker-compose.yml` y `nodered/flows/`). **El stack vigente (el de la cátedra) está en el [README principal](../README.md).**
+> `analisis/`, `docker-compose.yml` y `nodered/flows/`). **El stack vigente (el de la cátedra) está en el [README principal](../../README.md).**
+>
+> **Rutas:** esta carpeta (`_archivo/stack_anterior/`) conserva los nombres originales (`simulador/`, `analisis/`, `questdb/`) y reubica `nodered/flows/` en `nodered_flows/`, `grafana/dashboards/` en `grafana_dashboards_questdb/`, `docker-compose.yml` en `docker/` y `.env.example` en `.env.example.questdb`. Los comandos de abajo se ejecutan **desde esta carpeta** (por ejemplo `python -m simulador.simulator`); el `.env` se busca hacia arriba y usa el de la raíz del proyecto.
 
 ---
 
@@ -151,7 +153,7 @@ docker run -p 9000:9000 -p 8812:8812 questdb/questdb:latest
    node-red
    ```
 3. En la UI: **☰ → Import →** pegar el contenido de
-   [`nodered/flows.json`](nodered/flows.json) (los 4 flows a la vez) o cada
+   [`nodered/flows.json`](nodered_flows/flows.json) (los 4 flows a la vez) o cada
    archivo de `nodered/flows/` por separado.
 4. Completar las **credenciales** de los nodos `mqtt-broker` (usuario/clave de
    EMQX) y `e-mail` (usuario/clave SMTP) — no viajan en el JSON.
@@ -174,7 +176,7 @@ Flujo de datos resultante:
    - TLS/SSL Mode: `require` (Cloud) o `disable` (local)
    - Version: 15.x  ·  (opcional) nombrar el uid `questdb`
 2. **Dashboards → Import** cada archivo de
-   [`grafana/dashboards/`](grafana/dashboards/).
+   [`grafana/dashboards/`](grafana_dashboards_questdb).
 3. Al importar, seleccionar el datasource PostgreSQL creado (variable
    `${datasource}` del dashboard).
 
@@ -212,7 +214,7 @@ Abrir Grafana → dashboard *Operativo Tiempo Real* (refresh 30 s).
 - **Topic MQTT:** `AQM/PTEF/<EQ>/<VARIABLE>`
 - Áreas: `CAPT` (EQ01), `FILT` (EQ02), `REAC` (EQ03)
 
-Detalle completo en [`docs/jerarquia_ISA95.md`](docs/jerarquia_ISA95.md).
+Detalle completo en [`docs/jerarquia_ISA95.md`](../../docs/jerarquia_ISA95.md).
 
 ## 7. Payload MQTT
 
@@ -223,7 +225,7 @@ Detalle completo en [`docs/jerarquia_ISA95.md`](docs/jerarquia_ISA95.md).
 
 ## 8. Variables de entorno
 
-Todas se definen en `.env` (ver [`.env.example`](.env.example)). Resumen:
+Todas se definen en `.env` (ver [`.env.example`](../../.env.example)). Resumen:
 
 | Grupo | Variables |
 |---|---|
@@ -237,8 +239,8 @@ Todas se definen en `.env` (ver [`.env.example`](.env.example)). Resumen:
 
 ## 9. Documentación
 
-- [`docs/planificacion.md`](docs/planificacion.md) — objetivo, alcance, cronograma, riesgos
-- [`docs/jerarquia_ISA95.md`](docs/jerarquia_ISA95.md) — 15 variables, tags, niveles, umbrales
-- [`docs/metodologia_anomalias.md`](docs/metodologia_anomalias.md) — Z-score y Bollinger
-- [`docs/modelo_negocio_canvas.md`](docs/modelo_negocio_canvas.md) — Business Model Canvas SaaS
-- [`presentacion/README.md`](presentacion/README.md) — guion de defensa
+- [`docs/planificacion.md`](../../docs/planificacion.md) — objetivo, alcance, cronograma, riesgos
+- [`docs/jerarquia_ISA95.md`](../../docs/jerarquia_ISA95.md) — 15 variables, tags, niveles, umbrales
+- [`docs/metodologia_anomalias.md`](../../docs/metodologia_anomalias.md) — Z-score y Bollinger
+- [`docs/modelo_negocio_canvas.md`](../../docs/modelo_negocio_canvas.md) — Business Model Canvas SaaS
+- [`presentacion/README.md`](../../docs/presentacion.md) — guion de defensa

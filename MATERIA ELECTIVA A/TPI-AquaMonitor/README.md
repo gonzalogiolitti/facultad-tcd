@@ -6,7 +6,7 @@ Trabajo Práctico Integrador de *Ciencia de Datos en Sistemas Industriales* (mat
 **Stack (el de la cátedra):** Node-RED (instalado con npm, local) → **InfluxDB Cloud** (consultas SQL) → **Grafana Cloud**, con avisos por **mail** (Gmail).
 Node-RED genera los datos simulados de 3 equipos (15 variables), calcula los indicadores, avisa las fallas y escribe todo en InfluxDB. Grafana solo consulta.
 
-> Lo anterior (simulador de Python, MQTT/EMQX, QuestDB, Docker, Telegram) **quedó como respaldo**, sin borrar: ver [`docs/respaldo_stack_anterior.md`](docs/respaldo_stack_anterior.md).
+> Lo anterior (simulador de Python, MQTT/EMQX, QuestDB, Docker, Telegram) **quedó como respaldo**, sin borrar: ver [`docs/respaldo_stack_anterior.md`](_archivo/stack_anterior/README_stack_anterior.md).
 
 ---
 
@@ -45,20 +45,20 @@ Pirámide ISA-95: instrumentación simulada (niveles 0-1) → Node-RED (nivel 2)
 ```
 TPI-AquaMonitor/
 ├── README.md                    esta guía
-├── PROGRESO.md                  registro de lo hecho, cómo se probó y qué falta
 ├── .env.example                 plantilla de variables (copiar a .env; el .env NO se sube)
 ├── nodered/
-│   ├── arrancar.sh · parar.sh · corrida_continua.sh · arrancar.ps1     scripts de arranque y parada
-│   ├── construir_flows.js       arma userdir/flows.json a partir de src/funciones/*.js
+│   ├── userdir/                 la carpeta de Node-RED: settings.js, flows.json, aqm/catalogo.js (ÚNICA fuente de umbrales)
 │   ├── src/funciones/*.js       el código de cada nodo "function" (legible y probado)
-│   ├── pruebas/probar.js        pruebas automáticas de la lógica (sin red)
-│   └── userdir/                 carpeta de Node-RED: settings.js, flows.json, aqm/catalogo.js (UNICA fuente de umbrales)
+│   └── construir_flows.js       arma userdir/flows.json a partir de src/funciones/
 ├── grafana/aquamonitor_dashboard.json   dashboard para importar en Grafana Cloud
-├── herramientas/                consulta_sql.py, construir_dashboard.py, cruzar_kpis.py (necesitan Python, ver sección 13)
-├── docs/                        planificación, jerarquía ISA-95, metodología, migración, respaldo del stack anterior
-├── presentacion/README.md       guion y checklist de la defensa
-└── (respaldo) simulador/ questdb/ analisis/ docker-compose.yml nodered/flows/ grafana/dashboards/
+├── sql/                         consultas de verificación y operación (.sql)
+├── scripts/                     arrancar.sh · parar.sh · corrida_continua.sh · arrancar.ps1 · herramientas de Python (consulta_sql, construir_dashboard, reconstruir_kpis)
+├── pruebas/                     probar.js (pruebas de la lógica) y cruzar_kpis.py
+├── docs/                        MAPA_DEL_REPO, PROGRESO, presentación, planificación, jerarquía ISA-95, metodología, migración
+└── _archivo/stack_anterior/     respaldo del primer diseño (simulador de Python, MQTT, QuestDB, Docker, Telegram)
 ```
+
+Si es la primera vez que abrís el repo: [`docs/MAPA_DEL_REPO.md`](docs/MAPA_DEL_REPO.md).
 
 ## 4. Requisitos y cuentas
 
@@ -111,13 +111,13 @@ cp .env.example .env   # y completar los valores con un editor de texto
 ### 5.3 Arrancar
 
 ```bash
-bash nodered/arrancar.sh                 # queda en esta terminal; Ctrl+C lo detiene
+bash scripts/arrancar.sh                 # queda en esta terminal; Ctrl+C lo detiene
 ```
 
-Abrir <http://localhost:1880> (para usar otro puerto: `PORT=1881 bash nodered/arrancar.sh`). Se ven 8 pestañas (00 a 07). El generador empieza solo a los pocos segundos.
-Windows nativo: `powershell -ExecutionPolicy Bypass -File nodered\arrancar.ps1` (**no probado**: se desarrolló en WSL).
+Abrir <http://localhost:1880> (para usar otro puerto: `PORT=1881 bash scripts/arrancar.sh`). Se ven 8 pestañas (00 a 07). El generador empieza solo a los pocos segundos.
+Windows nativo: `powershell -ExecutionPolicy Bypass -File scripts\arrancar.ps1` (**no probado**: se desarrolló en WSL).
 
-Detener desde otra terminal, de forma segura (guarda el estado en disco): `bash nodered/parar.sh`.
+Detener desde otra terminal, de forma segura (guarda el estado en disco): `bash scripts/parar.sh`.
 
 ### 5.4 Comprobar que escribe en InfluxDB y que manda mail
 
@@ -148,9 +148,9 @@ Detener desde otra terminal, de forma segura (guarda el estado en disco): `bash 
 ## 7. Corrida continua (dejar el sistema generando varias horas)
 
 ```bash
-bash nodered/corrida_continua.sh              # modo normal, fallas aleatorias, SIN mails
-bash nodered/corrida_continua.sh --con-mails  # igual, pero con los avisos por mail
-bash nodered/parar.sh                         # detener
+bash scripts/corrida_continua.sh              # modo normal, fallas aleatorias, SIN mails
+bash scripts/corrida_continua.sh --con-mails  # igual, pero con los avisos por mail
+bash scripts/parar.sh                         # detener
 ```
 
 Corre en segundo plano (log en `nodered/userdir/nodered.log`). Hay que dejar la PC **encendida y sin suspenderse** (si se suspende, el historial queda con huecos) y recordar que **solo una computadora puede generar datos a la vez contra el mismo bucket**.
@@ -176,7 +176,7 @@ SELECT count(*) FROM events WHERE event_type = 'BOMBA_FALLA' AND time > now() - 
 
 ## 9. Indicadores (KPIs)
 
-Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.calidad_minima` (hoy **0**, es decir todas, en `nodered/userdir/aqm/catalogo.js`; las **alertas** siguen descartando la calidad 0; motivo en `PROGRESO.md`):
+Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.calidad_minima` (hoy **0**, es decir todas, en `nodered/userdir/aqm/catalogo.js`; las **alertas** siguen descartando la calidad 0; motivo en `docs/PROGRESO.md`):
 
 | Equipo | Indicador | Fórmula | Unidad |
 |---|---|---|---|
@@ -190,7 +190,7 @@ Dos por equipo, calculados por Node-RED con las muestras de calidad `>= KPI.cali
 **Períodos (hora Argentina):** hora en punto · turno (T1 06-14, T2 14-22, T3 22-06) · día (00:00 a 24:00) · semana (lunes a domingo).
 **Cómo se guardan:** Node-RED va acumulando las muestras de cada período abierto (el acumulador se guarda en disco: sobrevive a un reinicio) y, **cuando el período termina, escribe una fila por indicador, una sola vez**, con la hora de *inicio* del período. El **período en curso** lo calcula el tablero con SQL directamente sobre `raw_variables` (con `date_bin`).
 **Si Node-RED está apagado (o la PC suspendida):** los períodos abiertos cierran al primer ciclo después de volver, con las muestras que tenían (ver la columna `muestras`); los períodos sin datos no generan filas; el reporte de las 06:00 de ese día no se manda; y una falla de la bomba abierta se cierra con la duración observada como `SIN DATOS`. Quedan huecos en `raw_variables`.
-*Por qué así:* InfluxDB no permite reescribir una fila de forma confiable; al leer datos recién reescritos puede devolver una versión vieja. Escribir cada período una sola vez evita el problema (ver `PROGRESO.md`).
+*Por qué así:* InfluxDB no permite reescribir una fila de forma confiable; al leer datos recién reescritos puede devolver una versión vieja. Escribir cada período una sola vez evita el problema (ver `docs/PROGRESO.md`).
 
 ## 10. Avisos por mail
 
@@ -213,7 +213,7 @@ Cada falla y normalización se guarda en `events`. Interruptores (pestaña *03 A
 3. El tablero se abre con zona horaria `America/Argentina/Buenos_Aires` y refresco de **5 s**. El selector **Período de los indicadores** (arriba) elige hora, turno, día o semana.
 
 Contiene: estado general; sensores en vivo de los 3 equipos (colores según los umbrales); indicadores (período en curso por SQL y último período cerrado); fallas de la bomba (últimas 12 h, por hora, por motivo, última falla, tabla de eventos); y el análisis (sección 12).
-Todas las consultas SQL se probaron contra la base real con `herramientas/construir_dashboard.py --probar`. **La importación en Grafana no se pudo probar desde acá** (no hay acceso a tu Grafana): ver `PROGRESO.md`.
+Todas las consultas SQL se probaron contra la base real con `scripts/construir_dashboard.py --probar`. **La importación en Grafana no se pudo probar desde acá** (no hay acceso a tu Grafana): ver `docs/PROGRESO.md`.
 
 ## 12. Análisis (en SQL, dentro de Grafana)
 
@@ -225,13 +225,14 @@ Explicación sencilla de cada método: [`docs/metodologia_anomalias.md`](docs/me
 ## 13. Pruebas y herramientas de verificación (opcionales)
 
 ```bash
-node nodered/pruebas/probar.js           # pruebas de la lógica (generador, KPIs, alertas), con reloj simulado
+node pruebas/probar.js           # pruebas de la lógica (generador, KPIs, alertas), con reloj simulado
 node nodered/construir_flows.js          # regenera flows.json si se editó nodered/src/funciones/*.js (después reiniciar)
 python3 -m venv .venv && .venv/bin/pip install influxdb3-python
-.venv/bin/python herramientas/consulta_sql.py "SELECT count(*) FROM raw_variables"      # SQL contra InfluxDB (lee el token de .env)
-.venv/bin/python herramientas/construir_dashboard.py --probar 6                         # regenera el dashboard y prueba sus 32 consultas
-.venv/bin/python herramientas/cruzar_kpis.py                                             # cruza los KPIs de Node-RED con un recálculo independiente
-.venv/bin/python herramientas/reconstruir_kpis.py [--aplicar]                            # reconstruye acumuladores y períodos cerrados desde raw_variables (Node-RED detenido)
+.venv/bin/python scripts/consulta_sql.py "SELECT count(*) FROM raw_variables"      # SQL contra InfluxDB (lee el token de .env)
+.venv/bin/python scripts/consulta_sql.py -f sql/01_datos_por_variable.sql              # consultas de verificación ya armadas (ver sql/README.md)
+.venv/bin/python scripts/construir_dashboard.py --probar 6                         # regenera el dashboard y prueba sus 32 consultas
+.venv/bin/python pruebas/cruzar_kpis.py                                             # cruza los KPIs de Node-RED con un recálculo independiente
+.venv/bin/python scripts/reconstruir_kpis.py [--aplicar]                            # reconstruye acumuladores y períodos cerrados desde raw_variables (Node-RED detenido)
 ```
 
 ## 14. Pasar el sistema a otra computadora
@@ -247,11 +248,11 @@ Ver [`docs/migracion_otra_pc.md`](docs/migracion_otra_pc.md) (qué se copia, có
 | Escritura con `404` | `INFLUX_ORG` o `INFLUX_BUCKET` mal escritos |
 | El mail falla con `Invalid login` | hay que usar la **contraseña de aplicación** (16 letras), con verificación en 2 pasos activada |
 | Mail con `ENETUNREACH` | IPv6 en WSL2; el sistema reintenta solo. Si persiste, reiniciar Node-RED |
-| El puerto 1880 está ocupado | queda corriendo otra copia de Node-RED (o el contenedor Docker del respaldo): `bash nodered/parar.sh` o `docker compose stop nodered` |
+| El puerto 1880 está ocupado | queda corriendo otra copia de Node-RED (o el contenedor Docker del respaldo): `bash scripts/parar.sh` o `docker compose stop nodered` |
 | No llegan mails de fallas | mails silenciados: apretar `ACTIVAR mails` (o arrancar sin `--con-mails`) |
 | Los paneles de Grafana dicen *No data* | el generador está pausado o apagado; ver el panel *Antigüedad del dato* |
 | Hay datos duplicados / raros | hay **dos** computadoras generando contra el mismo bucket; dejar solo una |
-| Un panel de Grafana da error de consulta | abrirlo con *Edit* y ejecutar su SQL; compararlo con `herramientas/construir_dashboard.py` |
+| Un panel de Grafana da error de consulta | abrirlo con *Edit* y ejecutar su SQL; compararlo con `scripts/construir_dashboard.py` |
 
 ## 16. Seguridad
 

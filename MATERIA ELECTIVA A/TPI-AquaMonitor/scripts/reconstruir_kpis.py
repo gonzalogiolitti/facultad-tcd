@@ -6,11 +6,11 @@ estuvo apagado y perdio muestras, sirve para:
      muestras que hay en la base);
   2) calcular y escribir las filas de los periodos que YA cerraron (con el tag `regla` de la regla vigente).
 
-    .venv/bin/python herramientas/reconstruir_kpis.py                      # solo muestra el plan (no escribe nada)
-    .venv/bin/python herramientas/reconstruir_kpis.py --aplicar            # escribe (Node-RED tiene que estar DETENIDO)
+    .venv/bin/python scripts/reconstruir_kpis.py                      # solo muestra el plan (no escribe nada)
+    .venv/bin/python scripts/reconstruir_kpis.py --aplicar            # escribe (Node-RED tiene que estar DETENIDO)
     opciones: --desde 2026-11-07T23:00:00Z   primer instante a considerar para las filas de periodos cerrados
 
-Usa el mismo codigo que Node-RED (herramientas/_motor_kpi.js -> aqm.js). El token se lee de .env y no se imprime.
+Usa el mismo codigo que Node-RED (scripts/_motor_kpi.js -> aqm.js). El token se lee de .env y no se imprime.
 """
 import argparse
 import json
@@ -63,7 +63,7 @@ def main() -> int:
                  "ts": int(r["time"].timestamp() * 1000)} for r in tabla.to_pylist()]
     print("Mediciones leidas de raw_variables desde %s UTC: %d filas" % (iso_min, len(lecturas)))
 
-    node = subprocess.run(["node", str(RAIZ / "herramientas" / "_motor_kpi.js")], input=json.dumps(
+    node = subprocess.run(["node", str(RAIZ / "scripts" / "_motor_kpi.js")], input=json.dumps(
         {"lecturas": lecturas, "abiertos": abiertos, "desde": desde}), capture_output=True, text=True, cwd=RAIZ)
     if node.returncode != 0:
         print("ERROR en el motor de KPIs:", node.stderr[:400])
@@ -84,7 +84,7 @@ def main() -> int:
         print("\n(Modo plan: no se escribio nada. Agregar --aplicar con Node-RED detenido.)")
         return 0
     if nodered_corriendo():
-        print("\nNode-RED esta corriendo: detenerlo primero con  bash nodered/parar.sh")
+        print("\nNode-RED esta corriendo: detenerlo primero con  bash scripts/parar.sh")
         return 2
 
     if res["lineas"]:

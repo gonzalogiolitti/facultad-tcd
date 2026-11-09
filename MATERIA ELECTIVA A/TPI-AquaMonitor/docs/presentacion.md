@@ -32,7 +32,7 @@ Mostrar el diagrama del [`README.md`](../README.md) (sección 2) y las 8 pestañ
 ## 4. Demo en vivo (7 a 8 min)
 
 ### Antes de empezar (preparación, ver checklist)
-Sistema andando desde el día anterior con `bash nodered/corrida_continua.sh --con-mails` (historial real de varias horas), y los mails **sin marca** `[PRUEBA]` (botón *Mails SIN marca (presentación)*, pestaña 03).
+Sistema andando desde el día anterior con `bash scripts/corrida_continua.sh --con-mails` (historial real de varias horas), y los mails **sin marca** `[PRUEBA]` (botón *Mails SIN marca (presentación)*, pestaña 03).
 
 ### Paso a paso
 
@@ -53,8 +53,8 @@ Mientras se espera el paso 7, mostrar los indicadores y el análisis (sección 5
 
 ### Si algo falla durante la demo (plan B)
 - **No llega el mail:** mostrar el evento en la tabla de *Eventos* del tablero (la falla igual quedó registrada) y el botón de prueba; revisar `nodered.log`. Es probable que los mails estén silenciados: botón *ACTIVAR mails*.
-- **Grafana sin datos:** mirar *Antigüedad del dato*; si es grande, el generador está pausado o apagado (botón *Reanudar generador* o `bash nodered/corrida_continua.sh`).
-- **Node-RED no abre:** `bash nodered/arrancar.sh` y esperar unos 10 segundos.
+- **Grafana sin datos:** mirar *Antigüedad del dato*; si es grande, el generador está pausado o apagado (botón *Reanudar generador* o `bash scripts/corrida_continua.sh`).
+- **Node-RED no abre:** `bash scripts/arrancar.sh` y esperar unos 10 segundos.
 
 ## 5. Indicadores y análisis (4 min)
 
@@ -83,10 +83,10 @@ Canvas resumido ([`docs/modelo_negocio_canvas.md`](../docs/modelo_negocio_canvas
 
 **El día anterior**
 - [ ] PC con Node.js ≥ 22.9, repositorio en la rama `stack-catedra`, `npm install` hecho en `nodered/userdir`.
-- [ ] `.env` completo (se verifica sin mostrar valores: que `bash nodered/arrancar.sh` arranque y el botón de prueba de la pestaña 00 devuelva `204`).
-- [ ] `node nodered/pruebas/probar.js` → "todo OK".
-- [ ] `bash nodered/corrida_continua.sh --con-mails` arrancado **al menos 12 horas antes**, PC sin suspensión (configuración de energía en "nunca suspender").
-- [ ] Una sola computadora generando contra el bucket (la otra, apagada o detenida con `bash nodered/parar.sh`).
+- [ ] `.env` completo (se verifica sin mostrar valores: que `bash scripts/arrancar.sh` arranque y el botón de prueba de la pestaña 00 devuelva `204`).
+- [ ] `node pruebas/probar.js` → "todo OK".
+- [ ] `bash scripts/corrida_continua.sh --con-mails` arrancado **al menos 12 horas antes**, PC sin suspensión (configuración de energía en "nunca suspender").
+- [ ] Una sola computadora generando contra el bucket (la otra, apagada o detenida con `bash scripts/parar.sh`).
 - [ ] Dashboard importado en Grafana Cloud y mostrando datos; zona horaria Argentina; refresco 5 s.
 - [ ] Mail de prueba recibido (botón *Probar mail de falla [PRUEBA]*) y bandeja a la vista.
 - [ ] Botón *Mails SIN marca (presentación)* apretado y *ACTIVAR mails* si estaban silenciados.

@@ -16,11 +16,12 @@ env/
 .ruff_cache/
 
 # --- Salidas generadas ---
-analisis/outputs/*.csv
-analisis/outputs/*.png
+_archivo/stack_anterior/analisis/outputs/*.csv
+_archivo/stack_anterior/analisis/outputs/*.png
 *.log
 
 # --- Editores / SO ---
+*:Zone.Identifier
 .vscode/
 .idea/
 .DS_Store

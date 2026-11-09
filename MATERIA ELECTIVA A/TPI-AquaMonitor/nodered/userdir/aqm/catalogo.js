@@ -9,7 +9,7 @@
  *
  * Convencion de los umbrales: [minimo, maximo]. null = ese lado no aplica.
  * Una lectura "viola" el umbral si es menor que el minimo o mayor que el maximo.
- * (Es la misma informacion que docs/jerarquia_ISA95.md y simulador/config.py.)
+ * (Es la misma informacion que docs/jerarquia_ISA95.md y _archivo/stack_anterior/simulador/config.py.)
  */
 const NIVEL_CAMPO = 'Nivel 0 - Campo (instrumentación)';
 const NIVEL_CONTROL = 'Nivel 1 - Control (PLC/DCS)';
@@ -39,7 +39,7 @@ module.exports = {
     // Que muestras entran en los indicadores (KPIs): las de calidad >= calidad_minima.
     //   0 = todas las muestras (VALOR ACTUAL, decidido el 08/11/2026)
     //   1 = calidad 1 y 2 (igual que las alertas) | 2 = solo calidad 2 (regla original de la Fase 3)
-    // Las ALERTAS siguen descartando la calidad 0 (ver PROGRESO.md): un aviso se dispara con UNA lectura, y una lectura
+    // Las ALERTAS siguen descartando la calidad 0 (ver docs/PROGRESO.md): un aviso se dispara con UNA lectura, y una lectura
     // inverosimil podria ser un sensor fallado; un indicador resume muchas lecturas y debe reflejar las excursiones del proceso.
     // Motivo: con el modelo de calidad del generador, los valores en zona de alarma salen con calidad 1 o 0
     // (ver docs/jerarquia_ISA95.md, seccion 4), asi que con 2 los indicadores no ven las excursiones.
