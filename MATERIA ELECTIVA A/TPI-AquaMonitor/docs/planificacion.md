@@ -2,7 +2,7 @@
 
 > **Stack vigente (el de la cátedra):** Node-RED (npm, local) → InfluxDB Cloud (SQL) → Grafana Cloud, con avisos por mail.
 > El stack del primer diseño (simulador de Python, MQTT/EMQX, QuestDB, Docker, Telegram) quedó como **respaldo**, sin borrar:
-> ver [`respaldo_stack_anterior.md`](respaldo_stack_anterior.md). Donde este documento nombra esas piezas, se indica que son respaldo.
+> ver [`respaldo_stack_anterior.md`](../_archivo/stack_anterior/README_stack_anterior.md). Donde este documento nombra esas piezas, se indica que son respaldo.
 
 **Materia:** Ciencia de Datos en Sistemas Industriales
 **Trabajo Práctico Integrador** — sistema IIoT end-to-end para monitoreo de una
@@ -47,9 +47,9 @@ Grafana consulta con SQL. **Respaldo del primer diseño:** simulador de Python �
 | Base de datos | InfluxDB Cloud: `raw_variables`, `kpi_values`, `events` | ✔ |
 | Análisis | SQL en Grafana: tendencia, anomalías (Z-score), correlación | ✔ |
 | Tablero | `grafana/aquamonitor_dashboard.json` | ✔ (consultas probadas; importación sin probar) |
-| Documentación | `README.md`, `docs/`, `PROGRESO.md` | ✔ |
-| Presentación | `presentacion/README.md` — guion y checklist | ✔ |
-| *(respaldo)* Simulador, QuestDB, análisis en Python, Docker | `simulador/`, `questdb/`, `analisis/`, `docker-compose.yml` | conservado |
+| Documentación | `README.md`, `docs/` (con `PROGRESO.md` y `MAPA_DEL_REPO.md`) | ✔ |
+| Presentación | `docs/presentacion.md` — guion y checklist | ✔ |
+| *(respaldo)* Simulador, QuestDB, análisis en Python, Docker | `_archivo/stack_anterior/` | conservado |
 
 ## 4. Equipos y variables (resumen)
 
@@ -97,7 +97,7 @@ Se resuelven con **consultas SQL en Grafana** (ver [`metodologia_anomalias.md`](
 3. **Correlación** — `corr` (r de Pearson) entre pares de variables; pares clave: caudal↔corriente, caudal↔vibración,
    pH↔OD, presión diferencial↔eficiencia.
 
-*(Respaldo: la versión en Python con Bollinger, `numpy.polyfit` y matriz de correlación está en `analisis/`.)*
+*(Respaldo: la versión en Python con Bollinger, `numpy.polyfit` y matriz de correlación está en `_archivo/stack_anterior/analisis/`.)*
 
 ## 7. Fallas que se pueden provocar (demo)
 
@@ -124,7 +124,7 @@ Botones de la pestaña *01 Generador de datos* de Node-RED:
 | 6 | Tablero de Grafana Cloud | consultas probadas; importación a cargo del usuario |
 | 7 | Documentación, prueba desde cero y guía de migración | hecho |
 
-El detalle y la evidencia de cada fase están en [`PROGRESO.md`](../PROGRESO.md).
+El detalle y la evidencia de cada fase están en [`PROGRESO.md`](PROGRESO.md).
 
 ## 9. Riesgos y mitigaciones
 

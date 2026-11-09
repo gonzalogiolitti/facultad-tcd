@@ -26,7 +26,7 @@ services:
     ports:
       - "127.0.0.1:1880:1880"
     env_file:
-      - path: .env
+      - path: ../../../.env
         required: false
     environment:
       TZ: America/Argentina/Buenos_Aires

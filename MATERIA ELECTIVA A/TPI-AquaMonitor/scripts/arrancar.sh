@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Arranca Node-RED para AquaMonitor (desde cualquier carpeta):
-#     bash nodered/arrancar.sh            # queda en esta terminal (Ctrl+C para detener)
+#     bash scripts/arrancar.sh            # queda en esta terminal (Ctrl+C para detener)
 # Las variables de .env se cargan con `node --env-file`, que NO ejecuta el archivo
 # como script de shell (una contrasena con espacios o simbolos no rompe nada) y
 # no imprime ningun valor.
@@ -10,7 +10,7 @@ set -euo pipefail
 AQUI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RAIZ="$(dirname "$AQUI")"
 ENV_FILE="$RAIZ/.env"
-USERDIR="$AQUI/userdir"
+USERDIR="$RAIZ/nodered/userdir"
 PIDFILE="$USERDIR/.nodered.pid"
 
 # nvm (si esta instalado) para usar la version de Node de esta maquina
@@ -27,7 +27,7 @@ fi
 # Evita arrancar dos veces (dos copias generarian datos duplicados)
 es_nodered() { [ -r "/proc/$1/comm" ] && { [ "$(cat "/proc/$1/comm")" = "node-red" ] || tr '\0' ' ' < "/proc/$1/cmdline" | grep -q "red.js"; }; }
 if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null && es_nodered "$(cat "$PIDFILE")"; then
-    echo "Node-RED ya esta corriendo (PID $(cat "$PIDFILE")). Para detenerlo:  bash nodered/parar.sh" >&2
+    echo "Node-RED ya esta corriendo (PID $(cat "$PIDFILE")). Para detenerlo:  bash scripts/parar.sh" >&2
     exit 1
 fi
 

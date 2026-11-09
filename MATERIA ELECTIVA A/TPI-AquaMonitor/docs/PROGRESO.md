@@ -19,6 +19,24 @@ Lo anterior (simulador de Python, EMQX/MQTT, QuestDB, Docker, Telegram) quedó c
 | 6. Tablero de Grafana | **hecho con reservas** | importado por el usuario; corregidos los paneles de texto, las columnas y el eje de «Fallas por hora» (hay que **reimportar** el JSON); 32 consultas probadas contra la base |
 | 7. Documentación y prueba desde cero | **hecho con reservas** | prueba desde cero hecha en WSL; Windows nativo sin probar |
 
+## Reorganización del repositorio (08/11, Fase B)
+
+Se reordenó la carpeta para que sea fácil de recorrer y de migrar. **No cambió ninguna lógica del sistema.** Tag de seguridad: `antes-de-reorganizar` (commit `15b9f5a`); rama de trabajo: `reorganizar`; movimientos con `git mv` (historia conservada).
+
+| Antes | Ahora |
+|---|---|
+| `nodered/{arrancar,parar,corrida_continua}.sh`, `arrancar.ps1` | `scripts/` |
+| `herramientas/*` (`consulta_sql`, `construir_dashboard`, `reconstruir_kpis`, `_motor_kpi.js`) | `scripts/` |
+| `nodered/pruebas/probar.js`, `herramientas/cruzar_kpis.py` | `pruebas/` |
+| `PROGRESO.md`, `presentacion/README.md` | `docs/PROGRESO.md`, `docs/presentacion.md` |
+| `simulador/`, `analisis/`, `questdb/`, `docker-compose.yml`, `nodered/Dockerfile`, `nodered/flows*`, `grafana/dashboards/`, entregas sueltas de la alerta con Telegram, `.env.example.questdb`, `.txt`, `docs/respaldo_stack_anterior.md` | `_archivo/stack_anterior/` |
+| (nuevo) | `sql/` (11 consultas de verificación), `docs/MAPA_DEL_REPO.md` |
+| `nodered/userdir/`, `nodered/src/`, `nodered/construir_flows.js`, `grafana/aquamonitor_dashboard.json` | sin cambios de lugar |
+
+**Verificado después de mover:** pruebas automáticas 67/67 (`node pruebas/probar.js`); el tablero regenerado con `scripts/construir_dashboard.py` es **idéntico byte a byte** al anterior (mismo UID `aquamonitor-planta`, 37 paneles, mismos títulos); las **32 consultas** ejecutan sin error contra InfluxDB; las 11 consultas de `sql/` ejecutan; `scripts/arrancar.sh`, `scripts/parar.sh` y `scripts/corrida_continua.sh` funcionan desde la nueva ubicación; todos los enlaces relativos de los `.md` apuntan a archivos que existen. En `nodered/userdir/` solo se cambiaron 3 líneas de **comentarios** (`settings.js`, `aqm/catalogo.js`); ningún estado ni credencial.
+Se borró solo `herramientas/__pycache__` (caché regenerable). El `.gitignore` ya tenía `__pycache__/` y ahora ignora también `*:Zone.Identifier`. Las rutas de scripts, pruebas y documentos se actualizaron; el `docker-compose.yml` archivado apunta a `../../../.env`.
+**Pendiente (Fase C, a pedido del usuario):** extraer el proyecto a un repo propio con `git filter-repo` (probado en una copia descartable el 08/11: 15 commits de `stack-catedra`, 82 archivos, sin credenciales en la historia).
+
 ## ⚠️ Decisión de diseño que cambió respecto de lo aprobado (leer primero)
 
 **Qué se había aprobado:** calcular los KPIs en Node-RED y *reescribir la misma fila* del período en curso hasta que cierre ("una sola fila por período, sobrescribiendo la misma clave").
@@ -51,7 +69,7 @@ Para el turno T2 (14:00 ART en adelante), mismas lecturas de pH, según la regla
 -    KPI: { calidad_minima: 2 },
 +    KPI: { calidad_minima: 0 },
 ```
-Después: reiniciar Node-RED, `python3 herramientas/construir_dashboard.py` y reimportar el JSON. Las filas ya cerradas (hoy 20:00–21:00) quedan con la regla vieja. Alternativa de fondo: cambiar el modelo de calidad del generador para que marque solo fallas de sensor (cambia el comportamiento aprobado en la Fase 2).
+Después: reiniciar Node-RED, `python3 scripts/construir_dashboard.py` y reimportar el JSON. Las filas ya cerradas (hoy 20:00–21:00) quedan con la regla vieja. Alternativa de fondo: cambiar el modelo de calidad del generador para que marque solo fallas de sensor (cambia el comportamiento aprobado en la Fase 2).
 
 **3. VIBRACION 90 muestras vs 105 en las otras variables.** Causa comprobada: el panel «Tendencia de todas las variables» usa solo calidad 2, y durante `VIB_HIGH` la vibración salió con **calidad 1 (9 muestras) y calidad 0 (6 muestras)**: 15 en total, exactamente la diferencia 105 − 90. **No es la parada de la bomba**: en una parada todas las variables salen con calidad 2 (el modelo las fuerza). En `raw_variables` la vibración tiene las mismas filas que las demás (101 de 101 en la consulta del momento).
 ¿Se pierde información en los KPIs? **La vibración no entra en ningún KPI**, así que por ella no. Pero **sí hay pérdida en otras dos variables**: en la misma consulta, `PH` tiene 8 muestras fuera de calidad 2 (de 101) y `PRES_DIF` 1; las demás variables, ninguna. En la primera hora real cerrada se ve: `desviacion_ph` y `tiempo_fuera_rango_ph` con 92 muestras, `presion_diferencial_media` con 99, el resto con 100. Es el mismo asunto del punto 2.
@@ -78,7 +96,7 @@ Pruebas automáticas: 59/59 (se agregaron 3 con la secuencia real de pH). Consul
 
 - Probado: 67 pruebas automáticas (incluye la secuencia real de pH y el tag `regla`).
 
-**2. Piso del 1 % en el Z-score** (`herramientas/construir_dashboard.py`): el desvío efectivo es `max(sd de la ventana, 1 % de la media de la ventana)`. Verificado con datos reales (40 h): el panel de anomalías pasa a **2 anomalías de pH** (antes aparecían las de desvíos de centésimas) y conserva las fallas reales.
+**2. Piso del 1 % en el Z-score** (`scripts/construir_dashboard.py`): el desvío efectivo es `max(sd de la ventana, 1 % de la media de la ventana)`. Verificado con datos reales (40 h): el panel de anomalías pasa a **2 anomalías de pH** (antes aparecían las de desvíos de centésimas) y conserva las fallas reales.
 
 **3. Filas de `kpi_values` con la regla vieja y cómo no ensucian el tablero.** Hay **30 filas sin tag `regla`** (todas de la etapa de desarrollo o de la regla vieja):
 | Período (hora ART) | Estado | Filas | Muestras | Origen |
@@ -91,7 +109,7 @@ Pruebas automáticas: 59/59 (se agregaron 3 con la secuencia real de pH). Consul
 - **Cómo se evita:** (a) las consultas del tablero que leen `kpi_values` filtran `regla = 'q0'` (la regla vigente, tomada del catálogo; si algún día cambia, el tablero muestra solo las filas de la regla nueva); (b) como el tag cambia la **clave**, las filas nuevas **no pueden chocar** con las viejas. Esto importaba: las filas viejas del turno 14:00, día 07/11 y semana 02/11 tenían exactamente la misma clave que las filas definitivas que Node-RED escribe al cerrar esos períodos, y con claves repetidas vuelve el problema de lecturas inestables. No se borró nada; la alternativa, si se quiere la tabla limpia, es borrarlas desde InfluxDB (filas sin `regla`).
 - Se eligió el **tag** en vez de una fecha de corte porque una fecha no sirve para turno, día y semana (sus filas nuevas tienen marcas de tiempo anteriores a cualquier corte razonable) y además no evita el choque de claves.
 
-**4. Reconstrucción de acumuladores (`herramientas/reconstruir_kpis.py`).** Al cambiar la regla, los períodos que estaban abiertos tenían acumuladores calculados con la regla vieja. Con Node-RED detenido, la herramienta los reconstruyó desde `raw_variables` con el **mismo código de Node-RED** (`aqm.js`) y escribió la fila de la hora 20:00 con la regla nueva. Coincidencia de muestras al reconstruir: hora 23, turno 130, día 130, semana 130 (igual a lo guardado). Copia de seguridad del estado en `nodered/userdir/context/global/global.json.respaldo-*`.
+**4. Reconstrucción de acumuladores (`scripts/reconstruir_kpis.py`).** Al cambiar la regla, los períodos que estaban abiertos tenían acumuladores calculados con la regla vieja. Con Node-RED detenido, la herramienta los reconstruyó desde `raw_variables` con el **mismo código de Node-RED** (`aqm.js`) y escribió la fila de la hora 20:00 con la regla nueva. Coincidencia de muestras al reconstruir: hora 23, turno 130, día 130, semana 130 (igual a lo guardado). Copia de seguridad del estado en `nodered/userdir/context/global/global.json.respaldo-*`.
 
 ## Verificaciones pedidas
 
@@ -111,11 +129,11 @@ Pruebas automáticas: 59/59 (se agregaron 3 con la secuencia real de pH). Consul
 
 ## Herramientas de verificación (sin mostrar secretos)
 
-- `herramientas/consulta_sql.py`: SQL contra InfluxDB (Flight SQL) con el token de `.env`. `.venv/bin/python herramientas/consulta_sql.py "SELECT ..."`. `.venv/` está dentro del proyecto (ignorado por git). Se eligió la opción (a) pedida: **funcionó**, no hizo falta DBRP/InfluxQL.
-- `herramientas/construir_dashboard.py --probar N`: regenera el dashboard y **ejecuta cada consulta contra la base real**.
-- `herramientas/cruzar_kpis.py`: cruza los KPIs de Node-RED contra un recálculo independiente sobre `raw_variables`.
-- `herramientas/reconstruir_kpis.py`: reconstruye los acumuladores de los períodos abiertos y escribe las filas de los cerrados desde `raw_variables` (con Node-RED detenido; sin `--aplicar` solo muestra el plan).
-- `nodered/pruebas/probar.js`: 56 pruebas de la lógica con reloj simulado (sin red): generador, KPIs en 9 días simulados, bomba, EQ02/EQ03, reporte, interruptores.
+- `scripts/consulta_sql.py`: SQL contra InfluxDB (Flight SQL) con el token de `.env`. `.venv/bin/python scripts/consulta_sql.py "SELECT ..."`. `.venv/` está dentro del proyecto (ignorado por git). Se eligió la opción (a) pedida: **funcionó**, no hizo falta DBRP/InfluxQL.
+- `scripts/construir_dashboard.py --probar N`: regenera el dashboard y **ejecuta cada consulta contra la base real**.
+- `pruebas/cruzar_kpis.py`: cruza los KPIs de Node-RED contra un recálculo independiente sobre `raw_variables`.
+- `scripts/reconstruir_kpis.py`: reconstruye los acumuladores de los períodos abiertos y escribe las filas de los cerrados desde `raw_variables` (con Node-RED detenido; sin `--aplicar` solo muestra el plan).
+- `pruebas/probar.js`: 56 pruebas de la lógica con reloj simulado (sin red): generador, KPIs en 9 días simulados, bomba, EQ02/EQ03, reporte, interruptores.
 
 ## Hallazgos técnicos que conviene saber (comprobados contra la base real)
 
@@ -151,7 +169,7 @@ Pruebas automáticas: 59/59 (se agregaron 3 con la secuencia real de pH). Consul
 
 **Qué se probó de verdad:**
 - Pruebas con reloj simulado: 9 días seguidos (6.480 ciclos): ninguna clave repetida en toda la corrida; 215 horas, 27 turnos, 8 días y 1 semana cerrados; fórmulas coinciden con un cálculo independiente (hora, turno y día); un reinicio a mitad de período recupera el estado y cierra con todas las muestras.
-- **Cálculo forzado de prueba con datos reales** (botón *Calcular KPIs de PRUEBA ahora*, escribe en `kpi_values_prueba`, **no** en `kpi_values`): las 24 combinaciones (6 KPIs × 4 períodos) de Node-RED **coinciden con un recálculo independiente** sobre `raw_variables` (`herramientas/cruzar_kpis.py`, corrida `1794094348867`). Ejemplo, turno T2: eficiencia energética 2,6174; disponibilidad 79,55 %; eficiencia de filtración 86,404 %; presión diferencial media 627,72 mbar; desvío del pH 0,1124.
+- **Cálculo forzado de prueba con datos reales** (botón *Calcular KPIs de PRUEBA ahora*, escribe en `kpi_values_prueba`, **no** en `kpi_values`): las 24 combinaciones (6 KPIs × 4 períodos) de Node-RED **coinciden con un recálculo independiente** sobre `raw_variables` (`pruebas/cruzar_kpis.py`, corrida `1794094348867`). Ejemplo, turno T2: eficiencia energética 2,6174; disponibilidad 79,55 %; eficiencia de filtración 86,404 %; presión diferencial media 627,72 mbar; desvío del pH 0,1124.
 - **Persistencia en disco:** tras varios reinicios (incluido uno ordenado medido a propósito), el turno abierto tiene **88 ciclos en la base y 88 muestras acumuladas** (diferencia 0).
 - El SQL del período en curso (tablero) coincide con Python en los 6 KPIs.
 
@@ -200,7 +218,7 @@ El log de Node-RED confirmó `250 2.0.0 OK` de Gmail en los 8 de esta tanda; **l
 
 ## Fase 6 — Tablero de Grafana Cloud (hecho con reservas)
 
-**Qué se hizo:** `grafana/aquamonitor_dashboard.json` (37 paneles), generado por `herramientas/construir_dashboard.py`; fuente `influxdb` (UID `fg3ly9z1iz668b`), zona horaria `America/Argentina/Buenos_Aires`, refresco 5 s, selector *Período de los indicadores*. Contenido: estado general; sensores en vivo de los 3 equipos (colores por umbrales del catálogo); indicadores (período en curso por SQL y último cerrado); fallas de la bomba (últimas 12 h, rango, por hora, por motivo, última falla, tabla de eventos); análisis.
+**Qué se hizo:** `grafana/aquamonitor_dashboard.json` (37 paneles), generado por `scripts/construir_dashboard.py`; fuente `influxdb` (UID `fg3ly9z1iz668b`), zona horaria `America/Argentina/Buenos_Aires`, refresco 5 s, selector *Período de los indicadores*. Contenido: estado general; sensores en vivo de los 3 equipos (colores por umbrales del catálogo); indicadores (período en curso por SQL y último cerrado); fallas de la bomba (últimas 12 h, rango, por hora, por motivo, última falla, tabla de eventos); análisis.
 **Qué se probó de verdad:** **las 32 consultas SQL ejecutadas contra la base real: 0 con error** (`--probar 6`, última corrida con 98 puntos de datos). La hora de los textos usa `time - INTERVAL '3 hours'`.
 **Qué NO se probó (importante):** no tengo acceso a tu Grafana. El usuario importó el JSON y reportó los problemas de la sección «Revisión del tablero»; **de lo que no se informó nada, no está verificado**. En particular no se verificó que (1) el import acepte el JSON tal cual; (2) el modelo de consulta del plugin de InfluxDB (SQL) reconozca los campos `query`/`rawQuery`/`resultFormat` (se incluyeron también `rawSql`/`format` por compatibilidad); (3) el macro `$__timeFilter(time)` esté soportado en tu versión; (4) el panel de dispersión (`xychart`) y los colores se vean como se espera. Si un panel sale con error: *Edit* → pegar la consulta del panel en el editor SQL; las consultas son SQL estándar de InfluxDB 3.
 **Qué te toca:** importarlo (README sección 11) y avisar qué panel falla.
@@ -225,7 +243,7 @@ El log de Node-RED confirmó `250 2.0.0 OK` de Gmail en los 8 de esta tanda; **l
 
 ## Lo que queda corriendo ahora
 
-Una instancia de Node-RED arrancada con `corrida_continua.sh` (modo normal 120 s, fallas aleatorias **activadas**, mails **silenciados** para cuidar la cuenta de Gmail). Se detiene con `bash nodered/parar.sh`. Antes de generar desde otra PC hay que detener ésta.
+Una instancia de Node-RED arrancada con `corrida_continua.sh` (modo normal 120 s, fallas aleatorias **activadas**, mails **silenciados** para cuidar la cuenta de Gmail). Se detiene con `bash scripts/parar.sh`. Antes de generar desde otra PC hay que detener ésta.
 
 ## Qué te toca a vos
 
@@ -233,7 +251,7 @@ Una instancia de Node-RED arrancada con `corrida_continua.sh` (modo normal 120 s
 2. **Confirmar en la bandeja los 9 mails** de la lista (Fase 4) y que los de falla/normalización llegaron, uno por evento.
 3. **Subir la rama** (`git push -u origin stack-catedra`): el script de descargas de la facultad solo sube `main`, y sin eso tu compañero no puede clonar esta rama. No lo hice yo porque publica el código.
 4. **Probar en la PC del compañero** con `docs/migracion_otra_pc.md` (y detener ésta antes).
-5. **Dejar la corrida continua ≥ 12 h antes del 12/11** (`bash nodered/corrida_continua.sh --con-mails` si querés mails en el historial) y, el día de la defensa, apretar *Mails SIN marca (presentación)*.
+5. **Dejar la corrida continua ≥ 12 h antes del 12/11** (`bash scripts/corrida_continua.sh --con-mails` si querés mails en el historial) y, el día de la defensa, apretar *Mails SIN marca (presentación)*.
 6. **Revisar la decisión de diseño de los KPIs** (arriba) y decirme si la aceptás.
 7. **Reimportar el JSON** del tablero (mismo UID: Grafana ofrece reemplazarlo) después de los cambios del 08/11.
 8. **Después de la presentación:** revocar el token de InfluxDB y la contraseña de aplicación de Gmail (`docs/migracion_otra_pc.md`, sección 5).

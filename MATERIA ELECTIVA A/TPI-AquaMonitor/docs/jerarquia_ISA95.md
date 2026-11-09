@@ -1,7 +1,7 @@
 # Jerarquía ISA-95 y catálogo de variables — TPI-AquaMonitor
 
 > **Stack vigente:** Node-RED → InfluxDB Cloud → Grafana Cloud (ver [`README.md`](../README.md)). Donde este documento nombra MQTT,
-> QuestDB o el simulador de Python se trata del **respaldo** del primer diseño ([`respaldo_stack_anterior.md`](respaldo_stack_anterior.md)).
+> QuestDB o el simulador de Python se trata del **respaldo** del primer diseño ([`respaldo_stack_anterior.md`](../_archivo/stack_anterior/README_stack_anterior.md)).
 
 ## 1. Jerarquía de equipamiento (ISA-95 / IEC 62264)
 
@@ -48,7 +48,7 @@
 | 15 | EQ03 | REAC | NIVEL | `AQM-PTEF-REAC-EQ03-NIVEL` | 0 | % | 45 – 88 | <40 ó >90 | <20 ó >95 |
 
 > **Fuente única:** estos valores están definidos en [`nodered/userdir/aqm/catalogo.js`](../nodered/userdir/aqm/catalogo.js); el generador, los indicadores, las alertas y los colores del tablero leen ese archivo. Un cambio se hace ahí y se reinicia Node-RED.
-> *(Respaldo: en el primer diseño estaban copiados en `simulador/config.py`, `nodered/flows/03_alertas.json` y el flow de la bomba.)*
+> *(Respaldo: en el primer diseño estaban copiados en `_archivo/stack_anterior/simulador/config.py`, `_archivo/stack_anterior/nodered_flows/flows/03_alertas.json` y el flow de la bomba.)*
 
 ## 4. Calidad del dato (`quality`)
 

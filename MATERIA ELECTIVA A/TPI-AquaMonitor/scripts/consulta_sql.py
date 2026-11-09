@@ -1,9 +1,9 @@
 """Ejecuta una consulta SQL contra InfluxDB Cloud (Flight SQL) y la imprime como tabla.
 
 Uso (desde la raiz del proyecto):
-    .venv/bin/python herramientas/consulta_sql.py "SELECT * FROM raw_variables LIMIT 5"
-    .venv/bin/python herramientas/consulta_sql.py -f consulta.sql
-    .venv/bin/python herramientas/consulta_sql.py --horas 3 "SELECT ... WHERE $__timeFilter(time)"
+    .venv/bin/python scripts/consulta_sql.py "SELECT * FROM raw_variables LIMIT 5"
+    .venv/bin/python scripts/consulta_sql.py -f consulta.sql
+    .venv/bin/python scripts/consulta_sql.py --horas 3 "SELECT ... WHERE $__timeFilter(time)"
 
 Opciones:
     --horas N   reemplaza los macros de Grafana por el rango "ultimas N horas" (por defecto 6):

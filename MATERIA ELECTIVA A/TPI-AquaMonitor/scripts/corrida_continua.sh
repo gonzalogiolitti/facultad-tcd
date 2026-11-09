@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # CORRIDA CONTINUA: deja el generador funcionando varias horas en segundo plano, en modo normal (120 s)
 # y con fallas aleatorias, para que el tablero tenga historial real (por ejemplo "fallas de las ultimas 12 h").
-#     bash nodered/corrida_continua.sh              # SIN mails (protege la cuenta de Gmail)
-#     bash nodered/corrida_continua.sh --con-mails  # con los avisos por mail activados
-#     bash nodered/parar.sh                         # para detenerla
+#     bash scripts/corrida_continua.sh              # SIN mails (protege la cuenta de Gmail)
+#     bash scripts/corrida_continua.sh --con-mails  # con los avisos por mail activados
+#     bash scripts/parar.sh                         # para detenerla
 # Log: nodered/userdir/nodered.log   (ignorado por git)
 set -euo pipefail
 AQUI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG="$AQUI/userdir/nodered.log"
-PIDFILE="$AQUI/userdir/.nodered.pid"
+RAIZ="$(dirname "$AQUI")"
+LOG="$RAIZ/nodered/userdir/nodered.log"
+PIDFILE="$RAIZ/nodered/userdir/.nodered.pid"
 URL="http://127.0.0.1:1880"
 CON_MAILS="no"; [ "${1:-}" = "--con-mails" ] && CON_MAILS="si"
 
@@ -34,5 +35,5 @@ boton inj_reanudar
 boton inj_aleatorio_on         # fallas aleatorias (aprox. 3 % por ciclo)
 if [ "$CON_MAILS" = "si" ]; then boton inj_silenciar_off; else boton inj_silenciar_on; fi
 echo "Listo. Modo normal (120 s), fallas aleatorias ACTIVADAS, mails: $([ "$CON_MAILS" = "si" ] && echo ACTIVADOS || echo SILENCIADOS)."
-echo "Editor: $URL   |   Para detener:  bash nodered/parar.sh"
+echo "Editor: $URL   |   Para detener:  bash scripts/parar.sh"
 echo "Importante: dejar la PC encendida y SIN suspenderse; solo UNA computadora puede generar datos contra el mismo bucket."

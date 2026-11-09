@@ -22,8 +22,8 @@ git checkout stack-catedra
 cd "MATERIA ELECTIVA A/TPI-AquaMonitor"
 cd nodered/userdir && npm install && cd ../..
 # poner el .env recibido en esta carpeta (junto a .env.example)
-node nodered/pruebas/probar.js              # las pruebas de la lógica deben dar "todo OK"
-bash nodered/arrancar.sh                    # o, en Windows, nodered\arrancar.ps1
+node pruebas/probar.js                      # las pruebas de la lógica deben dar "todo OK" (67)
+bash scripts/arrancar.sh                    # o, en Windows, scripts\arrancar.ps1
 ```
 
 ## 2. Cómo pasar el `.env` de forma segura
@@ -45,16 +45,16 @@ Node-RED guarda su memoria de trabajo en `nodered/userdir/context/` (ignorada po
 | Modo del generador, fallas aleatorias, mails silenciados / marcados | vuelven a los valores por defecto: modo normal, fallas aleatorias apagadas, **mails activos** y marcados `[PRUEBA]` |
 
 Qué hacer:
-0. Si ya pasó un corte o se cambió la regla de calidad, `herramientas/reconstruir_kpis.py` (con Node-RED detenido) reconstruye los acumuladores de los períodos abiertos desde `raw_variables`.
+0. Si ya pasó un corte o se cambió la regla de calidad, `scripts/reconstruir_kpis.py` (con Node-RED detenido) reconstruye los acumuladores de los períodos abiertos desde `raw_variables`.
 1. **Lo más simple:** hacer el cambio justo después de un cambio de turno (06:00, 14:00 o 22:00) o de un cambio de hora, así casi no hay períodos largos a medio acumular.
-2. Si se quiere conservar todo: detener la PC vieja con `bash nodered/parar.sh` (guarda el estado) y **copiar la carpeta `nodered/userdir/context/`** a la PC nueva antes de arrancar. No contiene secretos.
-3. En la PC nueva, después de arrancar, volver a poner los modos que se quieran (botones de la pestaña *01 Generador de datos* y de *03 Alerta bomba EQ01*), o usar `bash nodered/corrida_continua.sh`.
+2. Si se quiere conservar todo: detener la PC vieja con `bash scripts/parar.sh` (guarda el estado) y **copiar la carpeta `nodered/userdir/context/`** a la PC nueva antes de arrancar. No contiene secretos.
+3. En la PC nueva, después de arrancar, volver a poner los modos que se quieran (botones de la pestaña *01 Generador de datos* y de *03 Alerta bomba EQ01*), o usar `bash scripts/corrida_continua.sh`.
 
 ## 4. Una sola computadora generando
 
-1. En la PC vieja: `bash nodered/parar.sh`. Confirmar que se detuvo.
+1. En la PC vieja: `bash scripts/parar.sh`. Confirmar que se detuvo.
 2. Recién después, arrancar en la PC nueva.
-3. Verificar en InfluxDB que hay **un** ciclo cada 120 s (o cada 15 s en demo):
+3. Verificar en InfluxDB que hay **un** ciclo cada 120 s (o cada 15 s en demo; la consulta está lista en `sql/03_ciclos_por_ventana.sql`, se corre con `.venv/bin/python scripts/consulta_sql.py -f sql/03_ciclos_por_ventana.sql`):
    ```sql
    SELECT date_bin(INTERVAL '10 minutes', time) AS ventana, count(DISTINCT time) AS ciclos
    FROM raw_variables WHERE time > now() - INTERVAL '1 hour' GROUP BY 1 ORDER BY 1

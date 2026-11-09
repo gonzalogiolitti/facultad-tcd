@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
  * Pruebas automaticas de la logica de los flows (sin Node-RED y sin red).
- *   node nodered/pruebas/probar.js
+ *   node pruebas/probar.js
  * Carga flows.json, toma el codigo de cada nodo "function" y lo ejecuta con un contexto
  * simulado y un reloj simulado. Sirve para comprobar en segundos cosas que en vivo tardan
  * horas (cierre de turnos/dias/semanas, maquina de estados de la bomba, cooldown, etc.).
  */
 const path = require('path');
 const assert = require('assert');
-const flows = require(path.join(__dirname, '..', 'userdir', 'flows.json'));
-const A = require(path.join(__dirname, '..', 'userdir', 'aqm', 'aqm.js'));
+const flows = require(path.join(__dirname, '..', 'nodered', 'userdir', 'flows.json'));
+const A = require(path.join(__dirname, '..', 'nodered', 'userdir', 'aqm', 'aqm.js'));
 const C = A.CATALOGO;
 
 let ok = 0, fallos = 0;
